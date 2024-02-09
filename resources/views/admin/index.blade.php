@@ -1,4 +1,4 @@
-@include('admin.layout.app')
+@extends('admin.layout.app')
 
 @section('content')
     <div class="page-content">
