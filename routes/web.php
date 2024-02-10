@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\ProductMnagementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,10 +15,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('frontend.layouts.app');
 });
+
+// Route::prefix('admin')->middleware(['auth'])->group(function () {
+    Route::get('/admin', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin');
+    Route::get('category', [ProductMnagementController::class, 'category'])->name('category');
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// });
+
 
 Auth::routes();
 
-Route::get('/admin', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
