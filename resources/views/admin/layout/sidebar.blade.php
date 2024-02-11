@@ -96,7 +96,7 @@
                                 <a href="{{ route('categories.index') }}" class="nav-link">Categories</a>
                             </li>
                             <li class="nav-item">
-                                <a href="advance-ui-nestable.html" class="nav-link" data-key="t-nestable-list">Products</a>
+                                <a href="{{ route('products.index') }}" class="nav-link" data-key="t-nestable-list">Products</a>
                             </li>
                         </ul>
                     </div>
