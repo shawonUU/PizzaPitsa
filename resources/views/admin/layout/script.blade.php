@@ -19,5 +19,15 @@
   <!-- Dashboard init -->
   <script src="{{asset('backend')}}/js/pages/dashboard-ecommerce.init.js"></script>
 
+    <!-- ckeditor -->
+    <script src="{{asset('backend')}}/libs/@ckeditor/ckeditor5-build-classic/build/ckeditor.js"></script>
+
+    <!-- quill js -->
+    <script src="{{asset('backend')}}/libs/quill/quill.min.js"></script>
+
+    <!-- init js -->
+    <script src="{{asset('backend')}}/js/pages/form-editor.init.js"></script>
   <!-- App js -->
   <script src="{{asset('backend')}}/js/app.js"></script>
+
+  @yield('script')

@@ -14,6 +14,10 @@
     <!--Swiper slider css-->
     <link href="{{asset('backend')}}/libs/swiper/swiper-bundle.min.css" rel="stylesheet" type="text/css" />
 
+    <link href="{{asset('backend')}}/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
+    <link href="{{asset('backend')}}/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
+    <link href="{{asset('backend')}}/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />
+
     <!-- Layout config Js -->
     <script src="{{asset('backend')}}/js/layout.js"></script>
     <!-- Bootstrap Css -->
