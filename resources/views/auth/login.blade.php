@@ -90,8 +90,7 @@
                                 <div class="col-lg-10 m-auto">
                                     <div class="p-lg-5 p-4">
                                         <div>
-                                            <h5 class="text-primary">Welcome Back !</h5>
-                                            <p class="text-muted">Sign in to continue to Pizza Pitsa.</p>
+                                            <h5 class="text-primary">Welcome Back !</h5>                                            
                                         </div>
 
                                         <div class="mt-4">
@@ -99,7 +98,7 @@
                                                 @csrf                        
                                                 <div class="mb-3">
                                                     <label for="username" class="form-label">Email</label>
-                                                    <input type="email" id="email" name="email" class="form-control @error('email') is-invalid @enderror"  placeholder="Enter email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                                    <input type="email" id="email" name="email" placeholder="Enter email" class="form-control @error('email') is-invalid @enderror"  placeholder="Enter email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                                                 </div>
                                                 <div class="mb-3">
                                                     {{-- <div class="float-end">
@@ -107,7 +106,7 @@
                                                     </div> --}}
                                                     <label class="form-label" for="password-input">Password</label>
                                                     <div class="position-relative auth-pass-inputgroup mb-3">
-                                                        <input  id="password" type="password" class="form-control pe-5 password-input @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" type="password" class="form-control " placeholder="Enter password">
+                                                        <input  id="password" type="password" placeholder="Enter password" class="form-control pe-5 password-input @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" type="password" class="form-control " placeholder="Enter password">
                                                         <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
                                                     </div>
                                                 </div>

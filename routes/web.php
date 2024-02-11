@@ -19,9 +19,8 @@ Route::get('/', function () {
 });
 
 Route::prefix('admin')->middleware(['auth'])->group(function () {
-    Route::get('/admin', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin');
-    Route::get('category', [ProductMnagementController::class, 'category'])->name('category');
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+    Route::get('category', [ProductMnagementController::class, 'category'])->name('category');    
 });
 
 

@@ -97,8 +97,7 @@
                                 <div class="col-lg-10 m-auto">
                                     <div class="p-lg-5 p-4">
                                         <div>
-                                            <h5 class="text-primary">Register Account</h5>
-                                            <p class="text-muted">Get your Free Velzon account now.</p>
+                                            <h5 class="text-primary">Register Account</h5>                                           
                                         </div>
 
                                         <div class="mt-4">
@@ -106,14 +105,14 @@
                                                 @csrf
                                                 <div class="mb-3">
                                                     <label for="useremail" class="form-label">Email <span class="text-danger">*</span></label>
-                                                    <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                                                    <input id="email" type="email" placeholder="Enter email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
                                                     <div class="invalid-feedback">
                                                         Please enter email
                                                     </div>
                                                 </div>
                                                 <div class="mb-3">
-                                                    <label for="username" class="form-label">Username <span class="text-danger">*</span></label>
-                                                    <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                                    <label for="username" class="form-label">Name <span class="text-danger">*</span></label>
+                                                    <input id="name" type="text" placeholder="Enter name" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name">
                                                     <div class="invalid-feedback">
                                                         Please enter username
                                                     </div>
@@ -122,18 +121,14 @@
                                                 <div class="mb-3">
                                                     <label class="form-label" for="password-input">Password</label>
                                                     <div class="position-relative auth-pass-inputgroup">
-                                                        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                                                        <input id="password" placeholder="Enter password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
                                                         <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
                                                         <div class="invalid-feedback">
                                                             Please enter password
                                                         </div>
                                                     </div>
                                                 </div>
-                                               
-                                                <div class="mb-4">
-                                                    <p class="mb-0 fs-12 text-muted fst-italic">By registering you agree to the Velzon <a href="#" class="text-primary text-decoration-underline fst-normal fw-medium">Terms of Use</a></p>
-                                                </div>
-
+                                                                                              
                                                 <div id="password-contain" class="p-3 bg-light mb-2 rounded">
                                                     <h5 class="fs-13">Password must contain:</h5>
                                                     <p id="pass-length" class="invalid fs-12 mb-2">Minimum <b>8 characters</b></p>
