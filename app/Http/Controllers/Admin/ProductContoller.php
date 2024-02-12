@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Admin\Product;
 use App\Models\Admin\ProductImage;
 use App\Http\Controllers\Controller;
+use App\Models\Admin\Category;
 
 class ProductContoller extends Controller
 {
@@ -15,7 +16,7 @@ class ProductContoller extends Controller
      */
     public function index()
     {
-        $products = Product::join()->orderBy('id','desc')->get();
+        $products = Product::join('categories','categories.id','=','products.category_id')->select('products.*','categories.name as category')->orderBy('products.id','desc')->get();
         return view('admin.pages.product.index',compact('products'));
     }
 
@@ -24,7 +25,8 @@ class ProductContoller extends Controller
      */
     public function create()
     {
-        return view('admin.pages.product.create');
+        $categories = Category::where('status','1')->get();
+        return view('admin.pages.product.create',compact('categories'));
     }
 
     /**
@@ -44,6 +46,7 @@ class ProductContoller extends Controller
            // Create a new product instance
         $product = new Product([
             'name' => $request->input('name'),
+            'category_id' => $request->category,
             'description' => $request->input('description'),
             'price' => $request->input('price'),
             'quantity' => $request->input('quantity'),
@@ -55,13 +58,10 @@ class ProductContoller extends Controller
         $product->save();   
 
         if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                // Generate a unique image name based on the current date and time
+            foreach ($request->file('images') as $image) {                
+                $destinationPath = 'frontend/product_images/';
                 $imageName = now()->format('YmdHis') . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
-        
-                // Save the image to the 'product_images' directory with the generated name
-                $filename = $image->storeAs('product_images', $imageName, 'public');
-        
+                $image->move($destinationPath, $imageName);               
                 // Save image information to the 'product_images' table
                 $productImage = new ProductImage();
                 $productImage->product_id = $product->id; // Assuming $product is the product you just saved
@@ -90,7 +90,10 @@ class ProductContoller extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $product = Product::where('id',$id)->first();
+        $categories = Category::where('status','1')->get();
+        $productImages = ProductImage::where('product_id',$product->id)->get();  
+        return view('admin.pages.product.edit',compact('categories','product','productImages'));
     }
 
     /**
@@ -98,7 +101,53 @@ class ProductContoller extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $product = Product::where('id',$id)->first();
+        $productImages = ProductImage::where('product_id',$product->id)->get();  
+        $request->validate([
+            'name' => 'required|string',
+            'description' => 'required|string',
+            'price' => 'required|numeric',
+            'quantity' => 'required|integer',
+            'status' => 'required|in:0,1',        
+            // Add any other validation rules as needed
+        ]);
+
+        $product->update([
+            'name' => $request->input('name'),
+            'category_id' => $request->category,
+            'description' => $request->input('description'),
+            'price' => $request->input('price'),
+            'quantity' => $request->input('quantity'),
+            'status' => $request->input('status'),
+            'updated_by' => auth()->user()->id,
+        ]);
+ 
+        
+        if ($request->hasFile('images')) {
+            foreach($productImages as $item) {
+                $productImage = ProductImage::where('id',$item->id)->first();
+                if($productImage) {                    
+                    unlink(public_path('frontend/product_images/' . $item->image));                    
+                    $productImage->delete();
+                }                            
+            }
+            foreach ($request->file('images') as $image) {                
+                $destinationPath = 'frontend/product_images/';
+                $imageName = now()->format('YmdHis') . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
+                $image->move($destinationPath, $imageName);               
+                // Save image information to the 'product_images' table
+                $productImage = new ProductImage();
+                $productImage->product_id = $product->id; // Assuming $product is the product you just saved
+                $productImage->image = $imageName; // Save the generated image name           
+                $productImage->save();
+            }
+        }
+        session()->flash('toastr', [
+            'type' => 'success',
+            'message' => 'Product update successfully!',
+        ]);
+        // Redirect or return a response as needed
+        return redirect()->route('products.index')->with('success', 'Product update successfully');     
     }
 
     /**
@@ -106,6 +155,23 @@ class ProductContoller extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::where('id',$id)->first();
+        $productImages = ProductImage::where('product_id',$product->id)->get();  
+        foreach($productImages as $item) {
+            $productImage = ProductImage::where('id',$item->id)->first();
+            if($productImage) {                    
+                unlink(public_path('frontend/product_images/' . $item->image));                    
+                $productImage->delete();
+            }                            
+        }
+        $product->delete();
+
+        session()->flash('toastr', [
+            'type' => 'warning',
+            'message' => 'Product delete successfully!',
+        ]);
+        // Redirect or return a response as needed
+        return redirect()->route('products.index')->with('warning', 'Product delete successfully');  
+
     }
 }
