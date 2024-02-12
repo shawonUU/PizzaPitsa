@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ProductMnagementController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductContoller;
+use App\Http\Controllers\Admin\CouponController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductContoller::class);
+    Route::resource('coupons', CouponController::class);
 });
 
 

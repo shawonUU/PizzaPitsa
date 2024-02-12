@@ -101,6 +101,20 @@
                         </ul>
                     </div>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#sidebarCouponUI" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
+                        <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Settings</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarCouponUI">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('coupons.index') }}" class="nav-link">Coupons</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarAuthorizition" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAuthorizition">
                         <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Authorizition</span>

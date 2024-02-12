@@ -22,6 +22,15 @@
                                                 <label for="basiInput" class="form-label">Category</label>
                                                 <input type="text" class="form-control" id="category" name="category" placeholder="Category">
                                             </div>
+                                            <div>
+                                                <label for="basiInput" class="form-label">Status</label>
+                                                <select name="status" id="" class="form-control">
+                                                    @foreach (getStatus() as $key => $status) 
+                                                        <option value="{{$key}}" {{$key == 1 ? 'selected' : ''}}>{{$status}}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
@@ -56,7 +65,46 @@
                                         <td>{{$category->name}}</td>
                                         <td>{{$category->status == 1 ? "Active" : "Deactive"}}</td>
                                         <td>
-                                            <button class="btn btn-sm btn-primary">Edit</button>
+                                            <button class="btn btn-sm btn-primary" title="Edit" data-bs-toggle="modal" data-bs-target="#ctegory{{$category->id}}">
+                                                <i class="bx bx-edit"></i>
+                                            </button>
+
+                                            <div id="ctegory{{$category->id}}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                            <form action="{{ route('categories.update', $category->id) }}" method="POST">
+                                                    @method('PUT')
+                                                    @csrf
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title" id="myModalLabel">Add Category</h5>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div>
+                                                                    <label for="basiInput" class="form-label">Category</label>
+                                                                    <input type="text" class="form-control" id="category" name="category"value="{{$category->name}}" placeholder="Category">
+                                                                </div>
+                                                                <div>
+                                                                    <label for="basiInput" class="form-label">Status</label>
+                                                                    <select name="status" id="" class="form-control">
+                                                                        @foreach (getStatus() as $key => $status) 
+                                                                            <option value="{{$key}}" {{$category->status == 1 ? 'selected' : ''}}>{{$status}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-primary ">Save</button>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+
+
                                         </td>
                                     </tr>
                                     @endforeach
