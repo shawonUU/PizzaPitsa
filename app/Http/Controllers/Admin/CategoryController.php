@@ -17,6 +17,7 @@ class CategoryController extends Controller
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
             'category' => 'required|string|max:255',
+            'status' => 'required',
         ]);
         if ($validator->fails()) {
             return response()->redirect()->back()->with(['errors' => $validator->errors()], 422);
@@ -24,8 +25,27 @@ class CategoryController extends Controller
 
         $category = new Category;
         $category->name = $request->category;
+        $category->status = $request->status;
         $category->created_by = auth()->user()->id;
         $category->save();
+        return redirect()->route('categories.index');
+    }
+    
+    public function update(Request $request, $id){
+        $validator = Validator::make($request->all(), [
+            'category' => 'required|string|max:255',
+            'status' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return response()->redirect()->back()->with(['errors' => $validator->errors()], 422);
+        }
+        $category = Category::find($id);
+        if($category){
+            $category->name = $request->category;
+            $category->status = $request->status;
+            $category->created_by = auth()->user()->id;
+            $category->save();
+        }
         return redirect()->route('categories.index');
     }
 }
