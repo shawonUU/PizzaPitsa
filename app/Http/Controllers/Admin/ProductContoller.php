@@ -15,7 +15,8 @@ class ProductContoller extends Controller
      */
     public function index()
     {
-        return view('admin.pages.product.index');
+        $products = Product::join()->orderBy('id','desc')->get();
+        return view('admin.pages.product.index',compact('products'));
     }
 
     /**
@@ -23,7 +24,7 @@ class ProductContoller extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.pages.product.create');
     }
 
     /**
@@ -68,7 +69,10 @@ class ProductContoller extends Controller
                 $productImage->save();
             }
         }
-
+        session()->flash('toastr', [
+            'type' => 'success',
+            'message' => 'Product created successfully!',
+        ]);
         // Redirect or return a response as needed
         return redirect()->route('products.index')->with('success', 'Product created successfully');
     }

@@ -17,7 +17,13 @@
     <link href="{{asset('backend')}}/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
     <link href="{{asset('backend')}}/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
     <link href="{{asset('backend')}}/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastr@2.1.4/dist/toastr.min.css">
+    <!--datatable css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
+    <!--datatable responsive css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
 
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
     <!-- Layout config Js -->
     <script src="{{asset('backend')}}/js/layout.js"></script>
     <!-- Bootstrap Css -->
