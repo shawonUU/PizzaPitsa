@@ -57,10 +57,11 @@
                                     <td>{{ $item->quantity }}</td>
                                     <td class="{{ $item->status=='1'?'text-danger':'' }}">{{ $item->status=='1'?'Active':'Inactive' }}</td>                                   
                                     <td>
-                                      <button type="button" class="btn btn-sm btn-primary waves-effect waves-light"><a href="{{ route('products.edit',$item->id) }}"><i class="ri-ball-pen-line"></i></a></button>|
-                                      <button type="button" data-bs-toggle="modal" data-bs-target="#myModal{{ $item->id }}" class="btn btn-sm btn-danger waves-effect waves-light"><i class="ri-delete-bin-line"></i></button>
                                       
-
+                                      
+                                      
+                                      <td><button type="button" class="btn btn-sm btn-primary waves-effect waves-light"><a href="{{ route('products.edit',$item->id) }}"><i class="ri-ball-pen-line" style="color: #fff"></i></a></button>| <button type="button" data-bs-toggle="modal" data-bs-target="#myModal{{ $item->id }}" class="btn btn-sm btn-danger waves-effect waves-light"><i class="ri-delete-bin-line"></i></button>
+                                      
                                       <div class="btn-group material-shadow">
                                           <button class="btn btn-primary btn-sm  material-shadow-none show" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                           <i class="las la-angle-double-down"></i>
@@ -71,8 +72,7 @@
                                           </div>
                                       </div>
 
-
-                                    <td><button type="button" class="btn btn-sm btn-primary waves-effect waves-light"><a href="{{ route('products.edit',$item->id) }}"><i class="ri-ball-pen-line" style="color: #fff"></i></a></button>| <button type="button" data-bs-toggle="modal" data-bs-target="#myModal{{ $item->id }}" class="btn btn-sm btn-danger waves-effect waves-light"><i class="ri-delete-bin-line"></i></button>
+                                      
                                     </td>   
                                     <!-- Default Modals -->
                                     <div id="myModal{{ $item->id }}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">

@@ -29,6 +29,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('coupons', CouponController::class);
     Route::get('product-sizes/{id}', [ProductContoller::class, 'size'])->name('product_size');
     Route::post('store-product-sizes', [ProductContoller::class, 'storeSize'])->name('product_size.store');
+    Route::put('update-product-sizes/{id}', [ProductContoller::class, 'updateSize'])->name('product_size.update');
     Route::resource('topings', TopingsController::class);
 });
 

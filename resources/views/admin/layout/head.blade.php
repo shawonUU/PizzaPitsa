@@ -36,8 +36,4 @@
     <!-- custom Css-->
     <link href="{{asset('backend')}}/css/custom.min.css" rel="stylesheet" type="text/css" />
 
-    @php
-        
-    @endphp
-
 </head>

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('name');
             $table->decimal('price');
             $table->enum('status', [0, 1])->default(1);
+            $table->string('image')->nullable();
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();

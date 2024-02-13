@@ -180,7 +180,7 @@ class ProductContoller extends Controller
     }
 
     public function size($id){
-        $sizes = Size::get();
+        $sizes = Size::where('product_id', $id)->get();
         return view('admin.pages.product.size', compact('id','sizes'));
     }
 
@@ -192,15 +192,50 @@ class ProductContoller extends Controller
             'status' => 'required|in:0,1',
         ]);
 
+        $imageName = "";
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');                
+            $destinationPath = 'frontend/product_images/';
+            $imageName = now()->format('YmdHis') . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $imageName);
+        }
+
         $size = new Size;
         $size->product_id = $request->product_id;
         $size->name = $request->name;
         $size->price = $request->price;
         $size->status = $request->status;
         $size->created_by = auth()->user()->id;
+        $size->image = $imageName;
         $size->save();
 
         return redirect()->back();
+    }
+
+    public function updateSize(Request $request, $id){
+        // return $request->all();
+        $request->validate([
+            'product_id' => 'required|numeric',
+            'name' => 'required|string',
+            'price' => 'required|numeric',
+            'status' => 'required|in:0,1',
+        ]);
+        $size = Size::find($id);
+        if($size){
+            $size->name = $request->name;
+            $size->price = $request->price;
+            $size->status = $request->status;
+            $size->updated_by = auth()->user()->id;
+            $size->update();
+
+            session()->flash('sweet_alert', [
+                'type' => 'success',
+                'title' => 'Success!',
+                'text' => 'Product Size Updated',
+            ]);
+
+            return redirect()->back();
+        }
     }
 
 }
