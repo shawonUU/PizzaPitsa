@@ -17,7 +17,8 @@
     <link href="{{asset('backend')}}/libs/quill/quill.core.css" rel="stylesheet" type="text/css" />
     <link href="{{asset('backend')}}/libs/quill/quill.bubble.css" rel="stylesheet" type="text/css" />
     <link href="{{asset('backend')}}/libs/quill/quill.snow.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastr@2.1.4/dist/toastr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!--datatable css-->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
     <!--datatable responsive css-->

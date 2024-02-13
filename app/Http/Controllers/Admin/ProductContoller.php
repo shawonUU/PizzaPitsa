@@ -70,9 +70,10 @@ class ProductContoller extends Controller
                 $productImage->save();
             }
         }
-        session()->flash('toastr', [
+        session()->flash('sweet_alert', [
             'type' => 'success',
-            'message' => 'Product created successfully!',
+            'title' => 'Success!',
+            'text' => 'Product added success',
         ]);
         // Redirect or return a response as needed
         return redirect()->route('products.index')->with('success', 'Product created successfully');
@@ -143,9 +144,10 @@ class ProductContoller extends Controller
                 $productImage->save();
             }
         }
-        session()->flash('toastr', [
+        session()->flash('sweet_alert', [
             'type' => 'success',
-            'message' => 'Product update successfully!',
+            'title' => 'Success!',
+            'text' => 'Product update success',
         ]);
         // Redirect or return a response as needed
         return redirect()->route('products.index')->with('success', 'Product update successfully');     
@@ -167,9 +169,10 @@ class ProductContoller extends Controller
         }
         $product->delete();
 
-        session()->flash('toastr', [
-            'type' => 'warning',
-            'message' => 'Product delete successfully!',
+        session()->flash('sweet_alert', [
+            'type' => 'success',
+            'title' => 'Success!',
+            'text' => 'Product delete success',
         ]);
         // Redirect or return a response as needed
         return redirect()->route('products.index')->with('warning', 'Product delete successfully');  

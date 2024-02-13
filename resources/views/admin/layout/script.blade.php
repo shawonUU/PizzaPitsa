@@ -15,8 +15,7 @@
   <script src="{{asset('backend')}}/libs/jsvectormap/maps/world-merc.js"></script>
 
   <!--Swiper slider js-->
-  <script src="{{asset('backend')}}/libs/swiper/swiper-bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4/dist/toastr.min.js"></script>
+  <script src="{{asset('backend')}}/libs/swiper/swiper-bundle.min.js"></script> 
   <!-- Dashboard init -->
   <script src="{{asset('backend')}}/js/pages/dashboard-ecommerce.init.js"></script>
 

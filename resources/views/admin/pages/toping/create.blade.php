@@ -23,10 +23,10 @@
                 <div class="col-lg-12">
                   <div class="card">
                     <div class="card-header align-items-center d-flex">
-                      <h4 class="card-title mb-0 flex-grow-1">Create Product</h4>
+                      <h4 class="card-title mb-0 flex-grow-1">Create Toping</h4>
                       <div class="flex-shrink-0">
                         <div class="form-check form-switch form-switch-right form-switch-md">
-                            <a href="{{ route('products.index') }}" class="btn btn-info">Product List</a>
+                            <a href="{{ route('topings.index') }}" class="btn btn-info">Toping List</a>
                         </div>
                       </div>
                     </div>
@@ -34,46 +34,28 @@
                     <div class="card-body">
                       <div class="live-preview">
                         <div class="row gy-4">
-                            <form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
+                            <form action="{{ route('topings.store') }}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
                                     <div class="col-xxl-3 col-md-6 mb-3">
-                                        <label for="name" class="form-label">Product Name</label>
-                                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter product name" >
-                                    </div>   
-                                    <div class="col-xxl-3 col-md-6 mb-3">
-                                        <label for="name" class="form-label">Category</label>
-                                        <select class="form-select mb-3" name="category">
-                                            @foreach ($categories as $item)
-                                                <option selected>--Select Category--</option>
-                                                <option value="{{ $item->id }}">{{ $item->name }}</option>   
-                                            @endforeach                                                                                                                                                                           
-                                        </select>
-                                    </div>                                   
+                                        <label for="name" class="form-label">Toping Name</label>
+                                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter Toping name" required>
+                                    </div>                                                                    
                                     <div class="col-xxl-3 col-md-6 mb-3">
                                         <label for="price" class="form-label">Price</label>
-                                        <input type="text" class="form-control" id="price" name="price" placeholder="Enter product price" >
-                                    </div>
-                                    <div class="col-xxl-3 col-md-6 mb-3">
-                                        <label for="quantity" class="form-label">Quantity</label>
-                                        <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Enter product quantity" >
-                                    </div>                                  
+                                        <input type="text" class="form-control" id="price" name="price" placeholder="Enter Toping price" required>
+                                    </div>                                                                    
                                     <div class="col-xxl-3 col-md-6 mb-3">
                                         <label for="status" class="form-label">Status</label>
                                         <select class="form-select mb-3" name="status">
                                             <option selected="" value="1">Actve</option>                                            
                                             <option value="0">InActve</option>                                            
                                         </select>
-                                    </div> 
-                                    <div class="col-xxl-12 col-md-12 mb-3">
-                                        <label for="description" class="form-label">Description</label>
-                                        <textarea class="form-control" id="editor" name="description" placeholder="Enter product description" rows="3"></textarea>
-                                    </div>                                                                                                      
+                                    </div>                                                                                                                                        
                                     <div class="col-xxl-3 col-md-6 mb-3">
                                         <label for="image" class="form-label">Image</label>
-                                        <input type="file" multiple class="form-control" id="image" name="images[]">
-                                    </div>
-                                    
+                                        <input type="file" multiple class="form-control" id="image" name="images">
+                                    </div>                                    
                                 </div>
                                 <button type="submit" class="btn btn-primary float-end">Submit</button>
                             </form>

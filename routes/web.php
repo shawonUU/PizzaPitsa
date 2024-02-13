@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ProductMnagementController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductContoller;
 use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\TopingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('coupons', CouponController::class);
     Route::get('product-sizes/{id}', [ProductContoller::class, 'size'])->name('product_size');
     Route::post('store-product-sizes', [ProductContoller::class, 'storeSize'])->name('product_size.store');
+    Route::resource('topings', TopingsController::class);
 });
 
 

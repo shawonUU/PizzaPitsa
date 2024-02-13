@@ -18,6 +18,22 @@
                     <div class="card-body">
                       <div class="live-preview">
                         <div class="row gy-4">
+                            @if ($errors->any())
+                                <div class="alert alert-danger" id="validation-error-alert">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+        
+                                <script>
+                                    // Set a timeout to hide the alert after 2000 milliseconds (2 seconds)
+                                    setTimeout(function () {
+                                        document.getElementById('validation-error-alert').style.display = 'none';
+                                    }, 2000);
+                                </script>
+                            @endif
                             <form action="{{ route('products.update',$product->id) }}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 @method('PATCH')
@@ -55,7 +71,7 @@
                                         <textarea class="form-control" id="editor" name="description" placeholder="Enter product description" rows="3">{!! $product->description !!}</textarea>
                                     </div>                                                                                                      
                                     <div class="col-xxl-3 col-md-6 mb-3">
-                                        <label for="image" class="form-label">Image URL</label>
+                                        <label for="image" class="form-label">Image</label>
                                         <input type="file" multiple class="form-control" id="image" name="images[]">
                                     </div> 
                                     <ul>                                         
