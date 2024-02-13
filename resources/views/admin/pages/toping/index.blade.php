@@ -16,12 +16,11 @@
                             });
                         </script>
                     @endif
-                   
                     <div class="card-header align-items-center d-flex">
-                      <h4 class="card-title mb-0 flex-grow-1">Products</h4>
+                      <h4 class="card-title mb-0 flex-grow-1">Topings</h4>
                       <div class="flex-shrink-0">
                         <div class="form-check form-switch form-switch-right form-switch-md">
-                            <a href="{{ route('products.create') }}" class="btn btn-info">Create Product</a>
+                            <a href="{{ route('topings.create') }}" class="btn btn-info">Create Toping</a>
                         </div>
                       </div>
                     </div>
@@ -33,30 +32,24 @@
                                 <thead>
                                   <tr>
                                     <th>#</th>
-                                    <th>Images</th>
-                                    <th>Name</th>
-                                    <th>Category</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>                                    
+                                    <th>Image</th>
+                                    <th>Name</th>                                 
+                                    <th>Price</th>                                                                  
                                     <th>status</th>
                                     <th>Action</th>
                                   </tr>
                                 </thead>
                                 <tbody>
-                                @foreach ($products as $item)
+                                @foreach ($topings as $item)
                                 <tr>
                                     <th>{{ $loop->index+1 }}</th>
-                                    <th>
-                                      @foreach (getProductImage($item->id) as $image)
-                                      <img width="60px" height="60px" src="{{ asset('frontend/product_images/' . $image->image) }}" alt="Product Image">
-                                      @endforeach
+                                    <th>                                      
+                                      <img width="60px" height="60px" src="{{ asset('frontend/toping_images/' . $item->image) }}" alt="Toping Image">                                      
                                     </th>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->category }}</td>
-                                    <td>{{ $item->price }}</td>
-                                    <td>{{ $item->quantity }}</td>
-                                    <td class="{{ $item->status=='1'?'text-danger':'' }}">{{ $item->status=='1'?'Active':'Inactive' }}</td>                                   
-                                    <td><button type="button" class="btn btn-sm btn-primary waves-effect waves-light"><a href="{{ route('products.edit',$item->id) }}"><i class="ri-ball-pen-line" style="color: #fff"></i></a></button>| <button type="button" data-bs-toggle="modal" data-bs-target="#myModal{{ $item->id }}" class="btn btn-sm btn-danger waves-effect waves-light"><i class="ri-delete-bin-line"></i></button>
+                                    <td>{{ $item->name }}</td>                                   
+                                    <td>{{ $item->price }}</td>                                  
+                                    <td class="{{ $item->status=='1'?'':'text-danger' }}">{{ $item->status=='1'?'Active':'Inactive' }}</td>                                   
+                                    <td><button type="button" class="btn btn-sm btn-primary waves-effect waves-light"><a href="{{ route('topings.edit',$item->id) }}"><i class="ri-ball-pen-line" style="color: #fff"></i></a></button>| <button type="button" data-bs-toggle="modal" data-bs-target="#myModal{{ $item->id }}" class="btn btn-sm btn-danger waves-effect waves-light"><i class="ri-delete-bin-line"></i></button>
                                     </td>   
                                     <!-- Default Modals -->
                                     <div id="myModal{{ $item->id }}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -67,7 +60,7 @@
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                  Are you sure you want to delete this product:
+                                                  Are you sure you want to delete this Toping:
                                                   <strong
                                                       style="color: darkorange">{{ $item->name }}</strong>
                                                   ?
@@ -75,7 +68,7 @@
                                                 <div class="modal-footer">
                                                    
                                                     <form
-                                                        action="{{ route('products.destroy',$item->id) }}"
+                                                        action="{{ route('topings.destroy',$item->id) }}"
                                                         method="post">
                                                         @csrf
                                                         @method('delete')

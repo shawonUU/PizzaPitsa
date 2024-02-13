@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\ProductMnagementController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductContoller;
 use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\TopingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductContoller::class);
     Route::resource('coupons', CouponController::class);
+    Route::resource('topings', TopingsController::class);
 });
 
 
