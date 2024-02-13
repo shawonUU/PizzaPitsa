@@ -8,6 +8,7 @@ use App\Models\Admin\Product;
 use App\Models\Admin\ProductImage;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Category;
+use App\Models\Admin\Size;
 
 class ProductContoller extends Controller
 {
@@ -174,4 +175,29 @@ class ProductContoller extends Controller
         return redirect()->route('products.index')->with('warning', 'Product delete successfully');  
 
     }
+
+    public function size($id){
+        $sizes = Size::get();
+        return view('admin.pages.product.size', compact('id','sizes'));
+    }
+
+    public function storeSize(Request $request){
+        $request->validate([
+            'product_id' => 'required|numeric',
+            'name' => 'required|string',
+            'price' => 'required|numeric',
+            'status' => 'required|in:0,1',
+        ]);
+
+        $size = new Size;
+        $size->product_id = $request->product_id;
+        $size->name = $request->name;
+        $size->price = $request->price;
+        $size->status = $request->status;
+        $size->created_by = auth()->user()->id;
+        $size->save();
+
+        return redirect()->back();
+    }
+
 }

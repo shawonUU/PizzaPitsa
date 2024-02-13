@@ -26,6 +26,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductContoller::class);
     Route::resource('coupons', CouponController::class);
+    Route::get('product-sizes/{id}', [ProductContoller::class, 'size'])->name('product_size');
+    Route::post('store-product-sizes', [ProductContoller::class, 'storeSize'])->name('product_size.store');
 });
 
 
