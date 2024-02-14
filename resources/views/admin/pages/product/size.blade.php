@@ -4,6 +4,15 @@
     <div class="page-content">
         <div class="container-fluid">
 
+        @if(session('sweet_alert'))
+            <script>
+                Swal.fire({
+                    icon: '{{ session('sweet_alert.type') }}',
+                    title: '{{ session('sweet_alert.title') }}',
+                    text: '{{ session('sweet_alert.text') }}',
+                });
+            </script>
+        @endif
             <div class="row">
                 <div class="col">
                     <div class="d-flex flex-row-reverse bd-highlight">
@@ -68,6 +77,7 @@
                                         <th scope="col">Size Name</th>
                                         <th scope="col">Price</th>
                                         <th scope="col">Status</th>
+                                        <th scope="col">image</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
@@ -78,13 +88,14 @@
                                         <td>{{$size->name}}</td>
                                         <td>{{$size->price}}</td>
                                         <td>{{$size->status == 1 ? "Active" : "Deactive"}}</td>
+                                        <td><img src="{{asset('frontend/product_images/'.$size->image)}}" alt="" style="width:40px; height: 40px;"></td>
                                         <td>
                                             <button class="btn btn-sm btn-primary" title="Edit" data-bs-toggle="modal" data-bs-target="#size{{$size->id}}">
                                                 <i class="bx bx-edit"></i>
                                             </button>
 
                                             <div id="size{{$size->id}}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                                            <form action="{{ route('product_size.update', $size->id) }}" method="POST">
+                                            <form action="{{ route('product_size.update', $size->id) }}" method="POST" enctype="multipart/form-data">
                                                     @method('PUT')
                                                     @csrf
                                                     <div class="modal-dialog">
@@ -112,6 +123,10 @@
                                                                             <option value="{{$key}}" {{$size->status == 1 ? 'selected' : ''}}>{{$status}}</option>
                                                                         @endforeach
                                                                     </select>
+                                                                </div>
+                                                                <div>
+                                                                    <label for="basiInput" class="form-label">Image</label>
+                                                                    <input type="file" class="form-control" name="image">
                                                                 </div>
                                                                 
                                                             </div>

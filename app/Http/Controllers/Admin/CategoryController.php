@@ -28,6 +28,11 @@ class CategoryController extends Controller
         $category->status = $request->status;
         $category->created_by = auth()->user()->id;
         $category->save();
+        session()->flash('sweet_alert', [
+            'type' => 'success',
+            'title' => 'Success!',
+            'text' => 'Category Added success',
+        ]);
         return redirect()->route('categories.index');
     }
     
@@ -46,6 +51,11 @@ class CategoryController extends Controller
             $category->created_by = auth()->user()->id;
             $category->save();
         }
+        session()->flash('sweet_alert', [
+            'type' => 'success',
+            'title' => 'Success!',
+            'text' => 'Category update success',
+        ]);
         return redirect()->route('categories.index');
     }
 }

@@ -36,7 +36,7 @@
                                     <th>Images</th>
                                     <th>Name</th>
                                     <th>Category</th>
-                                    <th>Price</th>
+                                    <!-- <th>Price</th> -->
                                     <th>Quantity</th>                                    
                                     <th>status</th>
                                     <th>Action</th>
@@ -53,7 +53,7 @@
                                     </th>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->category }}</td>
-                                    <td>{{ $item->price }}</td>
+                                    <!-- <td>{{ $item->price }}</td> -->
                                     <td>{{ $item->quantity }}</td>
                                     <td class="{{ $item->status=='1'?'text-danger':'' }}">{{ $item->status=='1'?'Active':'Inactive' }}</td>                                   
                                     <td>

@@ -3,7 +3,15 @@
 @section('content')
     <div class="page-content">
         <div class="container-fluid">
-
+            @if(session('sweet_alert'))
+                <script>
+                    Swal.fire({
+                        icon: '{{ session('sweet_alert.type') }}',
+                        title: '{{ session('sweet_alert.title') }}',
+                        text: '{{ session('sweet_alert.text') }}',
+                    });
+                </script>
+            @endif
             <div class="row">
                 <div class="col">
                     <div class="d-flex flex-row-reverse bd-highlight">
