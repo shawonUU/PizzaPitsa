@@ -1,7 +1,6 @@
 <head>
-
     <meta charset="utf-8" />
-    <title>Admin | Dashboard</title>
+    <title>Pizza Pitsa | Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
@@ -35,9 +34,5 @@
     <link href="{{asset('backend')}}/css/app.min.css" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
     <link href="{{asset('backend')}}/css/custom.min.css" rel="stylesheet" type="text/css" />
-
-    @php
-        
-    @endphp
 
 </head>

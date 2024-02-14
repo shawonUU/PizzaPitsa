@@ -38,12 +38,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
   <script src="{{asset('backend')}}/js/pages/datatables.init.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/js/select2.min.js"></script>
   <!-- App js -->
   <script src="{{asset('backend')}}/js/app.js"></script>
   <script>
     $(document).ready(function() {
         $('#dataTbl').DataTable();
     });
+
 </script>
 
   @yield('script')

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Admin\Toping;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Admin\ProductToping;
 
 class TopingsController extends Controller
 {
@@ -122,22 +123,31 @@ class TopingsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        $product = Toping::where('id',$id)->first();
-     
-        $product->delete();
-        if ($product->image !=NULL) {
-            unlink(public_path('frontend/toping_images/' . $product->image));
+    public function destroy(Request $request, string $id)
+    {      
+        if ($request->deleteProductToping == '1') {
+            $product = ProductToping::where('id',$id)->first(); 
+            $product->delete();           
+        } else {
+            $product = Toping::where('id',$id)->first();
+            $product->delete();
+            if ($product->image !=NULL) {
+                unlink(public_path('frontend/toping_images/' . $product->image));
+            }
+          
         }
+
         session()->flash('sweet_alert', [
             'type' => 'success',
             'title' => 'Success!',
             'text' => 'Toping delete success',
         ]);
-    
-        // Redirect or return a response as needed
-        return redirect()->route('topings.index')->with('warning', 'Toping delete successfully');  
+        
+        if ($request->deleteProductToping == '1') {
+            return redirect()->route('product_topting',$request->product_id)->with('warning', 'Toping delete successfully');  
+        } else {
+            return redirect()->route('topings.index')->with('warning', 'Toping delete successfully');  
+        }
 
     }
 }

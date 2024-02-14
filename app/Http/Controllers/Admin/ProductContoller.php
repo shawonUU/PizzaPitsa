@@ -8,7 +8,9 @@ use App\Models\Admin\Product;
 use App\Models\Admin\ProductImage;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Category;
+use App\Models\Admin\ProductToping;
 use App\Models\Admin\Size;
+use App\Models\Admin\Toping;
 
 class ProductContoller extends Controller
 {
@@ -202,5 +204,43 @@ class ProductContoller extends Controller
 
         return redirect()->back();
     }
+    //Assign topings
+    public function topings ($id) {
+        $productTopings = ProductToping::join('topings','topings.id','=','product_topings.toping_id')->where('product_topings.product_id',$id)->select('topings.*','product_topings.id as topId')->get();
+        $topings = Toping::where('status','1')->get();
+        return view('admin.pages.product.topings', compact('productTopings','topings','id'));
+    }
 
+    public function storeToping(Request $request){
+        $request->validate([
+            'product_id' => 'required|numeric',
+            'toping' => 'required|numeric',
+            'status' => 'required|in:0,1',
+        ]);
+
+        $checkExist = ProductToping::where('product_id',$request->product_id)->where('toping_id',$request->toping)->first();
+        if (!$checkExist) {
+            $size = new ProductToping();
+            $size->product_id = $request->product_id;
+            $size->toping_id = $request->toping;        
+            $size->status = $request->status;
+            $size->created_by = auth()->user()->id;
+            $size->save();
+            session()->flash('sweet_alert', [
+                'type' => 'success',
+                'title' => 'Success!',
+                'text' => 'Product toping added success',
+            ]);
+        } else {
+            session()->flash('sweet_alert', [
+                'type' => 'warning',
+                'title' => 'warning!',
+                'text' => 'Already exists this toping! Try another',
+            ]);  
+        }
+
+        
+        return redirect()->back();
+    }
+    
 }

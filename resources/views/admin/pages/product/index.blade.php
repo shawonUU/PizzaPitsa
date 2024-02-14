@@ -55,24 +55,17 @@
                                     <td>{{ $item->category }}</td>
                                     <td>{{ $item->price }}</td>
                                     <td>{{ $item->quantity }}</td>
-                                    <td class="{{ $item->status=='1'?'text-danger':'' }}">{{ $item->status=='1'?'Active':'Inactive' }}</td>                                   
-                                    <td>
-                                      <button type="button" class="btn btn-sm btn-primary waves-effect waves-light"><a href="{{ route('products.edit',$item->id) }}"><i class="ri-ball-pen-line"></i></a></button>|
-                                      <button type="button" data-bs-toggle="modal" data-bs-target="#myModal{{ $item->id }}" class="btn btn-sm btn-danger waves-effect waves-light"><i class="ri-delete-bin-line"></i></button>
-                                      
-
+                                    <td class="{{ $item->status=='1'?'text-danger':'' }}">{{ $item->status=='1'?'Active':'Inactive' }}</td>                                                                                                                                                                                     
+                                    <td><button type="button" class="btn btn-sm btn-primary waves-effect waves-light"><a href="{{ route('products.edit',$item->id) }}"><i class="ri-ball-pen-line" style="color: #fff"></i></a></button>| <button type="button" data-bs-toggle="modal" data-bs-target="#myModal{{ $item->id }}" class="btn btn-sm btn-danger waves-effect waves-light"><i class="ri-delete-bin-line"></i></button>|
                                       <div class="btn-group material-shadow">
-                                          <button class="btn btn-primary btn-sm  material-shadow-none show" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                          <i class="las la-angle-double-down"></i>
-                                          </button>
-                                          <div class="dropdown-menu show" data-popper-placement="top-start" data-popper-reference-hidden="" style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate(0px, -30px);">
-                                              <a class="dropdown-item" href="{{route('product_size',$item->id)}}">Size</a>
-                                              <a class="dropdown-item" href="#">Topings</a>
-                                          </div>
-                                      </div>
-
-
-                                    <td><button type="button" class="btn btn-sm btn-primary waves-effect waves-light"><a href="{{ route('products.edit',$item->id) }}"><i class="ri-ball-pen-line" style="color: #fff"></i></a></button>| <button type="button" data-bs-toggle="modal" data-bs-target="#myModal{{ $item->id }}" class="btn btn-sm btn-danger waves-effect waves-light"><i class="ri-delete-bin-line"></i></button>
+                                        <button class="btn btn-primary btn-sm  material-shadow-none" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        <i class="las la-angle-double-down"></i>
+                                        </button>
+                                        <div class="dropdown-menu" data-popper-placement="top-start" data-popper-reference-hidden="" style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate(0px, -30px);">
+                                            <a class="dropdown-item" href="{{route('product_size',$item->id)}}">Size</a>
+                                            <a class="dropdown-item" href="{{ route('product_topting',$item->id) }}">Topings</a>
+                                        </div>
+                                    </div>
                                     </td>   
                                     <!-- Default Modals -->
                                     <div id="myModal{{ $item->id }}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">

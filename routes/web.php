@@ -29,6 +29,9 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('coupons', CouponController::class);
     Route::get('product-sizes/{id}', [ProductContoller::class, 'size'])->name('product_size');
     Route::post('store-product-sizes', [ProductContoller::class, 'storeSize'])->name('product_size.store');
+    //topings assign
+    Route::get('store-product-topings/{id}', [ProductContoller::class, 'topings'])->name('product_topting');
+    Route::post('store-product-topings', [ProductContoller::class, 'storeToping'])->name('product_toping.store');
     Route::resource('topings', TopingsController::class);
 });
 
