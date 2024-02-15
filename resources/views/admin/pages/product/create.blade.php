@@ -50,10 +50,10 @@
                                             @endforeach                                                                                                                                                                           
                                         </select>
                                     </div>                                   
-                                    <div class="col-xxl-3 col-md-6 mb-3">
+                                    <!-- <div class="col-xxl-3 col-md-6 mb-3">
                                         <label for="price" class="form-label">Price</label>
                                         <input type="text" class="form-control" id="price" name="price" placeholder="Enter product price" >
-                                    </div>
+                                    </div> -->
                                     <div class="col-xxl-3 col-md-6 mb-3">
                                         <label for="quantity" class="form-label">Quantity</label>
                                         <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Enter product quantity" >

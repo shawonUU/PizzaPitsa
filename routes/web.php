@@ -5,7 +5,9 @@ use App\Http\Controllers\Admin\ProductMnagementController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductContoller;
 use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\DelivaryChargeController;
 use App\Http\Controllers\Admin\TopingsController;
+use App\Models\Admin\DelivaryCharge;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +34,9 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     //topings assign
     Route::get('store-product-topings/{id}', [ProductContoller::class, 'topings'])->name('product_topting');
     Route::post('store-product-topings', [ProductContoller::class, 'storeToping'])->name('product_toping.store');
+    Route::put('update-product-sizes/{id}', [ProductContoller::class, 'updateSize'])->name('product_size.update');
     Route::resource('topings', TopingsController::class);
+    Route::resource('delivery_charges', DelivaryChargeController::class);
 });
 
 

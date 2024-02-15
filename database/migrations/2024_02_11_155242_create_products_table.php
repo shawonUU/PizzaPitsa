@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->bigInteger('category_id');
             $table->text('description');
-            $table->decimal('price', 8, 2);
             $table->integer('quantity');
             $table->string('image')->nullable();
             $table->enum('status', ['1', '0'])->default('1');

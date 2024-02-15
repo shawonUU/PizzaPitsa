@@ -134,6 +134,9 @@
                             <li class="nav-item">
                                 <a href="{{ route('coupons.index') }}" class="nav-link">Coupons</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('delivery_charges.index') }}" class="nav-link">Delivery Charge</a>
+                            </li>
                         </ul>
                     </div>
                 </li>
