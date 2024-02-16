@@ -106,7 +106,7 @@
                                                 <i class="las la-angle-double-down"></i>
                                                 </button>
                                                 <div class="dropdown-menu" data-popper-placement="top-start" data-popper-reference-hidden="" style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate(0px, -30px);">
-                                                    <a class="dropdown-item" href="{{route('product_nutritions',$productSize->id)}}">Product Nutritions</a>
+                                                    <a class="dropdown-item" href="{{route('product_nutrition',$productSize->id)}}">Product Nutritions</a>
                                                 </div>
                                             </div>
 
