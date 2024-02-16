@@ -53,6 +53,11 @@
                                             </div>
 
                                             <div>
+                                                <label for="description" class="form-label">Description</label>
+                                                <textarea class="form-control" id="editor" name="description" placeholder="Enter product description" rows="3">{{ old('description')}}</textarea>
+                                            </div>
+
+                                            <div>
                                                 <label for="basiInput" class="form-label">Image</label>
                                                 <input type="file" name="image" class="form-control">
                                             </div>
@@ -101,12 +106,12 @@
                                             |<button type="button" data-bs-toggle="modal" data-bs-target="#delete{{ $productSize->id }}" class="btn btn-sm btn-danger waves-effect waves-light">
                                                 <i class="ri-delete-bin-line"></i>
                                             </button>
-                                            <div class="btn-group material-shadow">
+                                            <div class="btn-group material-shadow d-none">
                                                 <button class="btn btn-primary btn-sm  material-shadow-none" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                 <i class="las la-angle-double-down"></i>
                                                 </button>
                                                 <div class="dropdown-menu" data-popper-placement="top-start" data-popper-reference-hidden="" style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate(0px, -30px);">
-                                                    <a class="dropdown-item" href="{{route('product_nutrition',$productSize->id)}}">Product Nutritions</a>
+                                                    <a class="dropdown-item" href="javascript:void(0)">Product Nutritions</a>
                                                 </div>
                                             </div>
 
@@ -206,4 +211,15 @@
 
         </div>
     </div>
+@endsection
+
+@section('script')
+<script>
+    ClassicEditor
+    .create(document.querySelector('#editor'))
+    .catch(error => {
+        console.error(error);
+    });
+
+</script>
 @endsection

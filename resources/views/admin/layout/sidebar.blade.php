@@ -118,7 +118,7 @@
                             <li class="nav-item">
                                 <a href="{{ route('sizes.index') }}" class="nav-link">Size</a>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item d-none">
                                 <a href="{{ route('nutritions.index') }}" class="nav-link">Nutrition</a>
                             </li>
                             <li class="nav-item">

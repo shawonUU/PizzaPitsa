@@ -333,4 +333,9 @@ class ProductContoller extends Controller
         return $groupedCategories;
     }
 
+
+    public function nutrition($id){
+        
+    }
+
 }
