@@ -32,6 +32,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('sizes', SizeController::class);
     Route::resource('coupons', CouponController::class);
     Route::get('product-sizes/{id}', [ProductContoller::class, 'size'])->name('product_size');
+    Route::delete('delete-product-sizes/{id}', [ProductContoller::class, 'deleteProductSize'])->name('productSize.destroy');
+
     Route::post('store-product-sizes', [ProductContoller::class, 'storeSize'])->name('product_size.store');
     //topings assign
     Route::get('store-product-topings/{id}', [ProductContoller::class, 'topings'])->name('product_topting');
