@@ -9,7 +9,7 @@ use App\Models\Admin\ProductImage;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Category;
 use App\Models\Admin\ProductToping;
-use App\Models\Admin\Size;
+use App\Models\Admin\ProductSize;
 use App\Models\Admin\Toping;
 
 class ProductContoller extends Controller
@@ -182,8 +182,8 @@ class ProductContoller extends Controller
     }
 
     public function size($id){
-        $sizes = Size::where('product_id', $id)->get();
-        return view('admin.pages.product.size', compact('id','sizes'));
+        $sizes = ProductSize::where('product_id', $id)->get();
+        return view('admin.pages.product.product_size', compact('id','sizes'));
     }
 
     public function storeSize(Request $request){
@@ -202,7 +202,7 @@ class ProductContoller extends Controller
             $image->move($destinationPath, $imageName);
         }
 
-        $size = new Size;
+        $size = new ProductSize;
         $size->product_id = $request->product_id;
         $size->name = $request->name;
         $size->price = $request->price;
@@ -266,7 +266,7 @@ class ProductContoller extends Controller
             'price' => 'required|numeric',
             'status' => 'required|in:0,1',
         ]);
-        $size = Size::find($id);
+        $size = ProductSize::find($id);
         if($size){
 
             $imageName = $size->image;

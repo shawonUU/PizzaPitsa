@@ -13,13 +13,10 @@ return new class extends Migration
     {
         Schema::create('sizes', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('product_id');
-            $table->text('name');
-            $table->decimal('price');
+            $table->string('name');
             $table->enum('status', [0, 1])->default(1);
-            $table->string('image')->nullable();
-            $table->unsignedBigInteger('created_by');
-            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->bigInteger('created_by')->nullable();
+            $table->bigInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }
