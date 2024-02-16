@@ -116,6 +116,9 @@
                                 <a href="{{ route('categories.index') }}" class="nav-link">Categories</a>
                             </li>
                             <li class="nav-item">
+                                <a href="{{ route('sizes.index') }}" class="nav-link">Size</a>
+                            </li>
+                            <li class="nav-item">
                                 <a href="{{ route('topings.index') }}" class="nav-link" data-key="t-nestable-list">Topings</a>
                             </li>
                             <li class="nav-item">

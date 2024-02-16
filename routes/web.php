@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ProductMnagementController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ProductContoller;
+use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\DelivaryChargeController;
 use App\Http\Controllers\Admin\TopingsController;
@@ -28,6 +29,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
     Route::resource('categories', CategoryController::class);
     Route::resource('products', ProductContoller::class);
+    Route::resource('sizes', SizeController::class);
     Route::resource('coupons', CouponController::class);
     Route::get('product-sizes/{id}', [ProductContoller::class, 'size'])->name('product_size');
     Route::post('store-product-sizes', [ProductContoller::class, 'storeSize'])->name('product_size.store');
