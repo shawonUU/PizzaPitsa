@@ -1354,27 +1354,44 @@
     </div>
 </template>
 <script>
-    import {
+import {Swiper,SwiperSlide} from 'swiper/vue';
+import 'swiper/css';
+export default {
+    name: 'home',
+    components: {
         Swiper,
-        SwiperSlide
-    } from 'swiper/vue';
-    import 'swiper/css';
-    export default {
-        name: 'home',
-        components: {
-            Swiper,
-            SwiperSlide,
-        },
-        setup() {
-            const onSwiper = (swiper) => {               
-            };
-            const onSlideChange = () => {
-                console.log('slide change');
-            };
-            return {
-                onSwiper,
-                onSlideChange,
-            };
-        },
-    };
+        SwiperSlide,
+    },
+     data(){
+        return{
+            products:{},
+        }
+    },  
+    mounted(){
+        this.getCategoryWiseProduct();
+    },
+    methods: {
+        getCategoryWiseProduct(){
+            axios.get('get-products')
+            .then((res)=>{   
+                this.products = res.data;     
+                console.log(res.data);
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+        }
+    },
+    setup() {
+        const onSwiper = (swiper) => {               
+        };
+        const onSlideChange = () => {
+            console.log('slide change');
+        };
+        return {
+            onSwiper,
+            onSlideChange,
+        };
+    },
+};
 </script>

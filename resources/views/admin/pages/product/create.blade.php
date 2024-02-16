@@ -39,14 +39,14 @@
                                 <div class="row">
                                     <div class="col-xxl-3 col-md-6 mb-3">
                                         <label for="name" class="form-label">Product Name</label>
-                                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter product name" >
+                                        <input type="text" class="form-control" value="{{ old('name') }}" id="name" name="name" placeholder="Enter product name" >
                                     </div>   
                                     <div class="col-xxl-3 col-md-6 mb-3">
                                         <label for="name" class="form-label">Category</label>
                                         <select class="form-select mb-3" name="category">
-                                            @foreach ($categories as $item)
-                                                <option selected>--Select Category--</option>
-                                                <option value="{{ $item->id }}">{{ $item->name }}</option>   
+                                            <option selected>--Select Category--</option>
+                                            @foreach ($categories as $item)                                               
+                                                <option {{ old('category') == $item->id ? 'selected':''}} value="{{ $item->id }}">{{ $item->name }}</option>   
                                             @endforeach                                                                                                                                                                           
                                         </select>
                                     </div>                                   
@@ -56,7 +56,7 @@
                                     </div> -->
                                     <div class="col-xxl-3 col-md-6 mb-3">
                                         <label for="quantity" class="form-label">Quantity</label>
-                                        <input type="text" class="form-control" id="quantity" name="quantity" placeholder="Enter product quantity" >
+                                        <input type="text" class="form-control" value="{{ old('quantity') }}" id="quantity" name="quantity" placeholder="Enter product quantity" >
                                     </div>                                  
                                     <div class="col-xxl-3 col-md-6 mb-3">
                                         <label for="status" class="form-label">Status</label>
@@ -67,11 +67,11 @@
                                     </div> 
                                     <div class="col-xxl-12 col-md-12 mb-3">
                                         <label for="description" class="form-label">Description</label>
-                                        <textarea class="form-control" id="editor" name="description" placeholder="Enter product description" rows="3"></textarea>
+                                        <textarea class="form-control" id="editor" name="description" placeholder="Enter product description" rows="3">{{ old('description')}}</textarea>
                                     </div>                                                                                                      
                                     <div class="col-xxl-3 col-md-6 mb-3">
-                                        <label for="image" class="form-label">Image</label>
-                                        <input type="file" multiple class="form-control" id="image" name="images[]">
+                                        <label for="image" class="form-label">Image(366x366)</label>
+                                        <input type="file" multiple class="form-control" id="image" name="images">
                                     </div>
                                     
                                 </div>

@@ -111,30 +111,9 @@
                                     <li><a href="contact.html">Contact</a></li>
                                 </ul> -->
                                 <ul class="mainmenu">
-                                    <li class="sc-xlo7eb-4 bvuzKi">
-                                        <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" data-active="false" data-type="primary" data-size="normal">Combo</a>
-                                    </li>
-                                    <li class="sc-xlo7eb-4 bvuzKi">
-                                        <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" data-active="false" data-type="primary" data-size="normal">Pizza</a>
-                                    </li>
-                                    <li class="sc-xlo7eb-4 bvuzKi">
-                                        <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" data-active="false" data-type="primary" data-size="normal">Snacks</a>
-                                    </li>
-                                    <li class="sc-xlo7eb-4 bvuzKi">
-                                        <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" data-active="false" data-type="primary" data-size="normal">Desserts</a>
-                                    </li>
-                                    <li class="sc-xlo7eb-4 bvuzKi">
-                                        <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" data-active="false" data-type="primary" data-size="normal">Coffee</a>
-                                    </li>
-                                    <li class="sc-xlo7eb-4 bvuzKi">
-                                        <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" data-active="false" data-type="primary" data-size="normal">Drinks</a>
-                                    </li>
-                                    <li class="sc-xlo7eb-4 bvuzKi">
-                                        <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" data-active="false" data-type="primary" data-size="normal">Sauces</a>
-                                    </li>
-                                    <li class="sc-xlo7eb-4 bvuzKi">
-                                        <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" data-active="false" data-type="primary" data-size="normal">Other goods</a>
-                                    </li>
+                                    <li class="sc-xlo7eb-4 bvuzKi" v-for="(category,index) in catgories" :key="index" :value="category.id">
+                                        <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" data-active="false" data-type="primary" data-size="normal">{{ category.name }}</a>
+                                    </li>                                   
                                 </ul>
                             </nav>
                             <!-- End Mainmanu Nav -->
@@ -189,8 +168,8 @@ export default {
     methods: {
         getCategories(){
             axios.get('get-categories')
-            .then((res)=>{           
-                console.log(res);
+            .then((res)=>{   
+                this.catgories = res.data;                     
             })
             .catch((err)=>{
                 console.log(err);

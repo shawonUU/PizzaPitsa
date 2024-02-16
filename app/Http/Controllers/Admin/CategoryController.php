@@ -62,6 +62,6 @@ class CategoryController extends Controller
     //For get data with axios
 
     public function getCategories () {
-        return "hello";
+        return $categories = Category::where('status','1')->orderBy('id','asc')->get();
     }
 }

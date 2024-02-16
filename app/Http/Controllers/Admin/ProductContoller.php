@@ -40,39 +40,33 @@ class ProductContoller extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'description' => 'required|string',
+            // 'description' => 'string',
             // 'price' => 'required|numeric',
             'quantity' => 'required|integer',
             'status' => 'required|in:0,1',
             // Add any other validation rules as needed
         ]);
 
+        $imageName = "";
+        if ($request->hasFile('images')) {
+            $image = $request->file('images');
+            $destinationPath = 'frontend/product_images/';
+            $imageName = now()->format('YmdHis') . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $imageName);
+        }
            // Create a new product instance
         $product = new Product([
             'name' => $request->input('name'),
             'category_id' => $request->category,
             'description' => $request->input('description'),
-            // 'price' => $request->input('price'),
+            'image' => $imageName,
             'quantity' => $request->input('quantity'),
             'status' => $request->input('status'),
             'created_by' => auth()->user()->id,
         ]);
 
-        // Save the product
         $product->save();
 
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $destinationPath = 'frontend/product_images/';
-                $imageName = now()->format('YmdHis') . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
-                $image->move($destinationPath, $imageName);
-                // Save image information to the 'product_images' table
-                $productImage = new ProductImage();
-                $productImage->product_id = $product->id; // Assuming $product is the product you just saved
-                $productImage->image = $imageName; // Save the generated image name
-                $productImage->save();
-            }
-        }
         session()->flash('sweet_alert', [
             'type' => 'success',
             'title' => 'Success!',
@@ -97,8 +91,7 @@ class ProductContoller extends Controller
     {
         $product = Product::where('id',$id)->first();
         $categories = Category::where('status','1')->get();
-        $productImages = ProductImage::where('product_id',$product->id)->get();
-        return view('admin.pages.product.edit',compact('categories','product','productImages'));
+        return view('admin.pages.product.edit',compact('categories','product'));
     }
 
     /**
@@ -107,15 +100,26 @@ class ProductContoller extends Controller
     public function update(Request $request, string $id)
     {
         $product = Product::where('id',$id)->first();
-        $productImages = ProductImage::where('product_id',$product->id)->get();
         $request->validate([
             'name' => 'required|string',
-            'description' => 'required|string',
+            // 'description' => 'string',
             // 'price' => 'required|numeric',
             'quantity' => 'required|integer',
             'status' => 'required|in:0,1',
             // Add any other validation rules as needed
         ]);
+
+        $imageName = "";
+        if ($image = $request->file('images')) {
+            if ($product->image !=NULL) {
+                unlink(public_path('frontend/product_images/' . $product->image));
+            }
+            $destinationPath = 'frontend/product_images/';
+            $imageName = date('YmdHis') . "." . $image->getClientOriginalExtension();
+            $image->move($destinationPath, $imageName);
+        } else {
+            $imageName = $product->image;
+        }
 
         $product->update([
             'name' => $request->input('name'),
@@ -128,25 +132,7 @@ class ProductContoller extends Controller
         ]);
 
 
-        if ($request->hasFile('images')) {
-            foreach($productImages as $item) {
-                $productImage = ProductImage::where('id',$item->id)->first();
-                if($productImage) {
-                    unlink(public_path('frontend/product_images/' . $item->image));
-                    $productImage->delete();
-                }
-            }
-            foreach ($request->file('images') as $image) {
-                $destinationPath = 'frontend/product_images/';
-                $imageName = now()->format('YmdHis') . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
-                $image->move($destinationPath, $imageName);
-                // Save image information to the 'product_images' table
-                $productImage = new ProductImage();
-                $productImage->product_id = $product->id; // Assuming $product is the product you just saved
-                $productImage->image = $imageName; // Save the generated image name
-                $productImage->save();
-            }
-        }
+
         session()->flash('sweet_alert', [
             'type' => 'success',
             'title' => 'Success!',
@@ -162,13 +148,8 @@ class ProductContoller extends Controller
     public function destroy(string $id)
     {
         $product = Product::where('id',$id)->first();
-        $productImages = ProductImage::where('product_id',$product->id)->get();
-        foreach($productImages as $item) {
-            $productImage = ProductImage::where('id',$item->id)->first();
-            if($productImage) {
-                unlink(public_path('frontend/product_images/' . $item->image));
-                $productImage->delete();
-            }
+        if ($product->image !=NULL) {
+            unlink(public_path('frontend/product_images/' . $product->image));
         }
         $product->delete();
 
@@ -311,6 +292,45 @@ class ProductContoller extends Controller
             'text' => 'Product Size delete success',
         ]);
         return redirect()->back();
+    }
+
+    public function getProducts () {
+
+        // Get categories with associated products using Eloquent models
+        $categories = Category::leftJoin('products', 'categories.id', '=', 'products.category_id')
+            ->select(
+                'categories.id as category_id',
+                'categories.name as category_name',
+                'products.id as product_id',
+                'products.name as product_name',
+                'products.description as description',
+                'products.image as image',
+            )
+            ->orderBy('categories.id')
+            ->orderBy('products.id')
+            ->get();
+
+        // Organize the result into a more usable format
+        $groupedCategories = [];
+        foreach ($categories as $category) {
+            $categoryId = $category->category_id;
+            if (!isset($groupedCategories[$categoryId])) {
+                $groupedCategories[$categoryId] = [
+                    'category_name' => $category->category_name,
+                    'products' => [],
+                ];
+            }
+
+            if ($category->product_id) {
+                $groupedCategories[$categoryId]['products'][] = [
+                    'id' => $category->product_id,
+                    'name' => $category->product_name,
+                    'description' => $category->description,
+                    'image' => $category->image,
+                ];
+            }
+        }
+        return $groupedCategories;
     }
 
 }

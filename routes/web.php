@@ -50,3 +50,4 @@ Auth::routes();
 //Api for axios
 
 Route::get('get-categories',[CategoryController::class,'getCategories'])->name('get.categories');
+Route::get('get-products',[ProductContoller::class,'getProducts'])->name('get.products');
