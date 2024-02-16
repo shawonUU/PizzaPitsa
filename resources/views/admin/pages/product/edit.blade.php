@@ -71,14 +71,14 @@
                                         <textarea class="form-control" id="editor" name="description" placeholder="Enter product description" rows="3">{!! $product->description !!}</textarea>
                                     </div>                                                                                                      
                                     <div class="col-xxl-3 col-md-6 mb-3">
-                                        <label for="image" class="form-label">Image</label>
-                                        <input type="file" multiple class="form-control" id="image" name="images[]">
+                                        <label for="image" class="form-label">Image(366x366)</label>
+                                        <input type="file" multiple class="form-control" id="image" name="images">
                                     </div> 
                                     <ul>                                         
                                         <ul class="list-group list-group-horizontal">
-                                            @foreach ($productImages as $item)
-                                            <li class="list-group-item"><img width="60px" height="60px" src="{{ asset('frontend/product_images/' . $item->image) }}" alt="Product Image"></li>
-                                            @endforeach                                          
+                                            {{-- @foreach ($productImages as $item) --}}
+                                            <li class="list-group-item"><img width="60px" height="60px" src="{{ asset('frontend/product_images/' . $product->image) }}" alt="Product Image"></li>
+                                            {{-- @endforeach                                           --}}
                                         </ul>                                       
                                     </ul>                                  
                                 </div>
