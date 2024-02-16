@@ -11,6 +11,7 @@ use App\Models\Admin\Category;
 use App\Models\Admin\ProductToping;
 use App\Models\Admin\ProductSize;
 use App\Models\Admin\Toping;
+use App\Models\Admin\Size;
 
 class ProductContoller extends Controller
 {
@@ -36,19 +37,19 @@ class ProductContoller extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    { 
+    {
         $request->validate([
             'name' => 'required|string',
             // 'description' => 'string',
             // 'price' => 'required|numeric',
             'quantity' => 'required|integer',
-            'status' => 'required|in:0,1',        
+            'status' => 'required|in:0,1',
             // Add any other validation rules as needed
         ]);
 
         $imageName = "";
         if ($request->hasFile('images')) {
-            $image = $request->file('images');                
+            $image = $request->file('images');
             $destinationPath = 'frontend/product_images/';
             $imageName = now()->format('YmdHis') . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
             $image->move($destinationPath, $imageName);
@@ -63,9 +64,9 @@ class ProductContoller extends Controller
             'status' => $request->input('status'),
             'created_by' => auth()->user()->id,
         ]);
-       
-        $product->save();   
-            
+
+        $product->save();
+
         session()->flash('sweet_alert', [
             'type' => 'success',
             'title' => 'Success!',
@@ -89,7 +90,7 @@ class ProductContoller extends Controller
     public function edit(string $id)
     {
         $product = Product::where('id',$id)->first();
-        $categories = Category::where('status','1')->get();        
+        $categories = Category::where('status','1')->get();
         return view('admin.pages.product.edit',compact('categories','product'));
     }
 
@@ -98,13 +99,13 @@ class ProductContoller extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $product = Product::where('id',$id)->first();       
+        $product = Product::where('id',$id)->first();
         $request->validate([
             'name' => 'required|string',
             // 'description' => 'string',
             // 'price' => 'required|numeric',
             'quantity' => 'required|integer',
-            'status' => 'required|in:0,1',        
+            'status' => 'required|in:0,1',
             // Add any other validation rules as needed
         ]);
 
@@ -129,16 +130,16 @@ class ProductContoller extends Controller
             'status' => $request->input('status'),
             'updated_by' => auth()->user()->id,
         ]);
- 
-        
-        
+
+
+
         session()->flash('sweet_alert', [
             'type' => 'success',
             'title' => 'Success!',
             'text' => 'Product update success',
         ]);
         // Redirect or return a response as needed
-        return redirect()->route('products.index')->with('success', 'Product update successfully');     
+        return redirect()->route('products.index')->with('success', 'Product update successfully');
     }
 
     /**
@@ -158,26 +159,29 @@ class ProductContoller extends Controller
             'text' => 'Product delete success',
         ]);
         // Redirect or return a response as needed
-        return redirect()->route('products.index')->with('warning', 'Product delete successfully');  
+        return redirect()->route('products.index')->with('warning', 'Product delete successfully');
 
     }
 
     public function size($id){
-        $sizes = ProductSize::where('product_id', $id)->get();
-        return view('admin.pages.product.product_size', compact('id','sizes'));
+        $productSizes = ProductSize::join('sizes', 'sizes.id','=','product_sizes.size_id')
+                                ->where('product_id', $id)
+                                ->select('product_sizes.*','sizes.name')->get();
+        $sizes = Size::where('status', '1')->get();
+        return view('admin.pages.product.product_size', compact('id','sizes','productSizes'));
     }
 
     public function storeSize(Request $request){
         $request->validate([
             'product_id' => 'required|numeric',
-            'name' => 'required|string',
+            'size_id' => 'required|numeric',
             'price' => 'required|numeric',
             'status' => 'required|in:0,1',
         ]);
 
         $imageName = "";
         if ($request->hasFile('image')) {
-            $image = $request->file('image');                
+            $image = $request->file('image');
             $destinationPath = 'frontend/product_images/';
             $imageName = now()->format('YmdHis') . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
             $image->move($destinationPath, $imageName);
@@ -185,7 +189,7 @@ class ProductContoller extends Controller
 
         $size = new ProductSize;
         $size->product_id = $request->product_id;
-        $size->name = $request->name;
+        $size->size_id = $request->size_id;
         $size->price = $request->price;
         $size->status = $request->status;
         $size->created_by = auth()->user()->id;
@@ -218,7 +222,7 @@ class ProductContoller extends Controller
         if (!$checkExist) {
             $size = new ProductToping();
             $size->product_id = $request->product_id;
-            $size->toping_id = $request->toping;        
+            $size->toping_id = $request->toping;
             $size->status = $request->status;
             $size->created_by = auth()->user()->id;
             $size->save();
@@ -232,18 +236,18 @@ class ProductContoller extends Controller
                 'type' => 'warning',
                 'title' => 'warning!',
                 'text' => 'Already exists this toping! Try another',
-            ]);  
+            ]);
         }
 
-        
+
         return redirect()->back();
     }
-    
+
     public function updateSize(Request $request, $id){
         // return $request->all();
         $request->validate([
             'product_id' => 'required|numeric',
-            'name' => 'required|string',
+            'size_id' => 'required|numeric',
             'price' => 'required|numeric',
             'status' => 'required|in:0,1',
         ]);
@@ -252,16 +256,16 @@ class ProductContoller extends Controller
 
             $imageName = $size->image;
             if ($request->hasFile('image')) {
-                $image = $request->file('image');                
+                $image = $request->file('image');
                 $destinationPath = 'frontend/product_images/';
                 $imageName = now()->format('YmdHis') . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
                 $image->move($destinationPath, $imageName);
                 if($size->image)
-                    unlink(public_path('frontend/product_images/' . $size->image)); 
+                    unlink(public_path('frontend/product_images/' . $size->image));
             }
 
 
-            $size->name = $request->name;
+            $size->size_id = $request->size_id;
             $size->price = $request->price;
             $size->status = $request->status;
             $size->image = $imageName;
@@ -278,10 +282,20 @@ class ProductContoller extends Controller
         }
     }
 
-    //For frontend to show product
+    public function deleteProductSize($id){
+        $productSizes = ProductSize::find($id);
+        if($productSizes)
+            $productSizes->delete();
+        session()->flash('sweet_alert', [
+            'type' => 'success',
+            'title' => 'Success!',
+            'text' => 'Product Size delete success',
+        ]);
+        return redirect()->back();
+    }
 
     public function getProducts () {
-        
+
         // Get categories with associated products using Eloquent models
         $categories = Category::leftJoin('products', 'categories.id', '=', 'products.category_id')
             ->select(

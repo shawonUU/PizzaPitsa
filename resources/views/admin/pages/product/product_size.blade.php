@@ -32,7 +32,12 @@
                                             </div>
                                             <div>
                                                 <label for="basiInput" class="form-label">Size Name</label>
-                                                <input type="text" class="form-control" id="name" name="name" placeholder="Size Name">
+                                                <select class="form-control" name="size_id" id="size_id">
+                                                    <option value="">{{ _('--Select Size--') }}</option>
+                                                    @foreach ($sizes as $size)
+                                                        <option value="{{ $size->id }}">{{ $size->name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                             <div>
                                                 <label for="basiInput" class="form-label">Price</label>
@@ -41,7 +46,7 @@
                                             <div>
                                                 <label for="basiInput" class="form-label">Status</label>
                                                 <select name="status" id="" class="form-control">
-                                                    @foreach (getStatus() as $key => $status) 
+                                                    @foreach (getStatus() as $key => $status)
                                                         <option value="{{$key}}" {{$key == 1 ? 'selected' : ''}}>{{$status}}</option>
                                                     @endforeach
                                                 </select>
@@ -51,7 +56,7 @@
                                                 <label for="basiInput" class="form-label">Image</label>
                                                 <input type="file" name="image" class="form-control">
                                             </div>
-                                            
+
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
@@ -66,7 +71,7 @@
 
                     <div class="card">
                         <div class="card-header align-items-center d-flex">
-                            <h4 class="card-title mb-0 flex-grow-1">Category List</h4>
+                            <h4 class="card-title mb-0 flex-grow-1">Product Size List</h4>
                         </div>
 
                         <div class="card-body">
@@ -82,20 +87,63 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($sizes as $size)
+                                    @foreach($productSizes as $productSize)
                                     <tr>
                                         <th scope="row">{{$loop->index+1}}</th>
-                                        <td>{{$size->name}}</td>
-                                        <td>{{$size->price}}</td>
-                                        <td>{{$size->status == 1 ? "Active" : "Deactive"}}</td>
-                                        <td><img src="{{asset('frontend/product_images/'.$size->image)}}" alt="" style="width:40px; height: 40px;"></td>
+                                        <td>{{$productSize->name}}</td>
+                                        <td>{{$productSize->price}}</td>
+                                        <td>{{$productSize->status == 1 ? "Active" : "Deactive"}}</td>
+                                        <td><img src="{{asset('frontend/product_images/'.$productSize->image)}}" alt="" style="width:40px; height: 40px;"></td>
                                         <td>
-                                            <button class="btn btn-sm btn-primary" title="Edit" data-bs-toggle="modal" data-bs-target="#size{{$size->id}}">
+                                            <button class="btn btn-sm btn-primary" title="Edit" data-bs-toggle="modal" data-bs-target="#size{{$productSize->id}}">
                                                 <i class="bx bx-edit"></i>
                                             </button>
+                                            |<button type="button" data-bs-toggle="modal" data-bs-target="#delete{{ $productSize->id }}" class="btn btn-sm btn-danger waves-effect waves-light">
+                                                <i class="ri-delete-bin-line"></i>
+                                            </button>
+                                            <div class="btn-group material-shadow">
+                                                <button class="btn btn-primary btn-sm  material-shadow-none" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                <i class="las la-angle-double-down"></i>
+                                                </button>
+                                                <div class="dropdown-menu" data-popper-placement="top-start" data-popper-reference-hidden="" style="position: absolute; inset: auto auto 0px 0px; margin: 0px; transform: translate(0px, -30px);">
+                                                    <a class="dropdown-item" href="{{route('product_nutritions',$productSize->id)}}">Product Nutritions</a>
+                                                </div>
+                                            </div>
 
-                                            <div id="size{{$size->id}}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                                            <form action="{{ route('product_size.update', $size->id) }}" method="POST" enctype="multipart/form-data">
+                                            <!-- Default Modals -->
+                                            <div id="delete{{ $productSize->id }}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="myModalLabel">Delete</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                        Are you sure you want to delete this Size:
+                                                        <strong
+                                                            style="color: darkorange">{{ $productSize->name }}</strong>
+                                                        ?
+                                                        </div>
+                                                        <div class="modal-footer">
+
+                                                            <form
+                                                                action="{{ route('productSize.destroy',$productSize->id) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                @method('delete')
+                                                                <input type="hidden" name="deleteProductToping" value="1">
+                                                                <button type="submit" class="btn btn-default">Delete</button>
+
+                                                            </form>
+                                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                                        </div>
+
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal-dialog -->
+                                            </div><!-- /.modal -->
+
+                                            <div id="size{{$productSize->id}}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                                <form action="{{ route('product_size.update', $productSize->id) }}" method="POST" enctype="multipart/form-data">
                                                     @method('PUT')
                                                     @csrf
                                                     <div class="modal-dialog">
@@ -110,17 +158,22 @@
                                                                 </div>
                                                                 <div>
                                                                     <label for="basiInput" class="form-label">Size Name</label>
-                                                                    <input type="text" class="form-control" id="name" name="name"value="{{$size->name}}" placeholder="Category">
+                                                                    <select class="form-control" name="size_id" id="size_id">
+                                                                        <option value="">{{ _('--Select Size--') }}</option>
+                                                                        @foreach ($sizes as $size)
+                                                                            <option value="{{ $size->id }}" {{ $productSize->size_id == $size->id ? 'selected' : '' }}>{{ $size->name }}</option>
+                                                                        @endforeach
+                                                                    </select>
                                                                 </div>
                                                                 <div>
                                                                     <label for="basiInput" class="form-label">Price</label>
-                                                                    <input type="number" class="form-control" name="price" value="{{$size->price}}" required>
+                                                                    <input type="number" class="form-control" name="price" value="{{$productSize->price}}" required>
                                                                 </div>
                                                                 <div>
                                                                     <label for="basiInput" class="form-label">Status</label>
                                                                     <select name="status" id="" class="form-control">
-                                                                        @foreach (getStatus() as $key => $status) 
-                                                                            <option value="{{$key}}" {{$size->status == 1 ? 'selected' : ''}}>{{$status}}</option>
+                                                                        @foreach (getStatus() as $key => $status)
+                                                                            <option value="{{$key}}" {{$productSize->status == 1 ? 'selected' : ''}}>{{$status}}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -128,7 +181,7 @@
                                                                     <label for="basiInput" class="form-label">Image</label>
                                                                     <input type="file" class="form-control" name="image">
                                                                 </div>
-                                                                
+
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>

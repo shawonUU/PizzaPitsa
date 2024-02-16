@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('product_sizes', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('product_id');
-            $table->text('name');
+            $table->bigInteger('size_id');
             $table->decimal('price');
             $table->enum('status', [0, 1])->default(1);
             $table->string('image')->nullable();
