@@ -7555,12 +7555,12 @@ button.axil-btn.btn-size-md i {
 }
 
 .header-style-5 .axil-header-top {
-    background-color: var(--color-heading);
-    padding: 6px 0
+    background-color: rgb(238 110 45);
+    padding: 0px 0
 }
 
 .header-style-5 .header-top-dropdown .dropdown .dropdown-toggle {
-    color: #c2c2cc
+    color: #f3f3ff
 }
 
 .header-style-5 .header-top-dropdown .dropdown .dropdown-toggle:hover {
@@ -7568,7 +7568,7 @@ button.axil-btn.btn-size-md i {
 }
 
 .header-style-5 .header-top-link .quick-link li a {
-    color: #c2c2cc
+    color: #ffffff
 }
 
 .header-style-5 .header-top-link .quick-link li a:hover {
@@ -8219,11 +8219,11 @@ button.axil-btn.btn-size-md i {
 
 .header-action .shopping-cart .cart-dropdown-btn .cart-count {
     text-align: center;
-    background-color: var(--color-primary);
+    background-color: #fff;
     border: 2px solid var(--color-white);
     font-size: 12px;
     font-weight: 500;
-    color: var(--color-white);
+    color: #ff7900;
     border-radius: 50%;
     height: 22px;
     width: 22px;

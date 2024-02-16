@@ -58,4 +58,10 @@ class CategoryController extends Controller
         ]);
         return redirect()->route('categories.index');
     }
+
+    //For get data with axios
+
+    public function getCategories () {
+        return "hello";
+    }
 }

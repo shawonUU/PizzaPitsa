@@ -42,3 +42,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
 Auth::routes();
 
+
+//Api for axios
+
+Route::get('get-categories',[CategoryController::class,'getCategories'])->name('get.categories');
