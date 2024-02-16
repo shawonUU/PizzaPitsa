@@ -3,7 +3,7 @@
         <a href="#top" class="back-to-top" id="backto-top"><i class="fal fa-arrow-up"></i></a>
         <!-- Start Header -->
         <header class="header axil-header header-style-5">
-            <div class="axil-header-top">
+            <div class="axil-header-top d-none d-lg-block">
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-lg-6 col-sm-6 col-12">
@@ -29,7 +29,7 @@
                     </div>
                 </div>
             </div>
-            <div style="background-color:rgb(238 110 45)">
+            <div class="d-none d-lg-block" style="background-color:rgb(238 110 45)">
                 <div class="sc-1of5u0p-0 guZDAe container">
                     <div class="left">
                         <a class="sc-2c0aw7-0 wwSTC sc-1of5u0p-1 ibZIbo" href="/en/tallinn" data-active="true" data-type="primary" data-size="normal">
@@ -87,14 +87,14 @@
             <div class="axil-mainmenu">
                 <div class="container">
                     <div class="header-navbar">
-                        <!-- <div class="header-brand">
+                        <div class="header-brand d-none">
                             <a href="index-2.html" class="logo logo-dark">
-                                <img  width="100px" :src="'/frontend/assets/images/logo/pizza logo-02.jpg'" alt="Site Logo">
+                                <img width="100px" :src="'/frontend/assets/images/logo/pizza logo-02.jpg'" alt="Site Logo">
                             </a>
                             <a href="index-2.html" class="logo logo-light">
                                 <img width="200px" :src="'/frontend/assets/images/logo/pizza logo-02.jpg'" alt="Site Logo">
                             </a>
-                        </div> -->
+                        </div>
                         <div class="header-main-nav">
                             <!-- Start Mainmanu Nav -->
                             <nav class="mainmenu-nav">
