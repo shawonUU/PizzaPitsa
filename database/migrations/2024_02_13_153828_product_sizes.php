@@ -16,7 +16,11 @@ return new class extends Migration
             $table->bigInteger('product_id');
             $table->bigInteger('size_id');
             $table->decimal('price');
+            $table->decimal('offer_price');
+            $table->date('offer_from');
+            $table->date('offer_to');
             $table->enum('status', [0, 1])->default(1);
+            $table->text('description');
             $table->string('image')->nullable();
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();

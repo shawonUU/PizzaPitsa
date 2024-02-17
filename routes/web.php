@@ -37,10 +37,12 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::delete('delete-product-sizes/{id}', [ProductContoller::class, 'deleteProductSize'])->name('productSize.destroy');
 
     Route::post('store-product-sizes', [ProductContoller::class, 'storeSize'])->name('product_size.store');
+    Route::get('create-product-sizes/{id}', [ProductContoller::class, 'createProductSize'])->name('product_size.create');
+    Route::get('edit-product-sizes/{id}', [ProductContoller::class, 'editProductSize'])->name('product_size.edit');
     //topings assign
     Route::get('store-product-topings/{id}', [ProductContoller::class, 'topings'])->name('product_topting');
     Route::post('store-product-topings', [ProductContoller::class, 'storeToping'])->name('product_toping.store');
-    Route::put('update-product-sizes/{id}', [ProductContoller::class, 'updateSize'])->name('product_size.update');
+    Route::patch('updatel-product-sizes/{id}', [ProductContoller::class, 'updateSize'])->name('product_size.update');
     Route::resource('topings', TopingsController::class);
     Route::resource('delivery_charges', DelivaryChargeController::class);
 });

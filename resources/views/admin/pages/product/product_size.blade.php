@@ -16,62 +16,8 @@
             <div class="row">
                 <div class="col">
                     <div class="d-flex flex-row-reverse bd-highlight">
-                        <button type="button" class="btn btn-sm btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#myModal">Add Size</button>
-                        <div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                            <form action="{{route('product_size.store')}}" method="post" enctype="multipart/form-data">
-                                @csrf
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="myModalLabel">Add Size</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div>
-                                                <input type="number" name="product_id" value="{{$id}}" hidden>
-                                            </div>
-                                            <div>
-                                                <label for="basiInput" class="form-label">Size Name</label>
-                                                <select class="form-control" name="size_id" id="size_id">
-                                                    <option value="">{{ _('--Select Size--') }}</option>
-                                                    @foreach ($sizes as $size)
-                                                        <option value="{{ $size->id }}">{{ $size->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div>
-                                                <label for="basiInput" class="form-label">Price</label>
-                                                <input type="number" class="form-control" name="price" required>
-                                            </div>
-                                            <div>
-                                                <label for="basiInput" class="form-label">Status</label>
-                                                <select name="status" id="" class="form-control">
-                                                    @foreach (getStatus() as $key => $status)
-                                                        <option value="{{$key}}" {{$key == 1 ? 'selected' : ''}}>{{$status}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
+                        <a href="{{ route('product_size.create', $id) }}" class="btn btn-sm btn-primary mb-2">Add Size</a>
 
-                                            <div>
-                                                <label for="description" class="form-label">Description</label>
-                                                <textarea class="form-control" id="editor" name="description" placeholder="Enter product description" rows="3">{{ old('description')}}</textarea>
-                                            </div>
-
-                                            <div>
-                                                <label for="basiInput" class="form-label">Image</label>
-                                                <input type="file" name="image" class="form-control">
-                                            </div>
-
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary ">Save</button>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
                     </div>
 
                     <div class="card">
@@ -86,7 +32,11 @@
                                         <th scope="col">Id</th>
                                         <th scope="col">Size Name</th>
                                         <th scope="col">Price</th>
+                                        <th scope="col">Offer Price</th>
+                                        <th scope="col">Offer From</th>
+                                        <th scope="col">Offer To</th>
                                         <th scope="col">Status</th>
+                                        <th scope="col">Description</th>
                                         <th scope="col">image</th>
                                         <th scope="col">Action</th>
                                     </tr>
@@ -97,12 +47,16 @@
                                         <th scope="row">{{$loop->index+1}}</th>
                                         <td>{{$productSize->name}}</td>
                                         <td>{{$productSize->price}}</td>
+                                        <td>{{$productSize->offer_price}}</td>
+                                        <td>{{$productSize->offer_from}}</td>
+                                        <td>{{$productSize->offer_to}}</td>
                                         <td>{{$productSize->status == 1 ? "Active" : "Deactive"}}</td>
+                                        <td stype="padding: 5px;">{!!  $productSize->description !!}</td>
                                         <td><img src="{{asset('frontend/product_images/'.$productSize->image)}}" alt="" style="width:40px; height: 40px;"></td>
                                         <td>
-                                            <button class="btn btn-sm btn-primary" title="Edit" data-bs-toggle="modal" data-bs-target="#size{{$productSize->id}}">
+                                            <a href="{{ route('product_size.edit', $productSize->id) }}" class="btn btn-sm btn-primary" title="Edit">
                                                 <i class="bx bx-edit"></i>
-                                            </button>
+                                            </a>
                                             |<button type="button" data-bs-toggle="modal" data-bs-target="#delete{{ $productSize->id }}" class="btn btn-sm btn-danger waves-effect waves-light">
                                                 <i class="ri-delete-bin-line"></i>
                                             </button>
@@ -146,59 +100,6 @@
                                                     </div><!-- /.modal-content -->
                                                 </div><!-- /.modal-dialog -->
                                             </div><!-- /.modal -->
-
-                                            <div id="size{{$productSize->id}}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                                                <form action="{{ route('product_size.update', $productSize->id) }}" method="POST" enctype="multipart/form-data">
-                                                    @method('PUT')
-                                                    @csrf
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="myModalLabel">Edit Size</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <div>
-                                                                    <input type="number" name="product_id" value="{{$id}}" hidden>
-                                                                </div>
-                                                                <div>
-                                                                    <label for="basiInput" class="form-label">Size Name</label>
-                                                                    <select class="form-control" name="size_id" id="size_id">
-                                                                        <option value="">{{ _('--Select Size--') }}</option>
-                                                                        @foreach ($sizes as $size)
-                                                                            <option value="{{ $size->id }}" {{ $productSize->size_id == $size->id ? 'selected' : '' }}>{{ $size->name }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                                <div>
-                                                                    <label for="basiInput" class="form-label">Price</label>
-                                                                    <input type="number" class="form-control" name="price" value="{{$productSize->price}}" required>
-                                                                </div>
-                                                                <div>
-                                                                    <label for="basiInput" class="form-label">Status</label>
-                                                                    <select name="status" id="" class="form-control">
-                                                                        @foreach (getStatus() as $key => $status)
-                                                                            <option value="{{$key}}" {{$productSize->status == 1 ? 'selected' : ''}}>{{$status}}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                                <div>
-                                                                    <label for="basiInput" class="form-label">Image</label>
-                                                                    <input type="file" class="form-control" name="image">
-                                                                </div>
-
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
-                                                                <button type="submit" class="btn btn-primary ">Update</button>
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-
-
                                         </td>
                                     </tr>
                                     @endforeach
@@ -215,11 +116,16 @@
 
 @section('script')
 <script>
-    ClassicEditor
-    .create(document.querySelector('#editor'))
+    ClassicEditor.create(document.querySelector('#editor'))
     .catch(error => {
         console.error(error);
     });
+
+    ClassicEditor.create(document.querySelector('.editorUp'))
+    .catch(error => {
+        console.error(error);
+    });
+
 
 </script>
 @endsection
