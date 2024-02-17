@@ -79,6 +79,14 @@
                         <a href="#">(<span>1</span> customer reviews)</a>
                       </div>
                     </div> -->
+                    <div>
+                      <button type="button" class="btn btn-secondary" @mouseover="showTooltip" @mouseout="hideTooltip">
+                        Custom tooltip
+                        <div v-show="tooltipVisible" class="custom-tooltip">
+                          This top tooltip is themed via CSS variables.
+                        </div>
+                      </button>
+                    </div>
                     <h3 class="product-title">{{productData.name}}</h3>
                     <span class="price-amount">$155.00 - $255.00</span>
                     <ul class="product-meta">
@@ -160,6 +168,7 @@ export default {
     data(){
         return{
             catgories:{},
+            tooltipVisible: false,
         }
     },
     components: {
@@ -172,7 +181,13 @@ export default {
        handleButtonClick() {
         // Emit a custom event named 'closeModal' when the button is clicked
         this.$emit('closeModal');
-      }
+      },
+       showTooltip() {
+          this.tooltipVisible = true;
+        },
+        hideTooltip() {
+          this.tooltipVisible = false;
+        },
     }
 }
 </script>
@@ -180,5 +195,15 @@ export default {
 <style scoped>
 .modal {
   background-color: #000000ab;
+}
+.custom-tooltip {
+  position: absolute;
+  background-color: #ffcc00; /* Example background color */
+  color: #333; /* Example text color */
+  padding: 5px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  top: -30px; /* Adjust this value to position the tooltip */
 }
 </style>
