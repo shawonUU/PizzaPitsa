@@ -5,8 +5,9 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\LeadGenaration;
-use Database\Factories\LeadGenarationFactory;
 use Illuminate\Database\Seeder;
+use Database\Seeders\ProductsSeeder;
+use Database\Factories\LeadGenarationFactory;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,6 +21,8 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(SyncPermissionSeeder::class);
         $this->call(AssignroleSeeder::class);
+        $this->call(CategoriesSeeder::class);
+        $this->call(ProductsSeeder::class);
         // LeadGenaration::factory(100000)->create();
     }
 }

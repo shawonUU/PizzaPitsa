@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->bigInteger('category_id');
-            $table->text('description');
-            $table->integer('quantity');
+            $table->text('description')->nullable();         
             $table->string('image')->nullable();
             $table->enum('status', ['1', '0'])->default('1');
             $table->unsignedBigInteger('created_by');

@@ -201,19 +201,10 @@
                                         </div>
                                         <div class="product-hover-action">
                                         <ul class="cart-action">
-                                            <li class="wishlist">
-                                                <a href="wishlist.html">
-                                                    <i class="far fa-heart"></i>
-                                                </a>
-                                            </li>
+                                          
                                             <li class="select-option">
-                                                <a @click="getProductDetails(product.id)">Add to Cart</a>
-                                            </li>
-                                            <li class="quickview">
-                                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal">
-                                                    <i class="far fa-eye"></i>
-                                                </a>
-                                            </li>
+                                                <a @click="getProductDetails(product.id)">Select</a>
+                                            </li>                                            
                                         </ul>
                                         </div>
                                     </div>
