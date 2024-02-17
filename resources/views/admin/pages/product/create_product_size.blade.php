@@ -41,17 +41,21 @@
                                         <label for="basiInput" class="form-label">Price</label>
                                         <input type="number" class="form-control" name="price" required>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-6">
                                         <label for="basiInput" class="form-label">Offer Price</label>
                                         <input type="number" class="form-control" name="offer_price" >
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-6">
                                         <label for="basiInput" class="form-label">Offer From</label>
                                         <input type="date" class="form-control" name="offer_from" >
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-6">
                                         <label for="basiInput" class="form-label">Offer To</label>
                                         <input type="date" class="form-control" name="offer_to" >
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="basiInput" class="form-label">Quantity</label>
+                                        <input type="date" class="form-control" name="quantity" >
                                     </div>
                                     <div class="col-6">
                                         <label for="basiInput" class="form-label">Image</label>

@@ -195,6 +195,7 @@ class ProductContoller extends Controller
             'offer_price' => 'nullable|numeric',
             'offer_from' => 'nullable|date',
             'offer_to' => 'nullable|date',
+            'quantity' => 'numeric|nullable'
         ]);
 
         $imageName = "";
@@ -212,6 +213,7 @@ class ProductContoller extends Controller
         $size->offer_price = $request->offer_price;
         $size->offer_from = $request->offer_from;
         $size->offer_to = $request->offer_to;
+        $size->quantity = $request->quantity;
         $size->description = $request->description;
         $size->status = $request->status;
         $size->created_by = auth()->user()->id;
@@ -279,6 +281,7 @@ class ProductContoller extends Controller
             'offer_price' => 'nullable|numeric',
             'offer_from' => 'nullable|date',
             'offer_to' => 'nullable|date',
+            'quantity' => 'numeric|nullable'
         ]);
         $size = ProductSize::find($id);
         if ($size) {
@@ -299,6 +302,7 @@ class ProductContoller extends Controller
             $size->offer_price = $request->offer_price;
             $size->offer_from = $request->offer_from;
             $size->offer_to = $request->offer_to;
+            $size->quantity = $request->quantity;
             $size->status = $request->status;
             $size->description = $request->description;
             $size->image = $imageName;

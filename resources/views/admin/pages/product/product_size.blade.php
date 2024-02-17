@@ -35,6 +35,7 @@
                                         <th scope="col">Offer Price</th>
                                         <th scope="col">Offer From</th>
                                         <th scope="col">Offer To</th>
+                                        <th scope="col">Quantity</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Description</th>
                                         <th scope="col">image</th>
@@ -50,6 +51,7 @@
                                         <td>{{$productSize->offer_price}}</td>
                                         <td>{{$productSize->offer_from}}</td>
                                         <td>{{$productSize->offer_to}}</td>
+                                        <td>{{$productSize->quantity}}</td>
                                         <td>{{$productSize->status == 1 ? "Active" : "Deactive"}}</td>
                                         <td stype="padding: 5px;">{!!  $productSize->description !!}</td>
                                         <td><img src="{{asset('frontend/product_images/'.$productSize->image)}}" alt="" style="width:40px; height: 40px;"></td>

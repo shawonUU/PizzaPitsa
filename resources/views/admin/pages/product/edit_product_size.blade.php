@@ -55,6 +55,10 @@
                                         <input type="date" class="form-control" name="offer_to" value={{ $productSize->offer_to }}>
                                     </div>
                                     <div class="col-6">
+                                        <label for="basiInput" class="form-label">Quantity</label>
+                                        <input type="date" class="form-control" name="quantity" value="{{ $productSize->quantity }}">
+                                    </div>
+                                    <div class="col-6">
                                         <label for="basiInput" class="form-label">Image</label>
                                         <input type="file" name="image" class="form-control">
                                     </div>
