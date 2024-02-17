@@ -197,22 +197,22 @@
                                         <img :src="'/frontend/product_images/' + product.image" alt="Product Images">
                                         </a>
                                         <div class="label-block label-right">
-                                        <div class="product-badget">20% OFF</div>
+                                        <!-- <div class="product-badget">20% OFF</div> -->
                                         </div>
                                         <div class="product-hover-action">
                                         <ul class="cart-action">
                                             <li class="wishlist">
-                                            <a href="wishlist.html">
-                                                <i class="far fa-heart"></i>
-                                            </a>
+                                                <a href="wishlist.html">
+                                                    <i class="far fa-heart"></i>
+                                                </a>
                                             </li>
                                             <li class="select-option">
-                                            <a href="cart.html">Add to Cart</a>
+                                                <a @click="getProductDetails(product.id)">Add to Cart</a>
                                             </li>
                                             <li class="quickview">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal">
-                                                <i class="far fa-eye"></i>
-                                            </a>
+                                                <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal">
+                                                    <i class="far fa-eye"></i>
+                                                </a>
                                             </li>
                                         </ul>
                                         </div>
@@ -1066,21 +1066,27 @@
                     </div>
                 </div>
             </div> -->
+            <Details :productData="product" v-if="showAddToCart" @closeModal="handleModalClose"></Details>
         </main>
     </div>
+     
 </template>
 <script>
 import {Swiper,SwiperSlide} from 'swiper/vue';
+import Details from '../../../components/frontend/pages/modal/details.vue';
 import 'swiper/css';
 export default {
     name: 'home',
     components: {
         Swiper,
         SwiperSlide,
+        Details
     },
      data(){
         return{
             products:{},
+            product:null,
+            showAddToCart:false
         }
     },  
     mounted(){
@@ -1091,11 +1097,32 @@ export default {
             axios.get('get-products')
             .then((res)=>{   
                 this.products = res.data;     
-                console.log(res.data);
+                // console.log(res.data);
             })
             .catch((err)=>{
                 console.log(err);
             })
+        },
+        getProductDetails(productId) {
+            // alert(productId)
+            axios.get('get-product-details', {
+                    params: {
+                        id: productId
+                    }
+                })
+                .then((res) => {                    
+                    // console.log();
+                    if (res.data[0]) {
+                        this.showAddToCart = true;
+                        this.product = res.data[0];
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+        handleModalClose() {
+            this.showAddToCart = false;
         }
     },
     setup() {

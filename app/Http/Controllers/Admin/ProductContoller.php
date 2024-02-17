@@ -20,7 +20,8 @@ class ProductContoller extends Controller
      */
     public function index()
     {
-        $products = Product::join('categories','categories.id','=','products.category_id')->select('products.*','categories.name as category')->orderBy('products.id','desc')->get();
+        return Product::get();
+       return  $products = Product::join('categories','categories.id','=','products.category_id')->select('products.*','categories.name as category')->orderBy('products.id','desc')->get();
         return view('admin.pages.product.index',compact('products'));
     }
 
@@ -165,7 +166,7 @@ class ProductContoller extends Controller
 
     public function size($id){
         $productSizes = ProductSize::join('sizes', 'sizes.id','=','product_sizes.size_id')
-                                ->where('product_id', $id)
+                                ->where('product_sizes.product_id', $id)
                                 ->select('product_sizes.*','sizes.name')->get();
         $sizes = Size::where('status', '1')->get();
         return view('admin.pages.product.product_size', compact('id','sizes','productSizes'));
@@ -333,4 +334,9 @@ class ProductContoller extends Controller
         return $groupedCategories;
     }
 
+    public function getProductDetails (Request $request) {
+        $productId = $request->query('id');
+        $product = Product::where('id',$productId)->first();
+        return response()->json([$product]);
+    }
 }
