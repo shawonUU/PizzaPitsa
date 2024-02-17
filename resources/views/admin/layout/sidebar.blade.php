@@ -8,16 +8,16 @@
                     <span class="logo-sm">
                        Pizza Pitsa
                     </span>
-                    
-                </a>    
+
+                </a>
             </span>
             <span class="logo-lg">
                 <a href="{{ route('dashboard') }}" class="logo logo-dark">
                     <span class="logo-sm">
                        Pizza Pitsa
                     </span>
-                    
-                </a>    
+
+                </a>
             </span>
         </a>
         <!-- Light Logo-->
@@ -27,16 +27,16 @@
                     <span class="logo-sm">
                        Pizza Pitsa
                     </span>
-                    
-                </a>    
+
+                </a>
             </span>
             <span class="logo-lg">
                 <a href="{{ route('dashboard') }}" class="logo logo-dark">
                     <span class="logo-sm">
                        Pizza Pitsa
                     </span>
-                    
-                </a>    
+
+                </a>
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
@@ -117,6 +117,9 @@
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('sizes.index') }}" class="nav-link">Size</a>
+                            </li>
+                            <li class="nav-item d-none">
+                                <a href="{{ route('nutritions.index') }}" class="nav-link">Nutrition</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('topings.index') }}" class="nav-link" data-key="t-nestable-list">Topings</a>

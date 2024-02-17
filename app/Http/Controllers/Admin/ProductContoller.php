@@ -20,9 +20,8 @@ class ProductContoller extends Controller
      */
     public function index()
     {
-        return Product::get();
-       return  $products = Product::join('categories','categories.id','=','products.category_id')->select('products.*','categories.name as category')->orderBy('products.id','desc')->get();
-        return view('admin.pages.product.index',compact('products'));
+        $products = Product::join('categories', 'categories.id', '=', 'products.category_id')->select('products.*', 'categories.name as category')->orderBy('products.id', 'desc')->get();
+        return view('admin.pages.product.index', compact('products'));
     }
 
     /**
@@ -30,8 +29,8 @@ class ProductContoller extends Controller
      */
     public function create()
     {
-        $categories = Category::where('status','1')->get();
-        return view('admin.pages.product.create',compact('categories'));
+        $categories = Category::where('status', '1')->get();
+        return view('admin.pages.product.create', compact('categories'));
     }
 
     /**
@@ -55,7 +54,7 @@ class ProductContoller extends Controller
             $imageName = now()->format('YmdHis') . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
             $image->move($destinationPath, $imageName);
         }
-           // Create a new product instance
+        // Create a new product instance
         $product = new Product([
             'name' => $request->input('name'),
             'category_id' => $request->category,
@@ -90,9 +89,9 @@ class ProductContoller extends Controller
      */
     public function edit(string $id)
     {
-        $product = Product::where('id',$id)->first();
-        $categories = Category::where('status','1')->get();
-        return view('admin.pages.product.edit',compact('categories','product'));
+        $product = Product::where('id', $id)->first();
+        $categories = Category::where('status', '1')->get();
+        return view('admin.pages.product.edit', compact('categories', 'product'));
     }
 
     /**
@@ -100,7 +99,7 @@ class ProductContoller extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $product = Product::where('id',$id)->first();
+        $product = Product::where('id', $id)->first();
         $request->validate([
             'name' => 'required|string',
             // 'description' => 'string',
@@ -112,7 +111,7 @@ class ProductContoller extends Controller
 
         $imageName = "";
         if ($image = $request->file('images')) {
-            if ($product->image !=NULL) {
+            if ($product->image != NULL) {
                 unlink(public_path('frontend/product_images/' . $product->image));
             }
             $destinationPath = 'frontend/product_images/';
@@ -148,8 +147,8 @@ class ProductContoller extends Controller
      */
     public function destroy(string $id)
     {
-        $product = Product::where('id',$id)->first();
-        if ($product->image !=NULL) {
+        $product = Product::where('id', $id)->first();
+        if ($product->image != NULL) {
             unlink(public_path('frontend/product_images/' . $product->image));
         }
         $product->delete();
@@ -161,7 +160,6 @@ class ProductContoller extends Controller
         ]);
         // Redirect or return a response as needed
         return redirect()->route('products.index')->with('warning', 'Product delete successfully');
-
     }
 
     public function size($id){
@@ -169,15 +167,29 @@ class ProductContoller extends Controller
                                 ->where('product_sizes.product_id', $id)
                                 ->select('product_sizes.*','sizes.name')->get();
         $sizes = Size::where('status', '1')->get();
-        return view('admin.pages.product.product_size', compact('id','sizes','productSizes'));
+        return view('admin.pages.product.create_product_size', compact('id', 'sizes'));
     }
 
-    public function storeSize(Request $request){
+    public function editProductSize($id){
+        $productSize = ProductSize::find($id);
+        $sizes = Size::where('status', '1')->get();
+        if($productSize){
+            return view('admin.pages.product.edit_product_size',compact('productSize','sizes'));
+        }
+        return redirect()->back();
+    }
+
+    public function storeSize(Request $request)
+    {
         $request->validate([
             'product_id' => 'required|numeric',
             'size_id' => 'required|numeric',
             'price' => 'required|numeric',
             'status' => 'required|in:0,1',
+            'description' => 'required',
+            'offer_price' => 'nullable|numeric',
+            'offer_from' => 'nullable|date',
+            'offer_to' => 'nullable|date',
         ]);
 
         $imageName = "";
@@ -192,6 +204,10 @@ class ProductContoller extends Controller
         $size->product_id = $request->product_id;
         $size->size_id = $request->size_id;
         $size->price = $request->price;
+        $size->offer_price = $request->offer_price;
+        $size->offer_from = $request->offer_from;
+        $size->offer_to = $request->offer_to;
+        $size->description = $request->description;
         $size->status = $request->status;
         $size->created_by = auth()->user()->id;
         $size->image = $imageName;
@@ -203,23 +219,25 @@ class ProductContoller extends Controller
             'text' => 'Product Size Added',
         ]);
 
-        return redirect()->back();
+        return redirect()->route('product_size',$request->product_id);
     }
     //Assign topings
-    public function topings ($id) {
-        $productTopings = ProductToping::join('topings','topings.id','=','product_topings.toping_id')->where('product_topings.product_id',$id)->select('topings.*','product_topings.id as topId')->get();
-        $topings = Toping::where('status','1')->get();
-        return view('admin.pages.product.topings', compact('productTopings','topings','id'));
+    public function topings($id)
+    {
+        $productTopings = ProductToping::join('topings', 'topings.id', '=', 'product_topings.toping_id')->where('product_topings.product_id', $id)->select('topings.*', 'product_topings.id as topId')->get();
+        $topings = Toping::where('status', '1')->get();
+        return view('admin.pages.product.topings', compact('productTopings', 'topings', 'id'));
     }
 
-    public function storeToping(Request $request){
+    public function storeToping(Request $request)
+    {
         $request->validate([
             'product_id' => 'required|numeric',
             'toping' => 'required|numeric',
             'status' => 'required|in:0,1',
         ]);
 
-        $checkExist = ProductToping::where('product_id',$request->product_id)->where('toping_id',$request->toping)->first();
+        $checkExist = ProductToping::where('product_id', $request->product_id)->where('toping_id', $request->toping)->first();
         if (!$checkExist) {
             $size = new ProductToping();
             $size->product_id = $request->product_id;
@@ -244,16 +262,21 @@ class ProductContoller extends Controller
         return redirect()->back();
     }
 
-    public function updateSize(Request $request, $id){
+    public function updateSize(Request $request, $id)
+    {
         // return $request->all();
         $request->validate([
             'product_id' => 'required|numeric',
             'size_id' => 'required|numeric',
+            'description' => 'required',
             'price' => 'required|numeric',
             'status' => 'required|in:0,1',
+            'offer_price' => 'nullable|numeric',
+            'offer_from' => 'nullable|date',
+            'offer_to' => 'nullable|date',
         ]);
         $size = ProductSize::find($id);
-        if($size){
+        if ($size) {
 
             $imageName = $size->image;
             if ($request->hasFile('image')) {
@@ -261,14 +284,18 @@ class ProductContoller extends Controller
                 $destinationPath = 'frontend/product_images/';
                 $imageName = now()->format('YmdHis') . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
                 $image->move($destinationPath, $imageName);
-                if($size->image)
+                if ($size->image)
                     unlink(public_path('frontend/product_images/' . $size->image));
             }
 
 
             $size->size_id = $request->size_id;
             $size->price = $request->price;
+            $size->offer_price = $request->offer_price;
+            $size->offer_from = $request->offer_from;
+            $size->offer_to = $request->offer_to;
             $size->status = $request->status;
+            $size->description = $request->description;
             $size->image = $imageName;
             $size->updated_by = auth()->user()->id;
             $size->update();
@@ -283,9 +310,10 @@ class ProductContoller extends Controller
         }
     }
 
-    public function deleteProductSize($id){
+    public function deleteProductSize($id)
+    {
         $productSizes = ProductSize::find($id);
-        if($productSizes)
+        if ($productSizes)
             $productSizes->delete();
         session()->flash('sweet_alert', [
             'type' => 'success',
@@ -295,7 +323,8 @@ class ProductContoller extends Controller
         return redirect()->back();
     }
 
-    public function getProducts () {
+    public function getProducts()
+    {
 
         // Get categories with associated products using Eloquent models
         $categories = Category::leftJoin('products', 'categories.id', '=', 'products.category_id')
