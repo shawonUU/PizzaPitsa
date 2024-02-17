@@ -21,8 +21,9 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleSeeder::class);
         $this->call(SyncPermissionSeeder::class);
         $this->call(AssignroleSeeder::class);
+        $this->call(SizeSeeder::class);
         $this->call(CategoriesSeeder::class);
-        $this->call(ProductsSeeder::class);
+        $this->call(ProductsSeeder::class);        
         // LeadGenaration::factory(100000)->create();
     }
 }
