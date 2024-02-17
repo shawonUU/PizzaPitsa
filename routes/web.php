@@ -55,3 +55,4 @@ Auth::routes();
 
 Route::get('get-categories',[CategoryController::class,'getCategories'])->name('get.categories');
 Route::get('get-products',[ProductContoller::class,'getProducts'])->name('get.products');
+Route::get('get-product-details', [ProductContoller::class, 'getProductDetails']);

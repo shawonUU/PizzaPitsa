@@ -162,15 +162,10 @@ class ProductContoller extends Controller
         return redirect()->route('products.index')->with('warning', 'Product delete successfully');
     }
 
-    public function size($id)
-    {
-        $productSizes = ProductSize::join('sizes', 'sizes.id', '=', 'product_sizes.size_id')
-            ->where('product_id', $id)
-            ->select('product_sizes.*', 'sizes.name')->get();
-        return view('admin.pages.product.product_size', compact('id', 'productSizes'));
-    }
-
-    public function createProductSize($id){
+    public function size($id){
+        $productSizes = ProductSize::join('sizes', 'sizes.id','=','product_sizes.size_id')
+                                ->where('product_sizes.product_id', $id)
+                                ->select('product_sizes.*','sizes.name')->get();
         $sizes = Size::where('status', '1')->get();
         return view('admin.pages.product.create_product_size', compact('id', 'sizes'));
     }
@@ -372,8 +367,9 @@ class ProductContoller extends Controller
         return $groupedCategories;
     }
 
-
-    public function nutrition($id)
-    {
+    public function getProductDetails (Request $request) {
+        $productId = $request->query('id');
+        $product = Product::where('id',$productId)->first();
+        return response()->json([$product]);
     }
 }
