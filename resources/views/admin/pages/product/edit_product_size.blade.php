@@ -56,7 +56,7 @@
                                     </div>
                                     <div class="col-6">
                                         <label for="basiInput" class="form-label">Quantity</label>
-                                        <input type="date" class="form-control" name="quantity" value="{{ $productSize->quantity }}">
+                                        <input type="number" class="form-control" name="quantity" value="{{ $productSize->quantity }}">
                                     </div>
                                     <div class="col-6">
                                         <label for="basiInput" class="form-label">Image</label>
