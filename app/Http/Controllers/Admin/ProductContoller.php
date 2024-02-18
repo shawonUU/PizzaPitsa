@@ -375,6 +375,11 @@ class ProductContoller extends Controller
     public function getProductDetails (Request $request) {
         $productId = $request->query('id');
         $product = Product::where('id',$productId)->first();
-        return response()->json([$product]);
+        $productSizes = ProductSize::join('sizes', 'sizes.id', '=', 'product_sizes.size_id')
+        ->where('product_id', $productId)
+        ->where('product_sizes.status','1')
+        ->select('product_sizes.*','sizes.name')
+        ->get();
+        return response()->json([$product,$productSizes]);
     }
 }

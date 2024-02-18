@@ -40,21 +40,16 @@
                             tabindex="0"
                             style="width: 491px"
                           >
-                            <img
-                             :src="'/frontend/product_images/' + productData.image"
-                              alt="Product Images"
+                            <img class="sizeImages"  id="" :src="'/frontend/product_images/' + productData.image"  alt="Product Images" />
+
+                            <img class="sizeImages d-none" v-for="(productSize, sizeId) in productSizes" :key="sizeId" :id="'sizeImages'+sizeId"
+                             :src="'/frontend/product_images/' + productSize.image"  alt="Product Images"
                             />
                             <!-- <div class="label-block label-right">
                               <div class="product-badget">20% OFF</div>
                             </div> -->
                             <div class="product-quick-view position-view">
-                              <a
-                                href="assets/images/product/product-big-01.png"
-                                class="popup-zoom"
-                                tabindex="0"
-                              >
-                                <i class="far fa-search-plus"></i>
-                              </a>
+                              
                             </div>
                           </div>
                           
@@ -93,21 +88,16 @@
                       <div>
                         <div class="tooltipr">
                           <i class="fas fa-info-circle"></i>
-                          <div class="tooltipr-text">This is a tooltip!</div>
+                          <!-- <div class="tooltipr-text"  v-html="productData.description"></div> -->
+                           <p  :class="['tooltipItem', 'tooltipr-text']"  v-html="productData.description" ></p>
+                          <template  v-for="(productSize, sizeId) in productSizes" :key="sizeId" >
+                            <p  :class="['tooltipItem', 'tooltipr-text', sizeId != 0 ? 'd-none' : 'd-none']"  :id="'tooltipItem'+sizeId" v-html="productSize.description" ></p>
+                          </template>
                         </div>
                       </div>
                     </div>                   
-                    <span class="price-amount">$155.00 - $255.00</span>
-                    <ul class="product-meta">
-                      <li><i class="fal fa-check"></i>In stock</li>
-                      <li>
-                        <i class="fal fa-check"></i>Free delivery available
-                      </li>
-                      <li>
-                        <i class="fal fa-check"></i>Sales 30% Off Use Code:
-                        MOTIVE30
-                      </li>
-                    </ul>
+                    <span class="price-amount d-none">$155.00 - $255.00</span>
+                    
                     <p v-html="productData.description" class="description"></p>
 
                     <div class="product-variations-wrapper">
@@ -119,11 +109,9 @@
                       <div class="product-variation">
                         <h6 class="title">Size:</h6>
                         <ul class="range-variant">
-                          <li>xs</li>
-                          <li>s</li>
-                          <li>m</li>
-                          <li>l</li>
-                          <li>xl</li>
+                          <li v-for="(productSize, sizeId) in productSizes" :key="sizeId" @click="clickOnSize(sizeId)">
+                            {{productSize.name}}
+                          </li>
                         </ul>
                       </div>
                       <!-- End Product Variation  -->
@@ -172,7 +160,8 @@ import axios from 'axios';
 export default {
     name: 'details',
       props: {        
-        productData: Object
+        productData: Object,
+        productSizes: Object,
       },
     data(){
         return{
@@ -184,12 +173,26 @@ export default {
 
     },
     mounted(){
-        
+        // console.log(this.productSize);
     },
     methods: {
        handleButtonClick() {
         // Emit a custom event named 'closeModal' when the button is clicked
         this.$emit('closeModal');
+      },
+      clickOnSize(sizeid){
+          var elements = document.getElementsByClassName('sizeImages');
+          for(var i=0; i<elements.length; i++){
+            elements[i].classList.add('d-none');
+          }
+          var elements = document.getElementsByClassName('tooltipItem');
+          for(var i=0; i<elements.length; i++){
+            elements[i].classList.add('d-none');
+          }
+
+          document.getElementById('tooltipItem'+sizeid).classList.remove('d-none');
+          document.getElementById('sizeImages'+sizeid).classList.remove('d-none');
+
       },
        
     }
