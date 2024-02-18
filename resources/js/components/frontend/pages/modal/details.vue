@@ -7,6 +7,7 @@
     role="dialog"
     style="padding-right: 17px; display: block"
   >
+     
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -14,7 +15,7 @@
             <i class="far fa-times"></i>
           </button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body">        
           <div class="single-product-thumb">
             <div class="row">
               <div class="col-lg-7 mb--40">
@@ -79,15 +80,23 @@
                         <a href="#">(<span>1</span> customer reviews)</a>
                       </div>
                     </div> -->
-                    <div>
-                      <button type="button" class="btn btn-secondary" @mouseover="showTooltip" @mouseout="hideTooltip">
-                        Custom tooltip
-                        <div v-show="tooltipVisible" class="custom-tooltip">
-                          This top tooltip is themed via CSS variables.
+                   
+                   
+                   
+                    <div class="d-flex justify-content-between">
+                      <div>
+                          <h3 class="product-title">{{productData.name}}</h3>
+                      </div>
+                      <div>
+
+                      </div>
+                      <div>
+                        <div class="tooltipr">
+                          <i class="fas fa-info-circle"></i>
+                          <div class="tooltipr-text">This is a tooltip!</div>
                         </div>
-                      </button>
-                    </div>
-                    <h3 class="product-title">{{productData.name}}</h3>
+                      </div>
+                    </div>                   
                     <span class="price-amount">$155.00 - $255.00</span>
                     <ul class="product-meta">
                       <li><i class="fal fa-check"></i>In stock</li>
@@ -182,12 +191,7 @@ export default {
         // Emit a custom event named 'closeModal' when the button is clicked
         this.$emit('closeModal');
       },
-       showTooltip() {
-          this.tooltipVisible = true;
-        },
-        hideTooltip() {
-          this.tooltipVisible = false;
-        },
+       
     }
 }
 </script>
@@ -196,14 +200,41 @@ export default {
 .modal {
   background-color: #000000ab;
 }
-.custom-tooltip {
-  position: absolute;
-  background-color: #ffcc00; /* Example background color */
-  color: #333; /* Example text color */
-  padding: 5px;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  top: -30px; /* Adjust this value to position the tooltip */
-}
+    .tooltipr {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .tooltipr-text {
+            /* visibility: hidden; */
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 4px;
+            padding: 5px;
+            margin-top: 7px;
+            position: absolute;
+            z-index: 1;
+            top: 100%;
+            left: 50%;
+            margin-left: -75px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltipr-text:after {
+            content: '';
+            position: absolute;
+            top: -9px; /* Adjust this value to control the distance between the tooltip and the triggering element */
+            left: 85%;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #333 transparent;
+        }
+
+        .tooltipr:hover .tooltipr-text {
+            visibility: visible;
+            opacity: 1;
+        }
 </style>

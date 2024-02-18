@@ -192,8 +192,8 @@
                             <div v-for="product in category.products" :key="product.id" class="col-6 col-md-3">
                                 <div class="slick-single-layout">
                                     <div class="axil-product product-style-four">
-                                    <div class="thumbnail">
-                                        <a href="single-product.html">
+                                    <div @click="getProductDetails(product.id)" class="thumbnail">
+                                        <a @click="getProductDetails(product.id)">
                                         <img :src="'/frontend/product_images/' + product.image" alt="Product Images">
                                         </a>
                                         <div class="label-block label-right">
