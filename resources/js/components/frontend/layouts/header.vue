@@ -13,16 +13,16 @@
                                         English
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">English</a></li>                                        
+                                        <li><a class="dropdown-item" href="#">English</a></li>
                                     </ul>
-                                </div>                            
+                                </div>
                             </div>
                         </div>
                         <div class="col-lg-6 col-sm-6 col-12">
                             <div class="header-top-link">
                                 <ul class="quick-link">
-                                    <li><a href="#">Track</a></li>
-                                    <li><a href="sign-up.html">Store Info</a></li>                                   
+                                    <li><a href="#">Tracking</a></li>
+                                    <li><a href="sign-up.html">Store Info</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -33,12 +33,12 @@
                 <div class="sc-1of5u0p-0 guZDAe container">
                     <div class="left">
                         <a class="sc-2c0aw7-0 wwSTC sc-1of5u0p-1 ibZIbo" href="/en/tallinn" data-active="true" data-type="primary" data-size="normal">
-                        <img  width="120px" :src="'/frontend/assets/images/logo/pizza logo-02.jpg'" alt="Site Logo">
+                        <img  width="160px" style="margin-top: 12px;" :src="'/frontend/assets/images/logo/2 pizza logo-02.png'" alt="Site Logo">
                         </a>
-                        <div class="sc-yrfxdq-0 bzQMgF header__about">
+                        <div class="sc-yrfxdq-0 bzQMgF header__about" style="margin-top: 12px;">
                         <span class="header__about-slogan">
                             <span class="header__about-slogan-text" style="color:#fff">Pizza delivery </span>
-                            <a data-testid="header__about-slogan-text_link" class="header__about-slogan-text header__about-slogan-text_locality header__about-slogan-text_link" href="#" style="color:#fff">Tallinn</a>
+                            <a data-testid="header__about-slogan-text_link" class="header__about-slogan-text header__about-slogan-text_locality header__about-slogan-text_link" href="#" style="color:#fff">Finland</a>
                         </span>
 
                         </div>
@@ -46,7 +46,7 @@
                         <div class="contacts-phone__number">
                             <a class="contacts-phone__number-link" href="tel:6299209" style="color:#fff">6 299 209</a>
                             <div class="contacts-phone__description"><span class="contacts-phone__description-text" style="color:#fff">Call</span></div>
-                        </div>                       
+                        </div>
                         </div>
                         <ul class="mainmenu">
                             <li class="sc-xlo7eb-4 bvuzKi">
@@ -56,8 +56,8 @@
                                 <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">Franchise</a>
                             </li>
                             <li class="sc-xlo7eb-4 bvuzKi">
-                                <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">Snacks</a>
-                            </li>                            
+                                <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">Contact</a>
+                            </li>
                         </ul>
                     </div>
                     <div class="right">
@@ -68,15 +68,15 @@
                             </svg>
                         </span>
                         <div class="header-action">
-                            <ul class="action-list">                                
+                            <ul class="action-list">
                                 <li class="shopping-cart">
                                     <a href="#" class="cart-dropdown-btn">
                                         <span class="cart-count">3</span>
                                         <i class="flaticon-shopping-cart" style="color:#fff"></i>
                                     </a>
-                                </li>                                
+                                </li>
                             </ul>
-                        </div>                        
+                        </div>
                         </a>
                         <button data-testid="header_login" type="button" data-type="tertiary" data-size="small" class="sc-1rmt3mq-0 dOEDNV">Log in</button>
                     </div>
@@ -106,35 +106,35 @@
                                 </div>
                                 <!-- <ul class="mainmenu">
                                     <li>
-                                        <a href="#">Home</a>                                   
-                                    </li>                               
+                                        <a href="#">Home</a>
+                                    </li>
                                     <li><a href="contact.html">Contact</a></li>
                                 </ul> -->
                                 <ul class="mainmenu">
                                     <li class="sc-xlo7eb-4 bvuzKi" v-for="(category,index) in catgories" :key="index" :value="category.id">
-                                        <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" data-active="false" data-type="primary" data-size="normal">{{ category.name }}</a>
-                                    </li>                                   
+                                        <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" :href="'#' + category.name" @click="scrollToSection(category.name)">{{ category.name }}</a>
+                                    </li>
                                 </ul>
                             </nav>
                             <!-- End Mainmanu Nav -->
                         </div>
                         <div class="header-action">
                             <ul class="action-list">
-                                
+
                                 <!-- <li class="axil-search d-xl-none d-block">
                                     <a href="javascript:void(0)" class="header-search-icon" title="Search">
                                         <i class="flaticon-magnifying-glass"></i>
                                     </a>
                                 </li>
-                                
+
                                 <li class="shopping-cart">
                                     <a href="#" class="cart-dropdown-btn">
                                         <span class="cart-count">3</span>
                                         <i class="flaticon-shopping-cart"></i>
                                     </a>
                                 </li> -->
-                                <li>                                    
-                                    <button data-testid="header_login" type="button" data-type="tertiary" data-size="small" class="sc-1rmt3mq-0 dOEDNV">My Orders</button>                                                                    
+                                <li>
+                                    <button data-testid="header_login" type="button" data-type="tertiary" data-size="small" class="sc-1rmt3mq-0 dOEDNV">My Orders</button>
                                 </li>
                                 <li class="axil-mobile-toggle">
                                     <button class="menu-btn mobile-nav-toggler">
@@ -158,9 +158,9 @@ export default {
         return{
             catgories:{},
         }
-    },  
+    },
     components: {
-        
+
     },
     mounted(){
         this.getCategories();
@@ -168,12 +168,19 @@ export default {
     methods: {
         getCategories(){
             axios.get('get-categories')
-            .then((res)=>{   
-                this.catgories = res.data;                     
+            .then((res)=>{
+                this.catgories = res.data;
             })
             .catch((err)=>{
                 console.log(err);
             })
+        },
+        scrollToSection(categoryName) {
+            // Scroll to the section corresponding to the clicked category
+            const section = document.getElementById(categoryName);
+            if (section) {
+                section.scrollIntoView({ behavior: "smooth" });
+            }
         }
     }
 }

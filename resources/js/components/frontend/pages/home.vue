@@ -13,7 +13,7 @@
                                             @slideChange="onSlideChange">
                                             <swiper-slide>
                                                 <div class="single-slide slick-slide">
-                                                    <div class="main-slider-content">                                                        
+                                                    <div class="main-slider-content">
                                                         <h1 class="title">Up to 60% off Sale</h1>
                                                         <div class="shop-btn">
                                                             <a href="shop.html" class="axil-btn">Shop Now <i
@@ -28,7 +28,7 @@
                                             </swiper-slide>
                                             <swiper-slide>
                                                 <div class="single-slide slick-slide">
-                                                    <div class="main-slider-content">                                                        
+                                                    <div class="main-slider-content">
                                                         <h1 class="title">Up to 60% off Voucher</h1>
                                                         <div class="shop-btn">
                                                             <a href="shop.html" class="axil-btn">Shop Now <i
@@ -43,7 +43,7 @@
                                             </swiper-slide>
                                             <swiper-slide>
                                                 <div class="single-slide slick-slide">
-                                                    <div class="main-slider-content">                                                      
+                                                    <div class="main-slider-content">
                                                         <h1 class="title">Up to 60% off Voucher</h1>
                                                         <div class="shop-btn">
                                                             <a href="shop.html" class="axil-btn">Shop Now <i
@@ -76,7 +76,7 @@
                                     </div>
                                     <div class="col-6">
                                          <div class="slider-product-box">
-                                           
+
                                             <h1 class="title"><a href="single-product.html">Stylish Leather Bag</a></h1>
                                             <span class="price">$29.99</span>
                                              <div class="product-thumb">
@@ -177,7 +177,7 @@
             </div>
             <!-- End Categorie Area  -->
             <!-- Start Flash Sale Area  -->
-            <div v-for="(category, categoryId) in products" :key="categoryId" class="axil-new-arrivals-product-area  flash-sale-area bg-color-white  pb--0 mt-5">                
+            <div v-for="(category, categoryId) in products" :key="categoryId" class="axil-new-arrivals-product-area  flash-sale-area bg-color-white  pb--0 mt-5" :id="category.name">
                 <div class="container">
                 <template v-if="category.products.length > 0">
                     <div class="product-area pb--50">
@@ -201,10 +201,10 @@
                                         </div>
                                         <div class="product-hover-action">
                                         <ul class="cart-action">
-                                          
+
                                             <li class="select-option">
                                                 <a @click="getProductDetails(product.id)">Select</a>
-                                            </li>                                            
+                                            </li>
                                         </ul>
                                         </div>
                                     </div>
@@ -221,41 +221,42 @@
                                     </div>
                                     </div>
                                 </div>
-                            </div>                                                
+                            </div>
                         </div>
                         </div>
 
 
                     </div>
                 </template>
-                </div> 
+                </div>
 
                 <div v-if="categoryId==2" class="axil-new-arrivals-product-area  flash-sale-area bg-color-white  pb--0" style="background-color:rgb(238, 110, 45)">
                     <div class="container">
                         <div class="row py-5">
-                            <div class="col-4">
+                            <div class="col-lg-4 col-sm-12">
                             <div class="elementor-element elementor-element-a489fec elementor-column elementor-col-33 elementor-top-column" data-id="a489fec" data-element_type="column">
                                 <div class="elementor-column-wrap  elementor-element-populated">
                                 <div class="elementor-widget-wrap">
                                 <div class="elementor-element elementor-element-2a9e9a4 elementor-widget elementor-widget-heading" data-id="2a9e9a4" data-element_type="widget" data-widget_type="heading.default">
                                 <div class="elementor-widget-container">
-                                <h3 class="elementor-heading-title elementor-size-default" style="color:#fff; font-size:40px">We are more than
-                                multiple survice</h3> </div>
+                                <h2 class="elementor-heading-title elementor-size-default" style="color:#fff; font-size:40px">Are you interested in entrepreneurship?</h2> </div>
                                 </div>
                                 <div class="elementor-element elementor-element-9c12109 elementor-widget elementor-widget-heading" data-id="9c12109" data-element_type="widget" data-widget_type="heading.default">
                                 <div class="elementor-widget-container">
-                                <p class="elementor-heading-title elementor-size-default" style="color:#fff">This is a type of restaurant which typically serves
-                                food and drinks, in addition to light
-                                refreshments
-                                such as baked goods or snacks. The term comes
-                                from the rench word meaning food.</p> </div>
+                                <p class="elementor-heading-title elementor-size-default" style="color:#fff">We are looking for lovers of good street food to become new Elias döner entrepreneurs Previous restaurant experience, managerial experience and/or entrepreneurial experience is considered an advantage.</p> </div>
                                 </div>
                                 <div class="elementor-element elementor-element-374b8dc elementor-align-left elementor-widget elementor-widget-button" data-id="374b8dc" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;none&quot;}" data-widget_type="button.default">
                                 <div class="elementor-widget-container">
                                 <div class="elementor-button-wrapper">
                                 <a href="#" class="elementor-button-link elementor-button elementor-size-sm" role="button">
                                 <span class="elementor-button-content-wrapper">
-                                <span class="elementor-button-text btn btn-warning" style="color:#fff; padding:10px; font-size:20px" >Contact Us</span>
+                                <span class="elementor-button-text btn btn-warning mt-3" style="color:#fff; padding:10px; font-size:20px;" >Contact Us</span>
+                                </span>
+                                </a>
+                                &nbsp;&nbsp;&nbsp;
+                                <a href="#" class="elementor-button-link elementor-button elementor-size-sm" role="button">
+                                <span class="elementor-button-content-wrapper">
+                                <span class="elementor-button-text btn btn-secondary mt-3" style="color:#fff; padding:10px; font-size:20px;" >Read More</span>
                                 </span>
                                 </a>
                                 </div>
@@ -264,13 +265,13 @@
                                 </div>
                                 </div>
                             </div>
-                        </div>                        
-                        <div class="col-4">
-                            <div class="elementor-column-wrap  elementor-element-populated">                            
-                                <img src="https://demo74leotheme.b-cdn.net/prestashop/leo_poco_elementor_demo/25-home_default/hummingbird-printed-t-shirt.jpg" title="" alt="">
-                            </div>                                                     
                         </div>
-                        <div class="col-4">
+                        <div class="col-lg-4 col-sm-12">
+                            <div class="elementor-column-wrap  elementor-element-populated">
+                                <img src="https://demo74leotheme.b-cdn.net/prestashop/leo_poco_elementor_demo/25-home_default/hummingbird-printed-t-shirt.jpg" title="" alt="">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-sm-12">
                             <div class="elementor-element elementor-element-ab6aaad elementor-column elementor-col-33 elementor-top-column" data-id="ab6aaad" data-element_type="column">
                                 <div class="elementor-column-wrap  elementor-element-populated">
                                 <div class="elementor-widget-wrap">
@@ -374,8 +375,8 @@
 
             </div>
         <!-- End Flash Sale Area  -->
-        
-          
+
+
             <!-- <div class="axil-new-arrivals-product-area  flash-sale-area bg-color-white  pb--0 pt-3">
                 <div class="container">
                     <div class="product-area pb--50">
@@ -1071,9 +1072,9 @@
     </div>
      <div class="input-group">
         <input type="radio" id="radio1"  name="shipping">
-        <label for="radio1">Free Shippping</label> 
+        <label for="radio1">Free Shippping</label>
     </div> -->
-    
+
 </template>
 <script>
 import {Swiper,SwiperSlide} from 'swiper/vue';
@@ -1093,14 +1094,14 @@ export default {
             productSizes:null,
             showAddToCart:false
         }
-    },  
+    },
     mounted(){
         this.getCategoryWiseProduct();
     },
     methods: {
         getCategoryWiseProduct(){
             axios.get('get-products')
-            .then((res)=>{   
+            .then((res)=>{
                 this.products = res.data;
             })
             .catch((err)=>{
@@ -1114,7 +1115,7 @@ export default {
                         id: productId
                     }
                 })
-                .then((res) => {                    
+                .then((res) => {
                     // console.log();
                     if (res.data[0]) {
                         this.showAddToCart = true;
@@ -1125,13 +1126,14 @@ export default {
                 .catch((err) => {
                     console.log(err);
                 });
-        },
-        handleModalClose() {
-            this.showAddToCart = false;
-        }
+            },
+            handleModalClose() {
+                this.showAddToCart = false;
+            },
+          
     },
     setup() {
-        const onSwiper = (swiper) => {               
+        const onSwiper = (swiper) => {
         };
         const onSlideChange = () => {
             console.log('slide change');
