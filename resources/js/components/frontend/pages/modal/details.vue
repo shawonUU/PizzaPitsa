@@ -164,6 +164,7 @@ export default {
       props: {
         productData: Object,
         productSizes: Object,
+        productTopings: Object,
       },
     data(){
         return{
