@@ -111,8 +111,10 @@
                         <ul class="range-variant">
                           <li v-for="(productSize, sizeId) in productSizes" :key="sizeId" @click="clickOnSize(sizeId)">
                             {{productSize.name}}
+                            
                           </li>
                         </ul>
+                        
                       </div>
                       <!-- End Product Variation  -->
                     </div>
@@ -120,15 +122,14 @@
                     <!-- Start Product Action Wrapper  -->
                     <div class="product-action-wrapper d-flex-center">
                       <!-- Start Quentity Action  -->
-                      <div class="pro-qty">
-                        <span class="dec qtybtn">-</span
-                        ><input type="text" value="1" /><span class="inc qtybtn"
-                          >+</span
-                        >
+                     <div class="pro-qty">
+                        <span class="dec qtybtn" @click="decrementQuantity">-</span
+                        ><input type="text" :value="quantity" /><span class="inc qtybtn" @click="incrementQuantity">+</span>
                       </div>
                       <!-- End Quentity Action  -->
 
                       <!-- Start Product Action  -->
+                      <br>
                       <ul class="product-action d-flex-center mb--0">
                         <li class="add-to-cart">
                           <a href="cart.html" class="axil-btn btn-bg-primary"
@@ -167,6 +168,7 @@ export default {
         return{
             catgories:{},
             tooltipVisible: false,
+            quantity: 1,
         }
     },
     components: {
@@ -194,6 +196,15 @@ export default {
           document.getElementById('sizeImages'+sizeid).classList.remove('d-none');
 
       },
+      decrementQuantity() {
+        if (this.quantity > 1) {
+          this.quantity--;
+        }
+      },
+      incrementQuantity() {
+        // You can add any validation or constraints here
+        this.quantity++;
+      }
 
     }
 }
