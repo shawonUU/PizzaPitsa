@@ -91,7 +91,7 @@
                           <!-- <div class="tooltipr-text"  v-html="productData.description"></div> -->
                            <p  :class="['tooltipItem', 'tooltipr-text']"  v-html="productData.description" ></p>
                           <template  v-for="(productSize, sizeId) in productSizes" :key="sizeId" >
-                            <p  :class="['tooltipItem', 'tooltipr-text', sizeId != 0 ? 'd-none' : 'd-none']"  :id="'tooltipItem'+sizeId" v-html="productSize.description" ></p>
+                            <p  style="color: rgb(255, 255, 255);" :class="['tooltipItem', 'tooltipr-text', sizeId != 0 ? 'd-none' : 'd-none']"  :id="'tooltipItem'+sizeId" v-html="productSize.description" ></p>
                           </template>
                         </div>
                       </div>
@@ -110,11 +110,12 @@
                         <h6 class="title">Size:</h6>
                         <ul class="range-variant">
                           <li v-for="(productSize, sizeId) in productSizes" :key="sizeId" @click="clickOnSize(sizeId)">
-                            {{productSize.name}}
-                            
+                              <div class="input-group">
+                                  <input style="display:none !important;" type="radio" :id="'sizeRadio'+productSize.id"  name="sizeRadio">
+                                  <label style="display:none !important;" :for="'sizeRadio'+productSize.id"></label>{{productSize.name}} 
+                              </div>
                           </li>
                         </ul>
-                        
                       </div>
                       <!-- End Product Variation  -->
                     </div>
@@ -224,7 +225,7 @@ export default {
             width: 215px;
             /* visibility: hidden; */
             background-color: #000;
-            color: #fff;
+            color: #fff !important;
             text-align: center;
             border-radius: 4px;
             padding: 5px;
@@ -236,6 +237,7 @@ export default {
             margin-left: -178px;
             opacity: 0;
             transition: opacity 0.3s;
+            font: 500 12px / 13px Dodo, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", !important;
         }
 
         .tooltipr-text:after {

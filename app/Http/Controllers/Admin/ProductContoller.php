@@ -376,6 +376,11 @@ class ProductContoller extends Controller
             ->where('product_sizes.status', '1')
             ->select('product_sizes.*', 'sizes.name')
             ->get();
-        return response()->json([$product, $productSizes]);
+        $productTopings = ProductToping::join('topings', 'topings.id', '=', 'product_topings.toping_id')
+            ->where('product_topings.product_id', $productId)
+            ->where('product_topings.status', '1')
+            ->select('topings.*')
+            ->get();
+        return response()->json([$product, $productSizes,$productTopings]);
     }
 }
