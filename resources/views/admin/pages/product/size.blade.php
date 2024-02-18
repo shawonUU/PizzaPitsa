@@ -28,17 +28,17 @@
                                         <div class="modal-body">
                                             <div>
                                                 <label for="basiInput" class="form-label">Size</label>
-                                                <input type="text" class="form-control" id="size" name="size" placeholder="Size">
+                                                <input type="text" class="form-control" id="size" name="size" placeholder="Size" required>
                                             </div>
                                             <div>
                                                 <label for="basiInput" class="form-label">Status</label>
                                                 <select name="status" id="" class="form-control">
-                                                    @foreach (getStatus() as $key => $status) 
+                                                    @foreach (getStatus() as $key => $status)
                                                         <option value="{{$key}}" {{$key == 1 ? 'selected' : ''}}>{{$status}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
-                                            
+
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
@@ -75,8 +75,31 @@
                                         <td>
                                             <button class="btn btn-sm btn-primary" title="Edit" data-bs-toggle="modal" data-bs-target="#ctegory{{$size->id}}">
                                                 <i class="bx bx-edit"></i>
-                                            </button>
-
+                                            </button>|<button type="button" data-bs-toggle="modal" data-bs-target="#myModal{{ $size->id }}" class="btn btn-sm btn-danger waves-effect waves-light"><i class="ri-delete-bin-line"></i></button>
+                                            <div id="myModal{{ $size->id }}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="myModalLabel">Delete</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                        Are you sure you want to delete this product:
+                                                        <strong
+                                                            style="color: darkorange">{{ $size->name }}</strong>
+                                                        ?
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <form action="{{ route('sizes.destroy',$size->id) }}" method="post">
+                                                                @csrf
+                                                                @method('delete')
+                                                                <button type="submit" class="btn btn-default">Delete</button>
+                                                            </form>
+                                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal-dialog -->
+                                            </div><!-- /.modal -->
                                             <div id="ctegory{{$size->id}}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                                             <form action="{{ route('sizes.update', $size->id) }}" method="POST">
                                                     @method('PUT')
@@ -90,17 +113,17 @@
                                                             <div class="modal-body">
                                                                 <div>
                                                                     <label for="basiInput" class="form-label">Size</label>
-                                                                    <input type="text" class="form-control" id="size" name="size"value="{{$size->name}}" placeholder="Size">
+                                                                    <input type="text" class="form-control" id="size" name="size"value="{{$size->name}}" placeholder="Size" required>
                                                                 </div>
                                                                 <div>
                                                                     <label for="basiInput" class="form-label">Status</label>
                                                                     <select name="status" id="" class="form-control">
-                                                                        @foreach (getStatus() as $key => $status) 
+                                                                        @foreach (getStatus() as $key => $status)
                                                                             <option value="{{$key}}" {{$size->status == 1 ? 'selected' : ''}}>{{$status}}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
-                                                                
+
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>

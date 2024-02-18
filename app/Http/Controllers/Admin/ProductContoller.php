@@ -42,7 +42,6 @@ class ProductContoller extends Controller
             'name' => 'required|string',
             // 'description' => 'string',
             // 'price' => 'required|numeric',
-            'quantity' => 'required|integer',
             'status' => 'required|in:0,1',
             // Add any other validation rules as needed
         ]);
@@ -60,7 +59,6 @@ class ProductContoller extends Controller
             'category_id' => $request->category,
             'description' => $request->input('description'),
             'image' => $imageName,
-            'quantity' => $request->input('quantity'),
             'status' => $request->input('status'),
             'created_by' => auth()->user()->id,
         ]);
@@ -102,9 +100,6 @@ class ProductContoller extends Controller
         $product = Product::where('id', $id)->first();
         $request->validate([
             'name' => 'required|string',
-            // 'description' => 'string',
-            // 'price' => 'required|numeric',
-            'quantity' => 'required|integer',
             'status' => 'required|in:0,1',
             // Add any other validation rules as needed
         ]);
@@ -125,8 +120,6 @@ class ProductContoller extends Controller
             'name' => $request->input('name'),
             'category_id' => $request->category,
             'description' => $request->input('description'),
-            // 'price' => $request->input('price'),
-            'quantity' => $request->input('quantity'),
             'status' => $request->input('status'),
             'updated_by' => auth()->user()->id,
         ]);
@@ -170,16 +163,18 @@ class ProductContoller extends Controller
         return view('admin.pages.product.product_size', compact('id', 'productSizes'));
     }
 
-    public function createProductSize($id){
+    public function createProductSize($id)
+    {
         $sizes = Size::where('status', '1')->get();
         return view('admin.pages.product.create_product_size', compact('id', 'sizes'));
     }
 
-    public function editProductSize($id){
+    public function editProductSize($id)
+    {
         $productSize = ProductSize::find($id);
         $sizes = Size::where('status', '1')->get();
-        if($productSize){
-            return view('admin.pages.product.edit_product_size',compact('productSize','sizes'));
+        if ($productSize) {
+            return view('admin.pages.product.edit_product_size', compact('productSize', 'sizes'));
         }
         return redirect()->back();
     }
@@ -226,7 +221,7 @@ class ProductContoller extends Controller
             'text' => 'Product Size Added',
         ]);
 
-        return redirect()->route('product_size',$request->product_id);
+        return redirect()->route('product_size', $request->product_id);
     }
     //Assign topings
     public function topings($id)
@@ -372,9 +367,10 @@ class ProductContoller extends Controller
         return $groupedCategories;
     }
 
-    public function getProductDetails (Request $request) {
+    public function getProductDetails(Request $request)
+    {
         $productId = $request->query('id');
-        $product = Product::where('id',$productId)->first();
+        $product = Product::where('id', $productId)->first();
         return response()->json([$product]);
     }
 }

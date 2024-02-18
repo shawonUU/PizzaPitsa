@@ -9,20 +9,18 @@ use App\Models\Admin\Category;
 
 class CategoryController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $categories = Category::get();
         return view("admin.pages.product.category", compact('categories'));
     }
 
-    public function store(Request $request){
-        $validator = Validator::make($request->all(), [
+    public function store(Request $request)
+    {
+        $request->validate([
             'category' => 'required|string|max:255',
             'status' => 'required',
         ]);
-        if ($validator->fails()) {
-            return response()->redirect()->back()->with(['errors' => $validator->errors()], 422);
-        }
-
         $category = new Category;
         $category->name = $request->category;
         $category->status = $request->status;
@@ -35,17 +33,15 @@ class CategoryController extends Controller
         ]);
         return redirect()->route('categories.index');
     }
-    
-    public function update(Request $request, $id){
-        $validator = Validator::make($request->all(), [
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
             'category' => 'required|string|max:255',
             'status' => 'required',
         ]);
-        if ($validator->fails()) {
-            return response()->redirect()->back()->with(['errors' => $validator->errors()], 422);
-        }
         $category = Category::find($id);
-        if($category){
+        if ($category) {
             $category->name = $request->category;
             $category->status = $request->status;
             $category->created_by = auth()->user()->id;
@@ -59,9 +55,21 @@ class CategoryController extends Controller
         return redirect()->route('categories.index');
     }
 
+    public function destroy($id)
+    {
+        $category = Category::findOrFail($id);
+        $category->delete();
+        session()->flash('sweet_alert', [
+            'type' => 'success',
+            'title' => 'Success!',
+            'text' => 'Category Delete success',
+        ]);
+        return redirect()->route('categories.index');
+    }
     //For get data with axios
 
-    public function getCategories () {
-        return $categories = Category::where('status','1')->orderBy('id','asc')->get();
+    public function getCategories()
+    {
+        return $categories = Category::where('status', '1')->orderBy('id', 'asc')->get();
     }
 }

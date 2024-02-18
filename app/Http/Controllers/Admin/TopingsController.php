@@ -14,15 +14,15 @@ class TopingsController extends Controller
      */
     public function index()
     {
-        $topings = Toping::orderBy('.id','desc')->get();
-        return view('admin.pages.toping.index',compact('topings'));
+        $topings = Toping::orderBy('.id', 'desc')->get();
+        return view('admin.pages.toping.index', compact('topings'));
     }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
-    {       
+    {
         return view('admin.pages.toping.create');
     }
 
@@ -30,29 +30,29 @@ class TopingsController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    { 
+    {
         $request->validate([
-            'name' => 'required|string',           
-            'price' => 'required|numeric',            
-            'status' => 'required|in:0,1',                   
+            'name' => 'required|string',
+            'price' => 'required|numeric',
+            'status' => 'required|in:0,1',
         ]);
-
+        $imageName = "";
         if ($image = $request->file('images')) {
             $destinationPath = 'frontend/toping_images/';
             $imageName = date('YmdHis') . "." . $image->getClientOriginalExtension();
             $image->move($destinationPath, $imageName);
         }
-           // Create a new product instance
+        // Create a new product instance
         $product = new Toping([
-            'name' => $request->input('name'),              
-            'image'=>   $imageName,        
-            'price' => $request->input('price'),          
+            'name' => $request->input('name'),
+            'image' =>   $imageName,
+            'price' => $request->input('price'),
             'status' => $request->input('status'),
             'created_by' => auth()->user()->id,
         ]);
 
         // Save the product
-        $product->save();   
+        $product->save();
 
         session()->flash('sweet_alert', [
             'type' => 'success',
@@ -76,8 +76,8 @@ class TopingsController extends Controller
      */
     public function edit(string $id)
     {
-        $toping = Toping::where('id',$id)->first();          
-        return view('admin.pages.toping.edit',compact('toping'));
+        $toping = Toping::where('id', $id)->first();
+        return view('admin.pages.toping.edit', compact('toping'));
     }
 
     /**
@@ -85,17 +85,17 @@ class TopingsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $product = Toping::where('id',$id)->first(); 
+        $product = Toping::where('id', $id)->first();
         $request->validate([
-            'name' => 'required|string',            
-            'price' => 'required|numeric',          
-            'status' => 'required|in:0,1',        
+            'name' => 'required|string',
+            'price' => 'required|numeric',
+            'status' => 'required|in:0,1',
             // Add any other validation rules as needed
         ]);
 
         $imageName = "";
         if ($image = $request->file('images')) {
-            if ($product->image !=NULL) {
+            if ($product->image != NULL) {
                 unlink(public_path('frontend/toping_images/' . $product->image));
             }
             $destinationPath = 'frontend/toping_images/';
@@ -117,24 +117,23 @@ class TopingsController extends Controller
             'text' => 'Toping update success',
         ]);
         // Redirect or return a response as needed
-        return redirect()->route('topings.index')->with('success', 'Toping update successfully');     
+        return redirect()->route('topings.index')->with('success', 'Toping update successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Request $request, string $id)
-    {      
+    {
         if ($request->deleteProductToping == '1') {
-            $product = ProductToping::where('id',$id)->first(); 
-            $product->delete();           
-        } else {
-            $product = Toping::where('id',$id)->first();
+            $product = ProductToping::where('id', $id)->first();
             $product->delete();
-            if ($product->image !=NULL) {
+        } else {
+            $product = Toping::where('id', $id)->first();
+            $product->delete();
+            if ($product->image != NULL) {
                 unlink(public_path('frontend/toping_images/' . $product->image));
             }
-          
         }
 
         session()->flash('sweet_alert', [
@@ -142,13 +141,11 @@ class TopingsController extends Controller
             'title' => 'Success!',
             'text' => 'Toping delete success',
         ]);
-        
-        if ($request->deleteProductToping == '1') {
-            return redirect()->route('product_topting',$request->product_id)->with('warning', 'Toping delete successfully');  
-        } else {
-            return redirect()->route('topings.index')->with('warning', 'Toping delete successfully');  
-        }
 
+        if ($request->deleteProductToping == '1') {
+            return redirect()->route('product_topting', $request->product_id)->with('warning', 'Toping delete successfully');
+        } else {
+            return redirect()->route('topings.index')->with('warning', 'Toping delete successfully');
+        }
     }
 }
-

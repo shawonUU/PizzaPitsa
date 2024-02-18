@@ -3,7 +3,7 @@
 @section('content')
     <div class="page-content">
         <div class="container-fluid">
-          
+
             <div class="row">
                 <div class="col-lg-12">
                   <div class="card">
@@ -16,7 +16,7 @@
                             });
                         </script>
                     @endif
-                   
+
                     <div class="card-header align-items-center d-flex">
                       <h4 class="card-title mb-0 flex-grow-1">Products</h4>
                       <div class="flex-shrink-0">
@@ -35,8 +35,8 @@
                                     <th>#</th>
                                     <th>Images</th>
                                     <th>Name</th>
-                                    <th>Category</th>                                
-                                    <th>Quantity</th>                                    
+                                    <th>Category</th>
+                                    <th>Quantity</th>
                                     <th>status</th>
                                     <th>Action</th>
                                   </tr>
@@ -45,14 +45,14 @@
                                 @foreach ($products as $item)
                                 <tr>
                                     <td>{{ $loop->index+1 }}</td>
-                                    <td>                                     
-                                      <img width="60px" height="60px" src="{{ asset('frontend/product_images/' . $item->image) }}" alt="Product Image">                                     
+                                    <td>
+                                      <img width="60px" height="60px" src="{{ asset('frontend/product_images/' . $item->image) }}" alt="Product Image">
                                     </td>
                                     <td>{{ $item->name }}</td>
-                                    <td>{{ $item->category }}</td>                                  
+                                    <td>{{ $item->category }}</td>
                                     <td>{{ $item->quantity }}</td>
-                                    <td class="{{ $item->status=='1'?'text-danger':'' }}">{{ $item->status=='1'?'Active':'Inactive' }}</td>                                                                                                                                                                                     
-                                      <td><button type="button" class="btn btn-sm btn-primary waves-effect waves-light"><a href="{{ route('products.edit',$item->id) }}"><i class="ri-ball-pen-line" style="color: #fff"></i></a></button>| <button type="button" data-bs-toggle="modal" data-bs-target="#myModal{{ $item->id }}" class="btn btn-sm btn-danger waves-effect waves-light"><i class="ri-delete-bin-line"></i></button>                                      
+                                    <td class="{{ $item->status=='1'?'text-danger':'' }}">{{ $item->status=='1'?'Active':'Inactive' }}</td>
+                                      <td><button type="button" class="btn btn-sm btn-primary waves-effect waves-light"><a href="{{ route('products.edit',$item->id) }}"><i class="ri-ball-pen-line" style="color: #fff"></i></a></button>| <button type="button" data-bs-toggle="modal" data-bs-target="#myModal{{ $item->id }}" class="btn btn-sm btn-danger waves-effect waves-light"><i class="ri-delete-bin-line"></i></button>
                                       <div class="btn-group material-shadow">
                                           <button class="btn btn-primary btn-sm  material-shadow-none" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                           <i class="las la-angle-double-down"></i>
@@ -61,8 +61,8 @@
                                               <a class="dropdown-item" href="{{route('product_size',$item->id)}}">Size</a>
                                               <a class="dropdown-item" href="{{ route('product_topting',$item->id) }}">Topings</a>
                                           </div>
-                                      </div>                                      
-                                    </td>   
+                                      </div>
+                                    </td>
                                     <!-- Default Modals -->
                                     <div id="myModal{{ $item->id }}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                                         <div class="modal-dialog">
@@ -78,25 +78,25 @@
                                                   ?
                                                 </div>
                                                 <div class="modal-footer">
-                                                   
+
                                                     <form
                                                         action="{{ route('products.destroy',$item->id) }}"
                                                         method="post">
                                                         @csrf
                                                         @method('delete')
                                                         <button type="submit" class="btn btn-default">Delete</button>
-                                                        
+
                                                     </form>
                                                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
                                                 </div>
 
                                             </div><!-- /.modal-content -->
                                         </div><!-- /.modal-dialog -->
-                                    </div><!-- /.modal -->                                
+                                    </div><!-- /.modal -->
                                   </tr>
-                                @endforeach                                                                  
+                                @endforeach
                                 </tbody>
-                              </table>                                               
+                              </table>
                         </div>
                         <!--end row-->
                       </div>
@@ -111,6 +111,6 @@
     </div>
 
 @section('script')
-  
+
 @endsection
 @endsection
