@@ -1057,7 +1057,7 @@
                     </div>
                 </div>
             </div> -->
-            <Details :productData="product" v-if="showAddToCart" @closeModal="handleModalClose"></Details>
+            <Details :productData="product" :productSizes="productSizes" v-if="showAddToCart" @closeModal="handleModalClose"></Details>
         </main>
     </div>
      
@@ -1077,6 +1077,7 @@ export default {
         return{
             products:{},
             product:null,
+            productSizes:null,
             showAddToCart:false
         }
     },  
@@ -1106,6 +1107,7 @@ export default {
                     if (res.data[0]) {
                         this.showAddToCart = true;
                         this.product = res.data[0];
+                        this.productSizes = res.data[1];
                     }
                 })
                 .catch((err) => {
