@@ -376,11 +376,27 @@ class ProductContoller extends Controller
             ->where('product_sizes.status', '1')
             ->select('product_sizes.*', 'sizes.name')
             ->get();
+        $maxPrice = $productSizes->max('price');
+        $minPrice = $productSizes->min('price');
+        $tem = [];
+        foreach($productSizes as $row){
+            $tem[$row->id] = $row;
+        }
+        $productSizes = $tem;
         $productTopings = ProductToping::join('topings', 'topings.id', '=', 'product_topings.toping_id')
             ->where('product_topings.product_id', $productId)
             ->where('product_topings.status', '1')
             ->select('topings.*')
             ->get();
-        return response()->json([$product, $productSizes,$productTopings]);
+
+        $tem = [];
+        foreach($productTopings as $row){
+            $tem[$row->id] = $row;
+        }
+        $productTopings = $tem;
+
+           
+        $maxMin = [$minPrice,$maxPrice];
+        return response()->json([$product, $productSizes,$productTopings,$maxMin]);
     }
 }

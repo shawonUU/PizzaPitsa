@@ -41,7 +41,6 @@
                             style="width: 491px"
                           >
                             <img class="sizeImages"  id="" :src="'/frontend/product_images/' + productData.image"  alt="Product Images" />
-
                             <img class="sizeImages d-none" v-for="(productSize, sizeId) in productSizes" :key="sizeId" :id="'sizeImages'+sizeId"
                              :src="'/frontend/product_images/' + productSize.image"  alt="Product Images"
                             />
@@ -91,27 +90,31 @@
                           <!-- <div class="tooltipr-text"  v-html="productData.description"></div> -->
                            <p  :class="['tooltipItem', 'tooltipr-text']"  v-html="productData.description" ></p>
                           <template  v-for="(productSize, sizeId) in productSizes" :key="sizeId" >
-                            <p  style="color: rgb(255, 255, 255);" :class="['tooltipItem', 'tooltipr-text', sizeId != 0 ? 'd-none' : 'd-none']"  :id="'tooltipItem'+sizeId" v-html="productSize.description" ></p>
+                            <p  style="color: rgb(255, 255, 255); margin-bottom: 20px;" :class="['tooltipItem', 'tooltipr-text', sizeId != 0 ? 'd-none' : 'd-none']"  :id="'tooltipItem'+sizeId" v-html="productSize.description" ></p>
                           </template>
                         </div>
                       </div>
                     </div>
-                    <span class="price-amount d-none">$155.00 - $255.00</span>
+                    <span class="price-amount d-none ">$155.00 - $255.00</span>
+                    <!-- <span class="sizeWisePrice price-amount">${{ maxMin[0] }} - ${{maxMin[1]}}</span> -->
+                    <span v-for="(productSize, sizeId) in productSizes" :key="sizeId" :id="'sizeWisePrice'+sizeId" class="sizeWisePrice d-none price-amount">${{productSize.price}}</span>
 
                     <p v-html="productData.description" class="description"></p>
 
+                    
                     <div class="product-variations-wrapper">
                       <!-- Start Product Variation  -->
 
                       <!-- End Product Variation  -->
 
                       <!-- Start Product Variation  -->
+                      
                       <div class="product-variation">
                         <h6 class="title">Size:</h6>
                         <ul class="range-variant">
                           <li v-for="(productSize, sizeId) in productSizes" :key="sizeId" @click="clickOnSize(sizeId)">
                               <div class="input-group">
-                                  <input style="display:none !important;" type="radio" :id="'sizeRadio'+productSize.id"  name="sizeRadio">
+                                  <input style="" class="sizeRadio" type="radio" :id="'sizeRadio'+productSize.id"  name="sizeRadio" :value="productSize.id">
                                   <label style="display:none !important;" :for="'sizeRadio'+productSize.id"></label>{{productSize.name}} 
                               </div>
                           </li>
@@ -127,7 +130,7 @@
                               <img class="p-2" :src="'/frontend/toping_images/' + productToping.image" alt="" style="width: 70px; ">
                               <p class="text-center mt-1">{{productToping.name}}</p>
                               <p class="text-center mt-5">${{productToping.price}}</p>
-                              <input :id="'topingsItem'+topingId" type="checkbox" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">ssss
+                              <input :id="'topingsItem'+topingId" :value="productToping.id" name="topingsItem" class="topingsItem" type="checkbox" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
                           </div>
                       </div>
                     </div>
@@ -174,6 +177,7 @@ export default {
         productData: Object,
         productSizes: Object,
         productTopings: Object,
+        // maxMin: object,
       },
     data(){
         return{
@@ -183,7 +187,12 @@ export default {
         }
     },
     components: {
-
+        maxPrice() {
+          return Math.max(...this.productSizes.map(productSize => productSize.price));
+        },
+        minPrice() {
+          return Math.min(...this.productSizes.map(productSize => productSize.price));
+        },
     },
     mounted(){
         // console.log(this.productSize);
@@ -202,19 +211,26 @@ export default {
           for(var i=0; i<elements.length; i++){
             elements[i].classList.add('d-none');
           }
+          var elements = document.getElementsByClassName('sizeWisePrice');
+          for(var i=0; i<elements.length; i++){
+            elements[i].classList.add('d-none');
+          }
 
           document.getElementById('tooltipItem'+sizeid).classList.remove('d-none');
           document.getElementById('sizeImages'+sizeid).classList.remove('d-none');
-
+          document.getElementById('sizeWisePrice'+sizeid).classList.remove('d-none');
+          this.generatePrice();
       },
       decrementQuantity() {
         if (this.quantity > 1) {
           this.quantity--;
         }
+        this.generatePrice();
       },
       incrementQuantity() {
         // You can add any validation or constraints here
         this.quantity++;
+        this.generatePrice();
       },
       clickOnTopings(id){
         // alert('');
@@ -225,8 +241,27 @@ export default {
         }else{
             document.getElementById('topingDiv'+id).style.border="1px solid red";
             document.getElementById('topingsItem'+id).checked = true;
+        } 
+        this.generatePrice();
+      },
+      generatePrice(){
+        var elements = document.getElementsByClassName('sizeRadio');
+        var selectedSize = null;
+        for(var i=0; i<elements.length; i++){
+          if(elements[i].checked){
+              selectedSize = elements[i].value;
+          }
         }
-         
+
+        var elements = document.getElementsByClassName('topingsItem');
+        var selectedTopings = [];
+        for(var i=0; i<elements.length; i++){
+          console.log(elements);
+          if(elements[i].checked){
+              selectedTopings.push(elements[i].value);
+          }
+        }
+        
       }
 
     }
