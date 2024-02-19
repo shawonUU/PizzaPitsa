@@ -175,13 +175,8 @@ export default {
                 console.log(err);
             })
         },
-        scrollToSection(categoryName) {
-            // Scroll to the section corresponding to the clicked category
-            const section = document.getElementById(categoryName);
-            if (section) {
-                section.scrollIntoView({ behavior: "smooth" });
-            }
-        }
+
+
     }
 }
 </script>

@@ -1135,7 +1135,7 @@ export default {
             handleModalClose() {
                 this.showAddToCart = false;
             },
-          
+
     },
     setup() {
         const onSwiper = (swiper) => {
