@@ -9,11 +9,13 @@
                         <div class="col-lg-6 col-sm-6 col-12">
                             <div class="header-top-dropdown">
                                 <div class="dropdown">
-                                    <button class="dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        English
+                                    <button class="dropdown-toggle" @click="toggleDropdown()" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                       {{selectedLanguage}}
                                     </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">English</a></li>
+                                    <ul :class="['dropdown-menu', { 'show': isOpen }]">
+                                        <li v-for="(language, index) in languages" :key="index">
+                                            <a class="dropdown-item" @click="selectLanguage(language)">{{ language }}</a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -157,6 +159,9 @@ export default {
     data(){
         return{
             catgories:{},
+            selectedLanguage: 'English',
+            isOpen: false,
+            languages: ['English','Finnish']
         }
     },
     components: {
@@ -175,8 +180,14 @@ export default {
                 console.log(err);
             })
         },
-
-
+        toggleDropdown() {
+            this.isOpen = !this.isOpen;
+        },
+        selectLanguage(language) {
+            this.selectedLanguage = language;
+            this.isOpen = false;
+        // You can add more logic here if needed
+        }
     }
 }
 </script>

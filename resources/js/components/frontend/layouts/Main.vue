@@ -1,18 +1,21 @@
 <template>
     <div>
-        <Header ></Header>
+        <AppHeader></AppHeader>
         <main class="main-wrapper">
               <router-view></router-view>
         </main>
-        <Footer></Footer>
+        <AppFooter></AppFooter>
     </div>
 </template>
 <script>
 
-import Header from '../../../components/frontend/layouts/header.vue';
-import Footer from '../../../components/frontend/layouts/footers.vue';
+import AppHeader from '../../../components/frontend/layouts/header.vue';
+import AppFooter from '../../../components/frontend/layouts/footers.vue'; // Changed Footer to AppFooter
 export default {
   name: 'Main',
-  components:{Header, Footer}
+  components: {
+    AppHeader,
+    AppFooter // Changed Footer to AppFooter
+  }
 }
 </script>
