@@ -148,7 +148,7 @@
                           <br>
                           <ul class="product-action d-flex-center mb--0">
                             <li class="add-to-cart">
-                              <a href="cart.html" class="axil-btn btn-bg-primary">Add to Cart for {{orderPrice ? '$' : ''}} {{orderPrice}}</a>
+                              <a href="javascript:void(0)" class="axil-btn btn-bg-primary" @click="addTocart">Add to Cart for {{orderPrice ? '$' : ''}} {{orderPrice}}</a>
                             </li>
                           </ul>
 
@@ -183,6 +183,7 @@ export default {
             tooltipVisible: false,
             quantity: 1,
             orderPrice: null,
+            cart: [],
         }
     },
     components: {
@@ -195,6 +196,7 @@ export default {
     },
     mounted(){
         // console.log(this.productSize);
+        this.loadCartFromLocalStorage();
     },
     methods: {
        handleButtonClick() {
@@ -251,22 +253,68 @@ export default {
               selectedSize = elements[i].value;
           }
         }
+        if(!selectedSize) return;
 
+        var orderPrice = this.productSizes[selectedSize].price * this.quantity;
         var elements = document.getElementsByClassName('topingsItem');
-        var selectedTopings = [];
         for(var i=0; i<elements.length; i++){
-          console.log(elements);
           if(elements[i].checked){
-              selectedTopings.push(elements[i].value);
+              orderPrice += this.productTopings[elements[i].value].price;
           }
         }
 
-        var orderPrice = this.productSizes[selectedSize].price * this.quantity;
-        for(var i=0; i<selectedTopings.length; i++){
-          orderPrice += this.productTopings[selectedTopings[i]].price;
-        }
         this.orderPrice = orderPrice;
         
+      },
+      addTocart(){
+          var elements = document.getElementsByClassName('sizeRadio');
+          var selectedSize = null;
+          for(var i=0; i<elements.length; i++){
+            if(elements[i].checked){
+                selectedSize = elements[i].value;
+            }
+          }
+
+          var elements = document.getElementsByClassName('topingsItem');
+          var topings = [];
+          for(var i=0; i<elements.length; i++){
+            if(elements[i].checked){
+                topings.push(this.productTopings[elements[i].value]);
+            }
+          }
+
+          if(selectedSize && this.orderPrice && this.productData && this.quantity){
+              var item = {
+                  quantity: this.quantity,
+                  product: this.productData,
+                  size: this.productSizes[selectedSize],
+                  topings: topings,
+                  totalPrice: this.orderPrice
+              };
+
+              if (!this.cart[this.productData.id]) {
+                  this.cart[this.productData.id] = {};
+              }
+              if (!this.cart[this.productData.id][this.productSizes[selectedSize].id]) {
+                  this.cart[this.productData.id][this.productSizes[selectedSize].id] = item;
+              } else {
+                  var existingItem = this.cart[this.productData.id][this.productSizes[selectedSize].id];
+                  existingItem.quantity += item.quantity;
+                  existingItem.topings = [...existingItem.topings, ...topings];
+                  existingItem.totalPrice += item.totalPrice;
+                  this.cart[this.productData.id][this.productSizes[selectedSize].id] = existingItem;
+              }
+              this.updateLocalStorage();
+          }
+      },
+      updateLocalStorage() {
+          localStorage.setItem('cart', JSON.stringify(this.cart));
+          this.loadCartFromLocalStorage();
+      },
+      loadCartFromLocalStorage() {
+          const savedCart = localStorage.getItem('cart');
+          this.cart = savedCart ? JSON.parse(savedCart) : [];
+          console.log(this.cart);
       }
 
     }
