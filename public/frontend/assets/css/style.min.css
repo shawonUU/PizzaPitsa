@@ -630,13 +630,13 @@ h6.b3 {
     line-height: var(--line-height-b3)
 }
 
-p {
+/* p {
     font-size: var(--font-size-b1);
     line-height: var(--line-height-b1);
     font-weight: var(--p-regular);
-    color: var(--color-body);
+    color: #fff;
     margin: 0 0 30px
-}
+} */
 
 p.has-large-font-size {
     line-height: 1.5;
