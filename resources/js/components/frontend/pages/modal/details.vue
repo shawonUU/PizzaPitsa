@@ -10,12 +10,12 @@
 
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="handleButtonClick">
-            <i class="far fa-times"></i>
-          </button>
-        </div>
-        <div class="modal-body">
+        <div class="modal-body" style="padding-top: 0px; padding-right: 13px;">
+          <div class="d-flex justify-content-end pt-3">
+              <button type="button" class="btn-close" style="height:5px; width:5px; margin-bottom: 15px;" data-bs-dismiss="modal" aria-label="Close" @click="handleButtonClick">
+                <!-- <i class="far fa-times" style="height:10px; width:10px;"></i> -->
+            </button>
+          </div>
           <div class="single-product-thumb">
             <div class="row">
               <div class="col-lg-7">
@@ -79,7 +79,7 @@
 
                     <div class="d-flex justify-content-between">
                       <div>
-                          <h3 class="product-title">{{productData.name}}</h3>
+                          <h3 class="product-title m-0 p-0">{{productData.name}}</h3>
                       </div>
                       <div>
 
@@ -88,9 +88,9 @@
                         <div class="tooltipr">
                           <i class="fas fa-info-circle"></i>
                           <!-- <div class="tooltipr-text"  v-html="productData.description"></div> -->
-                           <p  :class="['tooltipItem', 'tooltipr-text']"  v-html="productData.description" ></p>
+                           <p style="color:#fff" :class="['tooltipItem', 'tooltipr-text']"  v-html="productData.description" ></p>
                           <template  v-for="(productSize, sizeId) in productSizes" :key="sizeId" >
-                            <p  style="color: rgb(255, 255, 255); margin-bottom: 20px;" :class="['tooltipItem', 'tooltipr-text', sizeId != 0 ? 'd-none' : 'd-none']"  :id="'tooltipItem'+sizeId" v-html="productSize.description" ></p>
+                            <p  style="color: #fff !important; margin-bottom: 20px;" :class="['tooltipItem', 'tooltipr-text', sizeId != 0 ? 'd-none' : 'd-none']"  :id="'tooltipItem'+sizeId" v-html="productSize.description" ></p>
                           </template>
                         </div>
                       </div>
@@ -99,7 +99,7 @@
                     <!-- <span class="sizeWisePrice price-amount">${{ maxMin[0] }} - ${{maxMin[1]}}</span> -->
                     <span v-for="(productSize, sizeId) in productSizes" :key="sizeId" :id="'sizeWisePrice'+sizeId" class="sizeWisePrice d-none price-amount">${{productSize.price}}</span>
 
-                    <p v-html="productData.description" class="description"></p>
+                    <p v-html="productData.description" class="description m-0 p-0"></p>
 
                     
                     <div class="product-variations-wrapper">
@@ -125,11 +125,11 @@
 
 
                     <div class="row">
-                      <div class="col-4 p-2" v-for="(productToping, topingId) in productTopings" :key="topingId">
-                          <div :id="'topingDiv'+topingId" @click="clickOnTopings(topingId)" class="topings text-center shadow-lg  mb-3 bg-white py-3" style="width: 100%; border-radius: 10%; cursor:pointer;">
-                              <img class="p-2" :src="'/frontend/toping_images/' + productToping.image" alt="" style="width: 70px; ">
-                              <p class="text-center m-0">{{productToping.name}}</p><br>
-                              <p class="text-center m-0">${{productToping.price}}</p>
+                      <div class="col-3 p-2" v-for="(productToping, topingId) in productTopings" :key="topingId">
+                          <div :id="'topingDiv'+topingId" @click="clickOnTopings(topingId)" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border-radius: 10%; cursor:pointer;">
+                              <img class="p-2" :src="'/frontend/toping_images/' + productToping.image" alt="" style="width: 65px; ">
+                              <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">{{productToping.name}}</p>
+                              <p class="text-center m-0" style="font-size:12px;"><b>${{productToping.price}}</b></p>
                               <input :id="'topingsItem'+topingId" :value="productToping.id" name="topingsItem" class="topingsItem" type="checkbox" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
                           </div>
                       </div>
@@ -148,9 +148,7 @@
                           <br>
                           <ul class="product-action d-flex-center mb--0">
                             <li class="add-to-cart">
-                              <a href="cart.html" class="axil-btn btn-bg-primary"
-                                >Add to Cart for ${{orderPrice}}</a
-                              >
+                              <a href="cart.html" class="axil-btn btn-bg-primary">Add to Cart for {{orderPrice ? '$' : ''}} {{orderPrice}}</a>
                             </li>
                           </ul>
 
@@ -298,7 +296,7 @@ export default {
             z-index: 9;
             top: 100%;
             left: 0%;
-            margin-left: -178px;
+            margin-left: -190px;
             opacity: 0;
             transition: opacity 0.3s;
             font: 500 12px / 13px Dodo, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", !important;
@@ -308,7 +306,7 @@ export default {
             content: '';
             position: absolute;
             top: -9px; /* Adjust this value to control the distance between the tooltip and the triggering element */
-            left: 85%;
+            left: 90%;
             border-width: 5px;
             border-style: solid;
             border-color: transparent transparent #333 transparent;
