@@ -9256,7 +9256,7 @@ button.axil-btn.btn-size-md i {
 .mainmenu {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     justify-content: center;
     margin: -14px -24px
 }

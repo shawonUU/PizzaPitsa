@@ -260,9 +260,7 @@ export default {
     vertical-align: -2px;
     margin-left: 2px;
 }
-.guZDAe .left > :nth-child(n) {
-    margin-right: 80px;
-}
+
 .fpBABM {
     position: relative;
 }
