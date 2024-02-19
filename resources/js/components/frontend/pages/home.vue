@@ -1063,7 +1063,7 @@
                     </div>
                 </div>
             </div> -->
-            <Details :productData="product" :productSizes="productSizes" v-if="showAddToCart" @closeModal="handleModalClose"></Details>
+            <Details :productData="product" :productSizes="productSizes" :productTopings="productTopings" maxMin:="maxMin" v-if="showAddToCart" @closeModal="handleModalClose"></Details>
         </main>
     </div>
      <!-- <div class="input-group">
@@ -1092,6 +1092,8 @@ export default {
             products:{},
             product:null,
             productSizes:null,
+            productTopings:null,
+            maxMin:null,
             showAddToCart:false
         }
     },
@@ -1121,6 +1123,9 @@ export default {
                         this.showAddToCart = true;
                         this.product = res.data[0];
                         this.productSizes = res.data[1];
+                        this.productTopings =  res.data[2];
+                        this.maxMin =  res.data[3];
+                        console.log(this.maxMin);
                     }
                 })
                 .catch((err) => {
