@@ -18,7 +18,7 @@
         <div class="modal-body">
           <div class="single-product-thumb">
             <div class="row">
-              <div class="col-lg-7 mb--40">
+              <div class="col-lg-7">
                 <div class="row">
                   <div class="col-lg-10 order-lg-2">
                     <div
@@ -128,8 +128,8 @@
                       <div class="col-4 p-2" v-for="(productToping, topingId) in productTopings" :key="topingId">
                           <div :id="'topingDiv'+topingId" @click="clickOnTopings(topingId)" class="topings text-center shadow-lg  mb-3 bg-white py-3" style="width: 100%; border-radius: 10%; cursor:pointer;">
                               <img class="p-2" :src="'/frontend/toping_images/' + productToping.image" alt="" style="width: 70px; ">
-                              <p class="text-center mt-1">{{productToping.name}}</p>
-                              <p class="text-center mt-5">${{productToping.price}}</p>
+                              <p class="text-center m-0">{{productToping.name}}</p><br>
+                              <p class="text-center m-0">${{productToping.price}}</p>
                               <input :id="'topingsItem'+topingId" :value="productToping.id" name="topingsItem" class="topingsItem" type="checkbox" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
                           </div>
                       </div>
@@ -149,7 +149,7 @@
                           <ul class="product-action d-flex-center mb--0">
                             <li class="add-to-cart">
                               <a href="cart.html" class="axil-btn btn-bg-primary"
-                                >Add to Cart</a
+                                >Add to Cart for ${{orderPrice}}</a
                               >
                             </li>
                           </ul>
@@ -184,6 +184,7 @@ export default {
             catgories:{},
             tooltipVisible: false,
             quantity: 1,
+            orderPrice: null,
         }
     },
     components: {
@@ -261,6 +262,12 @@ export default {
               selectedTopings.push(elements[i].value);
           }
         }
+
+        var orderPrice = this.productSizes[selectedSize].price * this.quantity;
+        for(var i=0; i<selectedTopings.length; i++){
+          orderPrice += this.productTopings[selectedTopings[i]].price;
+        }
+        this.orderPrice = orderPrice;
         
       }
 
