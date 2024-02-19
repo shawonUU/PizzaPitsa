@@ -1064,6 +1064,57 @@
                 </div>
             </div> -->
             <Details :productData="product" :productSizes="productSizes" :productTopings="productTopings" maxMin:="maxMin" v-if="showAddToCart" @closeModal="handleModalClose"></Details>
+            <div class="cart-dropdown" id="cart-dropdown">
+                <div class="cart-content-wrap">
+                    <div class="cart-header">
+                        <h2 class="header-title">Cart review</h2>
+                        <button class="cart-close sidebar-close"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="cart-body">
+                        <ul class="cart-item-list">
+                            <template v-for="(productWise, productKey) in cart" :key="productKey">
+                                <template v-for="(sizeWise, sizeKey) in productWise" :key="sizeKey">
+                                     <li class="cart-item">
+                                            <div class="item-img">
+                                                <a href="single-product.html"><img src="assets/images/product/electric/product-01.png" alt="Commodo Blown Lamp"></a>
+                                                <button class="close-btn"><i class="fas fa-times"></i></button>
+                                            </div>
+                                            <div class="item-content">
+                                                <div class="product-rating">
+                                                    <span class="icon">
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                    </span>
+                                                    <span class="rating-number">(64)</span>
+                                                </div>
+                                                <h3 class="item-title"><a href="single-product-3.html">{{sizeWise.product.name}}</a></h3>
+                                                <div class="item-price"><span class="currency-symbol">$</span>155.00</div>
+                                                <div class="pro-qty item-quantity"><span class="dec qtybtn">-</span>
+                                                    <input type="number" class="quantity-input" value="15">
+                                                <span class="inc qtybtn">+</span></div>
+                                            </div>
+                                        </li>
+                                </template>
+                            </template>
+                           
+                           
+                        </ul>
+                    </div>
+                    <div class="cart-footer">
+                        <h3 class="cart-subtotal">
+                            <span class="subtotal-title">Subtotal:</span>
+                            <span class="subtotal-amount">$610.00</span>
+                        </h3>
+                        <div class="group-btn">
+                            <a href="cart.html" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
+                            <a href="checkout.html" class="axil-btn btn-bg-secondary checkout-btn">Checkout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
      <!-- <div class="input-group">
@@ -1094,11 +1145,13 @@ export default {
             productSizes:null,
             productTopings:null,
             maxMin:null,
-            showAddToCart:false
+            showAddToCart:false,
+            cart:[],
         }
     },
     mounted(){
         this.getCategoryWiseProduct();
+        this.loadCartFromLocalStorage();
     },
     methods: {
         getCategoryWiseProduct(){
@@ -1116,8 +1169,7 @@ export default {
                     params: {
                         id: productId
                     }
-                })
-                .then((res) => {
+            }).then((res) => {
                     // console.log();
                     if (res.data[0]) {
                         this.showAddToCart = true;
@@ -1127,15 +1179,19 @@ export default {
                         this.maxMin =  res.data[3];
                         console.log(this.maxMin);
                     }
-                })
-                .catch((err) => {
+            }).catch((err) => {
                     console.log(err);
-                });
-            },
-            handleModalClose() {
-                this.showAddToCart = false;
-            },
-
+            });
+        },
+        handleModalClose() {
+            this.showAddToCart = false;
+        },
+        
+        loadCartFromLocalStorage() {
+            const savedCart = localStorage.getItem('cart');
+            this.cart = savedCart ? JSON.parse(savedCart) : [];
+            console.log(this.cart);
+        }
     },
     setup() {
         const onSwiper = (swiper) => {

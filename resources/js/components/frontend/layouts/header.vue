@@ -71,7 +71,7 @@
                         </span>
                         <div class="header-action">
                             <ul class="action-list">
-                                <li class="shopping-cart">
+                                <li class="shopping-cart" @click="handleCartClick">
                                     <a href="#" class="cart-dropdown-btn">
                                         <span class="cart-count">3</span>
                                         <i class="flaticon-shopping-cart" style="color:#fff"></i>
@@ -155,7 +155,7 @@
 <script>
 import axios from 'axios';
 export default {
-    name: 'header',
+    name: 'AppHeader',
     data(){
         return{
             catgories:{},
@@ -187,6 +187,10 @@ export default {
             this.selectedLanguage = language;
             this.isOpen = false;
         // You can add more logic here if needed
+        },
+        handleCartClick() {
+
+        this.$emit('openCartModal'); // Emitting event when cart icon is clicked
         }
     }
 }

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <AppHeader></AppHeader>
+        <AppHeader  @openCartModal="handleCartModal"></AppHeader>
         <main class="main-wrapper">
               <router-view></router-view>
         </main>
@@ -16,6 +16,15 @@ export default {
   components: {
     AppHeader,
     AppFooter // Changed Footer to AppFooter
+  },
+  mounted(){
+
+    },
+  methods: {
+    handleCartModal() {
+      // Add your logic here to affect home.vue or perform any necessary action
+      console.log('Cart modal opened from header.vue');
+    }
   }
 }
 </script>
