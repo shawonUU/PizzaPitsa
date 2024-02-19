@@ -120,30 +120,39 @@
                       <!-- End Product Variation  -->
                     </div>
 
+
+                    <div class="row">
+                      <div class="col-4 p-2" v-for="(productToping, topingId) in productTopings" :key="topingId">
+                          <div :id="'topingDiv'+topingId" @click="clickOnTopings(topingId)" class="topings text-center shadow-lg  mb-3 bg-white py-3" style="width: 100%; border-radius: 10%; cursor:pointer;">
+                              <img class="p-2" :src="'/frontend/toping_images/' + productToping.image" alt="" style="width: 70px; ">
+                              <p class="text-center mt-1">{{productToping.name}}</p>
+                              <p class="text-center mt-5">${{productToping.price}}</p>
+                              <input :id="'topingsItem'+topingId" type="checkbox" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">ssss
+                          </div>
+                      </div>
+                    </div>
+
                     <!-- Start Product Action Wrapper  -->
                     <div class="product-action-wrapper d-flex-center">
-                      <!-- Start Quentity Action  -->
-                     <div class="pro-qty">
-                        <span class="dec qtybtn" @click="decrementQuantity">-</span
-                        ><input type="text" :value="quantity" /><span class="inc qtybtn" @click="incrementQuantity">+</span>
-                      </div>
-                      <!-- End Quentity Action  -->
+                          <!-- Start Quentity Action  -->
+                        <div class="pro-qty">
+                            <span class="dec qtybtn" @click="decrementQuantity">-</span
+                            ><input type="text" :value="quantity" /><span class="inc qtybtn" @click="incrementQuantity">+</span>
+                          </div>
+                          <!-- End Quentity Action  -->
 
-                      <!-- Start Product Action  -->
-                      <br>
-                      <ul class="product-action d-flex-center mb--0">
-                        <li class="add-to-cart">
-                          <a href="cart.html" class="axil-btn btn-bg-primary"
-                            >Add to Cart</a
-                          >
-                        </li>
-                        <!-- <li class="wishlist">
-                          <a href="wishlist.html" class="axil-btn wishlist-btn"
-                            ><i class="far fa-heart"></i
-                          ></a>
-                        </li> -->
-                      </ul>
-                      <!-- End Product Action  -->
+                          <!-- Start Product Action  -->
+                          <br>
+                          <ul class="product-action d-flex-center mb--0">
+                            <li class="add-to-cart">
+                              <a href="cart.html" class="axil-btn btn-bg-primary"
+                                >Add to Cart</a
+                              >
+                            </li>
+                          </ul>
+
+
+                          
                     </div>
                     <!-- End Product Action Wrapper  -->
                   </div>
@@ -206,6 +215,18 @@ export default {
       incrementQuantity() {
         // You can add any validation or constraints here
         this.quantity++;
+      },
+      clickOnTopings(id){
+        // alert('');
+        if(document.getElementById('topingsItem'+id).checked){
+            document.getElementById('topingDiv'+id).style.border="none";
+            document.getElementById('topingsItem'+id).checked = false;
+            // console.log(document.getElementById('topingDiv'+id));
+        }else{
+            document.getElementById('topingDiv'+id).style.border="1px solid red";
+            document.getElementById('topingsItem'+id).checked = true;
+        }
+         
       }
 
     }
@@ -254,5 +275,9 @@ export default {
         .tooltipr:hover .tooltipr-text {
             visibility: visible;
             opacity: 1;
+        }
+        .topings:active{
+          /* border: 1px solid red; */
+          /* border-color: red; */
         }
 </style>
