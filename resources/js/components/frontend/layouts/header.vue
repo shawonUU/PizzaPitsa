@@ -63,7 +63,7 @@
                         </ul>
                     </div>
                     <div class="right">
-                        <a class="sc-2c0aw7-0 llYDFl sc-1of5u0p-2 jzJZpw" href="/en/tallinn/loyaltyprogram" data-active="false" data-type="primary" data-size="normal">
+                        <a class="sc-2c0aw7-0 llYDFl sc-1of5u0p-2 jzJZpw" href="javascript:void(0)" data-active="false" data-type="primary" data-size="normal">
                         <span class="icon">
                             <svg fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M11 1a1 1 0 011 1v2a8 8 0 110 16v2a1 1 0 11-2 0v-2H6.6c-.56 0-.84 0-1.05-.1a1 1 0 01-.44-.45C5 19.24 5 18.96 5 18.4V5.6c0-.56 0-.84.1-1.05a1 1 0 01.45-.44C5.76 4 6.04 4 6.6 4H10V2a1 1 0 011-1zm1 17a6 6 0 000-12H7v12h5z" fill="#000"></path>
@@ -163,7 +163,14 @@ export default {
             isOpen: false,
             languages: ['English','Finnish'],
             cartItemCount:0,
+            testEvent: 'String to change'
         }
+    },
+    created (){
+        this.emitter.on('my-event', (evt) => {
+        this.testEvent = evt.eventContent;
+        this.loadCartFromLocalStorage();
+        })
     },
     components: {
 
@@ -183,7 +190,7 @@ export default {
                     const productSizes = this.cart[productId];
                     for (const sizeId in productSizes) {
                         if (productSizes.hasOwnProperty(sizeId)) {
-                            console.log('fff');
+                            // console.log('fff');
                             this.cartItemCount++;
                         }
                     }
@@ -210,7 +217,9 @@ export default {
         handleCartClick() {
 
         this.$emit('openCartModal'); // Emitting event when cart icon is clicked
-        }
+        },
+      
+
     }
 }
 </script>

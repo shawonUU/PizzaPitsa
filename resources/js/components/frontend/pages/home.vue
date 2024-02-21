@@ -1073,7 +1073,7 @@
                     <div class="cart-body">
 
                         <table class="m-0 p-0">
-                            <bbody>
+                            <tbody>
                                 <tr>
                                     <th colspan="2">Item</th>
                                     <th style="text-align:center;">Qty</th>
@@ -1128,7 +1128,7 @@
                                         </template>
                                     </template>
                                 </template>
-                            </bbody>
+                            </tbody>
                         </table>
 
                     </div>
@@ -1157,6 +1157,7 @@
 
 </template>
 <script>
+import axios from 'axios';
 import {Swiper,SwiperSlide} from 'swiper/vue';
 import Details from '../../../components/frontend/pages/modal/details.vue';
 import 'swiper/css';
@@ -1178,6 +1179,12 @@ export default {
             subTotal:0,
             cart:[],
         }
+    },
+    created (){
+        this.emitter.on('my-event', (evt) => {
+        this.testEvent = evt.eventContent;
+        this.loadCartFromLocalStorage();
+    })
     },
     mounted(){
         this.getCategoryWiseProduct();
@@ -1310,7 +1317,15 @@ export default {
             this.cart = cart;
             localStorage.setItem('cart', JSON.stringify(this.cart));
             this.loadCartFromLocalStorage();
-        }
+            this.emitMyEvent();
+
+        },
+
+        emitMyEvent() {
+
+          this.emitter.emit('my-event', {'eventContent': 'String changed'})
+
+      }
     },
     setup() {
         const onSwiper = (swiper) => {

@@ -153,6 +153,7 @@
                           <ul class="product-action d-flex-center mb--0">
                             <li class="add-to-cart">
                               <a href="javascript:void(0)" class="axil-btn btn-bg-primary" @click="addTocart">Add to Cart for {{orderPrice ? '$' : ''}} {{orderPrice}}</a>
+                              <button @click="emitMyEvent">Send Event to Header</button>
                             </li>
                           </ul>
 
@@ -205,8 +206,7 @@ export default {
         this.loadCartFromLocalStorage();
     },
     methods: {
-       handleButtonClick() {
-        // Emit a custom event named 'closeModal' when the button is clicked
+       handleButtonClick() {       
         this.$emit('closeModal');
       },
       clickOnSize(sizeid){
@@ -333,8 +333,12 @@ export default {
 
                    this.cart[this.productData.id][this.productSizes[selectedSize].id] = existingItem;
                    this.showToast('Added to cart.');
+                   this.handleButtonClick();
+                   this.emitMyEvent();
+                   
               }
               this.updateLocalStorage();
+
           }
       },
       updateLocalStorage() {
@@ -354,7 +358,12 @@ export default {
        setTimeout(() => {
          this.isVisible = false;
        }, 3000);
-    }
+    },
+    emitMyEvent() {
+
+          this.emitter.emit('my-event', {'eventContent': 'String changed'})
+
+      }
 
     }
 }
