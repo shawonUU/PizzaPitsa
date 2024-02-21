@@ -72,8 +72,8 @@
                         <div class="header-action">
                             <ul class="action-list">
                                 <li class="shopping-cart" @click="handleCartClick">
-                                    <a href="#" class="cart-dropdown-btn">
-                                        <span class="cart-count">3</span>
+                                    <a href="javascript:void(0)" class="cart-dropdown-btn">
+                                        <span class="cart-count">{{ cartItemCount }}</span>
                                         <i class="flaticon-shopping-cart" style="color:#fff"></i>
                                     </a>
                                 </li>
@@ -161,7 +161,8 @@ export default {
             catgories:{},
             selectedLanguage: 'English',
             isOpen: false,
-            languages: ['English','Finnish']
+            languages: ['English','Finnish'],
+            cartItemCount:0,
         }
     },
     components: {
@@ -169,8 +170,26 @@ export default {
     },
     mounted(){
         this.getCategories();
+        this.loadCartFromLocalStorage();
     },
     methods: {
+        loadCartFromLocalStorage() {
+            // localStorage.setItem('cart', []);return;
+            const savedCart = localStorage.getItem('cart');
+            this.cart = savedCart ? JSON.parse(savedCart) : [];
+            this.cartItemCount = 0;
+            for (const productId in this.cart) {
+                if (this.cart.hasOwnProperty(productId)) {
+                    const productSizes = this.cart[productId];
+                    for (const sizeId in productSizes) {
+                        if (productSizes.hasOwnProperty(sizeId)) {
+                            console.log('fff');
+                            this.cartItemCount++;
+                        }
+                    }
+                }
+            }
+        },
         getCategories(){
             axios.get('get-categories')
             .then((res)=>{

@@ -76,8 +76,12 @@
                     </div> -->
 
 
+                    <div v-if="isVisible" class="toast-container">
+                       <div class="toast">gffff{{ message }}</div>
+                    </div>
 
                     <div class="d-flex justify-content-between">
+                        
                       <div>
                           <h3 class="product-title m-0 p-0">{{productData.name}}</h3>
                       </div>
@@ -101,21 +105,21 @@
 
                     <p v-html="productData.description" class="description m-0 p-0"></p>
 
-                    
+
                     <div class="product-variations-wrapper">
                       <!-- Start Product Variation  -->
 
                       <!-- End Product Variation  -->
 
                       <!-- Start Product Variation  -->
-                      
+
                       <div class="product-variation">
                         <h6 class="title">Size:</h6>
                         <ul class="range-variant">
                           <li v-for="(productSize, sizeId) in productSizes" :key="sizeId" @click="clickOnSize(sizeId)">
                               <div class="input-group">
                                   <input style="" class="sizeRadio" type="radio" :id="'sizeRadio'+productSize.id"  name="sizeRadio" :value="productSize.id">
-                                  <label style="display:none !important;" :for="'sizeRadio'+productSize.id"></label>{{productSize.name}} 
+                                  <label style="display:none !important;" :for="'sizeRadio'+productSize.id"></label>{{productSize.name}}
                               </div>
                           </li>
                         </ul>
@@ -140,7 +144,7 @@
                           <!-- Start Quentity Action  -->
                         <div class="pro-qty">
                             <span class="dec qtybtn" @click="decrementQuantity">-</span
-                            ><input type="text" :value="quantity" /><span class="inc qtybtn" @click="incrementQuantity">+</span>
+                            ><input type="number" :value="quantity" /><span class="inc qtybtn" @click="incrementQuantity">+</span>
                           </div>
                           <!-- End Quentity Action  -->
 
@@ -153,7 +157,7 @@
                           </ul>
 
 
-                          
+
                     </div>
                     <!-- End Product Action Wrapper  -->
                   </div>
@@ -183,6 +187,8 @@ export default {
             tooltipVisible: false,
             quantity: 1,
             orderPrice: null,
+            isVisible:false,
+            message:'',
             cart: [],
         }
     },
@@ -242,7 +248,7 @@ export default {
         }else{
             document.getElementById('topingDiv'+id).style.border="1px solid red";
             document.getElementById('topingsItem'+id).checked = true;
-        } 
+        }
         this.generatePrice();
       },
       generatePrice(){
@@ -264,7 +270,7 @@ export default {
         }
 
         this.orderPrice = orderPrice;
-        
+
       },
       addTocart(){
           var elements = document.getElementsByClassName('sizeRadio');
@@ -283,26 +289,50 @@ export default {
             }
           }
 
-          if(selectedSize && this.orderPrice && this.productData && this.quantity){
-              var item = {
-                  quantity: this.quantity,
-                  product: this.productData,
-                  size: this.productSizes[selectedSize],
-                  topings: topings,
-                  totalPrice: this.orderPrice
-              };
+          if(!selectedSize){
+            this.showToast('Select Any Size');
+          }
 
-              if (!this.cart[this.productData.id]) {
-                  this.cart[this.productData.id] = {};
-              }
-              if (!this.cart[this.productData.id][this.productSizes[selectedSize].id]) {
-                  this.cart[this.productData.id][this.productSizes[selectedSize].id] = item;
-              } else {
-                  var existingItem = this.cart[this.productData.id][this.productSizes[selectedSize].id];
-                  existingItem.quantity += item.quantity;
-                  existingItem.topings = [...existingItem.topings, ...topings];
-                  existingItem.totalPrice += item.totalPrice;
-                  this.cart[this.productData.id][this.productSizes[selectedSize].id] = existingItem;
+          if(selectedSize && this.orderPrice && this.productData && this.quantity){
+                var item = {
+                    quantity: this.quantity,
+                    product: this.productData,
+                    size: this.productSizes[selectedSize],
+                    topings: topings,
+                    totalPrice: this.orderPrice
+                };
+
+                if (!this.cart[this.productData.id]) {
+                    this.cart[this.productData.id] = {};
+                }
+                if (!this.cart[this.productData.id][this.productSizes[selectedSize].id]) {
+                    this.cart[this.productData.id][this.productSizes[selectedSize].id] = item;
+                } else {
+                    var existingItem = this.cart[this.productData.id][this.productSizes[selectedSize].id];
+                    existingItem.quantity = parseInt(existingItem.quantity);
+                    existingItem.quantity += parseInt(item.quantity);
+
+                    var bindTopings = [];
+                    var exTopings =  existingItem.topings;
+                    for (const i in exTopings) {
+                        if(exTopings[i])bindTopings[exTopings[i].id] = exTopings[i];
+                    }
+
+                    for (const i in topings){
+                        if ( typeof bindTopings[topings[i].id] === 'undefined'){
+                            if(topings[i])bindTopings[topings[i].id] = topings[i];
+                        }
+                    }
+
+                    existingItem.totalPrice = existingItem.quantity * item.size.price;
+                     for (const i in bindTopings) {
+                        existingItem.totalPrice += bindTopings[i].price;
+                    }
+
+                    existingItem.topings = bindTopings;
+
+                   this.cart[this.productData.id][this.productSizes[selectedSize].id] = existingItem;
+                   this.showToast('Added to cart.');
               }
               this.updateLocalStorage();
           }
@@ -315,13 +345,37 @@ export default {
           const savedCart = localStorage.getItem('cart');
           this.cart = savedCart ? JSON.parse(savedCart) : [];
           console.log(this.cart);
-      }
+      },
+     showToast(message) {
+        alert(message);
+        this.message = message;
+        this.isVisible = true;
+
+       setTimeout(() => {
+         this.isVisible = false;
+       }, 3000);
+    }
 
     }
 }
 </script>
 
 <style scoped>
+
+.toast-container {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.toast {
+  background-color: #407cca;
+  color: #000000;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
+
 .modal {
   background-color: #000000ab;
 }

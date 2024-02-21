@@ -1065,33 +1065,77 @@
             </div> -->
             <Details :productData="product" :productSizes="productSizes" :productTopings="productTopings" maxMin:="maxMin" v-if="showAddToCart" @closeModal="handleModalClose"></Details>
             <div class="cart-dropdown" id="cart-dropdown">
-                <div class="cart-content-wrap">
+                <div class="cart-content-wrap" style="padding: 18px 22px !important;">
                     <div class="cart-header">
                         <h2 class="header-title">Cart review</h2>
                         <button class="cart-close sidebar-close"><i class="fas fa-times"></i></button>
                     </div>
                     <div class="cart-body">
-                        <ul class="cart-item-list">
-                            <ul>
-                                <li v-for="(productSizes, productId) in cart" :key="productId">
-                                    <div v-if="cart.hasOwnProperty(productId)">
-                                    <ul>
-                                        <li v-for="(item, sizeId) in productSizes" :key="sizeId">
-                                            <img style="width:40px;" :src="'/frontend/product_images/' + item.product.image" alt="Product Images">
-                                            {{ item.product.name }} ({{ item.size.name }})
-                                        </li>
-                                    </ul>
-                                    </div>
-                                </li>
-                            </ul>
 
+                        <table class="m-0 p-0">
+                            <bbody>
+                                <tr>
+                                    <th colspan="2">Item</th>
+                                    <th style="text-align:center;">Qty</th>
+                                    <th style="text-align:left;">Topings</th>
+                                    <th style="text-align:right;">Amount</th>
+                                    <th style="text-align:right;"></th>
+                                </tr>
+                                <template v-for="(productSizes, productId) in cart" :key="productId">
+                                    <template v-if="cart.hasOwnProperty(productId)">
+                                        <template v-for="(item, sizeId) in productSizes" :key="sizeId">
+                                            <tr>
+                                                <td style="width:10%; padding:0; text-align: center; vertical-align: middle;" >
+                                                    <img  style="display: inline-block; width: 40px;" :src="'/frontend/product_images/' + item.product.image" alt="Product Images">
+                                                </td>
 
-                        </ul>
+                                                <td style="width:30%;">
+                                                    <p style="margin: 0; padding: 0; line-height: 1; text-align:left;"><b>{{ item.product.name }}</b></p>
+                                                    <p style="margin: 0; padding: 0; line-height:1.3; font-size: 14px; text-align:left;">{{ item.size.name }}({{ item.size.price }})</p>
+                                                </td>
+
+                                                <td style="width:25%;">
+                                                    <div class="input-group">
+
+                                                        <div @click="qtyDn(item.product.id+'_'+item.size.id)"  class="input-group-prepend" style="cursor:pointer;">
+                                                            <span class="input-group-text "><b>-</b></span>
+                                                        </div>
+                                                        <input @change="changeQty(item.product.id+'_'+item.size.id)" :id="'qty'+item.product.id+'_'+item.size.id" :value="item.quantity" min="1" type="text" class="form-control" style="text-align:center; font-size: 16px; height: 25px; width:40px; padding: 0px;" aria-label="Amount (to the nearest dollar)">
+                                                        <div @click="qtyUp(item.product.id+'_'+item.size.id)"  class="input-group-append " style="cursor:pointer;">
+                                                            <span class="input-group-text"><b>+</b></span>
+                                                        </div>
+                                                        </div>
+                                                </td>
+
+                                                <td style="width:20%;">
+                                                    <template  v-for="(toping, topingId) in item.topings" :key="topingId">
+                                                        <p style="margin:0; padding:0; font-size:14px;" v-if="toping">{{ toping.name }}({{ toping.price }})</p>
+                                                    </template>
+                                                </td>
+
+                                                <td style="text-align:right;">
+                                                    <span :id="'amount'+item.product.id+'_'+item.size.id">{{ item.totalPrice }}</span>
+                                                </td>
+                                                <td>
+                                                    <i style="cursor:pointer; " @click="removeItem(item.product.id+'_'+item.size.id)" class="fas fa-times"></i>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="6">
+                                                    <hr>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </template>
+                                </template>
+                            </bbody>
+                        </table>
+
                     </div>
                     <div class="cart-footer">
                         <h3 class="cart-subtotal">
                             <span class="subtotal-title">Subtotal:</span>
-                            <span class="subtotal-amount">$610.00</span>
+                            <span class="subtotal-amount">${{ subTotal }}</span>
                         </h3>
                         <div class="group-btn">
                             <a href="cart.html" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
@@ -1131,6 +1175,7 @@ export default {
             productTopings:null,
             maxMin:null,
             showAddToCart:false,
+            subTotal:0,
             cart:[],
         }
     },
@@ -1173,26 +1218,98 @@ export default {
         },
 
         loadCartFromLocalStorage() {
+            // localStorage.setItem('cart', []);return;
             const savedCart = localStorage.getItem('cart');
             this.cart = savedCart ? JSON.parse(savedCart) : [];
 
-            // for (const productId in this.cart) {
-            //     if (this.cart.hasOwnProperty(productId)) {
-            //         const productSizes = this.cart[productId];
-            //         // Loop through product sizes
-            //         for (const sizeId in productSizes) {
-            //             if (productSizes.hasOwnProperty(sizeId)) {
-            //                 const item = productSizes[sizeId];
-            //                 // Access item properties
-            //                 console.log('Quantity:', item.quantity);
-            //                 console.log('Product:', item.product);
-            //                 console.log('Size:', item.size);
-            //                 console.log('Toppings:', item.topings);
-            //                 console.log('Total Price:', item.totalPrice);
-            //             }
-            //         }
-            //     }
-            // }
+
+            this.subTotal = 0;
+            this.cartItemCount = 0;
+            for (const productId in this.cart) {
+                if (this.cart.hasOwnProperty(productId)) {
+                    const productSizes = this.cart[productId];
+                    // Loop through product sizes
+                    for (const sizeId in productSizes) {
+                        if (productSizes.hasOwnProperty(sizeId)) {
+                            const item = productSizes[sizeId];
+                            // Access item properties
+                            // console.log('Quantity:', item.quantity);
+                            // console.log('Product:', item.product);
+                            // console.log('Size:', item.size);
+                            // // console.log('Toppings:', item.topings);
+                            // console.log('Total Price:', item.totalPrice);
+                            
+                            var topings = item.topings;
+                            var topingsPrice = 0;
+                            for (const i in topings) {
+                                if(topings[i])  {
+                                    topingsPrice += topings[i].price;
+                                }
+                            }
+                            this.subTotal += (item.size.price * item.quantity) + topingsPrice;
+                            item.totalPrice = (item.size.price * item.quantity) + topingsPrice;
+
+                        }
+                    }
+                }
+            }
+        },
+        changeQty(id){
+            let parts = id.split('_');
+            var currenValue = document.getElementById('qty'+id).value;
+            if(currenValue<1){
+                currenValue = 1;
+            }
+            document.getElementById('qty'+id).value = currenValue;
+            var cart = this.cart;
+            if (cart[parts[0]] && cart[parts[0]][parts[1]]) {
+                cart[parts[0]][parts[1]].quantity = currenValue;
+                cart[parts[0]][parts[1]].totalPrice = cart[parts[0]][parts[1]].size.price * currenValue;
+            }
+            this.cart = cart;
+            localStorage.setItem('cart', JSON.stringify(this.cart));
+            this.loadCartFromLocalStorage();
+        },
+        qtyDn(id){
+            let parts = id.split('_');
+            var currenValue = document.getElementById('qty'+id).value;
+            if(currenValue>1){
+                currenValue--;
+            }
+            document.getElementById('qty'+id).value = currenValue;
+            var cart = this.cart;
+            if (cart[parts[0]] && cart[parts[0]][parts[1]]) {
+                cart[parts[0]][parts[1]].quantity = currenValue;
+                cart[parts[0]][parts[1]].totalPrice = cart[parts[0]][parts[1]].size.price * currenValue;
+            }
+            this.cart = cart;
+            localStorage.setItem('cart', JSON.stringify(this.cart));
+            this.loadCartFromLocalStorage();
+        },
+        qtyUp(id){
+            let parts = id.split('_');
+            var currenValue = document.getElementById('qty'+id).value;
+            currenValue++;
+            document.getElementById('qty'+id).value = currenValue;
+
+            var cart = this.cart;
+            if (cart[parts[0]] && cart[parts[0]][parts[1]]) {
+                cart[parts[0]][parts[1]].quantity = currenValue;
+                cart[parts[0]][parts[1]].totalPrice = cart[parts[0]][parts[1]].size.price * currenValue;
+            }
+            this.cart = cart;
+            localStorage.setItem('cart', JSON.stringify(this.cart));
+            this.loadCartFromLocalStorage();
+        },
+        removeItem(id){
+            let parts = id.split('_');
+            var cart = this.cart;
+            if (cart[parts[0]] && cart[parts[0]][parts[1]]) {
+                delete cart[parts[0]][parts[1]]
+            }
+            this.cart = cart;
+            localStorage.setItem('cart', JSON.stringify(this.cart));
+            this.loadCartFromLocalStorage();
         }
     },
     setup() {
