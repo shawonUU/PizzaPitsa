@@ -1,15 +1,17 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\ProductMnagementController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\ProductContoller;
-use App\Http\Controllers\Admin\SizeController;
-use App\Http\Controllers\Admin\NutritionController;
-use App\Http\Controllers\Admin\CouponController;
-use App\Http\Controllers\Admin\DelivaryChargeController;
-use App\Http\Controllers\Admin\TopingsController;
 use App\Models\Admin\DelivaryCharge;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\Admin\SizeController;
+use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\ProductContoller;
+use App\Http\Controllers\Admin\TopingsController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\NutritionController;
+use App\Http\Controllers\Admin\DelivaryChargeController;
+use App\Http\Controllers\Admin\ProductMnagementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,3 +59,4 @@ Route::get('get-categories',[CategoryController::class,'getCategories'])->name('
 Route::get('get-products',[ProductContoller::class,'getProducts'])->name('get.products');
 Route::get('get-product-details', [ProductContoller::class, 'getProductDetails']);
 Route::get('check-coupon', [CouponController::class, 'checkCoupon']);
+Route::post('customer-signUp', [CustomerController::class, 'customerSignUp']);
