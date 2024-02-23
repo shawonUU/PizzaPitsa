@@ -81,7 +81,7 @@
                     </div>
 
                     <div class="d-flex justify-content-between">
-                        
+
                       <div>
                           <h3 class="product-title m-0 p-0">{{productData.name}}</h3>
                       </div>
@@ -116,10 +116,11 @@
                       <div class="product-variation">
                         <h6 class="title">Size:</h6>
                         <ul class="range-variant">
-                          <li v-for="(productSize, sizeId) in productSizes" :key="sizeId" @click="clickOnSize(sizeId)">
-                              <div class="input-group">
+                          <li  v-for="(productSize, sizeId) in productSizes" :key="sizeId" @click="clickOnSize(sizeId)" class="sizeRadioBtn" :id="'sizeRadioBtn'+productSize.id" style="padding: 2px; font-size:14px; height:30px; padding: 0 8px; cursor:pointer; margin:0 2px;">
+                              <div class="input-group" style="cursor:pointer;">
                                   <input style="" class="sizeRadio" type="radio" :id="'sizeRadio'+productSize.id"  name="sizeRadio" :value="productSize.id">
-                                  <label style="display:none !important;" :for="'sizeRadio'+productSize.id"></label>{{productSize.name}}
+                                  <label style="display:none !important; cursor:pointer;" :for="'sizeRadio'+productSize.id"></label>
+                                  <span style="cursor:pointer;">{{productSize.name}}</span>
                               </div>
                           </li>
                         </ul>
@@ -206,7 +207,7 @@ export default {
         this.loadCartFromLocalStorage();
     },
     methods: {
-       handleButtonClick() {       
+       handleButtonClick() {
         this.$emit('closeModal');
       },
       clickOnSize(sizeid){
@@ -223,9 +224,17 @@ export default {
             elements[i].classList.add('d-none');
           }
 
+          var elements = document.getElementsByClassName('sizeRadioBtn');
+          for(var i=0; i<elements.length; i++){
+            elements[i].style.border = '2px solid #f6f7fb';
+          }
+
+
+
           document.getElementById('tooltipItem'+sizeid).classList.remove('d-none');
           document.getElementById('sizeImages'+sizeid).classList.remove('d-none');
           document.getElementById('sizeWisePrice'+sizeid).classList.remove('d-none');
+          document.getElementById('sizeRadioBtn'+sizeid).style.border = '1px solid red';
           this.generatePrice();
       },
       decrementQuantity() {
@@ -335,7 +344,7 @@ export default {
                    this.showToast('Added to cart.');
                    this.handleButtonClick();
                    this.emitMyEvent();
-                   
+
               }
               this.updateLocalStorage();
 

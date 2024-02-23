@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Models\Admin\Coupon;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CouponController extends Controller
 {
@@ -55,6 +56,14 @@ class CouponController extends Controller
         $coupon->expires_at = $request->input('expires_at');
         $coupon->update();
         return redirect()->back();
+    }
+
+    public function checkCoupon(Request $request){
+        $couponCode = $request->coupon;
+        $coupon = Coupon::where('code', $couponCode)
+                ->where('expires_at', '>', Carbon::now())
+                ->first();
+        return response()->json( ['coupon'=>$coupon] );
     }
 
 }

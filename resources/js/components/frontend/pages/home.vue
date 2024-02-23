@@ -1064,6 +1064,7 @@
                 </div>
             </div> -->
             <Details :productData="product" :productSizes="productSizes" :productTopings="productTopings" maxMin:="maxMin" v-if="showAddToCart" @closeModal="handleModalClose"></Details>
+            <SignUp  v-if="showSignup" @closeModal="handleSignupModalClose"></SignUp>
             <div class="cart-dropdown" id="cart-dropdown">
                 <div class="cart-content-wrap" style="padding: 18px 22px !important;">
                     <div class="cart-header">
@@ -1074,55 +1075,60 @@
 
                         <table class="m-0 p-0">
                             <tbody>
-                                <tr>
+                                <!-- <tr>
                                     <th colspan="2">Item</th>
                                     <th style="text-align:center;">Qty</th>
-                                    <th style="text-align:left;">Topings</th>
+                                    <th style="text-align:left;">Toping</th>
                                     <th style="text-align:right;">Amount</th>
                                     <th style="text-align:right;"></th>
-                                </tr>
+                                </tr> -->
                                 <template v-for="(productSizes, productId) in cart" :key="productId">
                                     <template v-if="cart.hasOwnProperty(productId)">
                                         <template v-for="(item, sizeId) in productSizes" :key="sizeId">
                                             <tr>
-                                                <td style="width:10%; padding:0; text-align: center; vertical-align: middle;" >
-                                                    <img  style="display: inline-block; width: 40px;" :src="'/frontend/product_images/' + item.product.image" alt="Product Images">
-                                                </td>
-
-                                                <td style="width:30%;">
-                                                    <p style="margin: 0; padding: 0; line-height: 1; text-align:left;"><b>{{ item.product.name }}</b></p>
-                                                    <p style="margin: 0; padding: 0; line-height:1.3; font-size: 14px; text-align:left;">{{ item.size.name }}({{ item.size.price }})</p>
-                                                </td>
-
-                                                <td style="width:25%;">
-                                                    <div class="input-group">
-
-                                                        <div @click="qtyDn(item.product.id+'_'+item.size.id)"  class="input-group-prepend" style="cursor:pointer;">
-                                                            <span class="input-group-text "><b>-</b></span>
-                                                        </div>
-                                                        <input @change="changeQty(item.product.id+'_'+item.size.id)" :id="'qty'+item.product.id+'_'+item.size.id" :value="item.quantity" min="1" type="text" class="form-control" style="text-align:center; font-size: 16px; height: 25px; width:40px; padding: 0px;" aria-label="Amount (to the nearest dollar)">
-                                                        <div @click="qtyUp(item.product.id+'_'+item.size.id)"  class="input-group-append " style="cursor:pointer;">
-                                                            <span class="input-group-text"><b>+</b></span>
-                                                        </div>
-                                                        </div>
-                                                </td>
-
-                                                <td style="width:20%;">
-                                                    <template  v-for="(toping, topingId) in item.topings" :key="topingId">
-                                                        <p style="margin:0; padding:0; font-size:14px;" v-if="toping">{{ toping.name }}({{ toping.price }})</p>
-                                                    </template>
-                                                </td>
-
-                                                <td style="text-align:right;">
-                                                    <span :id="'amount'+item.product.id+'_'+item.size.id">{{ item.totalPrice }}</span>
-                                                </td>
                                                 <td>
-                                                    <i style="cursor:pointer; " @click="removeItem(item.product.id+'_'+item.size.id)" class="fas fa-times"></i>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="6">
-                                                    <hr>
+                                                    <div>
+                                                        <div class="d-flex flex-row bd-highlight mb-3">
+                                                            <div class="p-2 bd-highlight">
+                                                                <img  style="width:80px;" :src="'/frontend/product_images/' + item.product.image" alt="Product Images">
+                                                            </div>
+                                                            <div class="p-2 bd-highlight w-100">
+                                                                <div >
+                                                                    <div class="d-flex bd-highlight" style="line-height:1.3;">
+                                                                        <div class="mr-auto bd-highlight" style="margin-right:auto !important;">
+                                                                            <p style="margin: 0; padding: 0; line-height: 1; text-align:left; width:100% !important;"><b>{{ item.product.name }}</b></p>
+                                                                        </div>
+                                                                        <div class=" bd-highlight">
+                                                                            <i style="cursor:pointer; " @click="removeItem(item.product.id+'_'+item.size.id)" class="fas fa-times"></i>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                                <p style="margin: 0; padding: 0; line-height:1.3; font-size: 14px; text-align:left;">{{ item.size.name }}({{ item.size.price }})</p>
+                                                                <p style=" width:100% !important; line-height:1.3;">
+                                                                    <template  v-for="(toping, topingId) in item.topings" :key="topingId">
+                                                                        <span style="margin:0; padding:0; font-size:12px; padding: 0 2px;" v-if="toping">{{ toping.name }}({{ toping.price }})</span>
+                                                                    </template>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex bd-highlight mb-3" >
+                                                            <div class="mr-auto p-2 bd-highlight" style="margin-right:auto !important;">
+                                                                <div class="input-group">
+                                                                    <div @click="qtyDn(item.product.id+'_'+item.size.id)"  class="input-group-prepend" style="cursor:pointer;">
+                                                                        <span class="input-group-text "><b>-</b></span>
+                                                                    </div>
+                                                                    <input @change="changeQty(item.product.id+'_'+item.size.id)" :id="'qty'+item.product.id+'_'+item.size.id" :value="item.quantity" min="1" type="text" class="form-control" style="text-align:center; font-size: 16px; height: 25px; width:40px; padding: 0px;" aria-label="Amount (to the nearest dollar)">
+                                                                    <div @click="qtyUp(item.product.id+'_'+item.size.id)"  class="input-group-append " style="cursor:pointer;">
+                                                                        <span class="input-group-text"><b>+</b></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="p-2 bd-highlight">
+                                                                <span :id="'amount'+item.product.id+'_'+item.size.id">{{ item.totalPrice }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </template>
@@ -1133,13 +1139,31 @@
 
                     </div>
                     <div class="cart-footer">
-                        <h3 class="cart-subtotal">
+                        <div>
+                            <div class="input-group">
+                                
+                                <input id="coupon" type="text" class="form-control" placeholder="Coupon Code" style="text-align:left; font-size: 16px; height: 25px; width:40px; padding: 0px;" aria-label="Amount (to the nearest dollar)">
+                                <div @click="applyCoupon()" class="input-group-append " style="cursor:pointer;">
+                                    <span class="input-group-text">Apply</span>
+                                </div>
+                            </div>
+                            <p v-if="isCouponNotMatched" style="color: red; font-size:12px;">Coupon code not matched</p>
+                        </div><br>    
+                        <p class="cart-subtotal m-0">
                             <span class="subtotal-title">Subtotal:</span>
                             <span class="subtotal-amount">${{ subTotal }}</span>
-                        </h3>
+                        </p>
+                        <p class="cart-subtotal m-0" v-if="isDiscount">
+                            <span class="subtotal-title">Discount:</span>
+                            <span class="subtotal-amount">{{ showDiscount }}</span>
+                        </p>
+                         <p class="cart-subtotal m-0">
+                            <span class="subtotal-title">GrandTotal:</span>
+                            <span class="subtotal-amount">${{ grandTotal }}</span>
+                        </p>
                         <div class="group-btn">
-                            <a href="cart.html" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
-                            <a href="checkout.html" class="axil-btn btn-bg-secondary checkout-btn">Checkout</a>
+                            <a href="javascript:void(0)" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
+                            <a href="javascript:void(0)" @click="checkout()" class="axil-btn btn-bg-secondary checkout-btn">Checkout</a>
                         </div>
                     </div>
                 </div>
@@ -1160,13 +1184,15 @@
 import axios from 'axios';
 import {Swiper,SwiperSlide} from 'swiper/vue';
 import Details from '../../../components/frontend/pages/modal/details.vue';
+import SignUp from '../../../components/frontend/pages/modal/signup.vue';
 import 'swiper/css';
 export default {
     name: 'home',
     components: {
         Swiper,
         SwiperSlide,
-        Details
+        Details,
+        SignUp,
     },
      data(){
         return{
@@ -1176,8 +1202,14 @@ export default {
             productTopings:null,
             maxMin:null,
             showAddToCart:false,
+            showSignup:false,
             subTotal:0,
+            grandTotal:0,
             cart:[],
+            coupon:null,
+            isCouponNotMatched:false,
+            isDiscount:false,
+            showDiscount:'',
         }
     },
     created (){
@@ -1223,6 +1255,9 @@ export default {
         handleModalClose() {
             this.showAddToCart = false;
         },
+        handleSignupModalClose(){
+            this.showSignup = false;
+        },
 
         loadCartFromLocalStorage() {
             // localStorage.setItem('cart', []);return;
@@ -1245,7 +1280,7 @@ export default {
                             // console.log('Size:', item.size);
                             // // console.log('Toppings:', item.topings);
                             // console.log('Total Price:', item.totalPrice);
-                            
+
                             var topings = item.topings;
                             var topingsPrice = 0;
                             for (const i in topings) {
@@ -1259,6 +1294,23 @@ export default {
                         }
                     }
                 }
+            }
+            this.grandTotal =  this.subTotal;
+
+            this.isDiscount = false;
+            if(this.coupon){
+                this.isDiscount = true;
+                var coupon = this.coupon;
+                if(coupon.discount_type){
+                    this.showDiscount = coupon.discount + '%';
+                    this.grandTotal -= this.grandTotal*(coupon.discount/100);
+                }else{
+                    this.showDiscount = '$'+coupon.discount;
+                    this.grandTotal -= coupon.discount;
+                }
+
+                
+
             }
         },
         changeQty(id){
@@ -1320,12 +1372,41 @@ export default {
             this.emitMyEvent();
 
         },
-
         emitMyEvent() {
-
           this.emitter.emit('my-event', {'eventContent': 'String changed'})
+        },
+        applyCoupon(){
+            var coupon = document.getElementById('coupon').value.trim();
+            if(coupon != ""){
+                axios.get('check-coupon', {
+                    params: {
+                        coupon: coupon,
+                    }
+                })
+                .then((res)=>{
+                    if(res.data['coupon']){
+                        this.coupon = res.data['coupon'];
+                        this.isCouponNotMatched = false;
+                        console.log(this.coupon);
+                        this.isDiscount = true;
+                    }else{
+                        this.coupon = null;
+                        this.isCouponNotMatched = true;
+                        this.isDiscount = false;
+                    }
+                    this.loadCartFromLocalStorage();
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+            }
+            
+        },
+        checkout(){
+            console.log('dfg');
+            this.showSignup = true;
+        }
 
-      }
     },
     setup() {
         const onSwiper = (swiper) => {
