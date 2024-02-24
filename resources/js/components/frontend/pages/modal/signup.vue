@@ -168,6 +168,8 @@
                     this.signInSection = false;
                     this.signUpSection = false;
                     this.verificationSection = true;
+                    this.email = email;
+                    this.password = password;
                 }else{
                     this.signUpDataError = res.data.message;
                 }

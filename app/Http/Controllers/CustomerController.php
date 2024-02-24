@@ -45,7 +45,6 @@ class CustomerController extends Controller
         $response = [
             'success' => true,
             'message' => 'Successfully Registered',
-            'user' => $user,
         ];
 
         return response()->json($response);
