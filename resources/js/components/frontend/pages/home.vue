@@ -210,6 +210,7 @@
                                         </h5>
                                         <div class="product-price-variant">
                                             <!-- Show min_price in old-price div -->
+                                            <span class="price current-price">From</span>
                                             <span v-if="product.calculated_offer_price" class="price old-price">{{ baseCurrencySymbol }}{{ product.min_price }}</span>
                                             <!-- Display calculated_offer_price in current-price div -->
                                             <span v-else class="price current-price">{{ baseCurrencySymbol }}{{ product.min_price }}</span>
@@ -218,7 +219,7 @@
                                         </div>      
                                         <ul class="cart-action">
                                             <li class="select-option">
-                                                <a style="cursor:pointer" @click="getProductDetails(product.id)">Select</a>
+                                                <a style="cursor:pointer; width:200px" @click="getProductDetails(product.id)">Select</a>
                                             </li>
                                         </ul>
                                         </div>
