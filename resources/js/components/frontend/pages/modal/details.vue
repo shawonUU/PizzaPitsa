@@ -83,7 +83,7 @@
                     <div class="d-flex justify-content-between">
 
                       <div>
-                          <h3 class="product-title m-0 p-0">{{productData.name}}</h3>
+                          <h3 class="product-title m-0 p-0">{{productData.name}}</h3>                        
                       </div>
                       <div>
 
@@ -91,11 +91,11 @@
                       <div>
                         <div class="tooltipr">
                           <i class="fas fa-info-circle"></i>
-                          <!-- <div class="tooltipr-text"  v-html="productData.description"></div> -->
-                           <p style="color:#fff" :class="['tooltipItem', 'tooltipr-text']"  v-html="productData.description" ></p>
+                          <!-- <div class="tooltipr-text"  v-html="productData.description"></div> -->                           
                           <template  v-for="(productSize, sizeId) in productSizes" :key="sizeId" >
                             <p  style="color: #fff !important; margin-bottom: 20px;" :class="['tooltipItem', 'tooltipr-text', sizeId != 0 ? 'd-none' : 'd-none']"  :id="'tooltipItem'+sizeId" v-html="productSize.description" ></p>
-                          </template>
+                            <p style="color:#fff" :class="['tooltipItem', 'tooltipr-text']"  v-html="productData.description" ></p>
+                          </template>                            
                         </div>
                       </div>
                     </div>
@@ -153,7 +153,7 @@
                           <br>
                           <ul class="product-action d-flex-center mb--0">
                             <li class="add-to-cart">
-                              <a href="javascript:void(0)" class="axil-btn btn-bg-primary" @click="addTocart">Add to Cart for {{orderPrice ? baseCurrencySymbol : ''}} {{orderPrice}}</a>                              
+                              <a href="javascript:void(0)" class="axil-btn btn" style="background:rgb(238, 110, 45); color:#fff" @click="addTocart">Add to Cart for {{orderPrice ? baseCurrencySymbol : ''}} {{orderPrice}}</a>                              
                             </li>
                           </ul>
                     </div>
