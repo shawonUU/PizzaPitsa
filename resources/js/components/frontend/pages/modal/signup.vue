@@ -242,7 +242,7 @@
 
             if(code=='') {this.verificationError = 'Verification code is required';return;}
 
-            axios.post('verification-account', {
+            axios.post('verify-account', {
                 email: this.email,
                 password: this.password,
                 code: code,

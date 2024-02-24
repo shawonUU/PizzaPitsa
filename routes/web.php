@@ -65,4 +65,4 @@ Route::get('get-currency',[CurrencyController::class,'getCurrency'])->name('get.
 Route::post('customer-signUp', [CustomerController::class, 'customerSignUp']);
 Route::post('customer-signIn', [CustomerController::class, 'customerLogin']);
 Route::post('send-verification-mail', [CustomerController::class, 'sendVerificationMail']);
-Route::post('verification-account', [CustomerController::class, 'verifyAccount']);
+Route::post('verify-account', [CustomerController::class, 'verifyAccount']);
