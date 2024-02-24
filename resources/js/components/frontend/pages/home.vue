@@ -200,23 +200,27 @@
                                         <!-- <div class="product-badget">20% OFF</div> -->
                                         </div>
                                         <div class="product-hover-action">
-                                        <ul class="cart-action">
-
-                                            <li class="select-option">
-                                                <a @click="getProductDetails(product.id)">Select</a>
-                                            </li>
-                                        </ul>
+                                        
                                         </div>
                                     </div>
                                     <div class="product-content">
                                         <div class="inner">
                                         <h5 class="title">
-                                            <a href="single-product.html">{{product.name}}</a>
+                                            <a style="cursor:pointer" @click="getProductDetails(product.id)">{{product.name}}</a>
                                         </h5>
                                         <div class="product-price-variant">
-                                            <span class="price old-price">$80</span>
-                                            <span class="price current-price">$60</span>
-                                        </div>
+                                            <!-- Show min_price in old-price div -->
+                                            <span v-if="product.calculated_offer_price" class="price old-price">{{ baseCurrencySymbol }}{{ product.min_price }}</span>
+                                            <!-- Display calculated_offer_price in current-price div -->
+                                            <span v-else class="price current-price">{{ baseCurrencySymbol }}{{ product.min_price }}</span>
+                                            <!-- Display calculated_offer_price in current-price div if both exist -->
+                                            <span v-if="product.calculated_offer_price" class="price current-price">{{ baseCurrencySymbol }}{{ product.calculated_offer_price }}</span>
+                                        </div>      
+                                        <ul class="cart-action">
+                                            <li class="select-option">
+                                                <a style="cursor:pointer" @click="getProductDetails(product.id)">Select</a>
+                                            </li>
+                                        </ul>
                                         </div>
                                     </div>
                                     </div>
@@ -375,694 +379,6 @@
 
             </div>
         <!-- End Flash Sale Area  -->
-
-
-            <!-- <div class="axil-new-arrivals-product-area  flash-sale-area bg-color-white  pb--0 pt-3">
-                <div class="container">
-                    <div class="product-area pb--50">
-                        <div class="d-md-flex align-items-end flash-sale-section">
-                            <div class="section-title-wrapper">
-                                <h4 class="title">Snacks</h4>
-                            </div>
-                            <div class="sale-countdown countdown"></div>
-                        </div>
-                      <div class="new-arrivals-product-activation slick-layout-wrapper--15 axil-slick-arrow  arrow-top-slide">
-                        <div class="row">
-                            <div class="col-lg-3 col-md-3 col-sm-2 col-xsm-2">
-                            <div class="slick-single-layout">
-                                <div class="axil-product product-style-four">
-                                <div class="thumbnail">
-                                    <a href="single-product.html">
-                                    <img src="https://dodopizza-a.akamaihd.net/static/Img/Products/468612f786de4d1499927e4dd562d854_366x366.webp" alt="Product Images">
-                                    </a>
-                                    <div class="label-block label-right">
-                                    <div class="product-badget">20% OFF</div>
-                                    </div>
-                                    <div class="product-hover-action">
-                                    <ul class="cart-action">
-                                        <li class="wishlist">
-                                        <a href="wishlist.html">
-                                            <i class="far fa-heart"></i>
-                                        </a>
-                                        </li>
-                                        <li class="select-option">
-                                        <a href="cart.html">Add to Cart</a>
-                                        </li>
-                                        <li class="quickview">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal">
-                                            <i class="far fa-eye"></i>
-                                        </a>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                </div>
-                                <div class="product-content">
-                                    <div class="inner">
-                                    <h5 class="title">
-                                        <a href="single-product.html">Level 20 RGB Cherry</a>
-                                    </h5>
-                                    <div class="product-price-variant">
-                                        <span class="price old-price">$80</span>
-                                        <span class="price current-price">$60</span>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-2 col-xsm-2">
-                            <div class="slick-single-layout">
-                                <div class="axil-product product-style-four">
-                                <div class="thumbnail">
-                                    <a href="single-product.html">
-                                    <img src="https://dodopizza-a.akamaihd.net/static/Img/Products/11eeb4598db3bf85980e2813b29ccc80_366x366.webp" alt="Product Images">
-                                    </a>
-                                    <div class="product-hover-action">
-                                    <ul class="cart-action">
-                                        <li class="wishlist">
-                                        <a href="wishlist.html">
-                                            <i class="far fa-heart"></i>
-                                        </a>
-                                        </li>
-                                        <li class="select-option">
-                                        <a href="cart.html">Add to Cart</a>
-                                        </li>
-                                        <li class="quickview">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal">
-                                            <i class="far fa-eye"></i>
-                                        </a>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                </div>
-                                <div class="product-content">
-                                    <div class="inner">
-                                    <h5 class="title">
-                                        <a href="single-product.html">Sky Blue T-shirt</a>
-                                    </h5>
-                                    <div class="product-price-variant">
-                                        <span class="price old-price">$40</span>
-                                        <span class="price current-price">$40</span>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-2 col-xsm-2">
-                            <div class="slick-single-layout">
-                                <div class="axil-product product-style-four">
-                                <div class="thumbnail">
-                                    <a href="single-product.html">
-                                    <img src="https://dodopizza-a.akamaihd.net/static/Img/Products/11ee812a80cc48f7a14a00c77e41bfce_366x366.webp" alt="Product Images">
-                                    </a>
-                                    <div class="label-block label-right">
-                                    <div class="product-badget">50% OFF</div>
-                                    </div>
-                                    <div class="product-hover-action">
-                                    <ul class="cart-action">
-                                        <li class="wishlist">
-                                        <a href="wishlist.html">
-                                            <i class="far fa-heart"></i>
-                                        </a>
-                                        </li>
-                                        <li class="select-option">
-                                        <a href="cart.html">Add to Cart</a>
-                                        </li>
-                                        <li class="quickview">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal">
-                                            <i class="far fa-eye"></i>
-                                        </a>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                </div>
-                                <div class="product-content">
-                                    <div class="inner">
-                                    <h5 class="title">
-                                        <a href="single-product.html">Women's Stylish Hat</a>
-                                    </h5>
-                                    <div class="product-price-variant">
-                                        <span class="price old-price">$30</span>
-                                        <span class="price current-price">$24</span>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-2 col-xsm-2">
-                            <div class="slick-single-layout">
-                                <div class="axil-product product-style-four">
-                                <div class="thumbnail">
-                                    <a href="single-product.html">
-                                    <img src="https://dodopizza-a.akamaihd.net/static/Img/Products/b5f5e56ce2a94e29a8ef6d52b6945258_366x366.webp" alt="Product Images">
-                                    </a>
-                                    <div class="label-block label-right">
-                                    <div class="product-badget">30% OFF</div>
-                                    </div>
-                                    <div class="product-hover-action">
-                                    <ul class="cart-action">
-                                        <li class="wishlist">
-                                        <a href="wishlist.html">
-                                            <i class="far fa-heart"></i>
-                                        </a>
-                                        </li>
-                                        <li class="select-option">
-                                        <a href="cart.html">Add to Cart</a>
-                                        </li>
-                                        <li class="quickview">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal">
-                                            <i class="far fa-eye"></i>
-                                        </a>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                </div>
-                                <div class="product-content">
-                                    <div class="inner">
-                                    <h5 class="title">
-                                        <a href="single-product.html">Diamond Ring</a>
-                                    </h5>
-                                    <div class="product-price-variant">
-                                        <span class="price old-price">$50</span>
-                                        <span class="price current-price">$40</span>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-2 col-xsm-2">
-                            <div class="slick-single-layout">
-                                <div class="axil-product product-style-four">
-                                <div class="thumbnail">
-                                    <a href="single-product.html">
-                                    <img src="https://dodopizza-a.akamaihd.net/static/Img/Products/b5f5e56ce2a94e29a8ef6d52b6945258_366x366.webp" alt="Product Images">
-                                    </a>
-                                    <div class="product-hover-action">
-                                    <ul class="cart-action">
-                                        <li class="wishlist">
-                                        <a href="wishlist.html">
-                                            <i class="far fa-heart"></i>
-                                        </a>
-                                        </li>
-                                        <li class="select-option">
-                                        <a href="cart.html">Add to Cart</a>
-                                        </li>
-                                        <li class="quickview">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal">
-                                            <i class="far fa-eye"></i>
-                                        </a>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                </div>
-                                <div class="product-content">
-                                    <div class="inner">
-                                    <h5 class="title">
-                                        <a href="single-product.html">Neue Sofa Chair</a>
-                                    </h5>
-                                    <div class="product-price-variant">
-                                        <span class="price old-price">$60</span>
-                                        <span class="price current-price">$50</span>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-2 col-xsm-2">
-                            <div class="slick-single-layout">
-                                <div class="axil-product product-style-four">
-                                <div class="thumbnail">
-                                    <a href="single-product.html">
-                                    <img src="https://dodopizza-a.akamaihd.net/static/Img/Products/c3ea7e21bb3f40da8f885ad01b7266f6_366x366.webp" alt="Product Images">
-                                    </a>
-                                    <div class="label-block label-right">
-                                    <div class="product-badget">50% OFF</div>
-                                    </div>
-                                    <div class="product-hover-action">
-                                    <ul class="cart-action">
-                                        <li class="wishlist">
-                                        <a href="wishlist.html">
-                                            <i class="far fa-heart"></i>
-                                        </a>
-                                        </li>
-                                        <li class="select-option">
-                                        <a href="cart.html">Add to Cart</a>
-                                        </li>
-                                        <li class="quickview">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal">
-                                            <i class="far fa-eye"></i>
-                                        </a>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                </div>
-                                <div class="product-content">
-                                    <div class="inner">
-                                    <h5 class="title">
-                                        <a href="single-product.html">3D™ wireless headset</a>
-                                    </h5>
-                                    <div class="product-price-variant">
-                                        <span class="price old-price">$30</span>
-                                        <span class="price current-price">$24</span>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-2 col-xsm-2">
-                            <div class="slick-single-layout">
-                                <div class="axil-product product-style-four">
-                                <div class="thumbnail">
-                                    <a href="single-product.html">
-                                    <img src="https://dodopizza-a.akamaihd.net/static/Img/Products/4f7dc2ed66db499e9eb52b2f2f36b870_366x366.webp" alt="Product Images">
-                                    </a>
-                                    <div class="label-block label-right">
-                                    <div class="product-badget">30% OFF</div>
-                                    </div>
-                                    <div class="product-hover-action">
-                                    <ul class="cart-action">
-                                        <li class="wishlist">
-                                        <a href="wishlist.html">
-                                            <i class="far fa-heart"></i>
-                                        </a>
-                                        </li>
-                                        <li class="select-option">
-                                        <a href="cart.html">Add to Cart</a>
-                                        </li>
-                                        <li class="quickview">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal">
-                                            <i class="far fa-eye"></i>
-                                        </a>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                </div>
-                                <div class="product-content">
-                                    <div class="inner">
-                                    <h5 class="title">
-                                        <a href="single-product.html">Men's Winter Jacket</a>
-                                    </h5>
-                                    <div class="product-price-variant">
-                                        <span class="price old-price">$50</span>
-                                        <span class="price current-price">$40</span>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-2 col-xsm-2">
-                            <div class="slick-single-layout">
-                                <div class="axil-product product-style-four">
-                                <div class="thumbnail">
-                                    <a href="single-product.html">
-                                    <img src="https://dodopizza-a.akamaihd.net/static/Img/Products/1849a4bb94534a5994f833d8ff2a51b8_366x366.webp" alt="Product Images">
-                                    </a>
-                                    <div class="product-hover-action">
-                                    <ul class="cart-action">
-                                        <li class="wishlist">
-                                        <a href="wishlist.html">
-                                            <i class="far fa-heart"></i>
-                                        </a>
-                                        </li>
-                                        <li class="select-option">
-                                        <a href="cart.html">Add to Cart</a>
-                                        </li>
-                                        <li class="quickview">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal">
-                                            <i class="far fa-eye"></i>
-                                        </a>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                </div>
-                                <div class="product-content">
-                                    <div class="inner">
-                                    <h5 class="title">
-                                        <a href="single-product.html">Leather Hand Bag</a>
-                                    </h5>
-                                    <div class="product-price-variant">
-                                        <span class="price old-price">$60</span>
-                                        <span class="price current-price">$50</span>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="axil-new-arrivals-product-area  flash-sale-area bg-color-white  pb--0">
-                <div class="container">
-                    <div class="product-area pb--50">
-                        <div class="d-md-flex align-items-end flash-sale-section">
-                            <div class="section-title-wrapper">
-                                <h4 class="title">Snacks</h4>
-                            </div>
-                            <div class="sale-countdown countdown"></div>
-                        </div>
-                       <div class="new-arrivals-product-activation slick-layout-wrapper--15 axil-slick-arrow  arrow-top-slide">
-                        <div class="row">
-                            <div class="col-lg-3 col-md-3 col-sm-2 col-xsm-2">
-                            <div class="slick-single-layout">
-                                <div class="axil-product product-style-four">
-                                <div class="thumbnail">
-                                    <a href="single-product.html">
-                                    <img src="https://dodopizza-a.akamaihd.net/static/Img/Products/468612f786de4d1499927e4dd562d854_366x366.webp" alt="Product Images">
-                                    </a>
-                                    <div class="label-block label-right">
-                                    <div class="product-badget">20% OFF</div>
-                                    </div>
-                                    <div class="product-hover-action">
-                                    <ul class="cart-action">
-                                        <li class="wishlist">
-                                        <a href="wishlist.html">
-                                            <i class="far fa-heart"></i>
-                                        </a>
-                                        </li>
-                                        <li class="select-option">
-                                        <a href="cart.html">Add to Cart</a>
-                                        </li>
-                                        <li class="quickview">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal">
-                                            <i class="far fa-eye"></i>
-                                        </a>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                </div>
-                                <div class="product-content">
-                                    <div class="inner">
-                                    <h5 class="title">
-                                        <a href="single-product.html">Level 20 RGB Cherry</a>
-                                    </h5>
-                                    <div class="product-price-variant">
-                                        <span class="price old-price">$80</span>
-                                        <span class="price current-price">$60</span>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-2 col-xsm-2">
-                            <div class="slick-single-layout">
-                                <div class="axil-product product-style-four">
-                                <div class="thumbnail">
-                                    <a href="single-product.html">
-                                    <img src="https://dodopizza-a.akamaihd.net/static/Img/Products/11eeb4598db3bf85980e2813b29ccc80_366x366.webp" alt="Product Images">
-                                    </a>
-                                    <div class="product-hover-action">
-                                    <ul class="cart-action">
-                                        <li class="wishlist">
-                                        <a href="wishlist.html">
-                                            <i class="far fa-heart"></i>
-                                        </a>
-                                        </li>
-                                        <li class="select-option">
-                                        <a href="cart.html">Add to Cart</a>
-                                        </li>
-                                        <li class="quickview">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal">
-                                            <i class="far fa-eye"></i>
-                                        </a>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                </div>
-                                <div class="product-content">
-                                    <div class="inner">
-                                    <h5 class="title">
-                                        <a href="single-product.html">Sky Blue T-shirt</a>
-                                    </h5>
-                                    <div class="product-price-variant">
-                                        <span class="price old-price">$40</span>
-                                        <span class="price current-price">$40</span>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-2 col-xsm-2">
-                            <div class="slick-single-layout">
-                                <div class="axil-product product-style-four">
-                                <div class="thumbnail">
-                                    <a href="single-product.html">
-                                    <img src="https://dodopizza-a.akamaihd.net/static/Img/Products/11ee812a80cc48f7a14a00c77e41bfce_366x366.webp" alt="Product Images">
-                                    </a>
-                                    <div class="label-block label-right">
-                                    <div class="product-badget">50% OFF</div>
-                                    </div>
-                                    <div class="product-hover-action">
-                                    <ul class="cart-action">
-                                        <li class="wishlist">
-                                        <a href="wishlist.html">
-                                            <i class="far fa-heart"></i>
-                                        </a>
-                                        </li>
-                                        <li class="select-option">
-                                        <a href="cart.html">Add to Cart</a>
-                                        </li>
-                                        <li class="quickview">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal">
-                                            <i class="far fa-eye"></i>
-                                        </a>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                </div>
-                                <div class="product-content">
-                                    <div class="inner">
-                                    <h5 class="title">
-                                        <a href="single-product.html">Women's Stylish Hat</a>
-                                    </h5>
-                                    <div class="product-price-variant">
-                                        <span class="price old-price">$30</span>
-                                        <span class="price current-price">$24</span>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-2 col-xsm-2">
-                            <div class="slick-single-layout">
-                                <div class="axil-product product-style-four">
-                                <div class="thumbnail">
-                                    <a href="single-product.html">
-                                    <img src="https://dodopizza-a.akamaihd.net/static/Img/Products/b5f5e56ce2a94e29a8ef6d52b6945258_366x366.webp" alt="Product Images">
-                                    </a>
-                                    <div class="label-block label-right">
-                                    <div class="product-badget">30% OFF</div>
-                                    </div>
-                                    <div class="product-hover-action">
-                                    <ul class="cart-action">
-                                        <li class="wishlist">
-                                        <a href="wishlist.html">
-                                            <i class="far fa-heart"></i>
-                                        </a>
-                                        </li>
-                                        <li class="select-option">
-                                        <a href="cart.html">Add to Cart</a>
-                                        </li>
-                                        <li class="quickview">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal">
-                                            <i class="far fa-eye"></i>
-                                        </a>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                </div>
-                                <div class="product-content">
-                                    <div class="inner">
-                                    <h5 class="title">
-                                        <a href="single-product.html">Diamond Ring</a>
-                                    </h5>
-                                    <div class="product-price-variant">
-                                        <span class="price old-price">$50</span>
-                                        <span class="price current-price">$40</span>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-2 col-xsm-2">
-                            <div class="slick-single-layout">
-                                <div class="axil-product product-style-four">
-                                <div class="thumbnail">
-                                    <a href="single-product.html">
-                                    <img src="https://dodopizza-a.akamaihd.net/static/Img/Products/b5f5e56ce2a94e29a8ef6d52b6945258_366x366.webp" alt="Product Images">
-                                    </a>
-                                    <div class="product-hover-action">
-                                    <ul class="cart-action">
-                                        <li class="wishlist">
-                                        <a href="wishlist.html">
-                                            <i class="far fa-heart"></i>
-                                        </a>
-                                        </li>
-                                        <li class="select-option">
-                                        <a href="cart.html">Add to Cart</a>
-                                        </li>
-                                        <li class="quickview">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal">
-                                            <i class="far fa-eye"></i>
-                                        </a>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                </div>
-                                <div class="product-content">
-                                    <div class="inner">
-                                    <h5 class="title">
-                                        <a href="single-product.html">Neue Sofa Chair</a>
-                                    </h5>
-                                    <div class="product-price-variant">
-                                        <span class="price old-price">$60</span>
-                                        <span class="price current-price">$50</span>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-2 col-xsm-2">
-                            <div class="slick-single-layout">
-                                <div class="axil-product product-style-four">
-                                <div class="thumbnail">
-                                    <a href="single-product.html">
-                                    <img src="https://dodopizza-a.akamaihd.net/static/Img/Products/c3ea7e21bb3f40da8f885ad01b7266f6_366x366.webp" alt="Product Images">
-                                    </a>
-                                    <div class="label-block label-right">
-                                    <div class="product-badget">50% OFF</div>
-                                    </div>
-                                    <div class="product-hover-action">
-                                    <ul class="cart-action">
-                                        <li class="wishlist">
-                                        <a href="wishlist.html">
-                                            <i class="far fa-heart"></i>
-                                        </a>
-                                        </li>
-                                        <li class="select-option">
-                                        <a href="cart.html">Add to Cart</a>
-                                        </li>
-                                        <li class="quickview">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal">
-                                            <i class="far fa-eye"></i>
-                                        </a>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                </div>
-                                <div class="product-content">
-                                    <div class="inner">
-                                    <h5 class="title">
-                                        <a href="single-product.html">3D™ wireless headset</a>
-                                    </h5>
-                                    <div class="product-price-variant">
-                                        <span class="price old-price">$30</span>
-                                        <span class="price current-price">$24</span>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-2 col-xsm-2">
-                            <div class="slick-single-layout">
-                                <div class="axil-product product-style-four">
-                                <div class="thumbnail">
-                                    <a href="single-product.html">
-                                    <img src="https://dodopizza-a.akamaihd.net/static/Img/Products/4f7dc2ed66db499e9eb52b2f2f36b870_366x366.webp" alt="Product Images">
-                                    </a>
-                                    <div class="label-block label-right">
-                                    <div class="product-badget">30% OFF</div>
-                                    </div>
-                                    <div class="product-hover-action">
-                                    <ul class="cart-action">
-                                        <li class="wishlist">
-                                        <a href="wishlist.html">
-                                            <i class="far fa-heart"></i>
-                                        </a>
-                                        </li>
-                                        <li class="select-option">
-                                        <a href="cart.html">Add to Cart</a>
-                                        </li>
-                                        <li class="quickview">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal">
-                                            <i class="far fa-eye"></i>
-                                        </a>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                </div>
-                                <div class="product-content">
-                                    <div class="inner">
-                                    <h5 class="title">
-                                        <a href="single-product.html">Men's Winter Jacket</a>
-                                    </h5>
-                                    <div class="product-price-variant">
-                                        <span class="price old-price">$50</span>
-                                        <span class="price current-price">$40</span>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="col-lg-3 col-md-3 col-sm-2 col-xsm-2">
-                            <div class="slick-single-layout">
-                                <div class="axil-product product-style-four">
-                                <div class="thumbnail">
-                                    <a href="single-product.html">
-                                    <img src="https://dodopizza-a.akamaihd.net/static/Img/Products/1849a4bb94534a5994f833d8ff2a51b8_366x366.webp" alt="Product Images">
-                                    </a>
-                                    <div class="product-hover-action">
-                                    <ul class="cart-action">
-                                        <li class="wishlist">
-                                        <a href="wishlist.html">
-                                            <i class="far fa-heart"></i>
-                                        </a>
-                                        </li>
-                                        <li class="select-option">
-                                        <a href="cart.html">Add to Cart</a>
-                                        </li>
-                                        <li class="quickview">
-                                        <a href="#" data-bs-toggle="modal" data-bs-target="#quick-view-modal">
-                                            <i class="far fa-eye"></i>
-                                        </a>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                </div>
-                                <div class="product-content">
-                                    <div class="inner">
-                                    <h5 class="title">
-                                        <a href="single-product.html">Leather Hand Bag</a>
-                                    </h5>
-                                    <div class="product-price-variant">
-                                        <span class="price old-price">$60</span>
-                                        <span class="price current-price">$50</span>
-                                    </div>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
             <Details :productData="product" :productSizes="productSizes" :productTopings="productTopings" maxMin:="maxMin" v-if="showAddToCart" @closeModal="handleModalClose"></Details>
             <SignUp  v-if="showSignup" @closeModal="handleSignupModalClose"></SignUp>
             <div class="cart-dropdown" id="cart-dropdown">
@@ -1186,6 +502,7 @@ import {Swiper,SwiperSlide} from 'swiper/vue';
 import Details from '../../../components/frontend/pages/modal/details.vue';
 import SignUp from '../../../components/frontend/pages/modal/signup.vue';
 import 'swiper/css';
+import { getBaseCurrencySymbol } from '../helpers.js';
 export default {
     name: 'home',
     components: {
@@ -1210,6 +527,7 @@ export default {
             isCouponNotMatched:false,
             isDiscount:false,
             showDiscount:'',
+            baseCurrencySymbol: '',
         }
     },
     created (){
@@ -1221,11 +539,13 @@ export default {
     mounted(){
         this.getCategoryWiseProduct();
         this.loadCartFromLocalStorage();
+        this.fetchBaseCurrencySymbol();
     },
     methods: {
         getCategoryWiseProduct(){
             axios.get('get-products')
             .then((res)=>{
+            // console.log(res.data)
                 this.products = res.data;
             })
             .catch((err)=>{
@@ -1405,8 +725,16 @@ export default {
         checkout(){
             console.log('dfg');
             this.showSignup = true;
-        }
+        },
 
+        async fetchBaseCurrencySymbol() {
+            try {
+                this.baseCurrencySymbol = await getBaseCurrencySymbol();
+            } catch (error) {
+                // Handle error (e.g., show an error message)
+                console.error('Error fetching base currency symbol in component:', error);
+            }
+        },
     },
     setup() {
         const onSwiper = (swiper) => {
