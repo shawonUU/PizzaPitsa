@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ProductContoller;
 use App\Http\Controllers\Admin\TopingsController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CurrencyController;
 use App\Http\Controllers\Admin\NutritionController;
 use App\Http\Controllers\Admin\DelivaryChargeController;
 use App\Http\Controllers\Admin\ProductMnagementController;
@@ -47,6 +48,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::patch('updatel-product-sizes/{id}', [ProductContoller::class, 'updateSize'])->name('product_size.update');
     Route::resource('topings', TopingsController::class);
     Route::resource('delivery_charges', DelivaryChargeController::class);
+    Route::resource('currency', CurrencyController::class);
 });
 
 
@@ -59,4 +61,5 @@ Route::get('get-categories',[CategoryController::class,'getCategories'])->name('
 Route::get('get-products',[ProductContoller::class,'getProducts'])->name('get.products');
 Route::get('get-product-details', [ProductContoller::class, 'getProductDetails']);
 Route::get('check-coupon', [CouponController::class, 'checkCoupon']);
+Route::get('get-currency',[CurrencyController::class,'getCurrency'])->name('get.currency');
 Route::post('customer-signUp', [CustomerController::class, 'customerSignUp']);

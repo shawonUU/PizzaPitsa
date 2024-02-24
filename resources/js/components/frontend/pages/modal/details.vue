@@ -153,13 +153,9 @@
                           <br>
                           <ul class="product-action d-flex-center mb--0">
                             <li class="add-to-cart">
-                              <a href="javascript:void(0)" class="axil-btn btn-bg-primary" @click="addTocart">Add to Cart for {{orderPrice ? '$' : ''}} {{orderPrice}}</a>
-                              <button @click="emitMyEvent">Send Event to Header</button>
+                              <a href="javascript:void(0)" class="axil-btn btn-bg-primary" @click="addTocart">Add to Cart for {{orderPrice ? '$' : ''}} {{orderPrice}}</a>                              
                             </li>
                           </ul>
-
-
-
                     </div>
                     <!-- End Product Action Wrapper  -->
                   </div>

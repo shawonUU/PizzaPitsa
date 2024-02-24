@@ -143,6 +143,9 @@
                             <li class="nav-item">
                                 <a href="{{ route('delivery_charges.index') }}" class="nav-link">Delivery Charge</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('currency.index') }}" class="nav-link">Currency</a>
+                            </li>
                         </ul>
                     </div>
                 </li>

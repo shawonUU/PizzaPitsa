@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Admin\Size;
 use Illuminate\Support\Str;
+use App\Models\Admin\Toping;
 use Illuminate\Http\Request;
 use App\Models\Admin\Product;
-use App\Models\Admin\ProductImage;
-use App\Http\Controllers\Controller;
 use App\Models\Admin\Category;
-use App\Models\Admin\ProductToping;
 use App\Models\Admin\ProductSize;
-use App\Models\Admin\Toping;
-use App\Models\Admin\Size;
+use App\Models\Admin\ProductImage;
+use Illuminate\Support\Facades\DB;
+use App\Models\Admin\ProductToping;
+use App\Http\Controllers\Controller;
 
 class ProductContoller extends Controller
 {
@@ -329,42 +330,51 @@ class ProductContoller extends Controller
 
     public function getProducts()
     {
-
-        // Get categories with associated products using Eloquent models
         $categories = Category::leftJoin('products', 'categories.id', '=', 'products.category_id')
-            ->select(
-                'categories.id as category_id',
-                'categories.name as category_name',
-                'products.id as product_id',
-                'products.name as product_name',
-                'products.description as description',
-                'products.image as image',
-            )
-            ->orderBy('categories.id')
-            ->orderBy('products.id')
-            ->get();
+    ->leftJoin('product_sizes', function ($join) {
+        $join->on('products.id', '=', 'product_sizes.product_id')
+            ->whereRaw('NOW() BETWEEN product_sizes.offer_from AND product_sizes.offer_to');
+    })
+    ->select(
+        'categories.id as category_id',
+        'categories.name as category_name',
+        'products.id as product_id',
+        'products.name as product_name',
+        'products.description as description',
+        'products.image as image',
+        DB::raw('(SELECT MIN(price) FROM product_sizes WHERE product_sizes.product_id = products.id) as min_price'),
+        'product_sizes.offer_price as calculated_offer_price'
+    )
+    ->orderBy('categories.id')
+    ->orderBy('products.id')
+    ->get();
 
-        // Organize the result into a more usable format
-        $groupedCategories = [];
-        foreach ($categories as $category) {
-            $categoryId = $category->category_id;
-            if (!isset($groupedCategories[$categoryId])) {
-                $groupedCategories[$categoryId] = [
-                    'category_name' => $category->category_name,
-                    'products' => [],
-                ];
-            }
+// Organize the result into a more usable format
+$groupedCategories = [];
+foreach ($categories as $category) {
+    $categoryId = $category->category_id;
+    if (!isset($groupedCategories[$categoryId])) {
+        $groupedCategories[$categoryId] = [
+            'category_name' => $category->category_name,
+            'products' => [],
+        ];
+    }
 
-            if ($category->product_id) {
-                $groupedCategories[$categoryId]['products'][] = [
-                    'id' => $category->product_id,
-                    'name' => $category->product_name,
-                    'description' => $category->description,
-                    'image' => $category->image,
-                ];
-            }
-        }
-        return $groupedCategories;
+    if ($category->product_id) {
+        $groupedCategories[$categoryId]['products'][] = [
+            'id' => $category->product_id,
+            'name' => $category->product_name,
+            'description' => $category->description,
+            'image' => $category->image,
+            'min_price' => $category->min_price,
+            'calculated_offer_price' => $category->calculated_offer_price,
+        ];
+    }
+}
+
+return $groupedCategories;
+
+    
     }
 
     public function getProductDetails(Request $request)
