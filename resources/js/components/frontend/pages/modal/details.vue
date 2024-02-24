@@ -77,7 +77,7 @@
 
 
                     <div v-if="isVisible" class="toast-container">
-                       <div class="toast">gffff{{ message }}</div>
+                       <div class="toast">{{ message }}</div>
                     </div>
 
                     <div class="d-flex justify-content-between">

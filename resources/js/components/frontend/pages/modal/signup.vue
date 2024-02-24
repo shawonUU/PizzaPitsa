@@ -7,64 +7,175 @@
       role="dialog"
       style="padding-right: 17px; display: block"
     >
-  
-      <div class="modal-dialog modal-dialog-centered">
+
+      <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
         <div class="modal-content">
           <div class="modal-body" style="padding-top: 0px; padding-right: 13px;">
             <div class="d-flex justify-content-end pt-3">
                 <button type="button" class="btn-close" style="height:5px; width:5px; margin-bottom: 15px;" data-bs-dismiss="modal" aria-label="Close" @click="handleButtonClick">
-                  <!-- <i class="far fa-times" style="height:10px; width:10px;"></i> -->
-              </button>
+
+                </button>
             </div>
-           
+            <div v-if="signInSection">
+                <h4 class="text-center m-0 p-0">Sign In</h4>
+                <p class="text-center m-0 p-0"><b>or</b> Create a new account? <a class="text-center m-0 p-0"  href="javascript:void(0)" @click="showSignUp()"><u>Sign Up</u></a> </p>
+                <div class="row">
+                    <div class="col-12">
+                        <label for="name" class="form-label">Email</label>
+                        <input type="text" style="height: 40px; padding:5px;border: 1px solid #cfcbcb;" class="form-control" id="email" name="email" placeholder="Email">
+                    </div>
+                    <div class="col-12">
+                        <label for="name" class="form-label">Password</label>
+                        <input type="password" style="height: 40px; padding:5px;border: 1px solid #cfcbcb;" class="form-control" id="password" name="password" placeholder="Password">
+                    </div>
+                    <div class="col-12 mt-3">
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-primary p-2" style="font-size: 12px; width: 15%;">Sign In</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-if="signUpSection">
+                <h4 class="text-center m-0 p-0">Sign Up</h4>
+                <p class="text-center m-0 p-0"><b>or</b> Already hav an account? <a class="text-center m-0 p-0" @click="showSignIn()" href="javascript:void(0)"><u>Sign In</u></a> </p>
+
+                <div class="row">
+                    <div class="col-12">
+                        <p v-if="signUpDataError!=''" style="text-align:center; color:white; padding:5px; background:red; opacity: 0.5;">
+                            {{signUpDataError}}
+                        </p>
+                    </div>
+                    <div class="col-12">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" style="height: 40px; padding:5px; border: 1px solid #cfcbcb;" class="form-control" id="new_name" name="new_name" placeholder="Name">
+                    </div>
+                    <div class="col-12">
+                        <label for="name" class="form-label">Email</label>
+                        <input type="text" style="height: 40px; padding:5px; border: 1px solid #cfcbcb;" class="form-control"  id="new_email" name="new_email" placeholder="Email">
+                    </div>
+                    <div class="col-12">
+                        <label for="name" class="form-label">Password</label>
+                        <input type="password" style="height: 40px; padding:5px;border: 1px solid #cfcbcb;" class="form-control" id="new_password" name="new_password" placeholder="Password">
+                    </div>
+                    <div class="col-12 mt-3">
+                        <div class="d-flex justify-content-end">
+                            <button @click="signUp()" type="button" class="btn btn-primary p-2" style="font-size: 12px; width: 15%;">Sign Up</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top:60px;">
+                    <p style="display:block;text-align:center; margin:0;"><span class="social-label">Or login with</span></p>
+                    <div class="social-login d-flex justify-content-center" style="margin-top:20px;">
+
+                        <ul class="socials">
+                            <li><a href="#"><i style="margin: 2px; color: white; background: #3b5998; padding: 5px; border-radius: 15%;" class="flaticon-facebook"></i></a></li>
+                            <li><a href="#"><i style="margin: 2px; color: white; background: #1da0f2; padding: 5px; border-radius: 15%;" class="flaticon-twitter"></i></a></li>
+                            <li><a href="#"><i style="margin: 2px; color: white; background: #31aa52; padding: 5px; border-radius: 15%;" class="flaticon-google"><b>G</b></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
           </div>
         </div>
       </div>
     </div>
   </template>
-  
+
   <script>
   import axios from 'axios';
   export default {
       name: 'signup',
         props: {
-        
+
         },
       data(){
           return{
-            
+            signInSection:true,
+            signUpSection:false,
+            signUpDataError:'',
           }
       },
       components: {
-         
+
       },
       mounted(){
-        
+
       },
       methods: {
         handleButtonClick() {
             this.$emit('closeModal');
         },
+        showSignUp(){
+            this.signInSection = false;
+            this.signUpSection = true;
+
+        },
+        showSignIn(){
+            this.signInSection = true;
+            this.signUpSection = false;
+        },
+        signUp(){
+            var name = document.getElementById('new_name').value.trim();
+            var email = document.getElementById('new_email').value.trim();
+            var password = document.getElementById('new_password').value.trim();
+            this.signUpDataError = '';
+
+            if(name=='') {this.signUpDataError = 'Name is required';return;}
+            if(email=='') {this.signUpDataError = 'Email is required';return;}
+            if(password=='') {this.signUpDataError = 'Password is required'; return;}
+
+            axios.post('customer-signUp', {
+                    name: name,
+                    email: email,
+                    password: password,
+                })
+                .then((res)=>{
+                    console.log(res.data);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+        }
       }
   }
   </script>
-  
+
   <style scoped>
-  
+
+.social-login {
+  align-items: center;
+  -moz-align-items: center;
+  -webkit-align-items: center;
+  -o-align-items: center;
+  -ms-align-items: center;
+  margin-top: 80px;
+}
+list-type-ulli, .socials {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.social-login, .socials {
+  display: flex;
+  display: -webkit-flex;
+}
+
   .toast-container {
     position: fixed;
     bottom: 20px;
     right: 20px;
     z-index: 9999;
   }
-  
+
   .toast {
     background-color: #407cca;
     color: #000000;
     padding: 10px 20px;
     border-radius: 5px;
   }
-  
+
   .modal {
     background-color: #000000ab;
   }
@@ -73,7 +184,7 @@
               display: inline-block;
               cursor: pointer;
           }
-  
+
           .tooltipr-text {
               width: 215px;
               /* visibility: hidden; */
@@ -92,7 +203,7 @@
               transition: opacity 0.3s;
               font: 500 12px / 13px Dodo, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", !important;
           }
-  
+
           .tooltipr-text:after {
               content: '';
               position: absolute;
@@ -102,7 +213,7 @@
               border-style: solid;
               border-color: transparent transparent #333 transparent;
           }
-  
+
           .tooltipr:hover .tooltipr-text {
               visibility: visible;
               opacity: 1;
@@ -112,4 +223,3 @@
             /* border-color: red; */
           }
   </style>
-  

@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\ProductMnagementController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -10,7 +11,20 @@ use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\CurrencyController;
 use App\Http\Controllers\Admin\DelivaryChargeController;
 use App\Http\Controllers\Admin\TopingsController;
+=======
+>>>>>>> 2743f7c97fba69b195aa3c229d4715f2d3bb4d1c
 use App\Models\Admin\DelivaryCharge;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\Admin\SizeController;
+use App\Http\Controllers\Admin\CouponController;
+use App\Http\Controllers\Admin\ProductContoller;
+use App\Http\Controllers\Admin\TopingsController;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\NutritionController;
+use App\Http\Controllers\Admin\DelivaryChargeController;
+use App\Http\Controllers\Admin\ProductMnagementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,3 +74,4 @@ Route::get('get-products',[ProductContoller::class,'getProducts'])->name('get.pr
 Route::get('get-product-details', [ProductContoller::class, 'getProductDetails']);
 Route::get('check-coupon', [CouponController::class, 'checkCoupon']);
 Route::get('get-currency',[CurrencyController::class,'getCurrency'])->name('get.currency');
+Route::post('customer-signUp', [CustomerController::class, 'customerSignUp']);
