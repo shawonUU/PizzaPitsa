@@ -101,7 +101,7 @@
                     </div>
                     <span class="price-amount d-none ">$155.00 - $255.00</span>
                     <!-- <span class="sizeWisePrice price-amount">${{ maxMin[0] }} - ${{maxMin[1]}}</span> -->
-                    <span v-for="(productSize, sizeId) in productSizes" :key="sizeId" :id="'sizeWisePrice'+sizeId" class="sizeWisePrice d-none price-amount">${{productSize.price}}</span>
+                    <span v-for="(productSize, sizeId) in productSizes" :key="sizeId" :id="'sizeWisePrice'+sizeId" class="sizeWisePrice d-none price-amount">{{ baseCurrencySymbol }}{{productSize.price}}</span>
 
                     <p v-html="productData.description" class="description m-0 p-0"></p>
 
@@ -134,7 +134,7 @@
                           <div :id="'topingDiv'+topingId" @click="clickOnTopings(topingId)" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border-radius: 10%; cursor:pointer;">
                               <img class="p-2" :src="'/frontend/toping_images/' + productToping.image" alt="" style="width: 65px; ">
                               <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">{{productToping.name}}</p>
-                              <p class="text-center m-0" style="font-size:12px;"><b>${{productToping.price}}</b></p>
+                              <p class="text-center m-0" style="font-size:12px;"><b>{{ baseCurrencySymbol }}{{productToping.price}}</b></p>
                               <input :id="'topingsItem'+topingId" :value="productToping.id" name="topingsItem" class="topingsItem" type="checkbox" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
                           </div>
                       </div>
@@ -153,7 +153,7 @@
                           <br>
                           <ul class="product-action d-flex-center mb--0">
                             <li class="add-to-cart">
-                              <a href="javascript:void(0)" class="axil-btn btn-bg-primary" @click="addTocart">Add to Cart for {{orderPrice ? '$' : ''}} {{orderPrice}}</a>                              
+                              <a href="javascript:void(0)" class="axil-btn btn-bg-primary" @click="addTocart">Add to Cart for {{orderPrice ? baseCurrencySymbol : ''}} {{orderPrice}}</a>                              
                             </li>
                           </ul>
                     </div>
@@ -171,6 +171,7 @@
 
 <script>
 import axios from 'axios';
+import { getBaseCurrencySymbol } from '../../helpers.js';
 export default {
     name: 'details',
       props: {
@@ -188,6 +189,7 @@ export default {
             isVisible:false,
             message:'',
             cart: [],
+            baseCurrencySymbol: '',
         }
     },
     components: {
@@ -201,6 +203,7 @@ export default {
     mounted(){
         // console.log(this.productSize);
         this.loadCartFromLocalStorage();
+        this.fetchBaseCurrencySymbol();
     },
     methods: {
        handleButtonClick() {
@@ -368,7 +371,15 @@ export default {
 
           this.emitter.emit('my-event', {'eventContent': 'String changed'})
 
-      }
+      },
+    async fetchBaseCurrencySymbol() {
+        try {
+            this.baseCurrencySymbol = await getBaseCurrencySymbol();
+        } catch (error) {
+            // Handle error (e.g., show an error message)
+            console.error('Error fetching base currency symbol in component:', error);
+        }
+    },
 
     }
 }
