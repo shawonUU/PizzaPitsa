@@ -401,7 +401,7 @@
                                 <template v-for="(productSizes, productId) in cart" :key="productId">
                                     <template v-if="cart.hasOwnProperty(productId)">
                                         <template v-for="(item, sizeId) in productSizes" :key="sizeId">
-                                            <tr>
+                                            <tr style="box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; margin-top:20">
                                                 <td>
                                                     <div>
                                                         <div class="d-flex flex-row bd-highlight mb-3">
@@ -441,7 +441,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="p-2 bd-highlight">
-                                                                <span :id="'amount'+item.product.id+'_'+item.size.id">{{ item.totalPrice }}</span>
+                                                                <span :id="'amount'+item.product.id+'_'+item.size.id">{{ baseCurrencySymbol }}{{ item.totalPrice }}</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -467,7 +467,7 @@
                         </div><br>    
                         <p class="cart-subtotal m-0">
                             <span class="subtotal-title">Subtotal:</span>
-                            <span class="subtotal-amount">${{ subTotal }}</span>
+                            <span class="subtotal-amount">{{ baseCurrencySymbol }}{{ subTotal }}</span>
                         </p>
                         <p class="cart-subtotal m-0" v-if="isDiscount">
                             <span class="subtotal-title">Discount:</span>
@@ -475,7 +475,7 @@
                         </p>
                          <p class="cart-subtotal m-0">
                             <span class="subtotal-title">GrandTotal:</span>
-                            <span class="subtotal-amount">${{ grandTotal }}</span>
+                            <span class="subtotal-amount">{{ baseCurrencySymbol }}{{ grandTotal }}</span>
                         </p>
                         <div class="group-btn">
                             <a href="javascript:void(0)" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
@@ -625,7 +625,7 @@ export default {
                     this.showDiscount = coupon.discount + '%';
                     this.grandTotal -= this.grandTotal*(coupon.discount/100);
                 }else{
-                    this.showDiscount = '$'+coupon.discount;
+                    this.showDiscount = this.baseCurrencySymbol+coupon.discount;
                     this.grandTotal -= coupon.discount;
                 }
 
