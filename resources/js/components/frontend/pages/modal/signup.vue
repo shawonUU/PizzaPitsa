@@ -21,6 +21,10 @@
                 <p class="text-center m-0 p-0"><b>or</b> Create a new account? <a class="text-center m-0 p-0"  href="javascript:void(0)" @click="showSignUp()"><u>Sign Up</u></a> </p>
                 <div class="row">
                     <div class="col-12">
+                        <p v-if="signInDataError!=''" style="text-align:center; color:white; padding:5px; background:red; opacity: 0.5;" v-html="signInDataError">
+                        </p>
+                    </div>
+                    <div class="col-12">
                         <label for="name" class="form-label">Email</label>
                         <input type="text" style="height: 40px; padding:5px;border: 1px solid #cfcbcb;" class="form-control" id="email" name="email" placeholder="Email">
                     </div>
@@ -30,7 +34,7 @@
                     </div>
                     <div class="col-12 mt-3">
                         <div class="d-flex justify-content-end">
-                            <button type="button" class="btn btn-primary p-2" style="font-size: 12px; width: 15%;">Sign In</button>
+                            <button type="button" class="btn btn-primary p-2" style="font-size: 12px; width: 15%;" @click="signIn()">Sign In</button>
                         </div>
                     </div>
                 </div>
@@ -41,8 +45,7 @@
 
                 <div class="row">
                     <div class="col-12">
-                        <p v-if="signUpDataError!=''" style="text-align:center; color:white; padding:5px; background:red; opacity: 0.5;">
-                            {{signUpDataError}}
+                        <p v-if="signUpDataError!=''" style="text-align:center; color:white; padding:5px; background:red; opacity: 0.5;" v-html="signUpDataError">
                         </p>
                     </div>
                     <div class="col-12">
@@ -76,6 +79,21 @@
                     </div>
                 </div>
             </div>
+            <div v-if="verificationSection">
+                <h4 class="text-center m-0 p-0">Verification</h4>
+                <p class="text-center m-0 p-0"> Sent verification code again? <a class="text-center m-0 p-0"  href="javascript:void(0)" @click="showSignUp()"><u>Sent</u></a> </p>
+                <div class="row">
+                    <div class="col-12">
+                        <label for="name" class="form-label">Verification Code</label>
+                        <input type="text" style="height: 40px; padding:5px;border: 1px solid #cfcbcb;" class="form-control" id="verification_code" name="verification_code" placeholder="Code">
+                    </div>
+                    <div class="col-12 mt-3">
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-primary p-2" style="font-size: 12px; width: 15%;">Verify</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
           </div>
         </div>
@@ -94,7 +112,9 @@
           return{
             signInSection:true,
             signUpSection:false,
+            verificationSection:false,
             signUpDataError:'',
+            signInDataError:'',
           }
       },
       components: {
@@ -110,11 +130,13 @@
         showSignUp(){
             this.signInSection = false;
             this.signUpSection = true;
+            this.verificationSection = false;
 
         },
         showSignIn(){
             this.signInSection = true;
             this.signUpSection = false;
+            this.verificationSection = false;
         },
         signUp(){
             var name = document.getElementById('new_name').value.trim();
@@ -132,11 +154,24 @@
                     password: password,
                 })
                 .then((res)=>{
-                    console.log(res.data);
+                    if(res.data.success){
+                        this.signInSection = false;
+                        this.signUpSection = false;
+                        this.verificationSection = true;
+                    }else{
+                        this.signUpDataError = res.data.message;
+                    }
                 })
                 .catch((err)=>{
                     console.log(err);
                 })
+        },
+        signIn(){
+            var email = document.getElementById('email').value.trim();
+            var password = document.getElementById('password').value.trim();
+            this.signInDataError = '';
+            if(email=='') {this.signInDataError = 'Email is required';return;}
+            if(password=='') {this.signInDataError = 'Password is required'; return;}
         }
       }
   }
