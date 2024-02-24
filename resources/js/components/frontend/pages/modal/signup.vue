@@ -41,7 +41,7 @@
             </div>
             <div v-if="signUpSection">
                 <h4 class="text-center m-0 p-0">Sign Up</h4>
-                <p class="text-center m-0 p-0"><b>or</b> Already hav an account? <a class="text-center m-0 p-0" @click="showSignIn()" href="javascript:void(0)"><u>Sign In</u></a> </p>
+                <p class="text-center m-0 p-0"><b>or</b> Already have an account? <a class="text-center m-0 p-0" @click="showSignIn()" href="javascript:void(0)"><u>Sign In</u></a> </p>
 
                 <div class="row">
                     <div class="col-12">
@@ -81,15 +81,21 @@
             </div>
             <div v-if="verificationSection">
                 <h4 class="text-center m-0 p-0">Verification</h4>
-                <p class="text-center m-0 p-0"> Sent verification code again? <a class="text-center m-0 p-0"  href="javascript:void(0)" @click="showSignUp()"><u>Sent</u></a> </p>
+                <p class="text-center m-0 p-0"> Sent verification code again? <a class="text-center m-0 p-0"  href="javascript:void(0)" @click="sentVerificationMail()"><u>Sent</u></a> </p>
                 <div class="row">
+                    <div class="col-12">
+                        <p v-if="verificationError!=''" style="text-align:center; color:white; padding:5px; background:red; opacity: 0.5;" v-html="verificationError">
+                        </p>
+                        <p v-if="verificationMessage!=''" style="text-align:center; color:white; padding:5px; background:green; opacity: 0.5;" v-html="verificationMessage">
+                        </p>
+                    </div>
                     <div class="col-12">
                         <label for="name" class="form-label">Verification Code</label>
                         <input type="text" style="height: 40px; padding:5px;border: 1px solid #cfcbcb;" class="form-control" id="verification_code" name="verification_code" placeholder="Code">
                     </div>
                     <div class="col-12 mt-3">
                         <div class="d-flex justify-content-end">
-                            <button type="button" class="btn btn-primary p-2" style="font-size: 12px; width: 15%;">Verify</button>
+                            <button @click="verify()" type="button" class="btn btn-primary p-2" style="font-size: 12px; width: 15%;">Verify</button>
                         </div>
                     </div>
                 </div>
@@ -110,11 +116,15 @@
         },
       data(){
           return{
+            email:'',
+            password:'',
             signInSection:true,
             signUpSection:false,
             verificationSection:false,
             signUpDataError:'',
             signInDataError:'',
+            verificationError:'',
+            verificationMessage:'',
           }
       },
       components: {
@@ -149,22 +159,22 @@
             if(password=='') {this.signUpDataError = 'Password is required'; return;}
 
             axios.post('customer-signUp', {
-                    name: name,
-                    email: email,
-                    password: password,
-                })
-                .then((res)=>{
-                    if(res.data.success){
-                        this.signInSection = false;
-                        this.signUpSection = false;
-                        this.verificationSection = true;
-                    }else{
-                        this.signUpDataError = res.data.message;
-                    }
-                })
-                .catch((err)=>{
-                    console.log(err);
-                })
+                name: name,
+                email: email,
+                password: password,
+            })
+            .then((res)=>{
+                if(res.data.success){
+                    this.signInSection = false;
+                    this.signUpSection = false;
+                    this.verificationSection = true;
+                }else{
+                    this.signUpDataError = res.data.message;
+                }
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
         },
         signIn(){
             var email = document.getElementById('email').value.trim();
@@ -172,6 +182,88 @@
             this.signInDataError = '';
             if(email=='') {this.signInDataError = 'Email is required';return;}
             if(password=='') {this.signInDataError = 'Password is required'; return;}
+            this.email = email;
+            this.password = password;
+
+            axios.post('customer-signIn', {
+                email: email,
+                password: password,
+            })
+            .then((res)=>{
+                console.log(res.data);
+                if(res.data.success){
+                    // this.signInSection = false;
+                    // this.signUpSection = false;
+                    // this.verificationSection = true;
+                }else{
+                    if(res.data.isVerification){
+                        this.verificationError = res.data.message;
+                        this.signInSection = false;
+                        this.signUpSection = false;
+                        this.verificationSection = true;
+                    }else{
+                        this.signInDataError = res.data.message;
+                        this.signInSection = true;
+                        this.signUpSection = false;
+                        this.verificationSection = false;
+                    }
+                }
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+        },
+        sentVerificationMail(){
+            axios.post('send-verification-mail', {
+                email: this.email,
+                password: this.password,
+            })
+            .then((res)=>{
+                console.log(res.data);
+                this.signInSection = false;
+                this.signUpSection = false;
+                this.verificationSection = true;
+                this.verificationError = '';
+                this.verificationMessage = '';
+                if(res.data.success){
+                    this.verificationMessage =  res.data.message;
+                }else{
+                    this.verificationError = res.data.message;
+                }
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+        },
+        verify(){
+
+            var code = document.getElementById('verification_code').value.trim();
+            this.verificationError = '';
+
+            if(code=='') {this.verificationError = 'Verification code is required';return;}
+
+            axios.post('verify-account', {
+                email: this.email,
+                password: this.password,
+                code: code,
+            })
+            .then((res)=>{
+                this.signInSection = false;
+                this.signUpSection = false;
+                this.verificationSection = true;
+                this.verificationError = '';
+                this.verificationMessage = '';
+                if(res.data.success){
+                    // this.verificationMessage =  res.data.message;
+                    localStorage.setItem('auth', JSON.stringify(res.data.user));
+                    this.handleButtonClick();
+                }else{
+                    this.verificationError = res.data.message;
+                }
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
         }
       }
   }
