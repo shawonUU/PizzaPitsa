@@ -63,3 +63,6 @@ Route::get('get-product-details', [ProductContoller::class, 'getProductDetails']
 Route::get('check-coupon', [CouponController::class, 'checkCoupon']);
 Route::get('get-currency',[CurrencyController::class,'getCurrency'])->name('get.currency');
 Route::post('customer-signUp', [CustomerController::class, 'customerSignUp']);
+Route::post('customer-signIn', [CustomerController::class, 'customerLogin']);
+Route::post('send-verification-mail', [CustomerController::class, 'sendVerificationMail']);
+Route::post('verification-account', [CustomerController::class, 'verifyAccount']);
