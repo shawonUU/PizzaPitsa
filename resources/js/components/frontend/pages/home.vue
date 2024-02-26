@@ -200,7 +200,7 @@
                                         <!-- <div class="product-badget">20% OFF</div> -->
                                         </div>
                                         <div class="product-hover-action">
-                                        
+
                                         </div>
                                     </div>
                                     <div class="product-content">
@@ -216,8 +216,8 @@
                                             <span v-else class="price current-price">{{ baseCurrencySymbol }}{{ product.min_price }}</span>
                                             <!-- Display calculated_offer_price in current-price div if both exist -->
                                             <span v-if="product.calculated_offer_price" class="price current-price">{{ baseCurrencySymbol }}{{ product.calculated_offer_price }}</span>
-                                        </div>                                              
-                                            <a class="btn" style="cursor:pointer; font-size:18px; color:#fff; width:200px; padding:8px; background:rgb(238, 110, 45)" @click="getProductDetails(product.id)">Select</a>                                        
+                                        </div>
+                                            <a class="btn" style="cursor:pointer; font-size:18px; color:#fff; width:200px; padding:8px; background:rgb(238, 110, 45)" @click="getProductDetails(product.id)">Select</a>
                                         </div>
                                     </div>
                                     </div>
@@ -377,7 +377,7 @@
             </div>
         <!-- End Flash Sale Area  -->
             <Details :productData="product" :productSizes="productSizes" :productTopings="productTopings" maxMin:="maxMin" v-if="showAddToCart" @closeModal="handleModalClose"></Details>
-            <SignUp  v-if="showSignup" @closeModal="handleSignupModalClose"></SignUp>
+            <Authentication  v-if="showSignup" @closeModal="handleSignupModalClose"></Authentication>
             <div class="cart-dropdown" id="cart-dropdown">
                 <div class="cart-content-wrap" style="padding: 18px 22px !important;">
                     <div class="cart-header">
@@ -454,14 +454,14 @@
                     <div class="cart-footer">
                         <div>
                             <div class="input-group">
-                                
+
                                 <input id="coupon" type="text" class="form-control" placeholder="Coupon Code" style="text-align:left; font-size: 16px; height: 25px; width:40px; padding: 0px;" aria-label="Amount (to the nearest dollar)">
                                 <div @click="applyCoupon()" class="input-group-append " style="cursor:pointer;">
                                     <span class="input-group-text">Apply</span>
                                 </div>
                             </div>
                             <p v-if="isCouponNotMatched" style="color: red; font-size:12px;">Coupon code not matched</p>
-                        </div><br>    
+                        </div><br>
                         <p class="cart-subtotal m-0">
                             <span class="subtotal-title">Subtotal:</span>
                             <span class="subtotal-amount">{{ baseCurrencySymbol }}{{ subTotal }}</span>
@@ -497,7 +497,7 @@
 import axios from 'axios';
 import {Swiper,SwiperSlide} from 'swiper/vue';
 import Details from '../../../components/frontend/pages/modal/details.vue';
-import SignUp from '../../../components/frontend/pages/modal/signup.vue';
+import Authentication from './modal/authentication.vue';
 import 'swiper/css';
 import { getBaseCurrencySymbol } from '../helpers.js';
 export default {
@@ -506,7 +506,7 @@ export default {
         Swiper,
         SwiperSlide,
         Details,
-        SignUp,
+        Authentication,
     },
      data(){
         return{
@@ -626,7 +626,7 @@ export default {
                     this.grandTotal -= coupon.discount;
                 }
 
-                
+
 
             }
         },
@@ -704,7 +704,6 @@ export default {
                     if(res.data['coupon']){
                         this.coupon = res.data['coupon'];
                         this.isCouponNotMatched = false;
-                        console.log(this.coupon);
                         this.isDiscount = true;
                     }else{
                         this.coupon = null;
@@ -717,11 +716,13 @@ export default {
                     console.log(err);
                 })
             }
-            
+
         },
         checkout(){
-            console.log('dfg');
-            this.showSignup = true;
+            var auth = localStorage.getItem('auth');
+            auth = auth ? JSON.parse(auth) : null;
+            console.log(auth);
+            if(!auth) this.showSignup = true;
         },
 
         async fetchBaseCurrencySymbol() {

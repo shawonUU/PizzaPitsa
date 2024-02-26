@@ -71,9 +71,9 @@ class CustomerController extends Controller
 
         if (Auth::attempt($credentials)) {  // Authentication passed...
              $user = auth()->user();
-             Auth::logout();
              if($user){
                 if(!$user->is_verified){
+                    Auth::logout();
                     $response = [
                         'success' => false,
                         'isVerification' => true,
@@ -81,8 +81,13 @@ class CustomerController extends Controller
                     ];
                     return response()->json($response);
                 }
+                $response = [
+                    'success' => true,
+                    'message' => 'Verified',
+                    'user' => $user,
+                ];
+                return response()->json($response);
             }
-            return auth()->user();
         }
         $response = [
             'success' => false,
@@ -93,10 +98,10 @@ class CustomerController extends Controller
     }
 
     public function sendVerificationMail(Request $request){
-        $use = User::where('email',$request->email)->first();
-        if($use){
-            $use->verification_code = '123456'; //rand(100000, 999999);
-            $use->update();
+        $user = User::where('email',$request->email)->first();
+        if($user){
+            $user->verification_code = '123456'; //rand(100000, 999999);
+            $user->update();
             //Mail::to($user->email)->send(new VerificationMail($user->verification_code));
             $response = [
                 'success' => true,
@@ -115,9 +120,11 @@ class CustomerController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-             $user = auth()->user();
+             $user =User::where('email',$request->email)->first();
              if($user){
                 if($user->verification_code == $request->code){
+                    $user->is_verified = true;
+                    $user->update();
                     $response = [
                         'success' => true,
                         'message' => 'Verified',
