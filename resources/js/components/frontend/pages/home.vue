@@ -206,21 +206,18 @@
                                     <div class="product-content">
                                         <div class="inner">
                                         <h5 class="title">
-                                            <a style="cursor:pointer" @click="getProductDetails(product.id)">{{product.name}}</a>
+                                            <a style="cursor:pointer; font-size:20px" @click="getProductDetails(product.id)">{{product.name}}</a>
                                         </h5>
                                         <div class="product-price-variant">
                                             <!-- Show min_price in old-price div -->
+                                            <span  class="price current-price">From</span>
                                             <span v-if="product.calculated_offer_price" class="price old-price">{{ baseCurrencySymbol }}{{ product.min_price }}</span>
                                             <!-- Display calculated_offer_price in current-price div -->
                                             <span v-else class="price current-price">{{ baseCurrencySymbol }}{{ product.min_price }}</span>
                                             <!-- Display calculated_offer_price in current-price div if both exist -->
                                             <span v-if="product.calculated_offer_price" class="price current-price">{{ baseCurrencySymbol }}{{ product.calculated_offer_price }}</span>
-                                        </div>      
-                                        <ul class="cart-action">
-                                            <li class="select-option">
-                                                <a style="cursor:pointer" @click="getProductDetails(product.id)">Select</a>
-                                            </li>
-                                        </ul>
+                                        </div>                                              
+                                            <a class="btn" style="cursor:pointer; font-size:18px; color:#fff; width:200px; padding:8px; background:rgb(238, 110, 45)" @click="getProductDetails(product.id)">Select</a>                                        
                                         </div>
                                     </div>
                                     </div>
