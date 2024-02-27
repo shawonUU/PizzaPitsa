@@ -168,6 +168,8 @@
                     this.signInSection = false;
                     this.signUpSection = false;
                     this.verificationSection = true;
+                    this.email = email;
+                    this.password = password;
                 }else{
                     this.signUpDataError = res.data.message;
                 }
@@ -192,9 +194,8 @@
             .then((res)=>{
                 console.log(res.data);
                 if(res.data.success){
-                    // this.signInSection = false;
-                    // this.signUpSection = false;
-                    // this.verificationSection = true;
+                    localStorage.setItem('auth', JSON.stringify(res.data.user));
+                    this.handleButtonClick();
                 }else{
                     if(res.data.isVerification){
                         this.verificationError = res.data.message;
@@ -236,7 +237,6 @@
             })
         },
         verify(){
-
             var code = document.getElementById('verification_code').value.trim();
             this.verificationError = '';
 
