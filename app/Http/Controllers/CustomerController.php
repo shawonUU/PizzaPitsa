@@ -36,9 +36,9 @@ class CustomerController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'is_customer' => true,
+            'is_customer' => '1',
             'is_verified' => false,
-            'verification_code' => '123456', //rand(100000, 999999),
+            'verification_code' => 123456, //rand(100000, 999999),
         ]);
 
         //Mail::to($user->email)->send(new VerificationMail($user->verification_code));
@@ -70,9 +70,9 @@ class CustomerController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {  // Authentication passed...
-             $user = auth()->user();
-             if($user){
-                if(!$user->is_verified){
+            $user = auth()->user();
+            if ($user) {
+                if (!$user->is_verified) {
                     Auth::logout();
                     $response = [
                         'success' => false,
@@ -97,9 +97,10 @@ class CustomerController extends Controller
         return response()->json($response);
     }
 
-    public function sendVerificationMail(Request $request){
-        $user = User::where('email',$request->email)->first();
-        if($user){
+    public function sendVerificationMail(Request $request)
+    {
+        $user = User::where('email', $request->email)->first();
+        if ($user) {
             $user->verification_code = '123456'; //rand(100000, 999999);
             $user->update();
             //Mail::to($user->email)->send(new VerificationMail($user->verification_code));
@@ -116,13 +117,14 @@ class CustomerController extends Controller
         return response()->json($response);
     }
 
-    public function verifyAccount(Request $request){
+    public function verifyAccount(Request $request)
+    {
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-             $user =User::where('email',$request->email)->first();
-             if($user){
-                if($user->verification_code == $request->code){
+            $user = User::where('email', $request->email)->first();
+            if ($user) {
+                if ($user->verification_code == $request->code) {
                     $user->is_verified = true;
                     $user->update();
                     $response = [
@@ -131,7 +133,7 @@ class CustomerController extends Controller
                         'user' => $user,
                     ];
                     return response()->json($response);
-                }else{
+                } else {
                     Auth::logout();
                     $response = [
                         'success' => false,

@@ -531,7 +531,13 @@ export default {
         this.emitter.on('my-event', (evt) => {
         this.testEvent = evt.eventContent;
         this.loadCartFromLocalStorage();
-    })
+    });
+    this.emitter.on('loginModalEvent', (evt) => {
+        var loginModalEvent = evt.loginModalEvent;
+        if(loginModalEvent == '1') {
+            this.showSignup = true;
+        }
+    });
     },
     mounted(){
         this.getCategoryWiseProduct();

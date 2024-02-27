@@ -365,9 +365,7 @@ export default {
        }, 3000);
     },
     emitMyEvent() {
-
           this.emitter.emit('my-event', {'eventContent': 'String changed'})
-
       }
 
     }
