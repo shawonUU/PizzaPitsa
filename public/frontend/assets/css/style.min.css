@@ -3012,7 +3012,7 @@ button.axil-btn.btn-bg-primary:hover:after {
 
 a.axil-btn.btn-bg-secondary,
 button.axil-btn.btn-bg-secondary {
-    background-color: var(--color-secondary);
+    background-color:#ffff;
     color: var(--color-white)
 }
 
@@ -9713,7 +9713,7 @@ button.axil-btn.btn-size-md i {
 
 .cart-dropdown .cart-footer .group-btn {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    /* grid-template-columns: repeat(2, 1fr); */
     column-gap: 20px
 }
 

@@ -211,11 +211,11 @@
                                         <div class="product-price-variant">
                                             <!-- Show min_price in old-price div -->
                                             <span  class="price current-price">From</span>
-                                            <span v-if="product.calculated_offer_price" class="price old-price">{{ baseCurrencySymbol }}{{ product.min_price }}</span>
+                                            <span v-if="product.calculated_offer_price" class="price old-price">{{ product.min_price }}{{ baseCurrencySymbol }}</span>
                                             <!-- Display calculated_offer_price in current-price div -->
-                                            <span v-else class="price current-price">{{ baseCurrencySymbol }}{{ product.min_price }}</span>
+                                            <span v-else class="price current-price">{{ product.min_price }}{{ baseCurrencySymbol }}</span>
                                             <!-- Display calculated_offer_price in current-price div if both exist -->
-                                            <span v-if="product.calculated_offer_price" class="price current-price">{{ baseCurrencySymbol }}{{ product.calculated_offer_price }}</span>
+                                            <span v-if="product.calculated_offer_price" class="price current-price">{{ product.calculated_offer_price }}{{ baseCurrencySymbol }}</span>
                                         </div>                                              
                                             <a class="btn" style="cursor:pointer; font-size:18px; color:#fff; width:200px; padding:8px; background:rgb(238, 110, 45)" @click="getProductDetails(product.id)">Select</a>                                        
                                         </div>
@@ -438,7 +438,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="p-2 bd-highlight">
-                                                                <span :id="'amount'+item.product.id+'_'+item.size.id">{{ baseCurrencySymbol }}{{ item.totalPrice }}</span>
+                                                                <span :id="'amount'+item.product.id+'_'+item.size.id">{{ item.totalPrice }}{{ baseCurrencySymbol }}</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -464,7 +464,7 @@
                         </div><br>    
                         <p class="cart-subtotal m-0">
                             <span class="subtotal-title">Subtotal:</span>
-                            <span class="subtotal-amount">{{ baseCurrencySymbol }}{{ subTotal }}</span>
+                            <span class="subtotal-amount">{{ subTotal }}{{ baseCurrencySymbol }}</span>
                         </p>
                         <p class="cart-subtotal m-0" v-if="isDiscount">
                             <span class="subtotal-title">Discount:</span>
@@ -472,11 +472,11 @@
                         </p>
                          <p class="cart-subtotal m-0">
                             <span class="subtotal-title">GrandTotal:</span>
-                            <span class="subtotal-amount">{{ baseCurrencySymbol }}{{ grandTotal }}</span>
+                            <span class="subtotal-amount">{{ grandTotal }}{{ baseCurrencySymbol }}</span>
                         </p>
                         <div class="group-btn">
-                            <a href="javascript:void(0)" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a>
-                            <a href="javascript:void(0)" @click="checkout()" class="axil-btn btn-bg-secondary checkout-btn">Checkout</a>
+                            <!-- <a href="javascript:void(0)" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a> -->
+                            <a href="javascript:void(0)" @click="checkout()" class="axil-btn btn-bg-secondary checkout-btn float-right">Checkout</a>
                         </div>
                     </div>
                 </div>
@@ -622,7 +622,7 @@ export default {
                     this.showDiscount = coupon.discount + '%';
                     this.grandTotal -= this.grandTotal*(coupon.discount/100);
                 }else{
-                    this.showDiscount = this.baseCurrencySymbol+coupon.discount;
+                    this.showDiscount = coupon.discount+this.baseCurrencySymbol;
                     this.grandTotal -= coupon.discount;
                 }
 
