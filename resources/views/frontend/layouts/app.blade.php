@@ -42,7 +42,7 @@
     <script src="{{ asset('frontend') }}/assets/js/vendor/isotope.pkgd.min.js"></script>
     <script src="{{ asset('frontend') }}/assets/js/vendor/counterup.js"></script>
     <script src="{{ asset('frontend') }}/assets/js/vendor/waypoints.min.js"></script>
-
+    <script src="https://unpkg.com/vue3-google-map"></script>
     <!-- Main JS -->
     <script src="{{ asset('frontend') }}/assets/js/main.js"></script>
     </body>

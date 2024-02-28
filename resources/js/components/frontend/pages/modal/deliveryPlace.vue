@@ -28,8 +28,7 @@
                     </div>
                     <div class="col-12 mt-3">
                         <div class="input-group" style="cursor:pointer;">
-                               
-                                <button type="button" class="btn" style="cursor:pointer !important; background: #f5c6ae; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Specify The Delivery Address</button>
+                                <button @click="placeOrder(2)" type="button" class="btn" style="cursor:pointer !important; background: #f5c6ae; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Or Dine In / Pick Up</button>
                         </div>
                     </div>
                 </div>
@@ -40,7 +39,13 @@
                     <div class="col-4"></div>
                     <div class="col-8">
                         <h1>kkkknk</h1>
-                       
+                       <template>
+                            <GoogleMap api-key="YOUR_GOOGLE_MAPS_API_KEY" style="width: 100%; height: 500px" :center="center" :zoom="15">
+                              <div :style="{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }">
+                                Your Custom Marker Content
+                              </div>
+                          </GoogleMap>
+                      </template>
                     </div>
                 </div>
             </div>
@@ -54,11 +59,15 @@
 
 <script>
     import axios from 'axios';
+    import { defineComponent } from "vue";
+    import { GoogleMap } from "vue3-google-map";
+    
 
     export default {
         name: 'deliveryPlace',
         setup() {
-         
+             const center = { lat: 40.689247, lng: -74.044502 };
+             return { center };
         },
         props: {},
         data() {
@@ -66,10 +75,9 @@
                 deliveryPlace: true,
                 mapSection: false,
                 modalWidth: 400,
-               
             };
         },
-        components: { },
+        components: { GoogleMap },
         mounted() {},
         methods: {
             handleButtonClick() {
@@ -80,6 +88,19 @@
                 this.mapSection = true;
                 this.modalWidth = 1000;
             },
+            placeOrder(type){
+                const savedCart = localStorage.getItem('cart');
+                axios.post('palce-order', {
+                  type: type,
+                  cart: savedCart,
+                })
+                .then((res)=>{
+                  console.log(res.data);
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+            }
         },
     };
 </script>
