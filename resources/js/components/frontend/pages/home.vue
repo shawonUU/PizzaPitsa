@@ -504,6 +504,8 @@ import DeliveryPlace from '../../../components/frontend/pages/modal/deliveryPlac
 import Authentication from './modal/authentication.vue';
 import 'swiper/css';
 import { getBaseCurrencySymbol } from '../helpers.js';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 export default {
     name: 'home',
     components: {
@@ -661,6 +663,9 @@ export default {
             this.cart = cart;
             localStorage.setItem('cart', JSON.stringify(this.cart));
             this.loadCartFromLocalStorage();
+            toast.success('Qty Change success', {
+                timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
+            });
         },
         qtyDn(id){
             let parts = id.split('_');
@@ -677,6 +682,9 @@ export default {
             this.cart = cart;
             localStorage.setItem('cart', JSON.stringify(this.cart));
             this.loadCartFromLocalStorage();
+            toast.success('Qty update success', {
+                timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
+            });
         },
         qtyUp(id){
             let parts = id.split('_');
@@ -692,6 +700,9 @@ export default {
             this.cart = cart;
             localStorage.setItem('cart', JSON.stringify(this.cart));
             this.loadCartFromLocalStorage();
+            toast.success('Qty update success', {
+                timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
+            });
         },
         removeItem(id){
             let parts = id.split('_');
@@ -703,6 +714,9 @@ export default {
             localStorage.setItem('cart', JSON.stringify(this.cart));
             this.loadCartFromLocalStorage();
             this.emitMyEvent();
+            toast.success('Remove to cart success', {
+                timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
+            });
 
         },
         emitMyEvent() {

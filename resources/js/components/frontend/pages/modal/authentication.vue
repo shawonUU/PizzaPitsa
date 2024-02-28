@@ -109,6 +109,8 @@
 
   <script>
   import axios from 'axios';
+  import { toast } from 'vue3-toastify';
+  import 'vue3-toastify/dist/index.css';
   export default {
       name: 'authentication',
         props: {
@@ -171,6 +173,9 @@
                     this.email = email;
                     this.password = password;
                     this.updateHeaderAfterLogin();
+                    toast.success('Login Success', {
+                        timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
+                    });
                 }else{
                     this.signUpDataError = res.data.message;
                 }
@@ -197,6 +202,9 @@
                     localStorage.setItem('auth', JSON.stringify(res.data.user));
                     this.handleButtonClick();
                     this.updateHeaderAfterLogin();
+                    toast.success('Login Success', {
+                        timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
+                    });
                 }else{
                     if(res.data.isVerification){
                         this.verificationError = res.data.message;
@@ -258,6 +266,9 @@
                     localStorage.setItem('auth', JSON.stringify(res.data.user));
                     this.handleButtonClick();
                     this.updateHeaderAfterLogin();
+                    toast.success('Login Success', {
+                        timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
+                    });
                 }else{
                     this.verificationError = res.data.message;
                 }

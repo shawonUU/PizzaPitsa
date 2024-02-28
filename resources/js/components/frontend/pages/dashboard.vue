@@ -152,6 +152,8 @@
 import axios from 'axios';
 import 'swiper/css';
 import { getBaseCurrencySymbol } from '../helpers.js';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 export default {
     name: 'home',
     components: {
@@ -185,7 +187,7 @@ export default {
         this.formData.email = this.isAuth.email;
     },
     methods: {
-        logout() {        
+        logout() {                    
             localStorage.removeItem('auth');          
             this.$router.push({ name: 'home' }); 
             this.updateHeaderAfterLogout();
@@ -204,6 +206,9 @@ export default {
                 .then(response => {
                   console.log(response.data);
                   localStorage.setItem('auth', JSON.stringify(response.data.user));
+                  toast.success('Update Success', {
+                        timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
+                   });
                 })
                 .catch(error => {
                     console.log(error.response);
