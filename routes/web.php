@@ -49,7 +49,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('topings', TopingsController::class);
     Route::resource('delivery_charges', DelivaryChargeController::class);
     Route::resource('currency', CurrencyController::class);
-    Route::post('update-customer-data', [CustomerController::class, 'updateCustomerData']);
+    Route::post('update-customer-data',   [CustomerController::class, 'updateCustomerData']);
 });
 
 
