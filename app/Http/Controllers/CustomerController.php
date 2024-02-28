@@ -149,4 +149,36 @@ class CustomerController extends Controller
         ];
         return response()->json($response);
     }
+
+    public function updateCustomerData(Request $request)
+    {
+        // Get current authenticated user
+        $user = Auth::user();
+
+        // Validate request data
+        $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'newPassword' => 'nullable|min:6|different:password',
+            'confirmNewPassword' => 'same:newPassword',
+        ]);
+
+        // Check if the provided password matches the user's current password
+        if (!Hash::check($request->password, $user->password)) {
+            return response()->json(['error' => 'Current password does not match.'], 401);
+        }
+
+        // Update user data
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        // If new password is provided, update password
+        if ($request->filled('newPassword')) {
+            $user->password = Hash::make($request->newPassword);
+        }
+
+        $user->save();
+        $user = User::where('email', $user->email)->first();
+        return response()->json(['message' => 'User updated successfully.', 'user' => $user]);
+    }
 }

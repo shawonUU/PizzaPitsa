@@ -541,7 +541,8 @@ export default {
     this.emitter.on('loginModalEvent', (evt) => {
         var loginModalEvent = evt.loginModalEvent;
         if(loginModalEvent == '1') {
-            this.showSignup = true;
+            console.log('f');
+            this.showAuthentication = true;
         }
     });
     },

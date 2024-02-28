@@ -180,6 +180,13 @@ export default {
                 this.isAuth = true;
             }
         });
+
+        this.emitter.on('updateHeaderAfterLogout', (evt) => {
+            var updateHeaderAfterLogout = evt.updateHeaderAfterLogout;
+            if(updateHeaderAfterLogout == '1') {
+                this.isAuth = false;
+            }
+        });
     },
     components: {
 
@@ -232,7 +239,7 @@ export default {
         this.$emit('openCartModal'); // Emitting event when cart icon is clicked
         },
 
-        loginModalEvent() {
+        loginModalEvent() {    
           this.emitter.emit('loginModalEvent', {'loginModalEvent': '1'})
         }
 
