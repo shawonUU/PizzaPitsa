@@ -376,8 +376,7 @@
 
             </div>
         <!-- End Flash Sale Area  -->
-            <Details :productData="product" :productSizes="productSizes" :productTopings="productTopings" maxMin:="maxMin" v-if="showAddToCart" @closeModal="handleModalClose"></Details>
-            <Authentication  v-if="showSignup" @closeModal="handleSignupModalClose"></Authentication>
+           
             <div class="cart-dropdown" id="cart-dropdown">
                 <div class="cart-content-wrap" style="padding: 18px 22px !important;">
                     <div class="cart-header">
@@ -481,6 +480,10 @@
                     </div>
                 </div>
             </div>
+
+             <Details :productData="product" :productSizes="productSizes" :productTopings="productTopings" maxMin:="maxMin" v-if="showAddToCart" @closeModal="handleModalClose"></Details>
+            <Authentication  v-if="showAuthentication" @closeModal="handleAuthenticationModalClose"></Authentication>
+            <DeliveryPlace  v-if="showDeliveryPlace" @closeModal="handleDeliveryPlaceModalClose"></DeliveryPlace>
         </main>
     </div>
      <!-- <div class="input-group">
@@ -497,6 +500,7 @@
 import axios from 'axios';
 import {Swiper,SwiperSlide} from 'swiper/vue';
 import Details from '../../../components/frontend/pages/modal/details.vue';
+import DeliveryPlace from '../../../components/frontend/pages/modal/deliveryPlace.vue';
 import Authentication from './modal/authentication.vue';
 import 'swiper/css';
 import { getBaseCurrencySymbol } from '../helpers.js';
@@ -507,6 +511,7 @@ export default {
         SwiperSlide,
         Details,
         Authentication,
+        DeliveryPlace,
     },
      data(){
         return{
@@ -516,7 +521,8 @@ export default {
             productTopings:null,
             maxMin:null,
             showAddToCart:false,
-            showSignup:false,
+            showAuthentication:false,
+            showDeliveryPlace:false,
             subTotal:0,
             grandTotal:0,
             cart:[],
@@ -572,8 +578,11 @@ export default {
         handleModalClose() {
             this.showAddToCart = false;
         },
-        handleSignupModalClose(){
-            this.showSignup = false;
+        handleAuthenticationModalClose(){
+            this.showAuthentication = false;
+        },
+        handleDeliveryPlaceModalClose(){
+            this.showDeliveryPlace = false;
         },
 
         loadCartFromLocalStorage() {
@@ -722,7 +731,8 @@ export default {
             var auth = localStorage.getItem('auth');
             auth = auth ? JSON.parse(auth) : null;
             console.log(auth);
-            if(!auth) this.showSignup = true;
+            if(auth) this.showDeliveryPlace = true;
+            else this.showAuthentication = true;
         },
 
         async fetchBaseCurrencySymbol() {
