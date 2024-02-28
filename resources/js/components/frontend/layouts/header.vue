@@ -34,9 +34,9 @@
             <div class="d-none d-lg-block" style="background-color:rgb(238 110 45)">
                 <div class="sc-1of5u0p-0 guZDAe container">
                     <div class="left">
-                        <a class="sc-2c0aw7-0 wwSTC sc-1of5u0p-1 ibZIbo" href="/en/tallinn" data-active="true" data-type="primary" data-size="normal">
+                        <router-link to="/"  class="sc-2c0aw7-0 wwSTC sc-1of5u0p-1 ibZIbo" data-active="true" data-type="primary" data-size="normal">
                         <img  width="160px" style="margin-top: 12px;" :src="'/frontend/assets/images/logo/2 pizza logo-02.png'" alt="Site Logo">
-                        </a>
+                        </router-link>
                         <div class="sc-yrfxdq-0 bzQMgF header__about" style="margin-top: 12px;">
                         <span class="header__about-slogan">
                             <span class="header__about-slogan-text" style="color:#fff">Pizza delivery </span>
@@ -80,7 +80,8 @@
                             </ul>
                         </div>
                         </a>
-                        <button data-testid="header_login" type="button" data-type="tertiary" data-size="small" class="sc-1rmt3mq-0 dOEDNV">Log in</button>
+                        <router-link v-if="isAuth" to="/dashboard" data-type="tertiary" data-size="small" class="sc-1rmt3mq-0 dOEDNV">Dashboard</router-link>
+                        <button data-testid="header_login" v-else @click="loginModalEvent"  type="button" data-type="tertiary" data-size="small" class="sc-1rmt3mq-0 dOEDNV">Log in</button>
                     </div>
                 </div>
             </div>
@@ -90,12 +91,12 @@
                 <div class="container">
                     <div class="header-navbar">
                         <div class="header-brand d-none">
-                            <a href="index-2.html" class="logo logo-dark">
+                            <router-link to="/" class="logo logo-dark">
                                 <img width="100px" :src="'/frontend/assets/images/logo/pizza logo-02.jpg'" alt="Site Logo">
-                            </a>
-                            <a href="index-2.html" class="logo logo-light">
+                            </router-link>
+                            <router-link to="/" class="logo logo-light">
                                 <img width="200px" :src="'/frontend/assets/images/logo/pizza logo-02.jpg'" alt="Site Logo">
-                            </a>
+                            </router-link>
                         </div>
                         <div class="header-main-nav">
                             <!-- Start Mainmanu Nav -->
@@ -163,14 +164,22 @@ export default {
             isOpen: false,
             languages: ['English','Finnish'],
             cartItemCount:0,
-            testEvent: 'String to change'
+            testEvent: 'String to change',
+            isAuth:false,
         }
     },
     created (){
         this.emitter.on('my-event', (evt) => {
-        this.testEvent = evt.eventContent;
-        this.loadCartFromLocalStorage();
-        })
+            this.testEvent = evt.eventContent;
+            this.loadCartFromLocalStorage();
+        });
+
+        this.emitter.on('updateHeaderAfterLogin', (evt) => {
+            var updateHeaderAfterLogin = evt.updateHeaderAfterLogin;
+            if(updateHeaderAfterLogin == '1') {
+                this.isAuth = true;
+            }
+        });
     },
     components: {
 
@@ -178,6 +187,10 @@ export default {
     mounted(){
         this.getCategories();
         this.loadCartFromLocalStorage();
+        var auth = localStorage.getItem('auth');
+        if(auth != null) {
+            this.isAuth = true;
+        }
     },
     methods: {
         loadCartFromLocalStorage() {
@@ -218,7 +231,11 @@ export default {
 
         this.$emit('openCartModal'); // Emitting event when cart icon is clicked
         },
-      
+
+        loginModalEvent() {
+          this.emitter.emit('loginModalEvent', {'loginModalEvent': '1'})
+        }
+
 
     }
 }

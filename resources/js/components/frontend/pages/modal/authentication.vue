@@ -170,6 +170,7 @@
                     this.verificationSection = true;
                     this.email = email;
                     this.password = password;
+                    this.updateHeaderAfterLogin();
                 }else{
                     this.signUpDataError = res.data.message;
                 }
@@ -192,10 +193,10 @@
                 password: password,
             })
             .then((res)=>{
-                console.log(res.data);
                 if(res.data.success){
                     localStorage.setItem('auth', JSON.stringify(res.data.user));
                     this.handleButtonClick();
+                    this.updateHeaderAfterLogin();
                 }else{
                     if(res.data.isVerification){
                         this.verificationError = res.data.message;
@@ -220,7 +221,6 @@
                 password: this.password,
             })
             .then((res)=>{
-                console.log(res.data);
                 this.signInSection = false;
                 this.signUpSection = false;
                 this.verificationSection = true;
@@ -257,6 +257,7 @@
                     // this.verificationMessage =  res.data.message;
                     localStorage.setItem('auth', JSON.stringify(res.data.user));
                     this.handleButtonClick();
+                    this.updateHeaderAfterLogin();
                 }else{
                     this.verificationError = res.data.message;
                 }
@@ -264,6 +265,9 @@
             .catch((err)=>{
                 console.log(err);
             })
+        },
+        updateHeaderAfterLogin() {
+          this.emitter.emit('updateHeaderAfterLogin', {'updateHeaderAfterLogin': '1'})
         }
       }
   }

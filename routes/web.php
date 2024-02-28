@@ -58,12 +58,16 @@ Auth::routes();
 
 //Api for axios
 
-Route::get('get-categories',[CategoryController::class,'getCategories'])->name('get.categories');
-Route::get('get-products',[ProductContoller::class,'getProducts'])->name('get.products');
+Route::get('get-categories', [CategoryController::class, 'getCategories'])->name('get.categories');
+Route::get('get-products', [ProductContoller::class, 'getProducts'])->name('get.products');
 Route::get('get-product-details', [ProductContoller::class, 'getProductDetails']);
 Route::get('check-coupon', [CouponController::class, 'checkCoupon']);
-Route::get('get-currency',[CurrencyController::class,'getCurrency'])->name('get.currency');
+Route::get('get-currency', [CurrencyController::class, 'getCurrency'])->name('get.currency');
 Route::post('customer-signUp', [CustomerController::class, 'customerSignUp']);
 Route::post('customer-signIn', [CustomerController::class, 'customerLogin']);
 Route::post('send-verification-mail', [CustomerController::class, 'sendVerificationMail']);
 Route::post('verify-account', [CustomerController::class, 'verifyAccount']);
+
+Route::get('/{any}', function () {
+    return view('frontend.layouts.app');
+})->where('any', '.*');
