@@ -110,7 +110,7 @@
   <script>
   import axios from 'axios';
   export default {
-      name: 'authentication',
+      name: 'signup',
         props: {
 
         },

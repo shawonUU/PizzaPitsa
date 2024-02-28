@@ -2,7 +2,6 @@
 
 use App\Models\Admin\DelivaryCharge;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MapController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\CouponController;
