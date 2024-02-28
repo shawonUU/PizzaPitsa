@@ -49,6 +49,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('topings', TopingsController::class);
     Route::resource('delivery_charges', DelivaryChargeController::class);
     Route::resource('currency', CurrencyController::class);
+    Route::post('update-customer-data', [CustomerController::class, 'updateCustomerData']);
 });
 
 
@@ -66,6 +67,8 @@ Route::post('customer-signUp', [CustomerController::class, 'customerSignUp']);
 Route::post('customer-signIn', [CustomerController::class, 'customerLogin']);
 Route::post('send-verification-mail', [CustomerController::class, 'sendVerificationMail']);
 Route::post('verify-account', [CustomerController::class, 'verifyAccount']);
+
+
 
 Route::get('/{any}', function () {
     return view('frontend.layouts.app');
