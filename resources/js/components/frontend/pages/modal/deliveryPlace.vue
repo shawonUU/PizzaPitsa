@@ -93,6 +93,11 @@
                 this.initMap();
             },
             placeOrder(type){
+
+              if(!(latitude && longitude)){
+                  alert('select delivery asddress'); return;
+              }
+
                 const savedCart = localStorage.getItem('cart');
                 
                 axios.post('palce-order', {
@@ -101,6 +106,9 @@
                   subTotal:this.subTotal,
                   discount:this.discount,
                   grandTotal:this.grandTotal,
+                  latitude:latitude,
+                  longitude:longitude,
+                  selectedAddress:selectedAddress,
                 })
                 .then((res)=>{
                   console.log(res.data);
