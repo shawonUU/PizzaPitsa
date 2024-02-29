@@ -130,7 +130,18 @@
                         </ul>
                     </div>
                 </li>
-
+                <li class="nav-item">
+                    <a class="nav-link menu-link" href="#orderManagement" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
+                        <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Order Management</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="orderManagement">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('orders.index') }}" class="nav-link">Orders</a>
+                            </li>                         
+                        </ul>
+                    </div>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarCouponUI" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
                         <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Settings</span>
