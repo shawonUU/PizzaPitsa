@@ -36,10 +36,13 @@
                 <div class="row">
                     <div class="col-4">
                         <h3>New Address</h3>
-                        <form action="">
+                          <div v-if="checkOutError" class="toast-container">
+                            <div class="toast">{{ checkOutMessage }}</div>
+                          </div>
+                        <form action="javascript:void(0)">
                             <input type="text" class="form-group" style="border:1px solid #000; height: 50px;" :value="selectedAddress">
                             <div class="mt-auto">
-                              <button @click="placeOrder(1)" class="btn" style="background:#ee6e2d; color: #fff; border-radius: 9999px; padding: 5px; font-size: 16px;">Cash On Delivery</button>
+                              <button type="button" @click="placeOrder(1)" class="btn" style="background:#ee6e2d; color: #fff; border-radius: 9999px; padding: 5px; font-size: 16px;">Cash On Delivery</button>
                             </div>
                         </form>
                     </div>
@@ -58,6 +61,8 @@
 
 <script>
     import axios from 'axios';
+    import { toast } from 'vue3-toastify';
+    import 'vue3-toastify/dist/index.css';
     export default {
         name: 'deliveryPlace',
         props: {
@@ -70,6 +75,8 @@
                 deliveryPlace: true,
                 mapSection: false,
                 modalWidth: 400,
+                checkOutMessage: '',
+                checkOutError:false,
 
                 map: null,
                 marker: null,
@@ -93,6 +100,13 @@
                 this.initMap();
             },
             placeOrder(type){
+
+              if(type==2 && !(this.latitude && this.longitude)){
+                   this.checkOutError = true;
+                   this.checkOutMessage = 'select delivery asddress';
+                   return;
+              }
+
                 const savedCart = localStorage.getItem('cart');
                 
                 axios.post('palce-order', {
@@ -101,9 +115,19 @@
                   subTotal:this.subTotal,
                   discount:this.discount,
                   grandTotal:this.grandTotal,
+                  latitude:this.latitude,
+                  longitude:this.longitude,
+                  selectedAddress:this.selectedAddress,
                 })
                 .then((res)=>{
                   console.log(res.data);
+                  if(res.data.success){
+                    localStorage.setItem('cart', '');
+                    this.handleButtonClick();
+                  }else{
+                      this.checkOutError = true;
+                      this.checkOutMessage = res.data.message;
+                  }
                 })
                 .catch((err)=>{
                     console.log(err);
@@ -162,9 +186,13 @@
                   geocoder.geocode({ location: latLng }, (results, status) => {
                     if (status === 'OK' && results[0]) {
                       this.selectedAddress = results[0].formatted_address;
+                      console.log("latLng");
+                      console.log(latLng);
                       this.selectedLocation = latLng;
                       this.latitude = latLng.lat();
                       this.longitude = latLng.lng();
+                      console.log(this.latitude);
+                      console.log(this.longitude);
                     } else {
                       console.error('Geocoder failed due to:', status);
                     }

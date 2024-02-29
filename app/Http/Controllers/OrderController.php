@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Address;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,29 @@ class OrderController extends Controller
 {
     public function placeOrder(Request $request)
     {
+
         $cart = json_decode($request->cart, true);
+
+        $address_id = null;
+        if($request->type == 1){
+            $latitude = $request->latitude;
+            $longitude = $request->longitude;
+            $selectedAddress = $request->selectedAddress;
+            if(!($latitude && $longitude)){
+                $response = [
+                    'success' => false,
+                    'message' => 'Select Delivery Address',
+                ];
+                return response()->json($response);
+            }
+            $address = new Address;
+            $address->customer_id = auth()->user()->id;
+            $address->latitude = $latitude;
+            $address->longitude = $longitude;
+            $address->selectedAddress = $selectedAddress;
+            $address->save();
+            $address_id = $address->id;
+        }
 
         $latestOrder = Order::latest()->first();
         $lastOrderNumber = $latestOrder ? $latestOrder->order_number : 0;
@@ -25,6 +48,7 @@ class OrderController extends Controller
         $order->discount = $request->discount;
         $order->total_amount = $request->subTotal;
         $order->paid_amount = $request->grandTotal;
+        $order->delivery_address_id = $address_id;
         $order->save();
 
         foreach ($cart as $product_id => $productWiseItem) {
@@ -32,13 +56,15 @@ class OrderController extends Controller
                 foreach ($productWiseItem as $size_id => $sizeWiseItem) {
                     if ($sizeWiseItem) {
 
-                        $toping_ids = "";
+                        $toping_ids = [];
                         $toping_price = 0;
-                        // foreach ($sizeWiseItem['topings'] as $toping) {
-                        //     if ($toping_ids != "") $toping_ids .= ',';
-                        //     $toping_ids .= $toping['id'];
-                        //     $toping_price += $toping['price'];
-                        // }
+                        foreach (isset($sizeWiseItem['topings']) ? $sizeWiseItem['topings'] : [] as $toping) {
+                            if($toping && !isset($toping_ids[$toping['id']])){
+                                $toping_ids[$toping['id']] = $toping['id'];
+                                $toping_price += $toping['price'];
+                            }
+                           
+                        }
 
                         $orderItem = new OrderItem;
                         $orderItem->order_id = $order->id;
@@ -48,13 +74,19 @@ class OrderController extends Controller
                         $orderItem->quantity = $sizeWiseItem['quantity'];
                         $orderItem->price = $sizeWiseItem['size']['price'];
                         $orderItem->total_price = $sizeWiseItem['quantity'] * $sizeWiseItem['size']['price'];
-                        $orderItem->toping_ids = $toping_ids;
+                        $orderItem->toping_ids = implode(',',$toping_ids);
                         $orderItem->toping_price = $toping_price;
                         $orderItem->save();
                     }
                 }
             }
         }
+
+        $response = [
+            'success' => true,
+            'message' => 'Order Place Done',
+        ];
+        return response()->json($response);
     }
 
     public function getOrders()
