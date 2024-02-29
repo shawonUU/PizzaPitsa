@@ -16,6 +16,7 @@
         "vue": "^3.2.37"
     },
     "dependencies": {
+        "@fawmi/vue-google-maps": "^0.9.79",
         "mitt": "^3.0.1",
         "swiper": "^11.0.6",
         "vue-loader": "^17.3.1",

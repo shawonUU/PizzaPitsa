@@ -483,7 +483,7 @@
 
              <Details :productData="product" :productSizes="productSizes" :productTopings="productTopings" maxMin:="maxMin" v-if="showAddToCart" @closeModal="handleModalClose"></Details>
             <Authentication  v-if="showAuthentication" @closeModal="handleAuthenticationModalClose"></Authentication>
-            <DeliveryPlace  v-if="showDeliveryPlace" @closeModal="handleDeliveryPlaceModalClose"></DeliveryPlace>
+            <DeliveryPlace :discount="discount" :subTotal="subTotal" :grandTotal="grandTotal"  v-if="showDeliveryPlace" @closeModal="handleDeliveryPlaceModalClose"></DeliveryPlace>
         </main>
     </div>
      <!-- <div class="input-group">
@@ -530,6 +530,7 @@ export default {
             isCouponNotMatched:false,
             isDiscount:false,
             showDiscount:'',
+            discount:0,
             baseCurrencySymbol: '',
         }
     },
@@ -636,9 +637,11 @@ export default {
                 var coupon = this.coupon;
                 if(coupon.discount_type){
                     this.showDiscount = coupon.discount + '%';
+                    this.discount = this.grandTotal*(coupon.discount/100);
                     this.grandTotal -= this.grandTotal*(coupon.discount/100);
                 }else{
                     this.showDiscount = coupon.discount+this.baseCurrencySymbol;
+                    this.discount = coupon.discount;
                     this.grandTotal -= coupon.discount;
                 }
 

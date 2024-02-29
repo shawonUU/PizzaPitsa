@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\CurrencyController;
 use App\Http\Controllers\Admin\NutritionController;
 use App\Http\Controllers\Admin\DelivaryChargeController;
 use App\Http\Controllers\Admin\ProductMnagementController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +50,13 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('topings', TopingsController::class);
     Route::resource('delivery_charges', DelivaryChargeController::class);
     Route::resource('currency', CurrencyController::class);
+
+   
+});
+
+Route::post('palce-order', [OrderController::class, 'placeOrder']);
+Route::prefix('frontend')->middleware(['auth'])->group(function () {
+    Route::post('update-customer-data',   [CustomerController::class, 'updateCustomerData']);
 });
 
 
