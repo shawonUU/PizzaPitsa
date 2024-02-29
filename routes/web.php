@@ -51,7 +51,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('delivery_charges', DelivaryChargeController::class);
     Route::resource('currency', CurrencyController::class);
 
-   
+    //Order Management
+    Route::get('orders', [OrderController::class, 'getOrders'])->name('orders.index');
 });
 
 Route::post('palce-order', [OrderController::class, 'placeOrder']);

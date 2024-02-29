@@ -8,8 +8,9 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    public function placeOrder(Request $request){
-        return $cart = json_decode($request->cart, true);
+    public function placeOrder(Request $request)
+    {
+        $cart = json_decode($request->cart, true);
 
         $latestOrder = Order::latest()->first();
         $lastOrderNumber = $latestOrder ? $latestOrder->order_number : 0;
@@ -26,18 +27,18 @@ class OrderController extends Controller
         $order->paid_amount = $request->grandTotal;
         $order->save();
 
-        foreach($cart as $product_id => $productWiseItem){
-            if($productWiseItem){
-                foreach($productWiseItem as $size_id => $sizeWiseItem){
-                    if($sizeWiseItem){
+        foreach ($cart as $product_id => $productWiseItem) {
+            if ($productWiseItem) {
+                foreach ($productWiseItem as $size_id => $sizeWiseItem) {
+                    if ($sizeWiseItem) {
 
                         $toping_ids = "";
                         $toping_price = 0;
-                        foreach($sizeWiseItem['topings'] as $toping){
-                            if($toping_ids != "") $toping_ids .= ',';
-                            $toping_ids .= $toping['id']; 
-                            $toping_price += $toping['price'];
-                        }
+                        // foreach ($sizeWiseItem['topings'] as $toping) {
+                        //     if ($toping_ids != "") $toping_ids .= ',';
+                        //     $toping_ids .= $toping['id'];
+                        //     $toping_price += $toping['price'];
+                        // }
 
                         $orderItem = new OrderItem;
                         $orderItem->order_id = $order->id;
@@ -46,7 +47,7 @@ class OrderController extends Controller
                         $orderItem->size_id = $sizeWiseItem['size']['id'];
                         $orderItem->quantity = $sizeWiseItem['quantity'];
                         $orderItem->price = $sizeWiseItem['size']['price'];
-                        $orderItem->total_price = $sizeWiseItem['quantity']*$sizeWiseItem['size']['price'];
+                        $orderItem->total_price = $sizeWiseItem['quantity'] * $sizeWiseItem['size']['price'];
                         $orderItem->toping_ids = $toping_ids;
                         $orderItem->toping_price = $toping_price;
                         $orderItem->save();
@@ -54,6 +55,10 @@ class OrderController extends Controller
                 }
             }
         }
+    }
 
+    public function getOrders()
+    {
+        return $orders = Order::orderBy('id', 'DESC')->get();
     }
 }
