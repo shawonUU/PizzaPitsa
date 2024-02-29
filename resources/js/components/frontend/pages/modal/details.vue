@@ -171,6 +171,8 @@
 
 <script>
 import axios from 'axios';
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
 export default {
     name: 'details',
       props: {
@@ -237,7 +239,7 @@ export default {
         if (this.quantity > 1) {
           this.quantity--;
         }
-        this.generatePrice();
+        this.generatePrice();        
       },
       incrementQuantity() {
         // You can add any validation or constraints here
@@ -339,7 +341,7 @@ export default {
                    this.cart[this.productData.id][this.productSizes[selectedSize].id] = existingItem;
                    this.showToast('Added to cart.');
                    this.handleButtonClick();
-                   this.emitMyEvent();
+                   this.emitMyEvent();                   
 
               }
               this.updateLocalStorage();
@@ -356,7 +358,9 @@ export default {
           console.log(this.cart);
       },
      showToast(message) {
-        alert(message);
+        toast.success('Add to cart success', {
+            timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
+        });
         this.message = message;
         this.isVisible = true;
 

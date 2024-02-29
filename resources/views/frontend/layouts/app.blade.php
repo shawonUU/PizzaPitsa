@@ -18,6 +18,17 @@
         <link rel="stylesheet" href="{{ asset('frontend') }}/assets/css/style.min.css">
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />       
     </head>
+    <style>
+        .Toastify__close-button--light {
+        color: #000;
+        opacity: .3;
+        text-align: right!important;
+        }
+        .Toastify__toast-body > div:last-child {
+        flex: 1;
+        width: 200px;
+        }
+    </style>
     <body class="sticky-header">
         <div id="app"></div>
         @vite('resources/js/app.js')
