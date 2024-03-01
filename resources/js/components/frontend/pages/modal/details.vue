@@ -297,7 +297,7 @@ export default {
           }
 
           if(!selectedSize){
-            this.showToast('Select Any Size');
+            this.showToast('Select Any Size',0);return;
           }
 
           if(selectedSize && this.orderPrice && this.productData && this.quantity){
@@ -339,7 +339,7 @@ export default {
                     existingItem.topings = bindTopings;
 
                    this.cart[this.productData.id][this.productSizes[selectedSize].id] = existingItem;
-                   this.showToast('Added to cart.');
+                   this.showToast('Added to cart.',1);
                    this.handleButtonClick();
                    this.emitMyEvent();                   
 
@@ -357,20 +357,23 @@ export default {
           this.cart = savedCart ? JSON.parse(savedCart) : [];
           console.log(this.cart);
       },
-     showToast(message) {
-        toast.success('Add to cart success', {
-            timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
-        });
-        this.message = message;
-        this.isVisible = true;
+     showToast(message,type) {
+        if(type){
+          toast.success(message, {timeout: 2000});
+        }else{
+          toast.warning(message, {timeout: 2000});
+        }
+          
+          this.message = message;
+          this.isVisible = true;
 
-       setTimeout(() => {
-         this.isVisible = false;
-       }, 3000);
+        setTimeout(() => {
+          this.isVisible = false;
+        }, 2000);
     },
     emitMyEvent() {
           this.emitter.emit('my-event', {'eventContent': 'String changed'})
-      }
+    }
 
     }
 }

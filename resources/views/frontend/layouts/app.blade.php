@@ -56,5 +56,12 @@
     <script src="https://unpkg.com/vue3-google-map"></script>
     <!-- Main JS -->
     <script src="{{ asset('frontend') }}/assets/js/main.js"></script>
+    <script>
+        $(document).ready(function(){
+           @if(!(auth()->user()))
+                localStorage.setItem('auth', null);
+           @endif
+        });
+    </script>
     </body>
 </html>
