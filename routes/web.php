@@ -53,6 +53,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
     //Order Management
     Route::get('orders', [OrderController::class, 'getOrders'])->name('orders.index');
+    Route::post('update-status',[OrderController::class, 'updateStatus'])->name('update.status');
 });
 
 Route::post('palce-order', [OrderController::class, 'placeOrder']);

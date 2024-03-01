@@ -91,6 +91,21 @@ class OrderController extends Controller
 
     public function getOrders()
     {
-        return $orders = Order::orderBy('id', 'DESC')->get();
+        $orders = Order::orderBy('id', 'DESC')->get();
+        // $orders = Order::leftJoin('products', 'order_items.product_id', '=', 'products.id')
+        //     ->select('orders.*')
+        //     ->orderBy('orders.id', 'DESC')
+        //     ->get();
+        return view("admin.pages.order.index", compact('orders'));
+    }
+
+    public function updateStatus(Request $request)
+    {
+        $newStatus = $request->newStatus;
+        $orderId = $request->orderId;
+        $order = Order::where('order_number', $orderId)->first();
+        $order->order_status = $newStatus;
+        $order->update();
+        return response()->json('Success');
     }
 }
