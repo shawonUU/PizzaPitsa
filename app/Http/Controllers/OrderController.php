@@ -31,6 +31,12 @@ class OrderController extends Controller
             $address->latitude = $latitude;
             $address->longitude = $longitude;
             $address->selectedAddress = $selectedAddress;
+
+            $address->entrance = $request->entrance;
+            $address->door_code = $request->door_code;
+            $address->floor = $request->floor;
+            $address->apartment = $request->apartment;
+            $address->comment = $request->comment;
             $address->save();
             $address_id = $address->id;
         }
