@@ -8,7 +8,7 @@
       style="padding-right: 17px; display: block"
     >
 
-      <div class="modal-dialog modal-dialog-centered" :style="{ 'max-width': modalWidth + 'px' }">
+      <div class="modal-dialog modal-dialog-centered" :style="{ 'max-width': modalWidth + '%' }">
         <div class="modal-content">
           <div class="modal-body" style="padding-top: 0px; padding-right: 13px;">
             <div class="d-flex justify-content-end pt-3">
@@ -34,20 +34,39 @@
             </div>
              <div v-if="mapSection">                
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-12 col-md-4">
                         <h3>New Address</h3>
                           <div v-if="isVisible" class="toast-container">
                             <div class="toast">{{ message }}</div>
                           </div>
                         <form action="javascript:void(0)">
-                            <input type="text" class="form-group" style="border:1px solid #000; height: 50px;" :value="selectedAddress">
+                            <div class="row">
+                                <div class="col-12">
+                                  <input type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" :value="selectedAddress" placeholder="Address">>
+                                </div>
+                                <div class="col-6">
+                                    <input id="entrance" type="text" class="form-group mb-5" style="border:1px solid #000; height: 50px;" placeholder="Entrance">
+                                </div>
+                                <div class="col-6">
+                                    <input id="door_code" type="text" class="form-group mb-5" style="border:1px solid #000; height: 50px;" placeholder="Door Code">
+                                </div>
+                                <div class="col-6">
+                                    <input id="floor" type="text" class="form-group mb-5" style="border:1px solid #000; height: 50px;" placeholder="Floor">
+                                </div>
+                                <div class="col-6">
+                                    <input id="apartment" type="text" class="form-group mb-5" style="border:1px solid #000; height: 50px;" placeholder="Apartment">
+                                </div>
+                                <div class="col-12">
+                                    <input id="comment" type="text" class="form-group mb-5" style="border:1px solid #000; height: 50px;" placeholder="Apt., Suite, Room and Comments">
+                                </div>
+                            </div>
                             <div class="mt-auto">
-                              <button type="button" @click="placeOrder(1)" class="btn" style="background:#ee6e2d; color: #fff; border-radius: 9999px; padding: 5px; font-size: 16px;">Cash On Delivery</button>
+                              <button id="cashOnDeliveryBtn" type="button" @click="placeOrder(1)" class="btn" style="background:#cecac8; cursor: not-allowed; color: #fff; border-radius: 9999px; padding: 5px; font-size: 16px;" >Cash On Delivery</button>
                             </div>
                         </form>
                     </div>
-                    <div class="col-8">
-                        <div id="map"></div>
+                    <div class="col-12 col-md-8">
+                        <div id="map" style="height: 600px;"></div>
                     </div>
                 </div>
             </div>
@@ -74,7 +93,7 @@
             return {
                 deliveryPlace: true,
                 mapSection: false,
-                modalWidth: 400,
+                modalWidth: 25,
                 message: '',
                 isVisible:false,
 
@@ -92,19 +111,31 @@
                 this.$emit('closeModal');
             },
             showMap() {
-                this.deliveryPlace = false;
-                this.mapSection = true;
-                this.modalWidth = 1500;
-                this.initMap();
+
+                if(this.grandTotal>=300){
+                  this.deliveryPlace = false;
+                  this.mapSection = true;
+                  this.modalWidth = 80;
+                  this.initMap();
+                }else{
+                  this.isVisible = true;
+                  this.message = 'Minium Order Amount is 300';
+                  this.showToast(this.message,0);
+                }
             },
             placeOrder(type){
 
               if(type==2 && !(this.latitude && this.longitude)){
-                   this.showToast('select delivery asddress',0);
+                   this.showToast('select delivery address',0);
                    return;
               }
 
                 const savedCart = localStorage.getItem('cart');
+                var entrance = document.getElementById('entrance').value;
+                var door_code = document.getElementById('door_code').value;
+                var floor = document.getElementById('floor').value;
+                var apartment = document.getElementById('apartment').value;
+                var comment = document.getElementById('comment').value;
                 
                 axios.post('palce-order', {
                   type: type,
@@ -115,6 +146,11 @@
                   latitude:this.latitude,
                   longitude:this.longitude,
                   selectedAddress:this.selectedAddress,
+                  entrance:entrance,
+                  door_code:door_code,
+                  floor:floor,
+                  apartment:apartment,
+                  comment:comment,
                 })
                 .then((res)=>{
                   console.log(res.data);
@@ -151,10 +187,7 @@
                 this.emitter.emit('my-event', {'eventContent': 'String changed'});
             },
             initMap() {
-              // Replace 'YOUR_GOOGLE_MAPS_API_KEY' with your actual API key
               const apiKey = 'AIzaSyDuJ7HTs7w-V7nTKOQR0-hDylWSyzjI6bw';
-
-              // Load the Google Maps JavaScript API
               const script = document.createElement('script');
               script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
               script.defer = true;
@@ -166,16 +199,12 @@
               document.head.appendChild(script);
             },
             createMap() {
-              // Set default center coordinates
               const center = { lat:  65.021545, lng: 25.469885 };
-
-              // Create a new map
               this.map = new google.maps.Map(document.getElementById('map'), {
                 center: center,
                 zoom: 12,
               });
 
-              // Add a marker at the default center
               this.marker = new google.maps.Marker({
                 position: center,
                 map: this.map,
@@ -183,12 +212,10 @@
                 draggable: true,
               });
 
-              // Add event listeners for click and dragend
               this.marker.addListener('click', () => this.handleMarkerClick());
               this.marker.addListener('dragend', () => this.handleDragEnd());
-
-              // Initially, get the address of the default center
-              //this.getAddress(center);
+              // this.map.addListener('wheel', this.handleMapScroll());
+              document.getElementById('map').addEventListener('wheel', this.handleMapScroll);
             },
             handleMarkerClick() {
               // Handle marker click if needed
@@ -197,19 +224,32 @@
               const latLng = this.marker.getPosition();
               this.getAddress(latLng);
             },
+            handleMapScroll(event) {
+              // Prevent default behavior
+              event.preventDefault();
+              let currentZoom = this.map.getZoom();
+              let delta = event.deltaY > 0 ? -1 : 1;
+              let newZoom = currentZoom + delta;
+              newZoom = Math.min(Math.max(newZoom, 0), 21);
+              this.map.setZoom(newZoom);
+            },
             getAddress(latLng) {
-              // Reverse geocode to get the address
               const geocoder = new google.maps.Geocoder();
               geocoder.geocode({ location: latLng }, (results, status) => {
                 if (status === 'OK' && results[0]) {
                   this.selectedAddress = results[0].formatted_address;
-                  console.log("latLng");
                   console.log(latLng);
                   this.selectedLocation = latLng;
                   this.latitude = latLng.lat();
                   this.longitude = latLng.lng();
-                  console.log(this.latitude);
-                  console.log(this.longitude);
+                  if(this.latitude && this.longitude){
+                    document.getElementById("cashOnDeliveryBtn").style.backgroundColor = "#ee6e2d";
+                    document.getElementById("cashOnDeliveryBtn").style.cursor = 'pointer';
+                  }else{
+                    document.getElementById("cashOnDeliveryBtn").style.backgroundColor = "#cecac8;";
+                    document.getElementById("cashOnDeliveryBtn").style.cursor = 'not-allowed';
+                  }
+                   
                 } else {
                   console.error('Geocoder failed due to:', status);
                 }
