@@ -172,10 +172,7 @@
                     this.verificationSection = true;
                     this.email = email;
                     this.password = password;
-                    this.updateHeaderAfterLogin();
-                    toast.success('Login Success', {
-                        timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
-                    });
+                    this.updateHeaderAfterLogin();                
                 }else{
                     this.signUpDataError = res.data.message;
                 }
