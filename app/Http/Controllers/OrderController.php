@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\Address;
+use App\Models\Admin\Toping;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -98,7 +100,34 @@ class OrderController extends Controller
         //     ->get();
         return view("admin.pages.order.index", compact('orders'));
     }
+    public function getOrderDetails ($id) {
 
+        $orderDetails = Order::join('addresses', 'addresses.id', '=', 'orders.delivery_address_id')
+        ->join('users', 'users.id', '=', 'orders.customer_id')
+        ->select('orders.*','addresses.selectedAddress','users.name','users.email')
+        ->where('orders.order_number',$id)->first();
+        $products = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
+        ->join('sizes', 'sizes.id', '=', 'order_items.size_id')
+        ->select('order_items.*', 'products.name as proName','products.image', 'sizes.name as sizeName')
+        ->where('order_items.order_number', $id)
+        ->get();
+        
+        // Loop through each product to fetch and bind topping names
+        $products->each(function ($product) {
+            $topingIds = explode(',', $product->toping_ids);
+        
+            // Fetch topping names based on the toping_ids
+            $topingNames = Toping::whereIn('id', $topingIds)->pluck('name')->toArray();
+        
+            // Bind the topingNames to the product
+            $product->topingNames = implode(', ', $topingNames);
+        });
+        
+
+
+        return view("admin.pages.order.details", compact('products','orderDetails'));
+        
+    }
     public function updateStatus(Request $request)
     {
         $newStatus = $request->newStatus;
