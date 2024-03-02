@@ -36,8 +36,8 @@
                 <div class="row">
                     <div class="col-4">
                         <h3>New Address</h3>
-                          <div v-if="checkOutError" class="toast-container">
-                            <div class="toast">{{ checkOutMessage }}</div>
+                          <div v-if="isVisible" class="toast-container">
+                            <div class="toast">{{ message }}</div>
                           </div>
                         <form action="javascript:void(0)">
                             <input type="text" class="form-group" style="border:1px solid #000; height: 50px;" :value="selectedAddress">
@@ -75,8 +75,8 @@
                 deliveryPlace: true,
                 mapSection: false,
                 modalWidth: 400,
-                checkOutMessage: '',
-                checkOutError:false,
+                message: '',
+                isVisible:false,
 
                 map: null,
                 marker: null,
@@ -86,9 +86,7 @@
                 longitude:null,
             };
         },
-        mounted() {
-          this.initMap();
-        },
+        mounted() {},
         methods: {
             handleButtonClick() {
                 this.$emit('closeModal');
@@ -102,8 +100,7 @@
             placeOrder(type){
 
               if(type==2 && !(this.latitude && this.longitude)){
-                   this.checkOutError = true;
-                   this.checkOutMessage = 'select delivery asddress';
+                   this.showToast('select delivery asddress',0);
                    return;
               }
 
@@ -124,80 +121,100 @@
                   if(res.data.success){
                     localStorage.setItem('cart', '');
                     this.handleButtonClick();
+                    this.emitMyEvent();
+                    this.showToast(res.data.message,1);
                   }else{
                       this.checkOutError = true;
                       this.checkOutMessage = res.data.message;
+                      this.showToast(res.data.message,0);
                   }
                 })
                 .catch((err)=>{
                     console.log(err);
                 })
             },
-                initMap() {
-                  // Replace 'YOUR_GOOGLE_MAPS_API_KEY' with your actual API key
-                  const apiKey = 'AIzaSyDuJ7HTs7w-V7nTKOQR0-hDylWSyzjI6bw';
+            showToast(message,type) {
+                if(type){
+                  toast.success(message, {timeout: 2000});
+                }else{
+                  toast.warning(message, {timeout: 2000});
+                }
+                  
+                  this.message = message;
+                  this.isVisible = true;
 
-                  // Load the Google Maps JavaScript API
-                  const script = document.createElement('script');
-                  script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-                  script.defer = true;
+                setTimeout(() => {
+                  this.isVisible = false;
+                }, 2000);
+            },
+            emitMyEvent() {
+                this.emitter.emit('my-event', {'eventContent': 'String changed'});
+            },
+            initMap() {
+              // Replace 'YOUR_GOOGLE_MAPS_API_KEY' with your actual API key
+              const apiKey = 'AIzaSyDuJ7HTs7w-V7nTKOQR0-hDylWSyzjI6bw';
 
-                  script.onload = () => {
-                    this.createMap();
-                  };
+              // Load the Google Maps JavaScript API
+              const script = document.createElement('script');
+              script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+              script.defer = true;
 
-                  document.head.appendChild(script);
-                },
-                createMap() {
-                  // Set default center coordinates
-                  const center = { lat: 38.725282, lng: -9.149996 };
+              script.onload = () => {
+                this.createMap();
+              };
 
-                  // Create a new map
-                  this.map = new google.maps.Map(document.getElementById('map'), {
-                    center: center,
-                    zoom: 12,
-                  });
+              document.head.appendChild(script);
+            },
+            createMap() {
+              // Set default center coordinates
+              const center = { lat:  65.021545, lng: 25.469885 };
 
-                  // Add a marker at the default center
-                  this.marker = new google.maps.Marker({
-                    position: center,
-                    map: this.map,
-                    title: 'Selected Location',
-                    draggable: true,
-                  });
+              // Create a new map
+              this.map = new google.maps.Map(document.getElementById('map'), {
+                center: center,
+                zoom: 12,
+              });
 
-                  // Add event listeners for click and dragend
-                  this.marker.addListener('click', () => this.handleMarkerClick());
-                  this.marker.addListener('dragend', () => this.handleDragEnd());
+              // Add a marker at the default center
+              this.marker = new google.maps.Marker({
+                position: center,
+                map: this.map,
+                title: 'Selected Location',
+                draggable: true,
+              });
 
-                  // Initially, get the address of the default center
-                  this.getAddress(center);
-                },
-                handleMarkerClick() {
-                  // Handle marker click if needed
-                },
-                handleDragEnd() {
-                  const latLng = this.marker.getPosition();
-                  this.getAddress(latLng);
-                },
-                getAddress(latLng) {
-                  // Reverse geocode to get the address
-                  const geocoder = new google.maps.Geocoder();
-                  geocoder.geocode({ location: latLng }, (results, status) => {
-                    if (status === 'OK' && results[0]) {
-                      this.selectedAddress = results[0].formatted_address;
-                      console.log("latLng");
-                      console.log(latLng);
-                      this.selectedLocation = latLng;
-                      this.latitude = latLng.lat();
-                      this.longitude = latLng.lng();
-                      console.log(this.latitude);
-                      console.log(this.longitude);
-                    } else {
-                      console.error('Geocoder failed due to:', status);
-                    }
-                  });
-                },
+              // Add event listeners for click and dragend
+              this.marker.addListener('click', () => this.handleMarkerClick());
+              this.marker.addListener('dragend', () => this.handleDragEnd());
+
+              // Initially, get the address of the default center
+              //this.getAddress(center);
+            },
+            handleMarkerClick() {
+              // Handle marker click if needed
+            },
+            handleDragEnd() {
+              const latLng = this.marker.getPosition();
+              this.getAddress(latLng);
+            },
+            getAddress(latLng) {
+              // Reverse geocode to get the address
+              const geocoder = new google.maps.Geocoder();
+              geocoder.geocode({ location: latLng }, (results, status) => {
+                if (status === 'OK' && results[0]) {
+                  this.selectedAddress = results[0].formatted_address;
+                  console.log("latLng");
+                  console.log(latLng);
+                  this.selectedLocation = latLng;
+                  this.latitude = latLng.lat();
+                  this.longitude = latLng.lng();
+                  console.log(this.latitude);
+                  console.log(this.longitude);
+                } else {
+                  console.error('Geocoder failed due to:', status);
+                }
+              });
+            },
         },
     };
 </script>

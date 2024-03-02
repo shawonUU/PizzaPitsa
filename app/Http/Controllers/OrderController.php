@@ -84,7 +84,7 @@ class OrderController extends Controller
 
         $response = [
             'success' => true,
-            'message' => 'Order Place Done',
+            'message' => 'Order Placed Done',
         ];
         return response()->json($response);
     }
