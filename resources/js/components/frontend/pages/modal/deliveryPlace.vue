@@ -94,7 +94,7 @@
             showMap() {
                 this.deliveryPlace = false;
                 this.mapSection = true;
-                this.modalWidth = 1500;
+                this.modalWidth = 1000;
                 this.initMap();
             },
             placeOrder(type){
