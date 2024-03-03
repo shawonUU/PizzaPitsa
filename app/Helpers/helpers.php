@@ -1,8 +1,9 @@
 <?php
 
-use App\Models\Admin\Product;
-use App\Models\Admin\ProductImage;
 use App\Models\User;
+use App\Models\Admin\Product;
+use App\Models\Admin\Currency;
+use App\Models\Admin\ProductImage;
 
 function getProductImage($id)
 {
@@ -45,9 +46,15 @@ function orderStatuses()
   ];
 }
 
-function currecySymbleType(){
+
+function currecySymbleType()
+{
   return [
     '1' => 'Prefix',
     '2' => 'Suffix',
   ];
+}
+function getCurrency()
+{
+  return Currency::where('status', '1')->pluck('symbol')->first();
 }

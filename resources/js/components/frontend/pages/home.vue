@@ -481,7 +481,7 @@
                 </div>
             </div>
 
-             <Details :productData="product" :productSizes="productSizes" :productTopings="productTopings" maxMin:="maxMin" v-if="showAddToCart" @closeModal="handleModalClose"></Details>
+             <Details :productData="product" :productSizes="productSizes" :productTopings="productTopings" :maxMin="maxMin" v-if="showAddToCart" @closeModal="handleModalClose"></Details>
             <Authentication  v-if="showAuthentication" @closeModal="handleAuthenticationModalClose"></Authentication>
             <DeliveryPlace :discount="discount" :subTotal="subTotal" :grandTotal="grandTotal"  v-if="showDeliveryPlace" @closeModal="handleDeliveryPlaceModalClose"></DeliveryPlace>
         </main>
