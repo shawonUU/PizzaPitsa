@@ -25,17 +25,24 @@
                         <form action="{{route('currency.store')}}" method="post">
                             @csrf
                             <div class="row">
-                                <div class="col-12 col-md-6 col-lg-4">
+                                <div class="col-12 col-md-6 col-lg-3">
                                     <label for="code" class="form-label">Name</label>
                                     <input type="text" class="form-control" id="code" name="name" placeholder="Name" required>
                                 </div>
 
-                                <div class="col-12 col-md-6 col-lg-4">
+                                <div class="col-12 col-md-6 col-lg-3">
                                     <label for="discount" class="form-label">Symbol</label>
                                     <input type="text" class="form-control" id="symbol" name="symbol" placeholder="Symbol" pattern=".{1}" title="Please enter exactly one character for the symbol" required>
                                 </div>
-                                
-                                <div class="col-12 col-md-6 col-lg-4">
+                                <div class="col-12 col-md-6 col-lg-3">
+                                    <label for="discount" class="form-label">Type</label>
+                                    <select name="type" class="form-control" id="type">
+                                        @foreach (currecySymbleType() as $key => $type)
+                                            <option value="{{ $key }}">{{ $type }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-3">
                                     <label for="basiInput" class="form-label">Status</label>
                                     <select name="status" id="" class="form-control">
                                         @foreach (getStatus() as $key => $status) 
@@ -61,6 +68,7 @@
                                         <th scope="col">Name</th>                                    
                                         <th scope="col">Currency Symbol</th>                                    
                                         <th scope="col">Status</th>
+                                        <th scope="col">Type</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
@@ -70,6 +78,7 @@
                                         <th scope="row">{{$loop->index+1}}</th>
                                         <td>{{$coupon->name}}</td>                                       
                                         <td>{{$coupon->symbol}}</td>                                       
+                                        <td>{{$coupon->type}}</td>                                       
                                         <td>{{getStatus()[$coupon->status]}}</td>
                                         <td>
                                             <button class="btn btn-sm btn-primary" title="Edit" data-bs-toggle="modal" data-bs-target="#ctegory{{$coupon->id}}">
@@ -94,7 +103,15 @@
                                                                 <div class="col-12 col-md-12 col-lg-12">
                                                                     <label for="discount" class="form-label">Symbol</label>
                                                                     <input type="text" class="form-control" id="symbol" value="{{ $coupon->symbol }}" name="symbol" placeholder="Symbol" pattern=".{1}" title="Please enter exactly one character for the symbol" required>
-                                                                </div>                                                         
+                                                                </div>    
+                                                                <div class="col-12 col-md-12 col-lg-12">
+                                                                    <label for="discount" class="form-label">Type</label>
+                                                                    <select name="type" class="form-control" id="type">
+                                                                        @foreach (currecySymbleType() as $key => $type)
+                                                                            <option {{ $key== $coupon->type?'selected':''}} value="{{ $key }}">{{ $type }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>                                                     
                                                                 <div class="">
                                                                     <label for="basiInput" class="form-label">Status</label>
                                                                     <select name="status" id="" class="form-control">

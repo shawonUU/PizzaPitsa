@@ -32,15 +32,22 @@ function getUser($id)
 function orderStatuses()
 {
   return [
-    '0' => 'Pending',
-    '1' => 'Processing',
-    '2' => 'Shipped',
-    '3' => 'Out for Delivery',
-    '4' => 'Delivered',
-    '5' => 'Canceled',
+    '1' => 'Pending',
+    '2' => 'Processing',
+    '3' => 'Shipped',
+    '4' => 'Out for Delivery',
+    '5' => 'Delivered',
+    '6' => 'Canceled',
     '7' => 'Refunded',
     '8' => 'On Hold',
     '9' => 'Backordered',
     '10' => 'Returned'
+  ];
+}
+
+function currecySymbleType(){
+  return [
+    '1' => 'Prefix',
+    '2' => 'Suffix',
   ];
 }

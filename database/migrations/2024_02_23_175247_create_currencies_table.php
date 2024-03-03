@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->char('symbol');
-            $table->enum('type', [0, 1])->default(0)->comment('0 for prefix 1 for suffix');
+            $table->integer('type')->default(1)->comment('1 for prefix 2 for suffix');
             $table->enum('status', [0, 1])->default(0);
             $table->timestamps();
         });

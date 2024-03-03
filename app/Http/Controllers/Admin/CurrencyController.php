@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 class CurrencyController extends Controller
 {
 
-    public function index(){
+    public function index()
+    {
         $coupons = Currency::get();
         return view('admin.pages.product.currency.index', compact('coupons'));
     }
@@ -18,14 +19,16 @@ class CurrencyController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'symbol' => 'required|unique:currencies',                    
-            'status' => 'required',                    
+            'symbol' => 'required|unique:currencies',
+            'type' => 'required|numeric',
+            'status' => 'required',
         ]);
 
         $coupon = new Currency();
         $coupon->name = $request->input('name');
-        $coupon->symbol = $request->input('symbol');      
-        $coupon->status = $request->input('status');      
+        $coupon->symbol = $request->input('symbol');
+        $coupon->type = $request->input('type');
+        $coupon->status = $request->input('status');
         $coupon->save();
 
         return redirect()->back();
@@ -33,22 +36,25 @@ class CurrencyController extends Controller
 
     public function update(Request $request, $id)
     {
-       
+
         $request->validate([
             'name' => 'required',
-            'symbol' => 'required|unique:currencies',   
-            'status' => 'required',                    
+            'symbol' => 'required',
+            'type' => 'required',
+            'status' => 'required',
         ]);
 
         $coupon = Currency::findOrFail($id);
         $coupon->name = $request->input('name');
-        $coupon->symbol = $request->input('symbol');  
-        $coupon->status = $request->input('status');      
+        $coupon->symbol = $request->input('symbol');
+        $coupon->type = $request->input('type');
+        $coupon->status = $request->input('status');
         $coupon->update();
         return redirect()->back();
     }
 
-    public function getCurrency() {
-        return Currency::where('status','1')->first();
+    public function getCurrency()
+    {
+        return Currency::where('status', '1')->first();
     }
 }
