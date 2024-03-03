@@ -110,7 +110,7 @@ class OrderController extends Controller
 
         $orderDetails = Order::join('addresses', 'addresses.id', '=', 'orders.delivery_address_id')
         ->join('users', 'users.id', '=', 'orders.customer_id')
-        ->select('orders.*','addresses.selectedAddress','users.name','users.email')
+        ->select('orders.*','addresses.selectedAddress','addresses.selectedAddress','addresses.entrance','addresses.door_code','addresses.apartment','addresses.comment','addresses.floor','users.name','users.email')
         ->where('orders.order_number',$id)->first();
         $products = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
         ->join('sizes', 'sizes.id', '=', 'order_items.size_id')

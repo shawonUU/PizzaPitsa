@@ -105,13 +105,22 @@
           </div>          
           <div class="row gutters-5">
             <div class="col-6">
+              <strong>Address Info</strong>
+              <hr>
               <address>
-                <strong class="text-main">{{ $orderDetails->name }}</strong>
-                <br> {{ $orderDetails->email }}<br> 
-                {{ $orderDetails->selectedAddress }}
+                <strong class="text-main"> Name: {{ $orderDetails->name }}</strong>
+                <br> Email: {{ $orderDetails->email }}<br> 
+                Selected Address: {{ $orderDetails->selectedAddress }}<br> 
+                Entrance: {{ $orderDetails->entrance }}<br> 
+                Door Code: {{ $orderDetails->door_code }}<br> 
+                Floor: {{ $orderDetails->floor }}<br> 
+                Apartment: {{ $orderDetails->apartment }}<br> 
+                Comment: {{ $orderDetails->comment }}<br> 
               </address>
             </div>
             <div class="col-md-4">
+              <strong>Order Info</strong>
+              <hr>
               <table>
                 <tbody>
                   <tr>
@@ -120,26 +129,26 @@
                   </tr>
                   <tr>
                     <td class="text-main text-bold">Order status</td>
-                    <td class="text-right">
-                        @foreach (orderStatuses() as $value => $text)
-                             <span class="badge badge-inline badge-info" style="color: #000; font-size:16px">{{ $value == $orderDetails->order_status ? $text : '' }}</span>
-                        @endforeach                     
+                    @foreach (orderStatuses() as $value => $text)
+                    <td class="text-main text-bold">                       
+                      {{ $value == $orderDetails->order_status ? $text : '' }}                                       
                     </td>
+                    @endforeach 
                   </tr>
                   <tr>
                     <td class="text-main text-bold">Order Type</td>
-                    <td class="text-right">                        
-                             <span class="badge badge-inline badge-info" style="color: #000; font-size:16px">{{ $orderDetails->typem == '1' ?'Home Delivery':'Dine in or Pickup' }}</span>                                        
-                    </td>
+                    <td class="text-main text-bold">                       
+                      {{ $orderDetails->typem == '1' ?'Home Delivery':'Dine in or Pickup' }}                                     
+                    </td>                    
                   </tr>
                   
                   <tr>
                     <td class="text-main text-bold">Order date </td>
-                    <td class="text-right">06-09-2022 10:18 AM</td>
+                    <td class="text-right">{{ \Carbon\Carbon::parse($orderDetails->created_at)->format('F j, Y \a\t g:i A') }}</td>
                   </tr>
                   <tr>
                     <td class="text-main text-bold"> Total amount </td>
-                    <td class="text-right"> $48.450 </td>
+                    <td class="text-right">48.450{{ getCurrency() }}</td>
                   </tr>
                   <tr>
                     <td class="text-main text-bold">Payment method</td>
