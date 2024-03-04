@@ -53,8 +53,9 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
     //Order Management
     Route::get('orders', [OrderController::class, 'getOrders'])->name('orders.index');
-    Route::get('order.details/{id}', [OrderController::class, 'getOrderDetails'])->name('order.details');
+    Route::get('order-details/{id}', [OrderController::class, 'getOrderDetails'])->name('order.details');
     Route::post('update-status',[OrderController::class, 'updateStatus'])->name('update.status');
+    Route::post('update-address',[OrderController::class, 'updateAddress'])->name('address.update');
 });
 
 Route::post('palce-order', [OrderController::class, 'placeOrder']);

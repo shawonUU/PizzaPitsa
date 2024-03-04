@@ -110,7 +110,7 @@ class OrderController extends Controller
 
         $orderDetails = Order::join('addresses', 'addresses.id', '=', 'orders.delivery_address_id')
         ->join('users', 'users.id', '=', 'orders.customer_id')
-        ->select('orders.*','addresses.selectedAddress','addresses.selectedAddress','addresses.entrance','addresses.door_code','addresses.apartment','addresses.comment','addresses.floor','users.name','users.email')
+        ->select('orders.*','addresses.selectedAddress','addresses.selectedAddress','addresses.entrance','addresses.door_code','addresses.apartment','addresses.comment','addresses.floor','users.name','users.email','addresses.id as AddId')
         ->where('orders.order_number',$id)->first();
         $products = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
         ->join('sizes', 'sizes.id', '=', 'order_items.size_id')
@@ -142,5 +142,23 @@ class OrderController extends Controller
         $order->order_status = $newStatus;
         $order->update();
         return response()->json('Success');
+    }
+
+    public function updateAddress (Request $request) {         
+         $selectedAddress = $request->selectedAddress;
+         $address = Address::where('id',$request->addressId)->first();             
+         $address->selectedAddress = $selectedAddress;
+         $address->entrance = $request->entrance;
+         $address->door_code = $request->door_code;
+         $address->floor = $request->floor;
+         $address->apartment = $request->apartment;
+         $address->comment = $request->comment;
+         $address->update();
+         session()->flash('sweet_alert', [
+            'type' => 'success',
+            'title' => 'Success!',
+            'text' => 'Address update success',
+        ]);
+        return redirect()->back();
     }
 }

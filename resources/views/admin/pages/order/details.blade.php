@@ -68,6 +68,15 @@
         <div class="card-header">
           <h1 class="h2 fs-16 mb-0">Order Details of <span style="color:blue">#{{ $orderDetails->order_number }}</span></h1>
         </div>
+        @if(session('sweet_alert'))
+            <script>
+                Swal.fire({
+                    icon: '{{ session('sweet_alert.type') }}',
+                    title: '{{ session('sweet_alert.title') }}',
+                    text: '{{ session('sweet_alert.text') }}',
+                });
+            </script>
+        @endif
         <div class="card-body">
           <div class="row ">            
             <!--Assign Delivery Boy-->
@@ -100,8 +109,63 @@
             <div class="col-6">
               <strong>Address Info</strong>
               <hr>
-              <address>
-                <strong class="text-main"> Name: {{ $orderDetails->name }}</strong>
+              <address>                                 
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <strong class="text-main"> Name: {{ $orderDetails->name }}</strong>
+                    </div>
+                    <div>
+                      
+                    </div>
+                    <div>
+                      <button class="btn btn-info"  data-bs-toggle="modal" data-bs-target="#myModal"><i class="ri-ball-pen-line" style="color: #fff"></i></button>
+                      <div id="myModal" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <form action="{{route('address.update')}}" method="post">
+                            @csrf
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                      <input type="hidden" name="addressId" value="{{ $orderDetails->AddId }}">
+                                        <h5 class="modal-title" id="myModalLabel">Edit Address</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div>
+                                            <label for="basiInput" class="form-label">Selected Address</label>
+                                            <input type="text" class="form-control" value="{{ $orderDetails->selectedAddress }}" id="selectedAddress" name="selectedAddress" placeholder="Selected Address" required>
+                                        </div>                                        
+                                        <div>
+                                          <label for="basiInput" class="form-label">Entrance</label>
+                                          <input type="text" class="form-control" value="{{ $orderDetails->entrance }}" id="entrance" name="entrance" placeholder="Entrance" required>
+                                        </div>
+                                        <div>
+                                          <label for="basiInput" class="form-label">Door Code</label>
+                                          <input type="text" class="form-control" value="{{ $orderDetails->door_code }}" id="door_code" name="door_code" placeholder="Door Code" required>
+                                        </div>
+                                        <div>
+                                          <label for="basiInput" class="form-label">Floor</label>
+                                          <input type="text" class="form-control" value="{{ $orderDetails->floor }}" id="floor" name="floor" placeholder="Floor" required>
+                                        </div>
+                                        <div>
+                                          <label for="basiInput" class="form-label">Apartment</label>
+                                          <input type="text" class="form-control" value="{{ $orderDetails->apartment }}" id="apartment" name="apartment" placeholder="Apartment" required>
+                                        </div>
+                                        <div>
+                                          <label for="basiInput" class="form-label">Comments</label>
+                                          <input type="text" class="form-control" value="{{ $orderDetails->comment }}" id="Comment" name="comment" placeholder="Comment" required>
+                                        </div>                                     
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary ">Update</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    </div>
+                  </div>                
                 <br> Email: {{ $orderDetails->email }}<br> 
                 Selected Address: {{ $orderDetails->selectedAddress }}<br> 
                 Entrance: {{ $orderDetails->entrance }}<br> 
