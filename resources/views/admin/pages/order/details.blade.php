@@ -72,15 +72,13 @@
           <div class="row ">            
             <!--Assign Delivery Boy-->
             <div class="col-md-3">
-              <label for="assign_deliver_boy">Assign Deliver Boy</label>
-             
+              <label for="assign_deliver_boy">Assign Deliver Boy</label>             
                 <select class="form-select mb-3" aria-label="Default select example">
                     <option selected="">Select your Status </option>
                     <option value="1">Declined Payment</option>
                     <option value="2">Delivery Error</option>
                     <option value="3">Wrong Amount</option>
-                </select>           
-            
+                </select>                     
             </div>
             <div class="col-md-3">
               <label for="update_payment_status">Payment Status</label>             
@@ -90,17 +88,12 @@
                 </select>                          
             </div>
             <div class="col-md-3">
-              <label for="update_delivery_status">Delivery Status</label>
-             
-                <select class="form-control aiz-selectpicker" data-minimum-results-for-search="Infinity" id="update_delivery_status" tabindex="-98">
-                  <option value="pending" selected=""> Pending </option>
-                  <option value="confirmed"> Confirmed </option>
-                  <option value="picked_up"> Picked Up </option>
-                  <option value="on_the_way"> On The Way </option>
-                  <option value="delivered"> Delivered </option>
-                  <option value="cancelled"> Cancel </option>
-                </select>                
-         
+              <label for="update_delivery_status">Order Status</label>             
+                <select class="form-control" data-minimum-results-for-search="Infinity" onchange="updateStatus('{{ $orderDetails->order_number }}',this.value)" id="update_delivery_status" tabindex="-98">
+                  @foreach (orderStatuses() as $value => $text)
+                      <option {{ $value == $orderDetails->order_status ? 'selected' : '' }} value="{{ $value }}">{{ $text }}</option>                                            
+                  @endforeach    
+                </select>                         
             </div>          
           </div>          
           <div class="row gutters-5">
@@ -234,8 +227,8 @@
                       <br>                  
                     </td>                   
                     <td class="text-center" style="display: table-cell;"> {{ $item->quantity }} </td>
-                    <td class="text-center" style="display: table-cell;"> ${{ $item->price }} </td>
-                    <td class="text-center footable-last-visible" style="display: table-cell;"> ${{ $item->total_price }} </td>
+                    <td class="text-center" style="display: table-cell;"> {{ $item->price }}{{ getCurrency() }}</td>
+                    <td class="text-center footable-last-visible" style="display: table-cell;"> {{ $item->total_price }}{{ getCurrency() }} </td>
                   </tr>
                 @endforeach
                  
@@ -250,31 +243,31 @@
                   <td>
                     <strong class="text-muted">Sub Total :</strong>
                   </td>
-                  <td> $47.500 </td>
+                  <td> 47.500{{ getCurrency() }} </td>
                 </tr>
                 <tr>
                   <td>
                     <strong class="text-muted">Tax :</strong>
                   </td>
-                  <td> $0.950 </td>
+                  <td> 0.950{{ getCurrency() }} </td>
                 </tr>
                 <tr>
                   <td>
                     <strong class="text-muted">Shipping :</strong>
                   </td>
-                  <td> $0.000 </td>
+                  <td> 0.000{{ getCurrency() }} </td>
                 </tr>
                 <tr>
                   <td>
                     <strong class="text-muted">Coupon :</strong>
                   </td>
-                  <td> $0.000 </td>
+                  <td> 0.000{{ getCurrency() }} </td>
                 </tr>
                 <tr>
                   <td>
                     <strong class="text-muted">Total :</strong>
                   </td>
-                  <td class="text-muted h5"> $48.450 </td>
+                  <td class="text-muted h5"> 48.450{{ getCurrency() }} </td>
                 </tr>
               </tbody>
             </table>

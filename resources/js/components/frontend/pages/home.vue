@@ -463,7 +463,7 @@
                         </div><br>
                         <p class="cart-subtotal m-0">
                             <span class="subtotal-title">Subtotal:</span>
-                            <span class="subtotal-amount">{{ subTotal }}{{ baseCurrencySymbol }}</span>
+                            <span class="subtotal-amount">{{ showAmount(subTotal) }}</span>
                         </p>
                         <p class="cart-subtotal m-0" v-if="isDiscount">
                             <span class="subtotal-title">Discount:</span>
@@ -503,11 +503,12 @@ import Details from '../../../components/frontend/pages/modal/details.vue';
 import DeliveryPlace from '../../../components/frontend/pages/modal/deliveryPlace.vue';
 import Authentication from './modal/authentication.vue';
 import 'swiper/css';
-import { getBaseCurrencySymbol } from '../helpers.js';
+import { getBaseCurrencySymbol, HelperFunctions } from '../helpers.js';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 export default {
     name: 'home',
+    mixins: [HelperFunctions],
     components: {
         Swiper,
         SwiperSlide,
@@ -760,6 +761,7 @@ export default {
         },
 
         async fetchBaseCurrencySymbol() {
+            console.log(await this.showAmount(655))
             try {
                 this.baseCurrencySymbol = await getBaseCurrencySymbol();
             } catch (error) {

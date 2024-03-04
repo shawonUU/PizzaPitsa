@@ -67,8 +67,8 @@
                                         <th scope="col">Id</th>
                                         <th scope="col">Name</th>                                    
                                         <th scope="col">Currency Symbol</th>                                    
-                                        <th scope="col">Status</th>
                                         <th scope="col">Type</th>
+                                        <th scope="col">Status</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
@@ -78,7 +78,7 @@
                                         <th scope="row">{{$loop->index+1}}</th>
                                         <td>{{$coupon->name}}</td>                                       
                                         <td>{{$coupon->symbol}}</td>                                       
-                                        <td>{{$coupon->type}}</td>                                       
+                                        <td>{{currecySymbleType()[$coupon->type]}}</td>                                       
                                         <td>{{getStatus()[$coupon->status]}}</td>
                                         <td>
                                             <button class="btn btn-sm btn-primary" title="Edit" data-bs-toggle="modal" data-bs-target="#ctegory{{$coupon->id}}">
