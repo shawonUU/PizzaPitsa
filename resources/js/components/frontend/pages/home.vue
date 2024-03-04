@@ -376,7 +376,9 @@
 
             </div>
         <!-- End Flash Sale Area  -->
-           
+            <div v-if="isVisible" class="toast-container">
+                <div class="toast">{{ message }}</div>
+            </div>
             <div class="cart-dropdown" id="cart-dropdown">
                 <div class="cart-content-wrap" style="padding: 18px 22px !important;">
                     <div class="cart-header">
@@ -463,7 +465,7 @@
                         </div><br>
                         <p class="cart-subtotal m-0">
                             <span class="subtotal-title">Subtotal:</span>
-                            <span class="subtotal-amount">{{ showAmount(subTotal) }}</span>
+                            <span class="subtotal-amount">{{ subTotal }}{{ baseCurrencySymbol }}</span>
                         </p>
                         <p class="cart-subtotal m-0" v-if="isDiscount">
                             <span class="subtotal-title">Discount:</span>
@@ -473,9 +475,22 @@
                             <span class="subtotal-title">GrandTotal:</span>
                             <span class="subtotal-amount">{{ grandTotal }}{{ baseCurrencySymbol }}</span>
                         </p>
-                        <div class="group-btn">
+                        <div class="group-btn d-none">
                             <!-- <a href="javascript:void(0)" class="axil-btn btn-bg-primary viewcart-btn">View Cart</a> -->
                             <a href="javascript:void(0)" @click="checkout()" class="axil-btn btn-bg-secondary checkout-btn float-right">Checkout</a>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12 col-md-6 mt-5 mb-3">
+                                <div class="input-group" style="cursor:pointer;">
+                                    <button @click="showMap()" type="button" class="btn" style=" cursor:pointer !important; background: #ee6e2d; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Specify The Delivery Address</button>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 mt-5 mb-3">
+                                <div class="input-group" style="cursor:pointer;">
+                                    <button @click="placeOrder(2)" type="button" class="btn" style="cursor:pointer !important; background: #f5c6ae; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Or Dine In / Pick Up</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -483,7 +498,7 @@
 
              <Details :productData="product" :productSizes="productSizes" :productTopings="productTopings" :maxMin="maxMin" v-if="showAddToCart" @closeModal="handleModalClose"></Details>
             <Authentication  v-if="showAuthentication" @closeModal="handleAuthenticationModalClose"></Authentication>
-            <DeliveryPlace :discount="discount" :subTotal="subTotal" :grandTotal="grandTotal"  v-if="showDeliveryPlace" @closeModal="handleDeliveryPlaceModalClose"></DeliveryPlace>
+            <DeliveryPlace :discount="discount" :subTotal="subTotal" :grandTotal="grandTotal" :orderType="orderType"  v-if="showDeliveryPlace" @closeModal="handleDeliveryPlaceModalClose"></DeliveryPlace>
         </main>
     </div>
      <!-- <div class="input-group">
@@ -535,6 +550,9 @@ export default {
             showDiscount:'',
             discount:0,
             baseCurrencySymbol: '',
+            isVisible:true,
+            message:'',
+            orderType:null,
         }
     },
     created (){
@@ -759,7 +777,6 @@ export default {
             if(auth) this.showDeliveryPlace = true;
             else this.showAuthentication = true;
         },
-
         async fetchBaseCurrencySymbol() {
             console.log(await this.showAmount(655))
             try {
@@ -768,6 +785,37 @@ export default {
                 // Handle error (e.g., show an error message)
                 console.error('Error fetching base currency symbol in component:', error);
             }
+        },
+        showMap() {
+            if(this.grandTotal>=300){
+                // this.deliveryPlace = false;
+                this.orderType = 1;
+                // this.modalWidth = 80;
+                // this.initMap();
+                var auth = localStorage.getItem('auth');
+                auth = auth ? JSON.parse(auth) : null;
+                console.log(auth);
+                if(auth) this.showDeliveryPlace = true;
+                else this.showAuthentication = true;
+            }else{
+                this.isVisible = true;
+                this.message = 'Minium Order Amount is 300';
+                this.showToast(this.message,0);
+            }
+        },
+        showToast(message,type) {
+            if(type){
+                toast.success(message, {timeout: 2000});
+            }else{
+                toast.warning(message, {timeout: 2000});
+            }
+                
+                this.message = message;
+                this.isVisible = true;
+
+            setTimeout(() => {
+                this.isVisible = false;
+            }, 2000);
         },
     },
     setup() {

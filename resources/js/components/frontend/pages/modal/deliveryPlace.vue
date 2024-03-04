@@ -32,7 +32,7 @@
                     </div>
                 </div>
             </div>
-             <div v-if="mapSection">                
+            <div v-if="mapSection">                
                 <div class="row">
                     <div class="col-12 col-md-4">
                         <h3>New Address</h3>
@@ -42,7 +42,7 @@
                         <form action="javascript:void(0)">
                             <div class="row">
                                 <div class="col-12">
-                                  <input type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" :value="selectedAddress" placeholder="Address">>
+                                  <input id="daliveryAddress" @change="changeDaliveryAddress" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" :value="selectedAddress" placeholder="Address">>
                                 </div>
                                 <div class="col-6">
                                     <input id="entrance" type="text" class="form-group mb-5" style="border:1px solid #000; height: 50px;" placeholder="Entrance">
@@ -61,12 +61,20 @@
                                 </div>
                             </div>
                             <div class="mt-auto">
-                              <button id="cashOnDeliveryBtn" type="button" @click="placeOrder(1)" class="btn" style="background:#cecac8; cursor: not-allowed; color: #fff; border-radius: 9999px; padding: 5px; font-size: 16px;" >Cash On Delivery</button>
+                              <button id="cashOnDeliveryBtn" type="button" @click="checkout()" class="btn" style="background:#cecac8; cursor: not-allowed; color: #fff; border-radius: 9999px; padding: 5px; font-size: 16px;" >Checkout</button>
                             </div>
                         </form>
                     </div>
                     <div class="col-12 col-md-8">
                         <div id="map" style="height: 600px;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="orderDetails">                
+                <div class="row">
+                    <div class="col-12">
+                      <h3>Order Details</h3>
                     </div>
                 </div>
             </div>
@@ -88,6 +96,7 @@
           discount: Object,
           subTotal: Object,
           grandTotal: Object,
+          orderType:Object,
         },
         data() {
             return {
@@ -103,15 +112,19 @@
                 selectedAddress: '',
                 latitude:null,
                 longitude:null,
+                orderDetails:false,
             };
         },
-        mounted() {},
+        mounted() {
+          if(this.orderType==1){
+            this.showMap();
+          }
+        },
         methods: {
             handleButtonClick() {
                 this.$emit('closeModal');
             },
             showMap() {
-
                 if(this.grandTotal>=300){
                   this.deliveryPlace = false;
                   this.mapSection = true;
@@ -238,7 +251,7 @@
               geocoder.geocode({ location: latLng }, (results, status) => {
                 if (status === 'OK' && results[0]) {
                   this.selectedAddress = results[0].formatted_address;
-                  console.log(latLng);
+                  //console.log(latLng);
                   this.selectedLocation = latLng;
                   this.latitude = latLng.lat();
                   this.longitude = latLng.lng();
@@ -255,6 +268,32 @@
                 }
               });
             },
+            changeDaliveryAddress(){
+              var address = document.getElementById('daliveryAddress').value.trim();
+              
+              if(address == ""){
+                  this.selectedLocation = null;
+                  this.selectedAddress = '';
+                  this.latitude = null;
+                  this.longitude = null;
+              }
+              if(this.latitude && this.longitude){
+                document.getElementById("cashOnDeliveryBtn").style.backgroundColor = "#ee6e2d";
+                document.getElementById("cashOnDeliveryBtn").style.cursor = 'pointer';
+              }else{
+                document.getElementById("cashOnDeliveryBtn").style.backgroundColor = "#cecac8";
+                document.getElementById("cashOnDeliveryBtn").style.cursor = 'not-allowed';
+              }
+            },
+            checkout(){
+              if(!(this.latitude && this.longitude)){
+                   this.showToast('select delivery address',0);
+                   return;
+              }
+
+              this.orderDetails = true;
+              this.mapSection = false;
+            }
         },
     };
 </script>
