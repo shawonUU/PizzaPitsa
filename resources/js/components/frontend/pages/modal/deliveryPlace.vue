@@ -210,7 +210,9 @@
                                         </a>
                                       </div>
                                     </div>
-                                    <div class="row">
+                                    
+                                  </div>
+                                  <div class="row">
                                         <div class="col-12 col-md-6 mt-5 mb-3">
                                             <div class="input-group" style="cursor:pointer;">
                                                 <button @click="placeOrder(1)" type="button" class="btn" style=" cursor:pointer !important; background: #ee6e2d; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Cashon Delivery</button>
@@ -222,7 +224,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                  </div>
                                 </div>
                               </div>  
                             </div>
