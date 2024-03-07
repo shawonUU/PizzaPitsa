@@ -210,6 +210,18 @@
                                         </a>
                                       </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-12 col-md-6 mt-5 mb-3">
+                                            <div class="input-group" style="cursor:pointer;">
+                                                <button @click="placeOrder(1)" type="button" class="btn" style=" cursor:pointer !important; background: #ee6e2d; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Cashon Delivery</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-6 mt-5 mb-3">
+                                            <div class="input-group" style="cursor:pointer;">
+                                                <button  type="button" class="btn" style="cursor:pointer !important; background: #f5c6ae; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Pay Online</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                   </div>
                                 </div>
                               </div>  
@@ -292,11 +304,11 @@
               }
 
                 const savedCart = localStorage.getItem('cart');
-                var entrance = document.getElementById('entrance').value;
-                var door_code = document.getElementById('door_code').value;
-                var floor = document.getElementById('floor').value;
-                var apartment = document.getElementById('apartment').value;
-                var comment = document.getElementById('comment').value;
+                var entrance = this.entrance;
+                var door_code = this.doorCode;
+                var floor = this.floor;
+                var apartment = this.apartment;
+                var comment = this.addressComment;
                 
                 axios.post('palce-order', {
                   type: type,
