@@ -112,7 +112,7 @@ class OrderController extends Controller
         ->join('users', 'users.id', '=', 'orders.customer_id')
         ->select('orders.*','addresses.selectedAddress','addresses.selectedAddress','addresses.entrance','addresses.door_code','addresses.apartment','addresses.comment','addresses.floor','users.name','users.email','addresses.id as AddId')
         ->where('orders.order_number',$id)->first();
-        $products = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
+         $products = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
         ->join('sizes', 'sizes.id', '=', 'order_items.size_id')
         ->select('order_items.*', 'products.name as proName','products.image', 'sizes.name as sizeName')
         ->where('order_items.order_number', $id)
@@ -160,5 +160,30 @@ class OrderController extends Controller
             'text' => 'Address update success',
         ]);
         return redirect()->back();
+    }
+
+    public function updateQty (Request $request) {
+         $request;
+        $order = OrderItem::where('order_number',$request->order_id)->where('product_id',$request->product_id)->first();
+        if ($order) {
+            $order->quantity  = $request->qty;
+            $order->total_price = $order->price *$request->qty;
+            $order->update();
+            session()->flash('sweet_alert', [
+                'type' => 'success',
+                'title' => 'Success!',
+                'text' => 'Quantity update success',
+            ]);
+            return redirect()->back(); 
+        }
+    }
+    
+    public function getCustomerProduct() {
+        $userId = auth()->user()->id;
+       return $orders = Order::where('customer_id',$userId)->orderBy('id', 'DESC')->get();
+    }
+
+    public function getOrderStatus () {
+        return orderStatuses();
     }
 }

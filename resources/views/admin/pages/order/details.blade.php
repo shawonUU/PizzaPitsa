@@ -293,6 +293,41 @@
                     <td class="text-center" style="display: table-cell;"> {{ $item->quantity }} </td>
                     <td class="text-center" style="display: table-cell;"> {{ $item->price }}{{ getCurrency() }}</td>
                     <td class="text-center footable-last-visible" style="display: table-cell;"> {{ $item->total_price }}{{ getCurrency() }} </td>
+                    <td>
+                      <button type="button" data-bs-toggle="modal" data-bs-target="#myModal{{ $item->id }}" class="btn btn-sm btn-info waves-effect waves-light"><i class="ri-ball-pen-line"></i></button>
+                    </td> 
+                       <!-- Default Modals -->
+                       <div id="myModal{{ $item->id }}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="myModalLabel">Delete</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+                                </div>
+                                <div class="modal-body">
+                                  Update Qty of
+                                  <strong
+                                      style="color: darkorange">{{ $item->proName }}({{ $item->sizeName }})</strong>
+                                  ?
+                                </div>
+                                <div class="modal-footer">
+
+                                    <form
+                                        action="{{ route('orders.update') }}"
+                                        method="post">
+                                        @csrf                                    
+                                        <input type="hidden" value="{{ $item->order_number }}" name="order_id">                
+                                        <input type="hidden" value="{{ $item->product_id }}" name="product_id">                
+                                        <input type="text" name="qty" class="form-control" value="{{ $item->quantity }}" id="">
+                                        <button type="submit" class="btn btn-info">Update</button>
+
+                                    </form>
+                                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                </div>
+
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal --> 
                   </tr>
                 @endforeach
                  

@@ -57,6 +57,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
 
     //Order Management
     Route::get('orders', [OrderController::class, 'getOrders'])->name('orders.index');
+    Route::post('order-update', [OrderController::class, 'updateQty'])->name('orders.update');
     Route::get('order-details/{id}', [OrderController::class, 'getOrderDetails'])->name('order.details');
     Route::post('update-status',[OrderController::class, 'updateStatus'])->name('update.status');
     Route::post('update-address',[OrderController::class, 'updateAddress'])->name('address.update');
@@ -82,6 +83,8 @@ Route::post('customer-signUp', [CustomerController::class, 'customerSignUp']);
 Route::post('customer-signIn', [CustomerController::class, 'customerLogin']);
 Route::post('send-verification-mail', [CustomerController::class, 'sendVerificationMail']);
 Route::post('verify-account', [CustomerController::class, 'verifyAccount']);
+Route::get('get-my-orders', [OrderController::class, 'getCustomerProduct']);
+Route::get('get-order-status', [OrderController::class, 'getOrderStatus']);
 
 Route::get('/{any}', function () {
     return view('frontend.layouts.app');

@@ -61,7 +61,9 @@
                                     </td> 
                                     <td>
                                         <a class="btn btn-info" href="{{ route('order.details',$item->order_number) }}">Details</a>    
-                                    </td>                                                                                                     
+                                    </td>  
+                                      
+                                                                                                                                                                                                                                   
                                   </tr>
                                 @endforeach
                                 </tbody>

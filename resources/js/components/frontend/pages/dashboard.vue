@@ -46,49 +46,31 @@
                                             <table class="table">
                                                 <thead>
                                                     <tr>
+                                                        <th scope="col">SL</th>
                                                         <th scope="col">Order</th>
                                                         <th scope="col">Date</th>
                                                         <th scope="col">Status</th>
-                                                        <th scope="col">Total</th>
+                                                        <th scope="col">Total Amount</th>
                                                         <th scope="col">Actions</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <th scope="row">#6523</th>
-                                                        <td>September 10, 2020</td>
-                                                        <td>Processing</td>
-                                                        <td>$326.63 for 3 items</td>
+
+                                                    <tr v-for="(order,index) in orders" :key="index">
+                                                        <th scope="row">{{index+1}}</th>
+                                                        <th scope="row">#{{order.order_number}}</th>
+                                                        <td>{{ formatCreatedAt(order.created_at) }}</td>                                                       
+                                                        <td>
+                                                            <select name="" id="" disabled>
+                                                                <option  v-for="(status,index) in orderStatuses" :key="index" :selected="index==order.order_status">
+                                                                    {{ status }}
+                                                                </option>
+                                                            </select>
+                                                        </td>
+                                                        <td>{{order.total_amount}}</td>
                                                         <td><a href="#" class="axil-btn view-btn">View</a></td>
                                                     </tr>
-                                                    <tr>
-                                                        <th scope="row">#6523</th>
-                                                        <td>September 10, 2020</td>
-                                                        <td>On Hold</td>
-                                                        <td>$326.63 for 3 items</td>
-                                                        <td><a href="#" class="axil-btn view-btn">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">#6523</th>
-                                                        <td>September 10, 2020</td>
-                                                        <td>Processing</td>
-                                                        <td>$326.63 for 3 items</td>
-                                                        <td><a href="#" class="axil-btn view-btn">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">#6523</th>
-                                                        <td>September 10, 2020</td>
-                                                        <td>Processing</td>
-                                                        <td>$326.63 for 3 items</td>
-                                                        <td><a href="#" class="axil-btn view-btn">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="row">#6523</th>
-                                                        <td>September 10, 2020</td>
-                                                        <td>Processing</td>
-                                                        <td>$326.63 for 3 items</td>
-                                                        <td><a href="#" class="axil-btn view-btn">View</a></td>
-                                                    </tr>
+                                                    
                                                 </tbody>
                                             </table>
                                         </div>
@@ -170,7 +152,9 @@ export default {
             password: '',
             newPassword: '',
             confirmNewPassword: '',
-            errorMessage: ''
+            errorMessage: '',
+            orderStatuses:'',
+            orders:''
         }
     },
     created (){
@@ -185,6 +169,8 @@ export default {
 
         this.formData.name = this.isAuth.name;
         this.formData.email = this.isAuth.email;
+        this.myOrders();
+        this.getOrderStatus();
     },
     methods: {
         logout() {                    
@@ -220,7 +206,43 @@ export default {
                     this.errorMessage = 'An error occurred while updating user data.';
                 }
             });
-            }                
+            },
+             getOrderStatus() {            
+                axios.get('get-order-status')
+                .then((res)=>{
+                console.log(res.data)
+                    this.orderStatuses = res.data;
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+                
+            } ,
+            myOrders() {            
+                axios.get('get-my-orders')
+                .then((res)=>{
+                console.log(res.data)
+                    this.orders = res.data;
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+                
+            } ,
+              formatCreatedAt(dateString) {
+                const date = new Date(dateString);
+                const options = {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: 'numeric',
+                    second: 'numeric',
+                    timeZoneName: 'short',
+                };
+
+                return date.toLocaleDateString('en-US', options);
+            },              
         }
 
 };
