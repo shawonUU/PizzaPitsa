@@ -157,6 +157,12 @@
                             <li class="nav-item">
                                 <a href="{{ route('currency.index') }}" class="nav-link">Currency</a>
                             </li>
+                            <li class="nav-item">
+                                <a href="{{ route('schedule.index') }}" class="nav-link">Shop Time Schedule</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('location.index') }}" class="nav-link">Location(Long&Lat)</a>
+                            </li>
                         </ul>
                     </div>
                 </li>

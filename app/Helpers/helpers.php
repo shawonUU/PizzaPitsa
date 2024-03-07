@@ -58,3 +58,12 @@ function getCurrency()
 {
   return Currency::where('status', '1')->pluck('symbol')->first();
 }
+
+
+function shceduleTypes()
+{
+  return [
+    'Delivery' => 'Delivery',
+    'Dining room and pick-up' => 'Dining room and pick-up',
+  ];
+}

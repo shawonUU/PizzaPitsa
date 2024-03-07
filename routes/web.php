@@ -12,7 +12,9 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CurrencyController;
 use App\Http\Controllers\Admin\NutritionController;
 use App\Http\Controllers\Admin\DelivaryChargeController;
+use App\Http\Controllers\Admin\Location;
 use App\Http\Controllers\Admin\ProductMnagementController;
+use App\Http\Controllers\Admin\TimeScheduleController;
 use App\Http\Controllers\OrderController;
 
 /*
@@ -50,6 +52,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('topings', TopingsController::class);
     Route::resource('delivery_charges', DelivaryChargeController::class);
     Route::resource('currency', CurrencyController::class);
+    Route::resource('schedule', TimeScheduleController::class);
+    Route::resource('location', Location::class);
 
     //Order Management
     Route::get('orders', [OrderController::class, 'getOrders'])->name('orders.index');
