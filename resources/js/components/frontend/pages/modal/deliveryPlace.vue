@@ -42,7 +42,7 @@
                         <form action="javascript:void(0)">
                             <div class="row">
                                 <div class="col-12">
-                                  <input id="daliveryAddress" @change="changeDaliveryAddress" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" :value="selectedAddress" placeholder="Address">>
+                                  <input id="daliveryAddress" @change="changeDaliveryAddress" type="text" class="form-group mb-5" style="border:1px solid #000; height: 50px;" :value="selectedAddress" placeholder="Address">
                                 </div>
                                 <div class="col-6">
                                     <input id="entrance" type="text" class="form-group mb-5" style="border:1px solid #000; height: 50px;" placeholder="Entrance">
