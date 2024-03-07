@@ -488,7 +488,7 @@
                             </div>
                             <div class="col-12 col-md-6 mt-5 mb-3">
                                 <div class="input-group" style="cursor:pointer;">
-                                    <button  type="button" class="btn" style="cursor:pointer !important; background: #f5c6ae; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Or Dine In / Pick Up</button>
+                                    <button @click="showSchedule()"  type="button" class="btn" style="cursor:pointer !important; background: #ee6e2d; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Or Dine In / Pick Up</button>
                                 </div>
                             </div>
                         </div>
@@ -802,6 +802,14 @@ export default {
                 this.message = 'Minium Order Amount is 300';
                 this.showToast(this.message,0);
             }
+        },
+        showSchedule(){
+            this.orderType = 2;
+            var auth = localStorage.getItem('auth');
+            auth = auth ? JSON.parse(auth) : null;
+            console.log(auth);
+            if(auth) this.showDeliveryPlace = true;
+            else this.showAuthentication = true;
         },
         showToast(message,type) {
             if(type){

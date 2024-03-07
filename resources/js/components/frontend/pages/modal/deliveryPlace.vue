@@ -71,6 +71,36 @@
                 </div>
             </div>
 
+            <div v-if="scheduleSection">                
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <h3>Pic Up/ Dine In</h3>
+                          <div v-if="isVisible" class="toast-container">
+                            <div class="toast">{{ message }}</div>
+                          </div>
+                        <form action="javascript:void(0)">
+                            <div class="row">
+                                <div class="col-12">
+                                  <div style="margin-bottom: 10px;text-align:left; line-height:1; padding:3px; border: solid 1px #000;">
+                                      Tallinn – Gonsiori, Gonsiori, 10
+                                      Mon-Thu: 09:00 — 00:00
+                                      Fri: 09:00 — 02:00
+                                      Sat: 10:00 — 02:00
+                                      Sun: 10:00 — 00:00
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="mt-auto">
+                              <button type="button" @click="checkout()" class="btn" style="background:#ee6e2d; cursor: pointer; color: #fff; border-radius: 9999px; padding: 5px; font-size: 16px;" >Checkout</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-12 col-md-8">
+                        <div id="map" style="height: 600px;"></div>
+                    </div>
+                </div>
+            </div>
+
             <div v-if="orderDetails">                
                 <div class="row">
                     <div class="col-12">
@@ -256,6 +286,7 @@
             return {
                 deliveryPlace: true,
                 mapSection: false,
+                scheduleSection:false,
                 modalWidth: 25,
                 message: '',
                 isVisible:false,
@@ -280,6 +311,9 @@
           if(this.orderType==1){
             this.showMap();
           }
+          if(this.orderType==2){
+            this.showSchedule();
+          }
         },
         methods: {
             handleButtonClick() {
@@ -296,6 +330,12 @@
                   this.message = 'Minium Order Amount is 300';
                   this.showToast(this.message,0);
                 }
+            },
+            showSchedule(){
+                this.deliveryPlace = false;
+                this.scheduleSection = true;
+                this.modalWidth = 80;
+                this.initMap();
             },
             placeOrder(type){
 
@@ -379,17 +419,27 @@
                 zoom: 12,
               });
 
-              this.marker = new google.maps.Marker({
-                position: center,
-                map: this.map,
-                title: 'Selected Location',
-                draggable: true,
-              });
+             
 
-              this.marker.addListener('click', () => this.handleMarkerClick());
-              this.marker.addListener('dragend', () => this.handleDragEnd());
-              // this.map.addListener('wheel', this.handleMapScroll());
-              document.getElementById('map').addEventListener('wheel', this.handleMapScroll);
+              if(this.orderType==1){
+                this.marker = new google.maps.Marker({
+                  position: center,
+                  map: this.map,
+                  title: 'Selected Location',
+                  draggable: true,
+                });
+                this.marker.addListener('click', () => this.handleMarkerClick());
+                this.marker.addListener('dragend', () => this.handleDragEnd());
+                document.getElementById('map').addEventListener('wheel', this.handleMapScroll);
+              }
+              if(this.orderType==2){
+                this.marker = new google.maps.Marker({
+                  position: center,
+                  map: this.map,
+                  title: 'Selected Location',
+                  draggable: false,
+                });
+              }
             },
             handleMarkerClick() {
               // Handle marker click if needed
@@ -447,22 +497,26 @@
               }
             },
             checkout(){
-              if(!(this.latitude && this.longitude)){
-                   this.showToast('select delivery address',0);
-                   return;
+
+              if(this.orderType==1){
+                if(!(this.latitude && this.longitude)){
+                    this.showToast('select delivery address',0);
+                    return;
+                }
+
+                var auth = localStorage.getItem('auth');
+                this.auth = auth ? JSON.parse(auth) : null;
+                const savedCart = localStorage.getItem('cart');
+                this.cart = savedCart ? JSON.parse(savedCart) : [];
+
+                this.entrance = document.getElementById('entrance').value;
+                this.doorCode = document.getElementById('door_code').value;
+                this.floor = document.getElementById('floor').value;
+                this.apartment = document.getElementById('apartment').value;
+                this.addressComment = document.getElementById('comment').value;
               }
 
-              var auth = localStorage.getItem('auth');
-              this.auth = auth ? JSON.parse(auth) : null;
-              const savedCart = localStorage.getItem('cart');
-              this.cart = savedCart ? JSON.parse(savedCart) : [];
-
-              this.entrance = document.getElementById('entrance').value;
-              this.doorCode = document.getElementById('door_code').value;
-              this.floor = document.getElementById('floor').value;
-              this.apartment = document.getElementById('apartment').value;
-              this.addressComment = document.getElementById('comment').value;
-
+              this.scheduleSection=false;
               this.orderDetails = true;
               this.mapSection = false;
             }
