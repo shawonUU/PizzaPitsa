@@ -478,8 +478,6 @@
                     center: center,
                     radius: 10000,
                 });
-                console.log("HHHHHHHHHHHHHHHHHHHHHHHH");
-                console.log(circle);
                 google.maps.event.addListener(this.map, 'idle', function () {
                     this.updateOverlay(this.map, circle);
                 });
