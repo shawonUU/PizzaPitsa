@@ -245,7 +245,7 @@
                                   <div class="row">
                                         <div class="col-12 col-md-6 mt-5 mb-3">
                                             <div class="input-group" style="cursor:pointer;">
-                                                <button @click="placeOrder(1)" type="button" class="btn" style=" cursor:pointer !important; background: #ee6e2d; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Cashon Delivery</button>
+                                                <button @click="placeOrder(1)" type="button" class="btn" style=" cursor:pointer !important; background: #ee6e2d; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Cash on Delivery</button>
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-6 mt-5 mb-3">
@@ -366,13 +366,13 @@
                   apartment:apartment,
                   comment:comment,
                 })
-                .then((res)=>{
-                  console.log(res.data);
+                .then((res)=>{                  
                   if(res.data.success){
                     localStorage.setItem('cart', '');
                     this.handleButtonClick();
                     this.emitMyEvent();
                     this.showToast(res.data.message,1);
+                    this.handleCart();
                   }else{
                       this.checkOutError = true;
                       this.checkOutMessage = res.data.message;
@@ -396,6 +396,9 @@
                 setTimeout(() => {
                   this.isVisible = false;
                 }, 2000);
+            },
+            handleCart(){
+                this.emitter.emit('handleCart', {'handleCart': 1});
             },
             emitMyEvent() {
                 this.emitter.emit('my-event', {'eventContent': 'String changed'});

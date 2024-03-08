@@ -450,15 +450,13 @@
                                 </template>
                             </tbody>
                         </table>
-
                     </div>
                     <div class="cart-footer">
                         <div>
                             <div class="input-group">
-
-                                <input id="coupon" type="text" class="form-control" placeholder="Coupon Code" style="text-align:left; font-size: 16px; height: 25px; width:40px; padding: 0px;" aria-label="Amount (to the nearest dollar)">
+                                <input id="coupon" type="text" class="form-control" placeholder="Coupon Code" style="text-align:left; font-size: 16px; height: 25px; width:40px; padding: 20px; border:1px solid #bbb2b2;" aria-label="Amount (to the nearest dollar)">
                                 <div @click="applyCoupon()" class="input-group-append " style="cursor:pointer;">
-                                    <span class="input-group-text">Apply</span>
+                                    <span class="input-group-text" style="padding:13px; border-radius:0px; line-height:14px">Apply</span>
                                 </div>
                             </div>
                             <p v-if="isCouponNotMatched" style="color: red; font-size:12px;">Coupon code not matched</p>
@@ -559,11 +557,21 @@ export default {
         this.emitter.on('my-event', (evt) => {
         this.testEvent = evt.eventContent;
         this.loadCartFromLocalStorage();
+        const dropdownElement = document.getElementById('cart-dropdown');
+        // Check if the element exists and remove the 'open' class
+        if (dropdownElement) {
+            dropdownElement.classList.remove('open');
+        }
+        const closeMaskElement = document.querySelector('.closeMask');
+
+        // Check if the element exists and remove it
+        if (closeMaskElement) {
+            closeMaskElement.remove();
+        }
     });
     this.emitter.on('loginModalEvent', (evt) => {
         var loginModalEvent = evt.loginModalEvent;
-        if(loginModalEvent == '1') {
-            console.log('f');
+        if(loginModalEvent == '1') {            
             this.showAuthentication = true;
         }
     });
@@ -786,7 +794,7 @@ export default {
                 console.error('Error fetching base currency symbol in component:', error);
             }
         },
-        showMap() {
+        showMap() {               
             if(this.grandTotal>=300){
                 // this.deliveryPlace = false;
                 this.orderType = 1;
