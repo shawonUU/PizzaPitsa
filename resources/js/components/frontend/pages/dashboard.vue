@@ -247,19 +247,7 @@
                               </a>
                             </div>
                           </div>
-                        </div>
-                        <div data-v-05123fd1="" class="row">
-                          <div data-v-05123fd1="" class="col-12 col-md-6 mt-5 mb-3">
-                            <div data-v-05123fd1="" class="input-group" style="cursor: pointer;">
-                              <button data-v-05123fd1="" type="button" class="btn" style="cursor: pointer !important; background: rgb(238, 110, 45); color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Cash on Delivery</button>
-                            </div>
-                          </div>
-                          <div data-v-05123fd1="" class="col-12 col-md-6 mt-5 mb-3">
-                            <div data-v-05123fd1="" class="input-group" style="cursor: pointer;">
-                              <button data-v-05123fd1="" type="button" class="btn" style="cursor: pointer !important; background: rgb(245, 198, 174); color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Pay Online</button>
-                            </div>
-                          </div>
-                        </div>
+                        </div>                       
                       </div>
                     </div>
                   </div>
