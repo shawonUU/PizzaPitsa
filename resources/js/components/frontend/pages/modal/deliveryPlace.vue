@@ -453,7 +453,6 @@
                 zoom: 12,
               });
 
-             
 
               if(this.orderType==1){
                 this.marker = new google.maps.Marker({
