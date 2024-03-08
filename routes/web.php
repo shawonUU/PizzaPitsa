@@ -61,7 +61,6 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('order-details/{id}', [OrderController::class, 'getOrderDetails'])->name('order.details');
     Route::post('update-status',[OrderController::class, 'updateStatus'])->name('update.status');
     Route::post('update-address',[OrderController::class, 'updateAddress'])->name('address.update');
-    Route::get('get-order-info',[OrderController::class, 'getCustomerOrderInfo']);
 });
 
 Route::post('palce-order', [OrderController::class, 'placeOrder']);
@@ -86,7 +85,7 @@ Route::post('send-verification-mail', [CustomerController::class, 'sendVerificat
 Route::post('verify-account', [CustomerController::class, 'verifyAccount']);
 Route::get('get-my-orders', [OrderController::class, 'getCustomerProduct']);
 Route::get('get-order-status', [OrderController::class, 'getOrderStatus']);
-
+Route::get('order-info', [OrderController::class, 'getCustomerOrderInfo']);
 Route::get('/{any}', function () {
     return view('frontend.layouts.app');
 })->where('any', '.*');

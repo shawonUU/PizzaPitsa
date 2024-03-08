@@ -179,7 +179,7 @@ class OrderController extends Controller
     }
     
     public function getCustomerProduct() {
-        $userId = auth()->user()->id;
+       $userId = auth()->user()->id;
        return $orders = Order::where('customer_id',$userId)->orderBy('id', 'DESC')->get();
     }
 
@@ -188,6 +188,30 @@ class OrderController extends Controller
     }
 
     public function getCustomerOrderInfo(Request $request) {
-        return  "dss";
+        $id =  $request->orderNumber;
+        $orderDetails = Order::join('addresses', 'addresses.id', '=', 'orders.delivery_address_id')
+        ->join('users', 'users.id', '=', 'orders.customer_id')
+        ->select('orders.*','addresses.selectedAddress','addresses.selectedAddress','addresses.entrance','addresses.door_code','addresses.apartment','addresses.comment','addresses.floor','users.name','users.email','addresses.id as AddId')
+        ->where('orders.order_number',$id)->first();
+         $products = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
+        ->join('sizes', 'sizes.id', '=', 'order_items.size_id')
+        ->select('order_items.*', 'products.name as proName','products.image', 'sizes.name as sizeName')
+        ->where('order_items.order_number', $id)
+        ->get();
+        
+        // Loop through each product to fetch and bind topping names
+        $products->each(function ($product) {
+            $topingIds = explode(',', $product->toping_ids);
+        
+            // Fetch topping names based on the toping_ids
+            $topingNames = Toping::whereIn('id', $topingIds)->pluck('name')->toArray();
+        
+            // Bind the topingNames to the product
+            $product->topingNames = implode(', ', $topingNames);
+        });
+
+        // $deliveryAddress = Address::where()
+
+        return response()->json(['message'=>'success', 'products'=>$products,'orderDetails'=>$orderDetails]);
     }
 }

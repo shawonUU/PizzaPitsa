@@ -66,7 +66,7 @@
                                                             </select>
                                                         </td>
                                                         <td>{{order.total_amount}}</td>
-                                                        <td><a href="" @click="handleModalOpen(order.order_number)" class="axil-btn view-btn">View</a></td>
+                                                        <td><a href="javascript:void(0)" @click="handleModalOpen(order.order_number)" class="axil-btn view-btn">View</a></td>
                                                     </tr>
                                                     
                                                 </tbody>
@@ -196,22 +196,22 @@
                                   </tr>
                                 </thead>
                                 <tbody data-v-05123fd1="">
-                                  <tr data-v-05123fd1="">
+                                  <tr v-for="(product,index) in products" :key="index" data-v-05123fd1="">
                                     <td data-v-05123fd1="" class="footable-first-visible" style="display: table-cell;">1</td>
                                     <td data-v-05123fd1="" style="display: table-cell;">
-                                      <img data-v-05123fd1="" height="50" src="/frontend/product_images/20240216161230_Wx8soqwXY0.webp">
+                                      <img data-v-05123fd1="" height="50" :src="'/frontend/product_images/' + product.image">
                                     </td>
                                     <td data-v-05123fd1="" style="display: table-cell;">
-                                      <strong data-v-05123fd1="">Caprese</strong>
+                                      <strong data-v-05123fd1="">{{product.proName}}</strong>
                                       <br data-v-05123fd1="">
-                                      <small data-v-05123fd1="">Size: Small</small>
+                                      <small data-v-05123fd1="">Size: {{ product.sizeName }}</small>
                                       <br data-v-05123fd1="">
-                                      <small data-v-05123fd1="">Toppings: Chili(10), </small>
+                                      <small data-v-05123fd1="">Toppings: {{ product.topingNames }} </small>
                                       <br data-v-05123fd1="">
                                     </td>
-                                    <td data-v-05123fd1="" class="text-center" style="display: table-cell;">876</td>
-                                    <td data-v-05123fd1="" class="text-center" style="display: table-cell;">200.00</td>
-                                    <td data-v-05123fd1="" class="text-center footable-last-visible" style="display: table-cell;">175200</td>
+                                    <td data-v-05123fd1="" class="text-center" style="display: table-cell;">{{product.quantity}}</td>
+                                    <td data-v-05123fd1="" class="text-center" style="display: table-cell;">{{product.price}}</td>
+                                    <td data-v-05123fd1="" class="text-center footable-last-visible" style="display: table-cell;">{{product.total_price}}</td>
                                   </tr>
                                 </tbody>
                               </table>
@@ -303,6 +303,8 @@ export default {
             dynamicDisplay:'none',
             auth:true,
             orderDetails:false,
+            products:'',
+            productDetails:''
         }
     },
     created (){
@@ -367,7 +369,8 @@ export default {
             } ,
             myOrders() {            
                 axios.get('get-my-orders')
-                .then((res)=>{                                
+                .then((res)=>{      
+                  // console.log(res.data)                          
                    this.orders = res.data;
                 })
                 .catch((err)=>{
@@ -389,29 +392,25 @@ export default {
 
                 return date.toLocaleDateString('en-US', options);
             },   
-            handleModalOpen(orderNumber) {                       
-                axios.get('get-order-info', {
+            handleModalOpen(orderNumber) {   
+               axios.get('order-info', {
                     params: {
-                        orderNumber: orderNumber,
+                        orderNumber: orderNumber
                     }
-                    })
-                    .then((res) => {
-                        console.log(res.data);
-
-                        // Assuming res.data has the information you need to check
-                        if (res.data.someCondition) {
-                            this.isModalOpen = true;
-                            this.dynamicDisplay = 'block';
-                        } else {
-                            // Handle other conditions if needed
-                            this.isModalOpen = false;
-                            this.dynamicDisplay = 'none';
-                        }
-                    })
-                    .catch((err) => {
-                        console.log(err);
-                  });
-
+                })
+                .then((res)=>{      
+                  if(res.data.message == 'success') {
+                    this.isModalOpen = true;
+                    this.dynamicDisplay = 'block';
+                      this.products = res.data.products,
+                      this.roductDetails = res.data.productDetails
+                  }
+                  
+                  console.log(res.data)                                            
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })                                    
             },
             handleModalClose() {
                 this.isModalOpen = false;
@@ -420,7 +419,7 @@ export default {
             orderDetailsInfo() {                
               var auth = localStorage.getItem('auth');
               this.auth = auth ? JSON.parse(auth) : null;
-                this.orderDetails = true;
+              this.orderDetails = true;
             }           
         }
 
