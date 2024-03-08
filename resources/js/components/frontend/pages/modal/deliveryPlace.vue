@@ -474,11 +474,13 @@
                     strokeWeight: 2,
                     fillColor: '#e883839c',
                     fillOpacity: 0.35,
-                    map: map,
+                    map: this.map,
                     center: center,
                     radius: 10000,
                 });
-                google.maps.event.addListener(map, 'idle', function () {
+                console.log("HHHHHHHHHHHHHHHHHHHHHHHH");
+                console.log(circle);
+                google.maps.event.addListener(this.map, 'idle', function () {
                     this.updateOverlay(this.map, circle);
                 });
 
