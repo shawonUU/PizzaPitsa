@@ -93,6 +93,7 @@
                     </div>
                     <div class="col-12 col-md-8">
                         <div id="map" style="height: 600px;"></div>
+                        <div id="overlay"></div>
                     </div>
                 </div>
             </div>
@@ -463,6 +464,25 @@
                 });
                 this.marker.addListener('click', () => this.handleMarkerClick());
                 this.marker.addListener('dragend', () => this.handleDragEnd());
+                this.map.addListener('click', (event) => {
+                    this.moveMarker(event.latLng);
+                    this.getAddress(event.latLng);
+                });
+
+                var circle = new google.maps.Circle({
+                    strokeColor: '#FF0000',
+                    strokeOpacity: 0.8,
+                    strokeWeight: 2,
+                    fillColor: '#e883839c',
+                    fillOpacity: 0.35,
+                    map: map,
+                    center: center,
+                    radius: 10000,
+                });
+                google.maps.event.addListener(map, 'idle', function () {
+                    this.updateOverlay(this.map, circle);
+                });
+
               }
               document.getElementById('map').addEventListener('wheel', this.handleMapScroll);
               if(this.orderType==2){
@@ -473,6 +493,20 @@
                   draggable: false,
                 });
               }
+            },
+            updateOverlay(map, circle) {
+                var overlay = document.getElementById('overlay');
+                var bounds = map.getBounds();
+                var circleBounds = circle.getBounds();
+
+                if (bounds.intersects(circleBounds)) {
+                    overlay.style.display = 'none';
+                } else {
+                    overlay.style.display = 'block';
+                }
+            },
+            moveMarker(location) {
+                this.marker.setPosition(location);
             },
             handleMarkerClick() {
               // Handle marker click if needed
@@ -561,6 +595,16 @@
 
   #map {
     height: 400px;
+  }
+
+  #overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      pointer-events: none;
   }
 
   schedule-div p {
