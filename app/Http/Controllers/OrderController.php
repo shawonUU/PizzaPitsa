@@ -186,4 +186,8 @@ class OrderController extends Controller
     public function getOrderStatus () {
         return orderStatuses();
     }
+
+    public function getCustomerOrderInfo(Request $request) {
+        return  "dss";
+    }
 }
