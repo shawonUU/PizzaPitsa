@@ -64,6 +64,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('get-order-info',[OrderController::class, 'getCustomerOrderInfo']);
 });
 
+Route::get('get-location-schedule', [Location::class, 'locationSchedule']);
+Route::get('get-delivery-charge', [DelivaryChargeController::class, 'getDeliveryCharge']);
 Route::post('palce-order', [OrderController::class, 'placeOrder']);
 Route::prefix('frontend')->middleware(['auth'])->group(function () {
     Route::post('update-customer-data',   [CustomerController::class, 'updateCustomerData']);

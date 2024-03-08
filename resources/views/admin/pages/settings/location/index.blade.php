@@ -30,15 +30,15 @@
                                 </div>                                                            
                                 <div class="col-12 col-md-6 col-lg-3">                                        
                                     <label for="discount" class="form-label">Longitude</label>
-                                    <input type="text" class="form-control" id="longitude" name="longitude" placeholder="Longitude" required>
+                                    <input type="text" class="form-control" id="longitude" name="longitude" placeholder="Longitude" required readonly>
                                 </div>                                                    
                                 <div class="col-12 col-md-6 col-lg-3">                                        
                                     <label for="discount" class="form-label">Latitude</label>
-                                    <input type="text" class="form-control" id="latitude" name="latitude" placeholder="Latitude" required>
+                                    <input type="text" class="form-control" id="latitude" name="latitude" placeholder="Latitude" required readonly>
                                 </div>
                                 <div class="col-12 col-md-6 col-lg-3">                                        
                                     <label for="discount" class="form-label">Address</label>
-                                    <input type="text" class="form-control" id="address" name="address" placeholder="Address" required>
+                                    <input type="text" class="form-control" id="address" name="address" placeholder="Address" required readonly>
                                 </div>                          
                                 <div class="col-12 col-md-6 col-lg-3">
                                     <label for="basiInput" class="form-label">Status</label>

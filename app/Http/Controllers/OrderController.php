@@ -13,6 +13,7 @@ class OrderController extends Controller
 {
     public function placeOrder(Request $request)
     {
+        // return $request->all();
 
         $cart = json_decode($request->cart, true);
 
@@ -54,6 +55,7 @@ class OrderController extends Controller
         $order->customer_id = auth()->user()->id;
         $order->type = $request->type;
         $order->discount = $request->discount;
+        $order->delivery_charge = $request->deliveryCharge;
         $order->total_amount = $request->subTotal;
         $order->paid_amount = $request->grandTotal;
         $order->delivery_address_id = $address_id;

@@ -56,4 +56,9 @@ class DelivaryChargeController extends Controller
         ]);
         return redirect()->route('delivery_charges.index');
     }
+
+    public function getDeliveryCharge(){
+        $deliveryCharege = DelivaryCharge::first();
+        return response()->json($deliveryCharege);
+    }
 }
