@@ -338,13 +338,11 @@ export default {
                     existingItem.topings = bindTopings;
 
                    this.cart[this.productData.id][this.productSizes[selectedSize].id] = existingItem;
-                   this.showToast('Added to cart.',1);
+                  // this.showToast('Added to cart.',1);
                    this.handleButtonClick();
                    this.emitMyEvent();                   
-
               }
               this.updateLocalStorage();
-
           }
       },
       updateLocalStorage() {

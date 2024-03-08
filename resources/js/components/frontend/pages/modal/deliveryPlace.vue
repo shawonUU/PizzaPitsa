@@ -372,13 +372,13 @@
                   apartment:apartment,
                   comment:comment,
                 })
-                .then((res)=>{
-                  console.log(res.data);
+                .then((res)=>{                  
                   if(res.data.success){
                     localStorage.setItem('cart', '');
                     this.handleButtonClick();
                     this.emitMyEvent();
                     this.showToast(res.data.message,1);
+                    this.handleCart();
                   }else{
                       this.checkOutError = true;
                       this.checkOutMessage = res.data.message;
@@ -402,6 +402,9 @@
                 setTimeout(() => {
                   this.isVisible = false;
                 }, 2000);
+            },
+            handleCart(){
+                this.emitter.emit('handleCart', {'handleCart': 1});
             },
             emitMyEvent() {
                 this.emitter.emit('my-event', {'eventContent': 'String changed'});

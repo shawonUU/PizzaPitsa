@@ -1,8 +1,6 @@
 <template>
     <div>
         <main class="main-wrapper">
-
-
         <!-- Start My Account Area  -->
         <div class="axil-dashboard-area axil-section-gap">
             <div class="container">
@@ -68,7 +66,7 @@
                                                             </select>
                                                         </td>
                                                         <td>{{order.total_amount}}</td>
-                                                        <td><a href="#" @click="orderDetailsInfo" class="axil-btn view-btn">View</a></td>
+                                                        <td><a href="" @click="handleModalOpen(order.order_number)" class="axil-btn view-btn">View</a></td>
                                                     </tr>
                                                     
                                                 </tbody>
@@ -125,153 +123,155 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>        
     </main>
-    <div v-if="orderDetails">                
-                <div class="row">
-                    <div class="col-12">
-                        <h3>Order Details</h3>
-                        <div class="page-content">
-                          <div class="container-fluid">          
-                            <div class="aiz-main-content">
-                                <div class="">
-                                <div class="card">
-                                  <div class="card-body">         
-                                    <div class="row gutters-5">
-                                      <div class="col-6">
-                                        <strong>Delivery Address Info</strong>
-                                        <hr>
-                                        <address>                                 
-                                            <div class="d-flex justify-content-between">
-                                              <div>
-                                                <strong class="text-main"> Name: {{auth.name}}</strong>
-                                              </div>
-                                            </div>                
-                                          <!-- <br> Email: {{auth.email}}<br> 
-                                          Selected Address: {{selectedAddress}}<br> 
-                                          Entrance: {{entrance}}<br> 
-                                          Door Code: {{doorCode}}<br> 
-                                          Floor: {{floor}}<br> 
-                                          Apartment: {{apartment}}<br> 
-                                          Comment: {{addressComment}}<br>  -->
-                                        </address>
-                                      </div>
-                                      <div class="col-md-6">
-                                        <strong>Order Info</strong>
-                                        <hr>
-                                        <table>
-                                          <tbody>
-                                            <tr>
-                                              <td class="text-main text-bold">Order Type</td>
-                                              <td class="text-main text-bold">
-                                                {{ orderType==1 ? 'Delivery' : 'Dine in or Pickup' }}                          
-                                              </td>                    
-                                            </tr>
-                                            
-                                            <tr>
-                                              <td class="text-main text-bold">Order date </td>
-                                              <td class="text-right">March 3, 2024 at 5:32 PM</td>
-                                            </tr>
-                                            <tr>
-                                              <td class="text-main text-bold"> Total amount </td>
-                                              <td class="text-right">48.450€</td>
-                                            </tr>          
-                                          </tbody>
-                                        </table>
-                                      </div>
-                                    </div>
-                                    <hr class="new-section-sm bord-no">
-                                    
-
-                                    <div class="row">
-                                      <div class="col-lg-12 table-responsive">
-                                        <table class="table-bordered aiz-table invoice-summary table footable footable-1 breakpoint-xl" style="">
-                                          <thead>
-                                            <tr class="bg-trans-dark footable-header">
-                                              <th data-breakpoints="lg" class="min-col footable-first-visible" style="display: table-cell;">#</th>
-                                              <th width="10%" style="display: table-cell;">Photo</th>
-                                              <th class="text-uppercase" style="display: table-cell;">Name</th>                  
-                                              <th data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Qty</th>
-                                              <th data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Price</th>
-                                              <th data-breakpoints="lg" class="min-col text-uppercase text-center footable-last-visible" style="display: table-cell;">Total</th>
-                                            </tr>
-                                          </thead>
-                                          <tbody>
-                                            <template v-for="(productSizes, productId) in cart" :key="productId">
-                                              <template v-if="cart.hasOwnProperty(productId)">
-                                                  <template v-for="(item, sizeId) in productSizes" :key="sizeId">
-                                                    <tr>
-                                                      <td class="footable-first-visible" style="display: table-cell;">1</td>
-                                                      <td style="display: table-cell;">                     
-                                                          <img height="50" :src="'/frontend/product_images/' + item.product.image">                     
-                                                      </td>
-                                                      <td style="display: table-cell;">
-                                                        <strong> {{ item.product.name }}</strong>
-                                                        <br>
-                                                        <small>Size:  {{ item.size.name }} </small>
-                                                        <br>
-                                                        <small>Toppings: 
-                                                          <template  v-for="(toping, topingId) in item.topings" :key="topingId">
-                                                            <template v-if="toping">
-                                                                {{ toping.name }}({{ toping.price }}),
-                                                            </template>
-                                                          </template>
-                                                        </small>
-                                                        <br>                  
-                                                      </td>                   
-                                                      <td class="text-center" style="display: table-cell;"> {{ item.quantity }} </td>
-                                                      <td class="text-center" style="display: table-cell;"> {{ item.size.price }}{{ baseCurrencySymbol }}</td>
-                                                      <td class="text-center footable-last-visible" style="display: table-cell;"> {{ item.totalPrice }}{{ baseCurrencySymbol }} </td>
-                                                    </tr>    
-                                                  </template>
-                                                </template>
-                                            </template>       
-                                          </tbody>
-                                        </table>
-                                      </div>
-                                    </div>
-                                    <div class="clearfix float-right" style="width: 300px; float:right">
-                                      <table class="table">
-                                        <tbody>
-                                          <tr>
-                                            <td>
-                                              <strong class="text-muted">Sub Total :</strong>
-                                            </td>
-                                            <td>{{ subTotal }} {{ baseCurrencySymbol }} </td>
-                                          </tr>
-                                          <tr>
-                                            <td>
-                                              <strong class="text-muted">Shipping :</strong>
-                                            </td>
-                                            <td> 0.000€ </td>
-                                          </tr>
-                                          <tr v-if="discount">
-                                            <td>
-                                              <strong class="text-muted">Coupon :</strong>
-                                            </td>
-                                            <td>{{discount}} {{baseCurrencySymbol}}</td>
-                                          </tr>
-                                          <tr>
-                                            <td>
-                                              <strong class="text-muted">Total :</strong>
-                                            </td>
-                                            <td class="text-muted h5">{{ grandTotal }} {{baseCurrencySymbol}} </td>
-                                          </tr>
-                                        </tbody>
-                                      </table>
-                                    
-                                    </div>
-                                    
+    </div>
+    <div>
+      <div data-v-05123fd1="" :class="{ 'modal fade quick-view-product': true, 'show': isModalOpen }" class=" " id="quick-view-modal" tabindex="-1" aria-modal="true" role="dialog" :style="{ 'padding-right': '17px', 'display': dynamicDisplay }">
+  <div data-v-05123fd1="" class="modal-dialog modal-dialog-centered" style="max-width: 80%;">
+    <div data-v-05123fd1="" class="modal-content">
+      <div data-v-05123fd1="" class="modal-body" style="padding-top: 0px; padding-right: 13px;">
+        <div data-v-05123fd1="" class="d-flex justify-content-end pt-3">
+          <button data-v-05123fd1="" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="height: 5px; width: 5px; margin-bottom: 15px;" @click="handleModalClose"></button>
+        </div>
+        <!--v-if-->
+        <!--v-if-->
+        <!--v-if-->
+        <div data-v-05123fd1="">
+          <div data-v-05123fd1="" class="row">
+            <div data-v-05123fd1="" class="col-12">
+              <h3 data-v-05123fd1="">Order Details</h3>
+              <div data-v-05123fd1="" class="page-content">
+                <div data-v-05123fd1="" class="container-fluid">
+                  <div data-v-05123fd1="" class="aiz-main-content">
+                    <div data-v-05123fd1="" class="">
+                      <div data-v-05123fd1="" class="card">
+                        <div data-v-05123fd1="" class="card-body">
+                          <div data-v-05123fd1="" class="row gutters-5">
+                            <div data-v-05123fd1="" class="col-6">
+                              <strong data-v-05123fd1="">Delivery Address Info</strong>
+                              <hr data-v-05123fd1="">
+                              <address data-v-05123fd1="">
+                                <div data-v-05123fd1="" class="d-flex justify-content-between">
+                                  <div data-v-05123fd1="">
+                                    <strong data-v-05123fd1="" class="text-main"> Name: Farabi Sajib</strong>
                                   </div>
-                               
                                 </div>
-                              </div>  
+                                <br data-v-05123fd1=""> Email: test@gmail.com <br data-v-05123fd1=""> Selected Address: Kuusamontie 2, 90500 Oulu, Finland <br data-v-05123fd1=""> Entrance: Et recusandae Et en <br data-v-05123fd1=""> Door Code: Dignissimos aut nemo <br data-v-05123fd1=""> Floor: Dicta nulla voluptat <br data-v-05123fd1=""> Apartment: Omnis in obcaecati a <br data-v-05123fd1=""> Comment: Dolor adipisicing vo <br data-v-05123fd1="">
+                              </address>
                             </div>
-                          </div> 
+                            <div data-v-05123fd1="" class="col-md-6">
+                              <strong data-v-05123fd1="">Order Info</strong>
+                              <hr data-v-05123fd1="">
+                              <table data-v-05123fd1="">
+                                <tbody data-v-05123fd1="">
+                                  <tr data-v-05123fd1="">
+                                    <td data-v-05123fd1="" class="text-main text-bold">Order Type</td>
+                                    <td data-v-05123fd1="" class="text-main text-bold">Delivery</td>
+                                  </tr>
+                                  <tr data-v-05123fd1="">
+                                    <td data-v-05123fd1="" class="text-main text-bold">Order date </td>
+                                    <td data-v-05123fd1="" class="text-right">March 3, 2024 at 5:32 PM</td>
+                                  </tr>
+                                  <tr data-v-05123fd1="">
+                                    <td data-v-05123fd1="" class="text-main text-bold"> Total amount </td>
+                                    <td data-v-05123fd1="" class="text-right">48.450€</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                          <hr data-v-05123fd1="" class="new-section-sm bord-no">
+                          <div data-v-05123fd1="" class="row">
+                            <div data-v-05123fd1="" class="col-lg-12 table-responsive">
+                              <table data-v-05123fd1="" class="table-bordered aiz-table invoice-summary table footable footable-1 breakpoint-xl">
+                                <thead data-v-05123fd1="">
+                                  <tr data-v-05123fd1="" class="bg-trans-dark footable-header">
+                                    <th data-v-05123fd1="" data-breakpoints="lg" class="min-col footable-first-visible" style="display: table-cell;">#</th>
+                                    <th data-v-05123fd1="" width="10%" style="display: table-cell;">Photo</th>
+                                    <th data-v-05123fd1="" class="text-uppercase" style="display: table-cell;">Name</th>
+                                    <th data-v-05123fd1="" data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Qty</th>
+                                    <th data-v-05123fd1="" data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Price</th>
+                                    <th data-v-05123fd1="" data-breakpoints="lg" class="min-col text-uppercase text-center footable-last-visible" style="display: table-cell;">Total</th>
+                                  </tr>
+                                </thead>
+                                <tbody data-v-05123fd1="">
+                                  <tr data-v-05123fd1="">
+                                    <td data-v-05123fd1="" class="footable-first-visible" style="display: table-cell;">1</td>
+                                    <td data-v-05123fd1="" style="display: table-cell;">
+                                      <img data-v-05123fd1="" height="50" src="/frontend/product_images/20240216161230_Wx8soqwXY0.webp">
+                                    </td>
+                                    <td data-v-05123fd1="" style="display: table-cell;">
+                                      <strong data-v-05123fd1="">Caprese</strong>
+                                      <br data-v-05123fd1="">
+                                      <small data-v-05123fd1="">Size: Small</small>
+                                      <br data-v-05123fd1="">
+                                      <small data-v-05123fd1="">Toppings: Chili(10), </small>
+                                      <br data-v-05123fd1="">
+                                    </td>
+                                    <td data-v-05123fd1="" class="text-center" style="display: table-cell;">876</td>
+                                    <td data-v-05123fd1="" class="text-center" style="display: table-cell;">200.00</td>
+                                    <td data-v-05123fd1="" class="text-center footable-last-visible" style="display: table-cell;">175200</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                          <div data-v-05123fd1="" class="clearfix float-right" style="width: 300px; float: right;">
+                            <table data-v-05123fd1="" class="table">
+                              <tbody data-v-05123fd1="">
+                                <tr data-v-05123fd1="">
+                                  <td data-v-05123fd1="">
+                                    <strong data-v-05123fd1="" class="text-muted">Sub Total :</strong>
+                                  </td>
+                                  <td data-v-05123fd1="">175210 </td>
+                                </tr>
+                                <tr data-v-05123fd1="">
+                                  <td data-v-05123fd1="">
+                                    <strong data-v-05123fd1="" class="text-muted">Shipping :</strong>
+                                  </td>
+                                  <td data-v-05123fd1=""> 0.000€ </td>
+                                </tr>
+                                <!--v-if-->
+                                <tr data-v-05123fd1="">
+                                  <td data-v-05123fd1="">
+                                    <strong data-v-05123fd1="" class="text-muted">Total :</strong>
+                                  </td>
+                                  <td data-v-05123fd1="" class="text-muted h5">175210 </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <div data-v-05123fd1="" class="no-print text-right">
+                              <a data-v-05123fd1="" href="" type="button" class="btn btn-icon btn-light">
+                                <i data-v-05123fd1="" class="las la-print"></i>
+                              </a>
+                            </div>
+                          </div>
                         </div>
+                        <div data-v-05123fd1="" class="row">
+                          <div data-v-05123fd1="" class="col-12 col-md-6 mt-5 mb-3">
+                            <div data-v-05123fd1="" class="input-group" style="cursor: pointer;">
+                              <button data-v-05123fd1="" type="button" class="btn" style="cursor: pointer !important; background: rgb(238, 110, 45); color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Cash on Delivery</button>
+                            </div>
+                          </div>
+                          <div data-v-05123fd1="" class="col-12 col-md-6 mt-5 mb-3">
+                            <div data-v-05123fd1="" class="input-group" style="cursor: pointer;">
+                              <button data-v-05123fd1="" type="button" class="btn" style="cursor: pointer !important; background: rgb(245, 198, 174); color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Pay Online</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
     </div>
 </template>
 <script>
@@ -299,6 +299,8 @@ export default {
             errorMessage: '',
             orderStatuses:'',
             orders:'',
+            isModalOpen:false,
+            dynamicDisplay:'none',
             auth:true,
             orderDetails:false,
         }
@@ -355,8 +357,7 @@ export default {
             },
              getOrderStatus() {            
                 axios.get('get-order-status')
-                .then((res)=>{
-                console.log(res.data)
+                .then((res)=>{               
                     this.orderStatuses = res.data;
                 })
                 .catch((err)=>{
@@ -366,15 +367,14 @@ export default {
             } ,
             myOrders() {            
                 axios.get('get-my-orders')
-                .then((res)=>{
-                console.log(res.data)
-                    this.orders = res.data;
+                .then((res)=>{                                
+                   this.orders = res.data;
                 })
                 .catch((err)=>{
                     console.log(err);
                 })
                 
-            } ,
+            },
               formatCreatedAt(dateString) {
                 const date = new Date(dateString);
                 const options = {
@@ -389,6 +389,34 @@ export default {
 
                 return date.toLocaleDateString('en-US', options);
             },   
+            handleModalOpen(orderNumber) {                       
+                axios.get('get-order-info', {
+                    params: {
+                        orderNumber: orderNumber,
+                    }
+                    })
+                    .then((res) => {
+                        console.log(res.data);
+
+                        // Assuming res.data has the information you need to check
+                        if (res.data.someCondition) {
+                            this.isModalOpen = true;
+                            this.dynamicDisplay = 'block';
+                        } else {
+                            // Handle other conditions if needed
+                            this.isModalOpen = false;
+                            this.dynamicDisplay = 'none';
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                  });
+
+            },
+            handleModalClose() {
+                this.isModalOpen = false;
+                this.dynamicDisplay = 'none';
+            },
             orderDetailsInfo() {                
               var auth = localStorage.getItem('auth');
               this.auth = auth ? JSON.parse(auth) : null;
