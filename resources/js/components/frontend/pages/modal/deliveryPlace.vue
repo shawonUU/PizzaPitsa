@@ -93,7 +93,7 @@
                     </div>
                     <div class="col-12 col-md-8">
                         <div id="map" style="height: 600px;"></div>
-                        <div id="overlay"></div>
+                        <div v-if="orderType==1" id="overlay"></div>
                     </div>
                 </div>
             </div>
