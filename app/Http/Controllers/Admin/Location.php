@@ -20,12 +20,14 @@ class Location extends Controller
         $request->validate([                   
             'longitude' => 'required',
             'latitude' => 'required',   
+            'address' => 'required',  
             'status' => 'required',
         ]);
 
         $coupon = new AdminLocation();
         $coupon->longitude = $request->input('longitude');      
         $coupon->latitude = $request->input('latitude');
+        $coupon->address = $request->input('address');
         $coupon->status = $request->input('status');
         $coupon->save();
         session()->flash('sweet_alert', [

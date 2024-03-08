@@ -114,7 +114,8 @@
                                   <div class="card-body">         
                                     <div class="row gutters-5">
                                       <div class="col-6">
-                                        <strong>Delivery Address Info</strong>
+                                        <strong v-if="orderType==1">Delivery Address Info</strong>
+                                        <strong v-if="orderType==2">Customer Info</strong>
                                         <hr>
                                         <address>                                 
                                             <div class="d-flex justify-content-between">
@@ -123,12 +124,16 @@
                                               </div>
                                             </div>                
                                           <br> Email: {{auth.email}}<br> 
-                                          Selected Address: {{selectedAddress}}<br> 
-                                          Entrance: {{entrance}}<br> 
-                                          Door Code: {{doorCode}}<br> 
-                                          Floor: {{floor}}<br> 
-                                          Apartment: {{apartment}}<br> 
-                                          Comment: {{addressComment}}<br> 
+                                          <template  v-if="orderType==1">
+                                            Selected Address: {{selectedAddress}}<br> 
+                                            Entrance: {{entrance}}<br> 
+                                            Door Code: {{doorCode}}<br> 
+                                            Floor: {{floor}}<br> 
+                                            Apartment: {{apartment}}<br> 
+                                            Comment: {{addressComment}}<br> 
+                                          </template>
+                                         
+
                                         </address>
                                       </div>
                                       <div class="col-md-6">
@@ -245,7 +250,8 @@
                                   <div class="row">
                                         <div class="col-12 col-md-6 mt-5 mb-3">
                                             <div class="input-group" style="cursor:pointer;">
-                                                <button @click="placeOrder(1)" type="button" class="btn" style=" cursor:pointer !important; background: #ee6e2d; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Cashon Delivery</button>
+                                                <button @click="placeOrder(sales
+                                                )" type="button" class="btn" style=" cursor:pointer !important; background: #ee6e2d; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Cash On Delivery</button>
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-6 mt-5 mb-3">
@@ -504,17 +510,17 @@
                     return;
                 }
 
-                var auth = localStorage.getItem('auth');
-                this.auth = auth ? JSON.parse(auth) : null;
-                const savedCart = localStorage.getItem('cart');
-                this.cart = savedCart ? JSON.parse(savedCart) : [];
-
                 this.entrance = document.getElementById('entrance').value;
                 this.doorCode = document.getElementById('door_code').value;
                 this.floor = document.getElementById('floor').value;
                 this.apartment = document.getElementById('apartment').value;
                 this.addressComment = document.getElementById('comment').value;
               }
+
+              var auth = localStorage.getItem('auth');
+              this.auth = auth ? JSON.parse(auth) : null;
+              const savedCart = localStorage.getItem('cart');
+              this.cart = savedCart ? JSON.parse(savedCart) : [];
 
               this.scheduleSection=false;
               this.orderDetails = true;
