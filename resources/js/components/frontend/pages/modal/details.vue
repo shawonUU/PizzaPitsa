@@ -300,6 +300,7 @@ export default {
           }
 
           if(selectedSize && this.orderPrice && this.productData && this.quantity){
+                console.log('dsf');
                 var item = {
                     quantity: this.quantity,
                     product: this.productData,
@@ -313,6 +314,8 @@ export default {
                 }
                 if (!this.cart[this.productData.id][this.productSizes[selectedSize].id]) {
                     this.cart[this.productData.id][this.productSizes[selectedSize].id] = item;
+                    this.emitMyEvent(); 
+                    this.handleButtonClick();
                 } else {
                     var existingItem = this.cart[this.productData.id][this.productSizes[selectedSize].id];
                     existingItem.quantity = parseInt(existingItem.quantity);
@@ -339,8 +342,8 @@ export default {
 
                    this.cart[this.productData.id][this.productSizes[selectedSize].id] = existingItem;
                   //this.showToast('Added to cart.',1);
+                  this.emitMyEvent();                   
                    this.handleButtonClick();
-                   this.emitMyEvent();                   
               }
               this.updateLocalStorage();
           }
