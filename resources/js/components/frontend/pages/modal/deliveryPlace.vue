@@ -16,7 +16,7 @@
 
                 </button>
             </div>
-            <div v-if="deliveryPlace">
+            <div v-if="deliveryPlace" class="d-none">
                 <h4 class="text-center m-2 p-0">What's your delivery address?</h4>
                 <p class=" m-0 p-0" style="line-height:1;">We’ll check that you are in the delivery zone and save your address for future orders. </p>
                 <div class="row">
@@ -81,17 +81,13 @@
                         <form action="javascript:void(0)">
                             <div class="row">
                                 <div class="col-12">
-                                  <div style="margin-bottom: 10px;text-align:left; line-height:1; padding:3px; border: solid 1px #000;">
-                                      Tallinn – Gonsiori, Gonsiori, 10
-                                      Mon-Thu: 09:00 — 00:00
-                                      Fri: 09:00 — 02:00
-                                      Sat: 10:00 — 02:00
-                                      Sun: 10:00 — 00:00
+                                  <div class="schedule-div p-3 " v-html="shopAddress+shopSchedule" style="border-radius: 15px; border: solid 1px #ffc3c3;  margin-bottom: 10px;text-align:left; line-height:1; padding:3px;">
+                                     
                                   </div>
                                 </div>
                             </div>
                             <div class="mt-auto">
-                              <button type="button" @click="checkout()" class="btn" style="background:#ee6e2d; cursor: pointer; color: #fff; border-radius: 9999px; padding: 5px; font-size: 16px;" >Checkout</button>
+                              <button type="button" @click="checkout()" class="btn" style="margin-top: 10px;background:#ee6e2d; cursor: pointer; color: #fff; border-radius: 9999px; padding: 5px; font-size: 16px;" >Checkout</button>
                             </div>
                         </form>
                     </div>
@@ -114,7 +110,8 @@
                                   <div class="card-body">         
                                     <div class="row gutters-5">
                                       <div class="col-6">
-                                        <strong>Delivery Address Info</strong>
+                                        <strong v-if="orderType==1">Delivery Address Info</strong>
+                                        <strong v-if="orderType==2">Customer Info</strong>
                                         <hr>
                                         <address>                                 
                                             <div class="d-flex justify-content-between">
@@ -123,12 +120,16 @@
                                               </div>
                                             </div>                
                                           <br> Email: {{auth.email}}<br> 
-                                          Selected Address: {{selectedAddress}}<br> 
-                                          Entrance: {{entrance}}<br> 
-                                          Door Code: {{doorCode}}<br> 
-                                          Floor: {{floor}}<br> 
-                                          Apartment: {{apartment}}<br> 
-                                          Comment: {{addressComment}}<br> 
+                                          <template  v-if="orderType==1">
+                                            Selected Address: {{selectedAddress}}<br> 
+                                            Entrance: {{entrance}}<br> 
+                                            Door Code: {{doorCode}}<br> 
+                                            Floor: {{floor}}<br> 
+                                            Apartment: {{apartment}}<br> 
+                                            Comment: {{addressComment}}<br> 
+                                          </template>
+                                         
+
                                         </address>
                                       </div>
                                       <div class="col-md-6">
@@ -149,7 +150,7 @@
                                             </tr>
                                             <tr>
                                               <td class="text-main text-bold"> Total amount </td>
-                                              <td class="text-right">48.450€</td>
+                                              <td class="text-right">{{ grandTotal }}{{ baseCurrencySymbol }}</td>
                                             </tr>          
                                           </tbody>
                                         </table>
@@ -214,11 +215,11 @@
                                             </td>
                                             <td>{{ subTotal }} {{ baseCurrencySymbol }} </td>
                                           </tr>
-                                          <tr>
+                                          <tr v-if="orderType==1">
                                             <td>
-                                              <strong class="text-muted">Shipping :</strong>
+                                              <strong class="text-muted">Shipping Charge:</strong>
                                             </td>
-                                            <td> 0.000€ </td>
+                                            <td> {{deliveryCharge}}€ </td>
                                           </tr>
                                           <tr v-if="discount">
                                             <td>
@@ -230,7 +231,7 @@
                                             <td>
                                               <strong class="text-muted">Total :</strong>
                                             </td>
-                                            <td class="text-muted h5">{{ grandTotal }} {{baseCurrencySymbol}} </td>
+                                            <td class="text-muted h5">{{ grandTotal-deliveryCharge }} {{baseCurrencySymbol}} </td>
                                           </tr>
                                         </tbody>
                                       </table>
@@ -245,7 +246,7 @@
                                   <div class="row">
                                         <div class="col-12 col-md-6 mt-5 mb-3">
                                             <div class="input-group" style="cursor:pointer;">
-                                                <button @click="placeOrder(1)" type="button" class="btn" style=" cursor:pointer !important; background: #ee6e2d; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Cash on Delivery</button>
+                                                <button @click="placeOrder(orderType)" type="button" class="btn" style=" cursor:pointer !important; background: #ee6e2d; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Cash On Delivery</button>
                                             </div>
                                         </div>
                                         <div class="col-12 col-md-6 mt-5 mb-3">
@@ -284,6 +285,8 @@
         },
         data() {
             return {
+                lat:0,
+                lng:0,
                 deliveryPlace: true,
                 mapSection: false,
                 scheduleSection:false,
@@ -305,15 +308,27 @@
                 apartment:'',
                 addressComment:'',
                 cart:[],
+                shopAddress:'',
+                shopLatitude:'',
+                shopLongitude:'',
+                shopSchedule:'',
+                deliveryCharge:0,
             };
         },
         mounted() {
-          if(this.orderType==1){
-            this.showMap();
-          }
-          if(this.orderType==2){
-            this.showSchedule();
-          }
+          axios.get('get-location-schedule')
+          .then((res)=>{                  
+            console.log(res.data);
+            this.shopAddress = res.data.address;
+            this.shopSchedule = res.data.schedule;
+            this.lng = parseInt(res.data.longitude);
+            this.lat = parseInt(res.data.latitude) ;
+            if(this.orderType==1){this.showMap();}
+            if(this.orderType==2){this.showSchedule();}
+          })
+          .catch((err)=>{
+              console.log(err);
+          });
         },
         methods: {
             handleButtonClick() {
@@ -324,7 +339,17 @@
                   this.deliveryPlace = false;
                   this.mapSection = true;
                   this.modalWidth = 80;
-                  this.initMap();
+                  axios.get('get-delivery-charge')
+                  .then((res)=>{ 
+                    if(res.data){
+                      console.log(res.data.amount);
+                      this.deliveryCharge = res.data.amount; 
+                    }
+                    this.initMap();
+                  })
+                  .catch((err)=>{
+                      console.log(err);
+                  });
                 }else{
                   this.isVisible = true;
                   this.message = 'Minium Order Amount is 300';
@@ -338,8 +363,11 @@
                 this.initMap();
             },
             placeOrder(type){
+              if(!confirm('Are want to confirm this order?')){
+                return;
+              }
 
-              if(type==2 && !(this.latitude && this.longitude)){
+              if(type==1 && !(this.latitude && this.longitude)){
                    this.showToast('select delivery address',0);
                    return;
               }
@@ -356,7 +384,8 @@
                   cart: savedCart,
                   subTotal:this.subTotal,
                   discount:this.discount,
-                  grandTotal:this.grandTotal,
+                  grandTotal:this.grandTotal-this.deliveryCharge,
+                  deliveryCharge:this.deliveryCharge,
                   latitude:this.latitude,
                   longitude:this.longitude,
                   selectedAddress:this.selectedAddress,
@@ -366,7 +395,8 @@
                   apartment:apartment,
                   comment:comment,
                 })
-                .then((res)=>{                  
+                .then((res)=>{   
+                  console.log(res.data);               
                   if(res.data.success){
                     localStorage.setItem('cart', '');
                     this.handleButtonClick();
@@ -416,7 +446,7 @@
               document.head.appendChild(script);
             },
             createMap() {
-              const center = { lat:  65.021545, lng: 25.469885 };
+              const center = { lat:  this.lat, lng: this.lng };
               this.map = new google.maps.Map(document.getElementById('map'), {
                 center: center,
                 zoom: 12,
@@ -432,8 +462,8 @@
                 });
                 this.marker.addListener('click', () => this.handleMarkerClick());
                 this.marker.addListener('dragend', () => this.handleDragEnd());
-                document.getElementById('map').addEventListener('wheel', this.handleMapScroll);
               }
+              document.getElementById('map').addEventListener('wheel', this.handleMapScroll);
               if(this.orderType==2){
                 this.marker = new google.maps.Marker({
                   position: center,
@@ -506,17 +536,17 @@
                     return;
                 }
 
-                var auth = localStorage.getItem('auth');
-                this.auth = auth ? JSON.parse(auth) : null;
-                const savedCart = localStorage.getItem('cart');
-                this.cart = savedCart ? JSON.parse(savedCart) : [];
-
                 this.entrance = document.getElementById('entrance').value;
                 this.doorCode = document.getElementById('door_code').value;
                 this.floor = document.getElementById('floor').value;
                 this.apartment = document.getElementById('apartment').value;
                 this.addressComment = document.getElementById('comment').value;
               }
+
+              var auth = localStorage.getItem('auth');
+              this.auth = auth ? JSON.parse(auth) : null;
+              const savedCart = localStorage.getItem('cart');
+              this.cart = savedCart ? JSON.parse(savedCart) : [];
 
               this.scheduleSection=false;
               this.orderDetails = true;
@@ -531,6 +561,10 @@
   #map {
     height: 400px;
   }
+
+  schedule-div p {
+    margin: 0;
+}
 
 .social-login {
   align-items: center;

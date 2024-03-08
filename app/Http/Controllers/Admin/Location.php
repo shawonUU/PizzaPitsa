@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Illuminate\Http\Request;
+use App\Models\Admin\Schedule;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Location as AdminLocation;
-use Illuminate\Http\Request;
 
 class Location extends Controller
 {
@@ -20,14 +21,17 @@ class Location extends Controller
         $request->validate([                   
             'longitude' => 'required',
             'latitude' => 'required',   
+            'address' => 'required',  
             'status' => 'required',
         ]);
 
-        $coupon = new AdminLocation();
-        $coupon->longitude = $request->input('longitude');      
-        $coupon->latitude = $request->input('latitude');
-        $coupon->status = $request->input('status');
-        $coupon->save();
+        $location = AdminLocation::first();
+        if(!$location) $location = new AdminLocation();
+        $location->longitude = $request->input('longitude');      
+        $location->latitude = $request->input('latitude');
+        $location->address = $request->input('address');
+        $location->status = $request->input('status');
+        $location->save();
         session()->flash('sweet_alert', [
             'type' => 'success',
             'title' => 'Success!',
@@ -57,5 +61,17 @@ class Location extends Controller
             'text' => 'Location update success',
         ]);
         return redirect()->back();
+    }
+
+    public function locationSchedule(){
+        $location = AdminLocation::first();
+        $schedule = Schedule::first();
+        $data = [
+            'address' => $location->address,
+            'longitude' => $location->longitude,
+            'latitude' => $location->latitude,
+            'schedule' => $schedule->schedule,
+        ];
+        return response()->json($data);
     }
 }
