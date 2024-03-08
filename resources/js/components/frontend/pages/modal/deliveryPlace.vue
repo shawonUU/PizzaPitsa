@@ -367,7 +367,7 @@
                 return;
               }
 
-              if(type==2 && !(this.latitude && this.longitude)){
+              if(type==1 && !(this.latitude && this.longitude)){
                    this.showToast('select delivery address',0);
                    return;
               }
