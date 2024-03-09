@@ -41,8 +41,9 @@
                           </div>
                         <form action="javascript:void(0)">
                             <div class="row">
-                                <div class="col-12">
-                                  <input id="daliveryAddress" @change="changeDaliveryAddress" type="text" class="form-group mb-5" style="border:1px solid #000; height: 50px;" :value="selectedAddress" placeholder="Address">
+                                <div class="col-12 mb-5">
+                                  <input id="daliveryAddress" @change="changeDaliveryAddress" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" :value="selectedAddress" placeholder="Address">
+                                  <p v-if="deliveryAddressError" class="m-0 p-0" style="color :red;">{{ deliveryAddressError }}</p>
                                 </div>
                                 <div class="col-6">
                                     <input id="entrance" type="text" class="form-group mb-5" style="border:1px solid #000; height: 50px;" placeholder="Entrance">
@@ -92,7 +93,9 @@
                         </form>
                     </div>
                     <div class="col-12 col-md-8">
-                        <div id="map" style="height: 600px;"></div>
+                        <div id="map-container">
+                             <div id="map" style="height: 600px;"></div>
+                        </div>
                         <div v-if="orderType==1" id="overlay"></div>
                     </div>
                 </div>
@@ -314,6 +317,7 @@
                 shopLongitude:'',
                 shopSchedule:'',
                 deliveryCharge:0,
+                deliveryAddressError:'',
             };
         },
         mounted() {
@@ -461,12 +465,6 @@
                   title: 'Selected Location',
                   draggable: true,
                 });
-                this.marker.addListener('click', () => this.handleMarkerClick());
-                this.marker.addListener('dragend', () => this.handleDragEnd());
-                this.map.addListener('click', (event) => {
-                    this.moveMarker(event.latLng);
-                    this.getAddress(event.latLng);
-                });
 
                 var circle = new google.maps.Circle({
                     strokeColor: '#FF0000',
@@ -477,13 +475,25 @@
                     map: this.map,
                     center: center,
                     radius: 10000,
+                    clickable: false,
                 });
                 google.maps.event.addListener(this.map, 'idle', function () {
-                    this.updateOverlay(this.map, circle);
+                    //this.updateOverlay(this.map, circle);
+                });
+
+                this.marker.addListener('click', () => this.handleMarkerClick());
+                this.marker.addListener('dragend', () => this.handleDragEnd());
+
+                this.map.addListener('click', (event) => {
+                    if (google.maps.geometry.spherical.computeDistanceBetween(event.latLng, circle.getCenter()) <= circle.getRadius()) {
+                        this.moveMarker(event.latLng);
+                        this.getAddress(event.latLng);
+                    }
                 });
 
               }
               document.getElementById('map').addEventListener('wheel', this.handleMapScroll);
+
               if(this.orderType==2){
                 this.marker = new google.maps.Marker({
                   position: center,
@@ -527,8 +537,17 @@
               const geocoder = new google.maps.Geocoder();
               geocoder.geocode({ location: latLng }, (results, status) => {
                 if (status === 'OK' && results[0]) {
+
+                  var center = new google.maps.LatLng(this.lat, this.lng);
+                  var current = new google.maps.LatLng(latLng.lat(), latLng.lng()); 
+                  var distance = google.maps.geometry.spherical.computeDistanceBetween(center,current);
+                  console.log(distance);
                   this.selectedAddress = results[0].formatted_address;
-                  //console.log(latLng);
+                  this.deliveryAddressError = "";
+                  if(distance>10000){
+                    this.deliveryAddressError = "Sorry, we can't deliver to this address. Please select pick-up or enter a different delivery address.";
+                    return;
+                  }
                   this.selectedLocation = latLng;
                   this.latitude = latLng.lat();
                   this.longitude = latLng.lng();
@@ -592,9 +611,16 @@
 
   <style scoped>
 
+  #map-container {
+      position: relative;
+      z-index: 1; /* Ensure the map is above other elements */
+      height: 400px;
+      width: 100%;
+  }
   #map {
     height: 400px;
   }
+
 
   #overlay {
       position: absolute;
