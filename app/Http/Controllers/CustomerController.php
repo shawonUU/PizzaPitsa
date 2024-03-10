@@ -36,7 +36,7 @@ class CustomerController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'is_customer' => '1',
+            'role_id' => 2,
             'is_verified' => false,
             'verification_code' => 123456, //rand(100000, 999999),
         ]);

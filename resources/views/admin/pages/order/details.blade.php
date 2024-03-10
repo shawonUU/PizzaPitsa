@@ -84,9 +84,9 @@
               <label for="assign_deliver_boy">Assign Deliver Boy</label>             
                 <select class="form-select mb-3" aria-label="Default select example">
                     <option selected="">Select your Status </option>
-                    <option value="1">Declined Payment</option>
-                    <option value="2">Delivery Error</option>
-                    <option value="3">Wrong Amount</option>
+                    @foreach ($deliveryBoys as $item)
+                      <option value="{{ $item->id }}">{{ $item->name }}</option>
+                    @endforeach                                       
                 </select>                     
             </div>
             <div class="col-md-3">

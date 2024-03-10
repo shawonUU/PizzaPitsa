@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\Address;
 use App\Models\Admin\Toping;
 use App\Models\OrderItem;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,11 +19,11 @@ class OrderController extends Controller
         $cart = json_decode($request->cart, true);
 
         $address_id = null;
-        if($request->type == 1){
+        if ($request->type == 1) {
             $latitude = $request->latitude;
             $longitude = $request->longitude;
             $selectedAddress = $request->selectedAddress;
-            if(!($latitude && $longitude)){
+            if (!($latitude && $longitude)) {
                 $response = [
                     'success' => false,
                     'message' => 'Select Delivery Address',
@@ -56,6 +57,7 @@ class OrderController extends Controller
         $order->type = $request->type;
         $order->discount = $request->discount;
         $order->delivery_charge = $request->deliveryCharge;
+        $order->delivery_boy = $request->delivery_boy;
         $order->total_amount = $request->subTotal;
         $order->paid_amount = $request->grandTotal;
         $order->delivery_address_id = $address_id;
@@ -69,11 +71,10 @@ class OrderController extends Controller
                         $toping_ids = [];
                         $toping_price = 0;
                         foreach (isset($sizeWiseItem['topings']) ? $sizeWiseItem['topings'] : [] as $toping) {
-                            if($toping && !isset($toping_ids[$toping['id']])){
+                            if ($toping && !isset($toping_ids[$toping['id']])) {
                                 $toping_ids[$toping['id']] = $toping['id'];
                                 $toping_price += $toping['price'];
                             }
-                           
                         }
 
                         $orderItem = new OrderItem;
@@ -84,7 +85,7 @@ class OrderController extends Controller
                         $orderItem->quantity = $sizeWiseItem['quantity'];
                         $orderItem->price = $sizeWiseItem['size']['price'];
                         $orderItem->total_price = $sizeWiseItem['quantity'] * $sizeWiseItem['size']['price'];
-                        $orderItem->toping_ids = implode(',',$toping_ids);
+                        $orderItem->toping_ids = implode(',', $toping_ids);
                         $orderItem->toping_price = $toping_price;
                         $orderItem->save();
                     }
@@ -108,32 +109,31 @@ class OrderController extends Controller
         //     ->get();
         return view("admin.pages.order.index", compact('orders'));
     }
-    public function getOrderDetails ($id) {      
+    public function getOrderDetails($id)
+    {
         $orderDetails = Order::leftJoin('addresses', 'addresses.id', '=', 'orders.delivery_address_id')
-        ->join('users', 'users.id', '=', 'orders.customer_id')
-        ->select('orders.*','addresses.selectedAddress','addresses.selectedAddress','addresses.entrance','addresses.door_code','addresses.apartment','addresses.comment','addresses.floor','users.name','users.email','addresses.id as AddId')
-        ->where('orders.order_number',$id)->first();
-         $products = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
-        ->join('sizes', 'sizes.id', '=', 'order_items.size_id')
-        ->select('order_items.*', 'products.name as proName','products.image', 'sizes.name as sizeName')
-        ->where('order_items.order_number', $id)
-        ->get();
-        
+            ->join('users', 'users.id', '=', 'orders.customer_id')
+            ->select('orders.*', 'addresses.selectedAddress', 'addresses.selectedAddress', 'addresses.entrance', 'addresses.door_code', 'addresses.apartment', 'addresses.comment', 'addresses.floor', 'users.name', 'users.email', 'addresses.id as AddId')
+            ->where('orders.order_number', $id)->first();
+        $products = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
+            ->leftJoin('sizes', 'sizes.id', '=', 'order_items.size_id')
+            ->select('order_items.*', 'products.name as proName', 'products.image', 'sizes.name as sizeName')
+            ->where('order_items.order_number', $id)
+            ->get();
+
         // Loop through each product to fetch and bind topping names
         $products->each(function ($product) {
             $topingIds = explode(',', $product->toping_ids);
-        
+
             // Fetch topping names based on the toping_ids
             $topingNames = Toping::whereIn('id', $topingIds)->pluck('name')->toArray();
-        
+
             // Bind the topingNames to the product
             $product->topingNames = implode(', ', $topingNames);
         });
-        
 
-
-        return view("admin.pages.order.details", compact('products','orderDetails'));
-        
+        $deliveryBoys = User::where('role_id', '3')->where('status', '1')->get();
+        return view("admin.pages.order.details", compact('products', 'orderDetails', 'deliveryBoys'));
     }
     public function updateStatus(Request $request)
     {
@@ -145,17 +145,18 @@ class OrderController extends Controller
         return response()->json('Success');
     }
 
-    public function updateAddress (Request $request) {         
-         $selectedAddress = $request->selectedAddress;
-         $address = Address::where('id',$request->addressId)->first();             
-         $address->selectedAddress = $selectedAddress;
-         $address->entrance = $request->entrance;
-         $address->door_code = $request->door_code;
-         $address->floor = $request->floor;
-         $address->apartment = $request->apartment;
-         $address->comment = $request->comment;
-         $address->update();
-         session()->flash('sweet_alert', [
+    public function updateAddress(Request $request)
+    {
+        $selectedAddress = $request->selectedAddress;
+        $address = Address::where('id', $request->addressId)->first();
+        $address->selectedAddress = $selectedAddress;
+        $address->entrance = $request->entrance;
+        $address->door_code = $request->door_code;
+        $address->floor = $request->floor;
+        $address->apartment = $request->apartment;
+        $address->comment = $request->comment;
+        $address->update();
+        session()->flash('sweet_alert', [
             'type' => 'success',
             'title' => 'Success!',
             'text' => 'Address update success',
@@ -163,56 +164,60 @@ class OrderController extends Controller
         return redirect()->back();
     }
 
-    public function updateQty (Request $request) {
-         $request;
-        $order = OrderItem::where('order_number',$request->order_id)->where('product_id',$request->product_id)->first();
+    public function updateQty(Request $request)
+    {
+        $request;
+        $order = OrderItem::where('order_number', $request->order_id)->where('product_id', $request->product_id)->first();
         if ($order) {
             $order->quantity  = $request->qty;
-            $order->total_price = $order->price *$request->qty;
+            $order->total_price = $order->price * $request->qty;
             $order->update();
             session()->flash('sweet_alert', [
                 'type' => 'success',
                 'title' => 'Success!',
                 'text' => 'Quantity update success',
             ]);
-            return redirect()->back(); 
+            return redirect()->back();
         }
     }
-    
-    public function getCustomerProduct() {
-       $userId = auth()->user()->id;
-       return $orders = Order::where('customer_id',$userId)->orderBy('id', 'DESC')->get();
+
+    public function getCustomerProduct()
+    {
+        $userId = auth()->user()->id;
+        return $orders = Order::where('customer_id', $userId)->orderBy('id', 'DESC')->get();
     }
 
-    public function getOrderStatus () {
+    public function getOrderStatus()
+    {
         return orderStatuses();
     }
 
-    public function getCustomerOrderInfo(Request $request) {
+    public function getCustomerOrderInfo(Request $request)
+    {
         $id =  $request->orderNumber;
         $orderDetails = Order::join('addresses', 'addresses.id', '=', 'orders.delivery_address_id')
-        ->join('users', 'users.id', '=', 'orders.customer_id')
-        ->select('orders.*','addresses.selectedAddress','addresses.selectedAddress','addresses.entrance','addresses.door_code','addresses.apartment','addresses.comment','addresses.floor','users.name','users.email','addresses.id as AddId')
-        ->where('orders.order_number',$id)->first();
-         $products = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
-        ->join('sizes', 'sizes.id', '=', 'order_items.size_id')
-        ->select('order_items.*', 'products.name as proName','products.image', 'sizes.name as sizeName')
-        ->where('order_items.order_number', $id)
-        ->get();
-        
+            ->join('users', 'users.id', '=', 'orders.customer_id')
+            ->select('orders.*', 'addresses.selectedAddress', 'addresses.selectedAddress', 'addresses.entrance', 'addresses.door_code', 'addresses.apartment', 'addresses.comment', 'addresses.floor', 'users.name', 'users.email', 'addresses.id as AddId')
+            ->where('orders.order_number', $id)->first();
+        $products = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
+            ->join('sizes', 'sizes.id', '=', 'order_items.size_id')
+            ->select('order_items.*', 'products.name as proName', 'products.image', 'sizes.name as sizeName')
+            ->where('order_items.order_number', $id)
+            ->get();
+
         // Loop through each product to fetch and bind topping names
         $products->each(function ($product) {
             $topingIds = explode(',', $product->toping_ids);
-        
+
             // Fetch topping names based on the toping_ids
             $topingNames = Toping::whereIn('id', $topingIds)->pluck('name')->toArray();
-        
+
             // Bind the topingNames to the product
             $product->topingNames = implode(', ', $topingNames);
         });
 
         // $deliveryAddress = Address::where()
 
-        return response()->json(['message'=>'success', 'products'=>$products,'orderDetails'=>$orderDetails]);
+        return response()->json(['message' => 'success', 'products' => $products, 'orderDetails' => $orderDetails]);
     }
 }
