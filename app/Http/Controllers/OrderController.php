@@ -108,9 +108,8 @@ class OrderController extends Controller
         //     ->get();
         return view("admin.pages.order.index", compact('orders'));
     }
-    public function getOrderDetails ($id) {
-
-        $orderDetails = Order::join('addresses', 'addresses.id', '=', 'orders.delivery_address_id')
+    public function getOrderDetails ($id) {      
+        $orderDetails = Order::leftJoin('addresses', 'addresses.id', '=', 'orders.delivery_address_id')
         ->join('users', 'users.id', '=', 'orders.customer_id')
         ->select('orders.*','addresses.selectedAddress','addresses.selectedAddress','addresses.entrance','addresses.door_code','addresses.apartment','addresses.comment','addresses.floor','users.name','users.email','addresses.id as AddId')
         ->where('orders.order_number',$id)->first();

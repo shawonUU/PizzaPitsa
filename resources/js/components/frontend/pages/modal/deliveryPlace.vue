@@ -474,7 +474,7 @@
                     fillOpacity: 0.35,
                     map: this.map,
                     center: center,
-                    radius: 10000,
+                    radius: 5000,
                     clickable: false,
                 });
                 google.maps.event.addListener(this.map, 'idle', function () {
@@ -544,7 +544,7 @@
                   console.log(distance);
                   this.selectedAddress = results[0].formatted_address;
                   this.deliveryAddressError = "";
-                  if(distance>10000){
+                  if(distance>5000){
                     this.deliveryAddressError = "Sorry, we can't deliver to this address. Please select pick-up or enter a different delivery address.";
                     return;
                   }
