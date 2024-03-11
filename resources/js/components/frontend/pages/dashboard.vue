@@ -312,7 +312,7 @@ export default {
     },
     methods: {
         logout() {                    
-            localStorage.removeItem('auth');          
+            localStorage.setItem('auth', null);         
             this.$router.push({ name: 'home' }); 
             this.updateHeaderAfterLogout();
         },
@@ -325,7 +325,7 @@ export default {
                 email: this.formData.email,
                 password: this.password,
                 newPassword: this.newPassword,
-                confirmNewPassword: this.confirmNewPassword
+                confirmNewPassword: this.confirmNewPassword,
                 })
                 .then(response => {
                   console.log(response.data);

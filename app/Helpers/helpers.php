@@ -67,12 +67,3 @@ function shceduleTypes()
     'Dining room and pick-up' => 'Dining room and pick-up',
   ];
 }
-
-function userTypes()
-{
-  return [
-    '1' => 'Super Admin',
-    '2' => 'Customer',
-    '3' => 'Delivery Boy',
-  ];
-}

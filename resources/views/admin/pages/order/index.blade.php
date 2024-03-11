@@ -17,11 +17,11 @@
                         </script>
                     @endif
                     <div class="card-header align-items-center d-flex">
-                      <h4 class="card-title mb-0 flex-grow-1">Orders</h4>
+                      <h4 class="card-title mb-0 flex-grow-1">Topings</h4>
                       <div class="flex-shrink-0">
-                        {{-- <div class="form-check form-switch form-switch-right form-switch-md">
+                        <div class="form-check form-switch form-switch-right form-switch-md">
                             <a href="{{ route('topings.create') }}" class="btn btn-info">Create Toping</a>
-                        </div> --}}
+                        </div>
                       </div>
                     </div>
                     <!-- end card header -->
@@ -82,6 +82,19 @@
     </div>
 
 @section('script')
+<script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+<script>
+  var pusher = new Pusher('{{ env("PUSHER_APP_KEY") }}', {
+      cluster: '{{ env("PUSHER_APP_CLUSTER") }}',
+      encrypted: true
+  });
+  var channel = pusher.subscribe('order');
+  channel.bind('place-order', function(data) {
+      console.log(data);
+  });
+</script>
+
+
   <script>
     function updateStatus(orderId, newStatus){
         var csrfToken = $('meta[name="csrf-token"]').attr('content');

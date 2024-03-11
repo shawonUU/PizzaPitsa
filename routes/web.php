@@ -15,7 +15,6 @@ use App\Http\Controllers\Admin\DelivaryChargeController;
 use App\Http\Controllers\Admin\Location;
 use App\Http\Controllers\Admin\ProductMnagementController;
 use App\Http\Controllers\Admin\TimeScheduleController;
-use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\OrderController;
 
 /*
@@ -60,9 +59,8 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('orders', [OrderController::class, 'getOrders'])->name('orders.index');
     Route::post('order-update', [OrderController::class, 'updateQty'])->name('orders.update');
     Route::get('order-details/{id}', [OrderController::class, 'getOrderDetails'])->name('order.details');
-    Route::post('update-status', [OrderController::class, 'updateStatus'])->name('update.status');
-    Route::post('update-address', [OrderController::class, 'updateAddress'])->name('address.update');
-    Route::resource('users', UserController::class);
+    Route::post('update-status',[OrderController::class, 'updateStatus'])->name('update.status');
+    Route::post('update-address',[OrderController::class, 'updateAddress'])->name('address.update');
 });
 
 Route::get('get-location-schedule', [Location::class, 'locationSchedule']);

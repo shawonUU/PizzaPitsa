@@ -22,7 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'verification_code',
-        'role_id',
+        'is_customer',
         'is_verified'
     ];
 
