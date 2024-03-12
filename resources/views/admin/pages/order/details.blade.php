@@ -82,11 +82,11 @@
             <!--Assign Delivery Boy-->
             <div class="col-md-3">
               <label for="assign_deliver_boy">Assign Deliver Boy</label>             
-                <select class="form-select mb-3" aria-label="Default select example">
-                    <option selected="">Select your Status </option>
-                    <option value="1">Declined Payment</option>
-                    <option value="2">Delivery Error</option>
-                    <option value="3">Wrong Amount</option>
+                <select  onchange="assignDeliverBoy('{{ $orderDetails->order_number }}',this.value)"  class="form-select mb-3" aria-label="Default select example">
+                    <option selected>Select your Status </option>
+                    @foreach ($deliveryBoys as $item)
+                      <option {{ $item->id == $orderDetails->delivery_boy ? 'selected' : '' }}  value="{{ $item->id }}">{{ $item->name }}</option>
+                    @endforeach                                       
                 </select>                     
             </div>
             <div class="col-md-3">
@@ -195,7 +195,7 @@
                   <tr>
                     <td class="text-main text-bold">Order Type</td>
                     <td class="text-main text-bold">                       
-                      {{ $orderDetails->typem == '1' ?'Home Delivery':'Dine in or Pickup' }}                                     
+                      {{ $orderDetails->type == '1' ?'Home Delivery':'Dine in or Pickup' }}                                     
                     </td>                    
                   </tr>
                   
@@ -411,6 +411,34 @@
             }
         });     
     }
+
+  function assignDeliverBoy(orderId, value) {
+      var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        
+        // Set CSRF token in the request headers
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            }
+        });
+        
+        $.ajax({
+            url: '/admin/assign-delivery-boy',
+            method: 'POST',
+            data: {
+                orderId: orderId,
+                value: value
+            },
+            success: function(response) {
+                // Handle success response
+                console.log(response);
+            },
+            error: function(xhr, status, error) {
+                // Handle error
+                console.error('Error updating status:', error);
+            }
+        });
+  }
   </script>
 @endsection
 @endsection

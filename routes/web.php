@@ -2,8 +2,11 @@
 
 use App\Models\Admin\DelivaryCharge;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\Location;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\Admin\SizeController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\ProductContoller;
 use App\Http\Controllers\Admin\TopingsController;
@@ -11,11 +14,9 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CurrencyController;
 use App\Http\Controllers\Admin\NutritionController;
-use App\Http\Controllers\Admin\DelivaryChargeController;
-use App\Http\Controllers\Admin\Location;
-use App\Http\Controllers\Admin\ProductMnagementController;
 use App\Http\Controllers\Admin\TimeScheduleController;
-use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Admin\DelivaryChargeController;
+use App\Http\Controllers\Admin\ProductMnagementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,7 +61,9 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::post('order-update', [OrderController::class, 'updateQty'])->name('orders.update');
     Route::get('order-details/{id}', [OrderController::class, 'getOrderDetails'])->name('order.details');
     Route::post('update-status',[OrderController::class, 'updateStatus'])->name('update.status');
+    Route::post('assign-delivery-boy',[OrderController::class, 'assignDeliveryBoy'])->name('assign.deliveryboy');
     Route::post('update-address',[OrderController::class, 'updateAddress'])->name('address.update');
+    Route::resource('users', UserController::class);
 });
 
 Route::get('get-location-schedule', [Location::class, 'locationSchedule']);

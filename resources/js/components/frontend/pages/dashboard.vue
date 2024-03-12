@@ -154,10 +154,10 @@
                               <address data-v-05123fd1="">
                                 <div data-v-05123fd1="" class="d-flex justify-content-between">
                                   <div data-v-05123fd1="">
-                                    <strong data-v-05123fd1="" class="text-main"> Name: Farabi Sajib</strong>
+                                    <strong data-v-05123fd1="" class="text-main"> Name: {{productDetails.name}}</strong>
                                   </div>
                                 </div>
-                                <br data-v-05123fd1=""> Email: test@gmail.com <br data-v-05123fd1=""> Selected Address: Kuusamontie 2, 90500 Oulu, Finland <br data-v-05123fd1=""> Entrance: Et recusandae Et en <br data-v-05123fd1=""> Door Code: Dignissimos aut nemo <br data-v-05123fd1=""> Floor: Dicta nulla voluptat <br data-v-05123fd1=""> Apartment: Omnis in obcaecati a <br data-v-05123fd1=""> Comment: Dolor adipisicing vo <br data-v-05123fd1="">
+                                <br data-v-05123fd1=""> Email: {{productDetails.email}} <br data-v-05123fd1=""> Selected Address: {{productDetails.selectedAddress}}  <br data-v-05123fd1=""> Entrance:  {{productDetails.entrance}} <br data-v-05123fd1=""> Door Code:  {{productDetails.door_code}}  <br data-v-05123fd1=""> Floor: {{productDetails.floor}} <br data-v-05123fd1=""> Apartment: {{productDetails.apartment}} <br data-v-05123fd1=""> Comment: {{productDetails.comment}} <br data-v-05123fd1="">
                               </address>
                             </div>
                             <div data-v-05123fd1="" class="col-md-6">
@@ -167,15 +167,18 @@
                                 <tbody data-v-05123fd1="">
                                   <tr data-v-05123fd1="">
                                     <td data-v-05123fd1="" class="text-main text-bold">Order Type</td>
-                                    <td data-v-05123fd1="" class="text-main text-bold">Delivery</td>
+                                    <td data-v-05123fd1="" class="text-main text-bold">
+                                        <span v-if="productDetails.type === '1'">Home Delivery</span>
+                                        <span v-else>Dine in or Pickup</span>
+                                      </td>
                                   </tr>
                                   <tr data-v-05123fd1="">
                                     <td data-v-05123fd1="" class="text-main text-bold">Order date </td>
-                                    <td data-v-05123fd1="" class="text-right">March 3, 2024 at 5:32 PM</td>
+                                    <td data-v-05123fd1="" class="text-right">{{ formatCreatedAt(productDetails.created_at) }}</td>
                                   </tr>
                                   <tr data-v-05123fd1="">
                                     <td data-v-05123fd1="" class="text-main text-bold"> Total amount </td>
-                                    <td data-v-05123fd1="" class="text-right">48.450€</td>
+                                    <td data-v-05123fd1="" class="text-right">{{productDetails.total_amount}}€</td>
                                   </tr>
                                 </tbody>
                               </table>
@@ -292,7 +295,8 @@ export default {
             auth:true,
             orderDetails:false,
             products:'',
-            productDetails:''
+            productDetails:'',
+            user:''
         }
     },
     created (){
@@ -390,11 +394,11 @@ export default {
                   if(res.data.message == 'success') {
                     this.isModalOpen = true;
                     this.dynamicDisplay = 'block';
-                      this.products = res.data.products,
-                      this.roductDetails = res.data.productDetails
+                      this.products = res.data.products;
+                      this.productDetails = res.data.orderDetails;
+                      this.user = res.data.user;
                   }
-                  
-                  console.log(res.data)                                            
+                  console.log(res.data)                                           
                 })
                 .catch((err)=>{
                     console.log(err);

@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Pusher\Pusher;
+use App\Models\User;
 use App\Models\Order;
 use App\Models\Address;
-use App\Models\Admin\Toping;
 use App\Models\OrderItem;
+use App\Models\Admin\Toping;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Pusher\Pusher;
 
 class OrderController extends Controller
 {
@@ -119,15 +120,15 @@ class OrderController extends Controller
         return view("admin.pages.order.index", compact('orders'));
     }
     public function getOrderDetails ($id) {      
-        $orderDetails = Order::leftJoin('addresses', 'addresses.id', '=', 'orders.delivery_address_id')
-        ->join('users', 'users.id', '=', 'orders.customer_id')
-        ->select('orders.*','addresses.selectedAddress','addresses.selectedAddress','addresses.entrance','addresses.door_code','addresses.apartment','addresses.comment','addresses.floor','users.name','users.email','addresses.id as AddId')
-        ->where('orders.order_number',$id)->first();
-         $products = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
-        ->join('sizes', 'sizes.id', '=', 'order_items.size_id')
-        ->select('order_items.*', 'products.name as proName','products.image', 'sizes.name as sizeName')
-        ->where('order_items.order_number', $id)
-        ->get();
+         $orderDetails = Order::leftJoin('addresses', 'addresses.id', '=', 'orders.delivery_address_id')
+            ->leftJoin('users', 'users.id', '=', 'orders.customer_id')
+            ->select('orders.*', 'addresses.selectedAddress', 'addresses.selectedAddress', 'addresses.entrance', 'addresses.door_code', 'addresses.apartment', 'addresses.comment', 'addresses.floor', 'users.name', 'users.email', 'addresses.id as AddId')
+            ->where('orders.order_number', $id)->first();
+            $products = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
+            ->join('sizes', 'sizes.id', '=', 'order_items.size_id')
+            ->select('order_items.*', 'products.name as proName','products.image', 'sizes.name as sizeName')
+            ->where('order_items.order_number', $id)
+            ->get();
         
         // Loop through each product to fetch and bind topping names
         $products->each(function ($product) {
@@ -141,8 +142,8 @@ class OrderController extends Controller
         });
         
 
-
-        return view("admin.pages.order.details", compact('products','orderDetails'));
+        $deliveryBoys = User::where('role_id', '3')->where('status', '1')->get();
+        return view("admin.pages.order.details", compact('products', 'orderDetails', 'deliveryBoys'));
         
     }
     public function updateStatus(Request $request)
@@ -173,8 +174,7 @@ class OrderController extends Controller
         return redirect()->back();
     }
 
-    public function updateQty (Request $request) {
-         $request;
+    public function updateQty (Request $request) {       
         $order = OrderItem::where('order_number',$request->order_id)->where('product_id',$request->product_id)->first();
         if ($order) {
             $order->quantity  = $request->qty;
@@ -200,8 +200,8 @@ class OrderController extends Controller
 
     public function getCustomerOrderInfo(Request $request) {
         $id =  $request->orderNumber;
-        $orderDetails = Order::join('addresses', 'addresses.id', '=', 'orders.delivery_address_id')
-        ->join('users', 'users.id', '=', 'orders.customer_id')
+        $orderDetails = Order::leftJoin('addresses', 'addresses.id', '=', 'orders.delivery_address_id')
+        ->leftJoin('users', 'users.id', '=', 'orders.customer_id')
         ->select('orders.*','addresses.selectedAddress','addresses.selectedAddress','addresses.entrance','addresses.door_code','addresses.apartment','addresses.comment','addresses.floor','users.name','users.email','addresses.id as AddId')
         ->where('orders.order_number',$id)->first();
          $products = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
@@ -222,7 +222,16 @@ class OrderController extends Controller
         });
 
         // $deliveryAddress = Address::where()
+        $user = User::where('id',auth()->user()->id)->first();
+        return response()->json(['message'=>'success', 'products'=>$products,'orderDetails'=>$orderDetails,'user'=>$user]);
+    }
 
-        return response()->json(['message'=>'success', 'products'=>$products,'orderDetails'=>$orderDetails]);
+    public function assignDeliveryBoy (Request $request) {
+        $value = $request->value;
+        $orderId = $request->orderId;
+        $order = Order::where('order_number', $orderId)->first();
+        $order->delivery_boy = $value;
+        $order->update();
+        return response()->json('Success');
     }
 }

@@ -166,7 +166,6 @@
                         </ul>
                     </div>
                 </li>
-
                 <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarAuthorizition" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAuthorizition">
                         <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Authorizition</span>
@@ -174,7 +173,7 @@
                     <div class="collapse menu-dropdown" id="sidebarAuthorizition">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="" class="nav-link">User</a>
+                                <a href="{{ route('users.index') }}" class="nav-link">User</a>
                             </li>
                             <li class="nav-item">
                                 <a href="advance-ui-nestable.html" class="nav-link" data-key="t-nestable-list">Role</a>
