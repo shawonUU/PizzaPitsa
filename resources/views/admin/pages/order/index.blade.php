@@ -1,6 +1,20 @@
 @extends('admin.layout.app')
 
 @section('content')
+<style>
+  #toaster-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    max-width: 300px;
+    background-color: #333;
+    color: #fff;
+    padding: 15px;
+    border-radius: 5px;
+    display: none;
+  }
+</style>
+    <div id="toaster-container"></div>
     <div class="page-content">
         <div class="container-fluid">
           
@@ -28,7 +42,7 @@
                     <div class="card-body">
                       <div class="live-preview">
                         <div class="row gy-4">
-                            <table class="table" id="dataTbl">
+                            <table class="table" id="">
                                 <thead>
                                   <tr>
                                     <th>#</th>
@@ -36,16 +50,16 @@
                                     <th>Order By</th>                                 
                                     <th>Order Type</th>                                                                  
                                     <th>Total amount</th>                                                                  
-                                    <th>Paid amount</th>                                                                                                     
+                                    <th>Payable Amount</th>                                                                                                     
                                     <th>Adress</th>
                                     <th>Status</th>                                   
                                     <th>Action</th>                                   
                                   </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="tbodyContainer">
                                 @foreach ($orders as $item)
                                 <tr>
-                                    <th>{{ $loop->index+1 }}</th>                                    
+                                    <th class="orderSl">{{ $loop->index+1 }}</th>                                    
                                     <td>{{ $item->order_number }}</td>                                   
                                     <td>{{ getUser($item->customer_id) }}</td>                                  
                                     <td>{{ $item->type =='2'?'Pickup/Dine in':'Delivery' }}</td>                                  
@@ -61,9 +75,7 @@
                                     </td> 
                                     <td>
                                         <a class="btn btn-info" href="{{ route('order.details',$item->order_number) }}">Details</a>    
-                                    </td>  
-                                      
-                                                                                                                                                                                                                                   
+                                    </td>                                                                                                                                                                                                 
                                   </tr>
                                 @endforeach
                                 </tbody>
@@ -90,7 +102,14 @@
   });
   var channel = pusher.subscribe('order');
   channel.bind('place-order', function(data) {
-      console.log(data);
+      var oldItem = document.getElementById('tbodyContainer').innerHTML;
+      document.getElementById('tbodyContainer').innerHTML = data.order+oldItem;
+
+      var elements = document.getElementsByClassName("orderSl");
+      for (var i = 0; i < elements.length; i++) {
+        elements[i].innerHTML = i+1;
+      }
+      showToaster('New order added.');
   });
 </script>
 
@@ -124,6 +143,26 @@
         });     
     }
   </script>
+
+<script>
+  // Function to show the toaster
+  function showToaster(message) {
+    var toaster = document.createElement('div');
+    toaster.id = 'toaster';
+    toaster.innerHTML = message;
+    document.getElementById('toaster-container').appendChild(toaster);
+    document.getElementById('toaster-container').style.display = 'block';
+    setTimeout(function () {
+      hideToaster();
+    }, 3000);
+  }
+  showToaster('New order added.');
+  function hideToaster() {
+    var toaster = document.getElementById('toaster');
+    toaster.parentNode.removeChild(toaster);
+    document.getElementById('toaster-container').style.display = 'none';
+  }
+</script>
 @endsection
 @endsection
 

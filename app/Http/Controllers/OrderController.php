@@ -98,7 +98,8 @@ class OrderController extends Controller
             'cluster' => env('PUSHER_APP_CLUSTER'),
             'encrypted' => true
         ]);
-        $data['order'] = $order;
+        $item = $order;
+        $data['order'] = (string) view('admin.pages.order.singleOrder', compact('item'));
         $pusher->trigger('order', 'place-order', $data);
 
         $response = [
