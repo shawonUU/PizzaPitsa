@@ -46,19 +46,19 @@
                         </div>
                         <div class="sc-52lbjw-0 fpBABM contacts-phone">
                         <div class="contacts-phone__number">
-                            <a class="contacts-phone__number-link" href="tel:6299209" style="color:#fff">6 299 209</a>
+                            <a class="contacts-phone__number-link" href="tel:+35826220208" style="color:#fff">+35826220208</a>
                             <div class="contacts-phone__description"><span class="contacts-phone__description-text" style="color:#fff">Call</span></div>
                         </div>
                         </div>
                         <ul class="mainmenu">
                             <li class="sc-xlo7eb-4 bvuzKi">
-                                <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">About</a>
+                                <router-link to="/about" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">About</router-link>
                             </li>
                             <li class="sc-xlo7eb-4 bvuzKi">
                                 <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">Franchise</a>
                             </li>
                             <li class="sc-xlo7eb-4 bvuzKi">
-                                <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">Contact</a>
+                                <router-link to="/contact" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">Contact</router-link>
                             </li>
                         </ul>
                     </div>
@@ -90,12 +90,12 @@
             <div class="axil-mainmenu">
                 <div class="container">
                     <div class="header-navbar">
-                        <div class="header-brand d-none">
+                        <div class="header-brand">
                             <router-link to="/" class="logo logo-dark">
-                                <img width="100px" :src="'/frontend/assets/images/logo/pizza logo-02.jpg'" alt="Site Logo">
+                                <img width="150px" :src="'/frontend/assets/images/logo/2 pizza logo-02.png'" alt="Site Logo">
                             </router-link>
                             <router-link to="/" class="logo logo-light">
-                                <img width="200px" :src="'/frontend/assets/images/logo/pizza logo-02.jpg'" alt="Site Logo">
+                                <img width="200px" :src="'/frontend/assets/images/logo/2 pizza logo-02.png'" alt="Site Logo">
                             </router-link>
                         </div>
                         <div class="header-main-nav">
@@ -104,7 +104,7 @@
                                 <button class="mobile-close-btn mobile-nav-toggler"><i class="fas fa-times"></i></button>
                                 <div class="mobile-nav-brand">
                                     <a href="index-2.html" class="logo">
-                                        <img :src="'/frontend/assets/images/logo/pizza logo-02.jpg'" alt="Site Logo">
+                                        <img :src="'/frontend/assets/images/logo/2 pizza logo-02.png'" alt="Site Logo">
                                     </a>
                                 </div>
                                 <!-- <ul class="mainmenu">
@@ -136,12 +136,18 @@
                                         <i class="flaticon-shopping-cart"></i>
                                     </a>
                                 </li> -->
-                                <li>
+                                <!-- <li>
                                     <button data-testid="header_login" type="button" data-type="tertiary" data-size="small" class="sc-1rmt3mq-0 dOEDNV">My Orders</button>
+                                </li> -->
+                                <li class="shopping-cart" @click="handleCartClick">
+                                    <a href="javascript:void(0)" style="margin-top:4px" class="cart-dropdown-btn mobileCart">
+                                        <span class="cart-count">{{ cartItemCount }}</span>
+                                        <i class="flaticon-shopping-cart" style="color:#fff"></i>
+                                    </a>
                                 </li>
                                 <li class="axil-mobile-toggle">
                                     <button class="menu-btn mobile-nav-toggler">
-                                        <i class="flaticon-menu-2"></i>
+                                        <i  style="color:#fff" class="flaticon-menu-2"></i>
                                     </button>
                                 </li>
                             </ul>
@@ -410,5 +416,47 @@ export default {
     flex-direction: row-reverse;
     gap: 15px;
     margin-bottom: 25px;
+}
+ .header-brand {
+       display: none;
+  }
+.mobileCart {
+    display: none;
+}
+@media only screen and (max-width: 768px) {
+  .header-brand {
+       display: block;
+  }
+  .mobileCart {
+    display: block;
+ }
+ .axil-mainmenu {
+    background: rgb(238, 110, 45);
+    padding: 10px 0;
+}
+.header-main-nav.open .mainmenu-nav {
+    background: rgb(238, 110, 45);
+    right: 0;
+    visibility: visible;
+    opacity: 1;
+}
+.header-main-nav .mainmenu-nav .mainmenu>li>a {
+    color: #ffffff;
+    line-height: var(--line-height-b2) !important;
+    height: auto !important;
+    padding: 5px 0;
+    display: inline-block;
+}
+.mobile-nav-brand img {
+    margin-left: -25px;
+    max-height: 25px;
+}
+.mobile-close-btn:hover {
+    background-color: #fff;
+    color: #000;
+}
+.header-action>ul>li {
+    margin: 0px 16px 10px 5px;
+}
 }
 </style>

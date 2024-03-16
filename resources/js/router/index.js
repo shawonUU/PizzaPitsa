@@ -1,9 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../components/frontend/pages/home.vue';
 import Dashboard from '../components/frontend/pages/dashboard.vue';
+import About from '../components/frontend/pages/about.vue';
+import Contact from '../components/frontend/pages/contact.vue';
 
 const routes = [
   { path: '/', component: Home, name: 'home' },
+  { path: '/about', component: About, name: 'about' },
+  { path: '/contact', component: Contact, name: 'contact' },
   { path: '/dashboard', component: Dashboard, name: 'dashboard', meta: { requiresAuth: true } },
 ];
 

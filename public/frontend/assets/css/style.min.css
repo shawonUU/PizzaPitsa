@@ -2588,7 +2588,8 @@ input[type=submit]:hover {
 .axil-about-area .about-content .text-heading {
     font-size: 20px;
     margin-bottom: 22px;
-    display: block
+    display: block;
+    text-align: justify;
 }
 
 .axil-about-area .about-content p {

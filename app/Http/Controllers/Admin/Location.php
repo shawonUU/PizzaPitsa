@@ -12,8 +12,9 @@ class Location extends Controller
 
     public function index()
     {
+        $location = AdminLocation::first();
         $coupons = AdminLocation::get();
-        return view('admin.pages.settings.location.index', compact('coupons'));
+        return view('admin.pages.settings.location.index', compact('coupons','location'));
     }
 
     public function store(Request $request)
@@ -22,6 +23,7 @@ class Location extends Controller
             'longitude' => 'required',
             'latitude' => 'required',   
             'address' => 'required',  
+            'zoom' => 'required',
             'status' => 'required',
         ]);
 
@@ -30,6 +32,7 @@ class Location extends Controller
         $location->longitude = $request->input('longitude');      
         $location->latitude = $request->input('latitude');
         $location->address = $request->input('address');
+        $location->zoom = $request->input('zoom');
         $location->status = $request->input('status');
         $location->save();
         session()->flash('sweet_alert', [

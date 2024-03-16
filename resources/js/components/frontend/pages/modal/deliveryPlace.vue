@@ -94,7 +94,7 @@
                     </div>
                     <div class="col-12 col-md-8">
                         <div id="map-container">
-                             <div id="map" style="height: 600px;"></div>
+                             <div id="map" style="height: 400px;"></div>
                         </div>
                         <div v-if="orderType==1" id="overlay"></div>
                     </div>
@@ -235,7 +235,7 @@
                                             <td>
                                               <strong class="text-muted">Total :</strong>
                                             </td>
-                                            <td class="text-muted h5">{{ grandTotal-deliveryCharge }} {{baseCurrencySymbol}} </td>
+                                            <td class="text-muted h5">{{ grandTotal+deliveryCharge }} {{baseCurrencySymbol}} </td>
                                           </tr>
                                         </tbody>
                                       </table>
@@ -326,8 +326,8 @@
             console.log(res.data);
             this.shopAddress = res.data.address;
             this.shopSchedule = res.data.schedule;
-            this.lng = parseInt(res.data.longitude);
-            this.lat = parseInt(res.data.latitude) ;
+            this.lng = res.data.longitude;
+            this.lat = res.data.latitude;
             if(this.orderType==1){this.showMap();}
             if(this.orderType==2){this.showSchedule();}
           })
@@ -389,7 +389,7 @@
                   cart: savedCart,
                   subTotal:this.subTotal,
                   discount:this.discount,
-                  grandTotal:this.grandTotal-this.deliveryCharge,
+                  grandTotal:this.grandTotal+this.deliveryCharge,
                   deliveryCharge:this.deliveryCharge,
                   latitude:this.latitude,
                   longitude:this.longitude,
@@ -403,7 +403,7 @@
                 .then((res)=>{   
                   console.log(res.data);               
                   if(res.data.success){
-                    localStorage.setItem('cart', '');
+                    //localStorage.setItem('cart', '');
                     this.handleButtonClick();
                     this.emitMyEvent();
                     this.showToast(res.data.message,1);
@@ -452,6 +452,7 @@
             },
             createMap() {
               const center = { lat:  this.lat, lng: this.lng };
+              console.log(center);
               this.map = new google.maps.Map(document.getElementById('map'), {
                 center: center,
                 zoom: 12,
@@ -544,20 +545,23 @@
                   console.log(distance);
                   this.selectedAddress = results[0].formatted_address;
                   this.deliveryAddressError = "";
+                  this.latitude = null;
+                  this.longitude = null;
                   if(distance>5000){
                     this.deliveryAddressError = "Sorry, we can't deliver to this address. Please select pick-up or enter a different delivery address.";
-                    return;
-                  }
-                  this.selectedLocation = latLng;
-                  this.latitude = latLng.lat();
-                  this.longitude = latLng.lng();
-                  if(this.latitude && this.longitude){
-                    document.getElementById("cashOnDeliveryBtn").style.backgroundColor = "#ee6e2d";
-                    document.getElementById("cashOnDeliveryBtn").style.cursor = 'pointer';
                   }else{
-                    document.getElementById("cashOnDeliveryBtn").style.backgroundColor = "#cecac8;";
-                    document.getElementById("cashOnDeliveryBtn").style.cursor = 'not-allowed';
+                    this.selectedLocation = latLng;
+                    this.latitude = latLng.lat();
+                    this.longitude = latLng.lng();
                   }
+                  
+                   if(this.latitude && this.longitude){
+                      document.getElementById("cashOnDeliveryBtn").style.backgroundColor = "#ee6e2d";
+                      document.getElementById("cashOnDeliveryBtn").style.cursor = 'pointer';
+                    }else{
+                      document.getElementById("cashOnDeliveryBtn").style.backgroundColor = "#cecac8";
+                      document.getElementById("cashOnDeliveryBtn").style.cursor = 'not-allowed';
+                    }
                    
                 } else {
                   console.error('Geocoder failed due to:', status);

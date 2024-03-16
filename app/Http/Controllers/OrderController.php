@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\Address;
 use App\Models\OrderItem;
 use App\Models\Admin\Toping;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -95,6 +96,11 @@ class OrderController extends Controller
             }
         }
 
+        $notification = new Notification;
+        $notification->message = "New Order Placed";
+        $notification->url = route('orders.index');
+        $notification->save();
+
         $pusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
             'cluster' => env('PUSHER_APP_CLUSTER'),
             'encrypted' => true
@@ -102,6 +108,11 @@ class OrderController extends Controller
         $item = $order;
         $data['order'] = (string) view('admin.pages.order.singleOrder', compact('item'));
         $pusher->trigger('order', 'place-order', $data);
+        $data = [
+            'notification' => $notification,
+            'unSeenNotifications' => unSeenNotifications(),
+        ];
+        $pusher->trigger('order', 'place-order-notification', $data);
 
         $response = [
             'success' => true,
@@ -124,11 +135,12 @@ class OrderController extends Controller
             ->leftJoin('users', 'users.id', '=', 'orders.customer_id')
             ->select('orders.*', 'addresses.selectedAddress', 'addresses.selectedAddress', 'addresses.entrance', 'addresses.door_code', 'addresses.apartment', 'addresses.comment', 'addresses.floor', 'users.name', 'users.email', 'addresses.id as AddId')
             ->where('orders.order_number', $id)->first();
-            $products = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
-            ->join('sizes', 'sizes.id', '=', 'order_items.size_id')
+        $products = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
+            ->leftJoin('sizes', 'sizes.id', '=', 'order_items.size_id')
             ->select('order_items.*', 'products.name as proName','products.image', 'sizes.name as sizeName')
             ->where('order_items.order_number', $id)
             ->get();
+        $order = Order::find($id);
         
         // Loop through each product to fetch and bind topping names
         $products->each(function ($product) {
@@ -143,7 +155,7 @@ class OrderController extends Controller
         
 
         $deliveryBoys = User::where('role_id', '3')->where('status', '1')->get();
-        return view("admin.pages.order.details", compact('products', 'orderDetails', 'deliveryBoys'));
+        return view("admin.pages.order.details", compact('products', 'orderDetails', 'deliveryBoys','order'));
         
     }
     public function updateStatus(Request $request)
@@ -205,23 +217,17 @@ class OrderController extends Controller
         ->select('orders.*','addresses.selectedAddress','addresses.selectedAddress','addresses.entrance','addresses.door_code','addresses.apartment','addresses.comment','addresses.floor','users.name','users.email','addresses.id as AddId')
         ->where('orders.order_number',$id)->first();
          $products = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
-        ->join('sizes', 'sizes.id', '=', 'order_items.size_id')
+        ->leftJoin('sizes', 'sizes.id', '=', 'order_items.size_id')
         ->select('order_items.*', 'products.name as proName','products.image', 'sizes.name as sizeName')
         ->where('order_items.order_number', $id)
         ->get();
-        
-        // Loop through each product to fetch and bind topping names
+
         $products->each(function ($product) {
             $topingIds = explode(',', $product->toping_ids);
-        
-            // Fetch topping names based on the toping_ids
             $topingNames = Toping::whereIn('id', $topingIds)->pluck('name')->toArray();
-        
-            // Bind the topingNames to the product
             $product->topingNames = implode(', ', $topingNames);
         });
 
-        // $deliveryAddress = Address::where()
         $user = User::where('id',auth()->user()->id)->first();
         return response()->json(['message'=>'success', 'products'=>$products,'orderDetails'=>$orderDetails,'user'=>$user]);
     }

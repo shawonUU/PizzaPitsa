@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\Notification;
 use App\Models\Admin\Product;
 use App\Models\Admin\Currency;
 use App\Models\Admin\ProductImage;
@@ -75,4 +76,13 @@ function userTypes()
     '2' => 'Customer',
     '3' => 'Delivery Boy',
   ];
+}
+
+function getNotifications(){
+    $notifications = Notification::where('status','1')->get();
+    return $notifications;
+}
+function unSeenNotifications(){
+  $notifications = Notification::where('status','1')->where('isSeen','0')->get();
+  return count($notifications);
 }

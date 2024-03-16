@@ -194,8 +194,11 @@
                                     <th data-v-05123fd1="" width="10%" style="display: table-cell;">Photo</th>
                                     <th data-v-05123fd1="" class="text-uppercase" style="display: table-cell;">Name</th>
                                     <th data-v-05123fd1="" data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Qty</th>
-                                    <th data-v-05123fd1="" data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Price</th>
-                                    <th data-v-05123fd1="" data-breakpoints="lg" class="min-col text-uppercase text-center footable-last-visible" style="display: table-cell;">Total</th>
+                                    <th data-v-05123fd1="" data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Topping Price</th>
+                                    <th data-v-05123fd1="" data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Product Price</th>
+                                    <th data-v-05123fd1="" data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Total Topping Price</th>
+                                    <th data-v-05123fd1="" data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;"> Total Product Price</th>
+                                    <th data-v-05123fd1="" data-breakpoints="lg" class="min-col text-uppercase text-center footable-last-visible" style="display: table-cell;">Total Price</th>
                                   </tr>
                                 </thead>
                                 <tbody data-v-05123fd1="">
@@ -213,34 +216,42 @@
                                       <br data-v-05123fd1="">
                                     </td>
                                     <td data-v-05123fd1="" class="text-center" style="display: table-cell;">{{product.quantity}}</td>
-                                    <td data-v-05123fd1="" class="text-center" style="display: table-cell;">{{product.price}}</td>
-                                    <td data-v-05123fd1="" class="text-center footable-last-visible" style="display: table-cell;">{{product.total_price}}</td>
+                                    <td data-v-05123fd1="" class="text-center" style="display: table-cell;">{{product.toping_price}}{{baseCurrencySymbol}}</td>
+                                    <td data-v-05123fd1="" class="text-center" style="display: table-cell;">{{product.price }}{{baseCurrencySymbol}}</td>
+                                    <td data-v-05123fd1="" class="text-center" style="display: table-cell;">{{product.toping_price * product.quantity}}{{baseCurrencySymbol}}</td>
+                                    <td data-v-05123fd1="" class="text-center" style="display: table-cell;">{{product.price * product.quantity }}{{baseCurrencySymbol}}</td>
+                                    <td data-v-05123fd1="" class="text-center footable-last-visible" style="display: table-cell;">{{(product.price * product.quantity) + (product.toping_price * product.quantity)}}{{baseCurrencySymbol}}</td>
                                   </tr>
                                 </tbody>
                               </table>
                             </div>
                           </div>
                           <div data-v-05123fd1="" class="clearfix float-right" style="width: 300px; float: right;">
-                            <table data-v-05123fd1="" class="table">
-                              <tbody data-v-05123fd1="">
-                                <tr data-v-05123fd1="">
-                                  <td data-v-05123fd1="">
-                                    <strong data-v-05123fd1="" class="text-muted">Sub Total :</strong>
+                             <table class="table">
+                              <tbody>
+                                <tr>
+                                  <td>
+                                    <strong class="text-muted">Sub Total :</strong>
                                   </td>
-                                  <td data-v-05123fd1="">175210 </td>
+                                  <td>{{ subtotal }}{{ baseCurrencySymbol }}</td>
+                                </tr>                                                             
+                                <tr>
+                                  <td>
+                                    <strong class="text-muted">Shipping :</strong>
+                                  </td>
+                                  <td>{{ shippingCostAmount }}{{ baseCurrencySymbol }}</td>
                                 </tr>
-                                <tr data-v-05123fd1="">
-                                  <td data-v-05123fd1="">
-                                    <strong data-v-05123fd1="" class="text-muted">Shipping :</strong>
+                                <tr>
+                                  <td>
+                                    <strong class="text-muted">Discount :</strong>
                                   </td>
-                                  <td data-v-05123fd1=""> 0.000€ </td>
+                                  <td class="text-muted h5">{{ productDetails.discount }}{{ baseCurrencySymbol }}</td>
                                 </tr>
-                                <!--v-if-->
-                                <tr data-v-05123fd1="">
-                                  <td data-v-05123fd1="">
-                                    <strong data-v-05123fd1="" class="text-muted">Total :</strong>
+                                <tr>
+                                  <td>
+                                    <strong class="text-muted">Total :</strong>
                                   </td>
-                                  <td data-v-05123fd1="" class="text-muted h5">175210 </td>
+                                  <td class="text-muted h5">{{ total-productDetails.discount }}{{ baseCurrencySymbol }}</td>
                                 </tr>
                               </tbody>
                             </table>
@@ -296,9 +307,12 @@ export default {
             orderDetails:false,
             products:'',
             productDetails:'',
-            user:''
+            user:'',
+            loading: true,
+            shippingCostAmount: 0
         }
     },
+    
     created (){
 
 
@@ -313,6 +327,8 @@ export default {
         this.formData.email = this.isAuth.email;
         this.myOrders();
         this.getOrderStatus();
+        this.fetchBaseCurrencySymbol();
+        this.fetchShippingCost();
     },
     methods: {
         logout() {                    
@@ -397,6 +413,7 @@ export default {
                       this.products = res.data.products;
                       this.productDetails = res.data.orderDetails;
                       this.user = res.data.user;
+                      this.loading = false;
                   }
                   console.log(res.data)                                           
                 })
@@ -412,8 +429,36 @@ export default {
               var auth = localStorage.getItem('auth');
               this.auth = auth ? JSON.parse(auth) : null;
               this.orderDetails = true;
-            }           
+            },
+            async fetchBaseCurrencySymbol() {
+            try {
+                this.baseCurrencySymbol = await getBaseCurrencySymbol();
+            } catch (error) {
+                // Handle error (e.g., show an error message)
+                console.error('Error fetching base currency symbol in component:', error);
+            }
+        },   
+          fetchShippingCost() {
+              axios.get('get-delivery-charge')
+                .then((res) => { 
+                  this.shippingCostAmount = res.data.amount;
+                })
+                .catch((err) => {
+                  console.log(err);
+                });          
+          }     
+        },
+         computed: {
+         subtotal() {
+          if (this.loading) return 0;
+          return this.products.reduce((total, product) => {
+            return total + (product.price * product.quantity) + (product.toping_price * product.quantity);
+          }, 0);
+        },
+        total() {
+          return this.subtotal + this.shippingCostAmount;
         }
+    }
 
 };
 </script>

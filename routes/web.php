@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\ProductContoller;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\Admin\TopingsController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -91,6 +92,8 @@ Route::post('verify-account', [CustomerController::class, 'verifyAccount']);
 Route::get('get-my-orders', [OrderController::class, 'getCustomerProduct']);
 Route::get('get-order-status', [OrderController::class, 'getOrderStatus']);
 Route::get('order-info', [OrderController::class, 'getCustomerOrderInfo']);
+Route::post('update-notification', [NotificationController::class, 'update'])->name('update-notification');
+
 Route::get('/{any}', function () {
     return view('frontend.layouts.app');
 })->where('any', '.*');

@@ -342,7 +342,7 @@
                   <td>
                     <strong class="text-muted">Sub Total :</strong>
                   </td>
-                  <td> 47.500{{ getCurrency() }} </td>
+                  <td> {{ $order->total_amount }}{{ getCurrency() }} </td>
                 </tr>
                 <tr>
                   <td>
@@ -350,23 +350,27 @@
                   </td>
                   <td> 0.950{{ getCurrency() }} </td>
                 </tr>
+                @if($order->delivery_charge)
                 <tr>
                   <td>
                     <strong class="text-muted">Shipping :</strong>
                   </td>
-                  <td> 0.000{{ getCurrency() }} </td>
+                  <td> {{ $order->delivery_charge }}{{ getCurrency() }} </td>
                 </tr>
+                @endif
+                @if($order->discount)
                 <tr>
                   <td>
                     <strong class="text-muted">Coupon :</strong>
                   </td>
-                  <td> 0.000{{ getCurrency() }} </td>
+                  <td> {{ $order->discount }}{{ getCurrency() }} </td>
                 </tr>
+                @endif
                 <tr>
                   <td>
                     <strong class="text-muted">Total :</strong>
                   </td>
-                  <td class="text-muted h5"> 48.450{{ getCurrency() }} </td>
+                  <td class="text-muted h5"> {{ $order->paid_amount }}{{ getCurrency() }} </td>
                 </tr>
               </tbody>
             </table>

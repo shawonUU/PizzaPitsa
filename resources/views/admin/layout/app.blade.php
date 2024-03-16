@@ -68,43 +68,6 @@
 
 
   @include('admin.layout.script')
-  <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-    <script>
-    var appPusher = new Pusher('{{ env("PUSHER_APP_KEY") }}', {
-        cluster: '{{ env("PUSHER_APP_CLUSTER") }}',
-        encrypted: true
-    });
-    var appChannel = appPusher.subscribe('order');
-    appChannel.bind('place-order', function(data) {
 
-        var ele = document.getElementById('notiFicationContainer');
-        
-        var html = `<div class="text-reset notification-item d-block dropdown-item position-relative" >
-                                        <div class="d-flex">
-                                            <div class="avatar-xs me-3 flex-shrink-0">
-                                                <span class="avatar-title bg-info-subtle text-info rounded-circle fs-16">
-                                                    <i class="bx bx-badge-check"></i>
-                                                </span>
-                                            </div>
-                                            <div class="flex-grow-1">
-                                                <a href="#!" class="stretched-link">
-                                                    <h6 class="mt-0 mb-2 lh-base">New Order Added
-                                                    </h6>
-                                                </a>
-                                                <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
-                                                    <span><i class="mdi mdi-clock-outline"></i> Just 30 sec ago</span>
-                                                </p>
-                                            </div>
-                                            <div class="px-2 fs-15">
-                                                <div class="form-check notification-check">
-                                                    <input class="form-check-input" type="checkbox" value="" id="all-notification-check01">
-                                                    <label class="form-check-label" for="all-notification-check01"></label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>`;
-    });
-    ele.innerHTML = html+ele.innerHTML;
-    </script>
 </body>
 </html>

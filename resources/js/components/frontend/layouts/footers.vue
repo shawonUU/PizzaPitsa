@@ -15,13 +15,15 @@
                                 </a>
                             </div> -->
                                 <div class="inner">
-                                    <p>685 Market Street, <br>
-                                    Las Vegas, LA 95820, <br>
-                                    United States.
+                                    <p>Työnjohtajankatu 5, 00880 Helsinki
                                     </p>
                                     <ul class="support-list-item">
-                                        <li><a href="mailto:example@domain.com"><i class="fal fa-envelope-open"></i> example@domain.com</a></li>
-                                        <li><a href="tel:(+01)850-315-5862"><i class="fal fa-phone-alt"></i> (+01) 850-315-5862</a></li>
+                                        <li><a href="mailto:info@pizzapitsa.fi"><i class="fal fa-envelope-open"></i>info@pizzapitsa.fi</a></li>
+                                        <li><a href="mailto:maria@pizzapitsa.fi"><i class="fal fa-envelope-open"></i>maria@pizzapitsa.fi</a></li>
+                                        <li><a href="mailto:feedback@pizzapitsa.fi"><i class="fal fa-envelope-open"></i>feedback@pizzapitsa.fi</a></li>
+                                        <li><a href="mailto:iFRANCHISE@pizzapitsa.fi"><i class="fal fa-envelope-open"></i>FRANCHISE@pizzapitsa.fi</a></li>
+                                        <li><a href="mailto:order@pizzapitsa.fi"><i class="fal fa-envelope-open"></i>order@pizzapitsa.fi</a></li>
+                                        <li><a href="tel:+35826220208"><i class="fal fa-phone-alt"></i>+35826220208</a></li>
                                         <!-- <li><i class="fal fa-map-marker-alt"></i> 685 Market Street,  <br> Las Vegas, LA 95820, <br> United States.</li> -->
                                     </ul>
                                 </div>
@@ -103,7 +105,7 @@
                         <div class="col-xl-4 col-lg-12">
                             <div class="copyright-left d-flex flex-wrap justify-content-center">
                                 <ul class="quick-link">
-                                    <li>© 2023. All rights reserved by <a target="_blank" href="https://axilthemes.com/">Axilthemes</a>.</li>
+                                    <li>© {{ currentYear }}. All rights reserved by <a target="_blank" href="https://axilthemes.com/">Pizza Pitsa</a>.</li>
                                 </ul>
                             </div>
                         </div>
@@ -129,6 +131,11 @@ export default {
   name: 'AppFooter',
   components: {
 
+  },
+  data(){
+    return{
+        currentYear: new Date().getFullYear(),
+    }
   }
 }
 </script>

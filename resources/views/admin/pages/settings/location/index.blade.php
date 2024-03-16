@@ -30,15 +30,15 @@
                                 </div>                                                            
                                 <div class="col-12 col-md-6 col-lg-3">                                        
                                     <label for="discount" class="form-label">Longitude</label>
-                                    <input type="text" class="form-control" id="longitude" name="longitude" placeholder="Longitude" required readonly>
+                                    <input type="string" class="form-control" id="longitude" name="longitude" placeholder="Longitude" required value="{{ $location ? $location->longitude : ''}}">
                                 </div>                                                    
                                 <div class="col-12 col-md-6 col-lg-3">                                        
                                     <label for="discount" class="form-label">Latitude</label>
-                                    <input type="text" class="form-control" id="latitude" name="latitude" placeholder="Latitude" required readonly>
+                                    <input type="string" class="form-control" id="latitude" name="latitude" placeholder="Latitude" required value="{{ $location ? $location->latitude : '' }}">
                                 </div>
                                 <div class="col-12 col-md-6 col-lg-3">                                        
                                     <label for="discount" class="form-label">Address</label>
-                                    <input type="text" class="form-control" id="address" name="address" placeholder="Address" required readonly>
+                                    <input type="text" class="form-control" id="address" name="address" placeholder="Address" required value="{{ $location ? $location->address : '' }}">
                                 </div>                          
                                 <div class="col-12 col-md-6 col-lg-3">
                                     <label for="basiInput" class="form-label">Status</label>
@@ -47,6 +47,10 @@
                                             <option value="{{$key}}" {{$key == 1 ? 'selected' : ''}}>{{$status}}</option>
                                         @endforeach
                                     </select>
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-3 d-none">                                        
+                                    <label for="zoom" class="form-label">Zoom</label>
+                                    <input type="number" class="form-control" id="zoom" name="zoom" placeholder="Zoom" required value="{{ $location ? $location->zoom : '' }}">
                                 </div>
                                 <div class="d-flex flex-row-reverse bd-highlight">
                                     <button type="submit" class="btn btn-primary mt-1">Add Location</button>
@@ -139,14 +143,14 @@
 
         function initMap() {
             map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat: -34.397, lng: 150.644},
-                zoom: 8
+                center: {lat: {{ $location ? $location->latitude : 0 }}, lng: {{ $location ? $location->longitude : 0}}},
+                zoom: {{ $location ? $location->zoom : 0 }}
             });
 
             geocoder = new google.maps.Geocoder();
 
             marker = new google.maps.Marker({
-                position: {lat: -34.397, lng: 150.644}, // Default position
+                position: {lat: {{ $location ? $location->latitude : 0 }}, lng: {{ $location ? $location->longitude : 0}}}, // Default position
                 map: map
             });
 
@@ -177,6 +181,8 @@
                         document.getElementById('longitude').value = latLng.lng();
                         document.getElementById('latitude').value = latLng.lat();
                         document.getElementById('address').value = results[0].formatted_address;
+                        document.getElementById('zoom').value = map.getZoom();
+                        
                     } else {
                         window.alert('No results found');
                     }

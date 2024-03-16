@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('locations', function (Blueprint $table) {
+        Schema::create('notifications', function (Blueprint $table) {
             $table->id();
-            $table->double('longitude');
-            $table->double('latitude');
-            $table->double('zoom');
-            $table->string('address');
+            $table->integer('type')->default(1);
+            $table->string('message');
+            $table->string('url');
+            $table->enum('isSeen', [0, 1])->default(0);
             $table->enum('status', [0, 1])->default(1);
             $table->timestamps();
         });
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('locations');
+        //
     }
 };

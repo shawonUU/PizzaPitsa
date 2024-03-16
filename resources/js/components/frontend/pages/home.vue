@@ -217,7 +217,7 @@
                                             <!-- Display calculated_offer_price in current-price div if both exist -->
                                             <span v-if="product.calculated_offer_price" class="price current-price">{{ product.calculated_offer_price }}{{ baseCurrencySymbol }}</span>
                                         </div>
-                                            <a class="btn" style="cursor:pointer; font-size:18px; color:#fff; width:200px; padding:8px; background:rgb(238, 110, 45)" @click="getProductDetails(product.id)">Select</a>
+                                            <a class="btn selectBtn" @click="getProductDetails(product.id)">Select</a>
                                         </div>
                                     </div>
                                     </div>
@@ -231,28 +231,20 @@
                 </template>
                 </div>
 
-                <div v-if="categoryId==2" class="axil-new-arrivals-product-area  flash-sale-area bg-color-white  pb--0" style="background-color:rgb(238, 110, 45)">
+                <div v-if="categoryId==2" class="axil-new-arrivals-product-area  flash-sale-area bg-color-white  pb--0" >
                     <div class="container">
-                        <div class="row py-5">
-                            <div class="col-lg-4 col-sm-12">
-                            <div class="elementor-element elementor-element-a489fec elementor-column elementor-col-33 elementor-top-column" data-id="a489fec" data-element_type="column">
-                                <div class="elementor-column-wrap  elementor-element-populated">
-                                <div class="elementor-widget-wrap">
-                                <div class="elementor-element elementor-element-2a9e9a4 elementor-widget elementor-widget-heading" data-id="2a9e9a4" data-element_type="widget" data-widget_type="heading.default">
-                                <div class="elementor-widget-container">
-                                <h2 class="elementor-heading-title elementor-size-default" style="color:#fff; font-size:40px">Are you interested in entrepreneurship?</h2> </div>
-                                </div>
-                                <div class="elementor-element elementor-element-9c12109 elementor-widget elementor-widget-heading" data-id="9c12109" data-element_type="widget" data-widget_type="heading.default">
-                                <div class="elementor-widget-container">
-                                <p class="elementor-heading-title elementor-size-default" style="color:#fff">We are looking for lovers of good street food to become new Elias döner entrepreneurs Previous restaurant experience, managerial experience and/or entrepreneurial experience is considered an advantage.</p> </div>
-                                </div>
-                                <div class="elementor-element elementor-element-374b8dc elementor-align-left elementor-widget elementor-widget-button" data-id="374b8dc" data-element_type="widget" data-settings="{&quot;_animation&quot;:&quot;none&quot;}" data-widget_type="button.default">
-                                <div class="elementor-widget-container">
-                                <div class="elementor-button-wrapper">
+                        <div class="row">
+                            <div class="col-lg-7 col-sm-12">                        
+                                <div class="francicise" style="margin-top:100px">
+                                <h2 class="elementor-heading-title elementor-size-default" style="font-size:40px">Are you interested in entrepreneurship?</h2>
+                                                                                              
+                                <p class="elementor-heading-title elementor-size-default" >We are looking for lovers of good street food to become new Elias döner entrepreneurs Previous restaurant experience, managerial experience and/or entrepreneurial experience is considered an advantage.</p> 
+                              
+                                
                                 <a href="#" class="elementor-button-link elementor-button elementor-size-sm" role="button">
-                                <span class="elementor-button-content-wrapper">
+                               
                                 <span class="elementor-button-text btn btn-warning mt-3" style="color:#fff; padding:10px; font-size:20px;" >Contact Us</span>
-                                </span>
+                              
                                 </a>
                                 &nbsp;&nbsp;&nbsp;
                                 <a href="#" class="elementor-button-link elementor-button elementor-size-sm" role="button">
@@ -260,119 +252,18 @@
                                 <span class="elementor-button-text btn btn-secondary mt-3" style="color:#fff; padding:10px; font-size:20px;" >Read More</span>
                                 </span>
                                 </a>
-                                </div>
-                                </div>
-                                </div>
-                                </div>
-                                </div>
+                                </div>    
                             </div>
+                        <div class="col-lg-5 col-sm-12">
+                            
+                                <img src="https://templatekit.jegtheme.com/icelab/wp-content/uploads/sites/175/2021/09/vanillaice.png" title="" alt="">
+                            
                         </div>
-                        <div class="col-lg-4 col-sm-12">
-                            <div class="elementor-column-wrap  elementor-element-populated">
-                                <img src="https://demo74leotheme.b-cdn.net/prestashop/leo_poco_elementor_demo/25-home_default/hummingbird-printed-t-shirt.jpg" title="" alt="">
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-sm-12">
-                            <div class="elementor-element elementor-element-ab6aaad elementor-column elementor-col-33 elementor-top-column" data-id="ab6aaad" data-element_type="column">
-                                <div class="elementor-column-wrap  elementor-element-populated">
-                                <div class="elementor-widget-wrap">
-                                <div class="elementor-element elementor-element-04d3530 service-wr-h5 elementor-widget elementor-widget-LeoBlockCarousel" data-id="04d3530" data-element_type="widget" data-settings="{&quot;slides_to_scroll&quot;:&quot;6&quot;,&quot;slides_to_show&quot;:2,&quot;slides_to_show_tablet&quot;:2,&quot;slides_to_show_mobile&quot;:1,&quot;slides_to_scroll_tablet&quot;:2,&quot;slides_to_scroll_mobile&quot;:1,&quot;slick_arrows&quot;:&quot;1&quot;,&quot;slick_dot&quot;:&quot;1&quot;,&quot;infinite&quot;:&quot;1&quot;,&quot;speed&quot;:500,&quot;autoplay&quot;:&quot;1&quot;,&quot;pause_on_hover&quot;:&quot;1&quot;,&quot;autoplay_speed&quot;:5000}" data-widget_type="LeoBlockCarousel.default">
-                                <div class="elementor-widget-container">
-                                <div class="block block_carousel exclusive LeoBlockCarousel elementor-slick-slider ">
-                                <div class="block_content">
-                                <div class="slick-row hide-loading">
-                                <div class="slick-blogs slick-slider slick-initialized slick-dotted slick-loaded" id="LeoBlockCarousel_2148003574"><div class="slick-list draggable"><div class="slick-track" style="opacity: 1; width: 528px; transform: translate3d(0px, 0px, 0px);"><div class="slick-slide slick-current slick-active" data-slick-index="0" aria-hidden="false" style="width: 263.97px;" tabindex="0" role="tabpanel" id="slick-slide40" aria-describedby="slick-slide-control40"><div><div class="slick-slide first" aria-hidden="true" style="width: 100%; display: inline-block;">
-                                <div class="item">
-                                <div class="block-carousel-container">
-                                <div class="left-block">
-                                <div class="block-carousel-image-container image">
-                                <div class="ap-more-info" data-id="65385"></div>
-                                <a title="Online Order" href="" tabindex="0" style="color:#fff"> <div class="item-title" style="width:100%" >Online Order</div>
-                                <img class="img-fluid" src="https://cdn.shopify.com/s/files/1/0905/2012/files/poco-icon-1.png?v=1673511017" alt="Online Order">
-                                </a>
-                                </div>
-                                </div>
-                                </div>
-                                </div>
-                                </div></div><div><div class="slick-slide" aria-hidden="true" style="width: 100%; display: inline-block;">
-                                <div class="item">
-                                <div class="block-carousel-container">
-                                <div class="left-block">
-                                <div class="block-carousel-image-container image">
-                                <div class="ap-more-info" data-id="19226"></div>
-                                <a title="24/7 Service" href="" tabindex="0" style="color:#fff">  <div class="item-title" style="width:100%" >24/7 Service</div>
-                                <img class="img-fluid" src="https://cdn.shopify.com/s/files/1/0905/2012/files/poco-icon-2.png?v=1673511017" alt="24/7 Service">
-                                </a>
-                                </div>
-                                </div>
-                                </div>
-                                </div>
-                                </div></div><div><div class="slick-slide" aria-hidden="true" style="width: 100%; display: inline-block;">
-                                <div class="item">
-                                <div class="block-carousel-container">
-                                <div class="left-block">
-                                <div class="block-carousel-image-container image">
-                                <div class="ap-more-info" data-id="634700"></div>
-                                <a title="Clean Kitchen" href="" tabindex="0" style="color:#fff"> <div class="item-title" style="width:100%" >Clean Kitchen</div>
-                                <img class="img-fluid" src="https://cdn.shopify.com/s/files/1/0905/2012/files/poco-icon-3.png?v=1673511017" alt="Clean Kitchen">
-                                </a>
-                                </div>
-                                </div>
-                                </div>
-                                </div>
-                                </div></div></div><div class="slick-slide slick-active" data-slick-index="1" aria-hidden="false" style="width: 263.97px;" tabindex="0" role="tabpanel" id="slick-slide41"><div><div class="slick-slide" aria-hidden="true" style="width: 100%; display: inline-block;">
-                                <div class="item">
-                                <div class="block-carousel-container">
-                                <div class="left-block">
-                                <div class="block-carousel-image-container image">
-                                <div class="ap-more-info" data-id="0"></div>
-                                <a title="Pre-Reservation" href="" tabindex="0" style="color:#fff"> <div class="item-title" style="width:100%">Pre-Reservation</div>
-                                <img class="img-fluid" src="https://cdn.shopify.com/s/files/1/0905/2012/files/poco-icon-4.png?v=1673511017" alt="Pre-Reservation">
-                                </a>
-                                </div>
-                                </div>
-                                </div>
-                                </div>
-                                </div></div><div><div class="slick-slide" aria-hidden="true" style="width: 100%; display: inline-block;">
-                                <div class="item">
-                                <div class="block-carousel-container">
-                                <div class="left-block">
-                                <div class="block-carousel-image-container image">
-                                <div class="ap-more-info" data-id="4129"></div>
-                                <a title="Oraganized Foodie Place" href="" tabindex="0" style="color:#fff"> <div class="item-title" style="width:100%">Oraganized Foodie Place</div>
-                                <img class="img-fluid" src="https://cdn.shopify.com/s/files/1/0905/2012/files/poco-icon-5.png?v=1673511017" alt="Oraganized Foodie Place">
-                                </a>
-                                </div>
-                                </div>
-                                </div>
-                                </div>
-                                </div></div><div><div class="slick-slide" aria-hidden="true" style="width: 100%; display: inline-block;">
-                                <div class="item">
-                                <div class="block-carousel-container">
-                                <div class="left-block">
-                                <div class="block-carousel-image-container image">
-                                <div class="ap-more-info" data-id="4"></div>
-                                <a title="Online Order" href="" tabindex="0" style="color:#fff"> <div class="item-title" style="width:100%">Online Order</div>
-                                <img class="img-fluid" src="https://cdn.shopify.com/s/files/1/0905/2012/files/poco-icon-6.png?v=1673511017" alt="Online Order">
-                                </a>
-                                </div>
-                                </div>
-                                </div>
-                                </div>
-                                </div></div></div></div></div><ul class="slick-dots" role="tablist"><li class="slick-active" role="presentation"><button type="button" role="tab" id="slick-slide-control40" aria-controls="slick-slide40" aria-label="1 of 1" tabindex="0" aria-selected="true">1</button></li></ul></div>
-                                </div>
-
-                                </div>
-                                </div>
-                                </div>
-                                </div>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
+                      
                         </div>
                     </div>
                 </div>
+                
 
             </div>
         <!-- End Flash Sale Area  -->
@@ -847,3 +738,23 @@ export default {
     },
 };
 </script>
+<style scoped>
+  .selectBtn {
+        cursor: pointer;
+        font-size: 18px;
+        color: rgb(255, 255, 255);
+        width: 200px;
+        padding: 8px;
+        background: rgb(238, 110, 45);
+  }
+@media only screen and (max-width: 768px) {
+  .selectBtn {
+        cursor: pointer;
+        font-size: 18px;
+        color: rgb(255, 255, 255);
+        width: 100px;
+        padding: 8px;
+        background: rgb(238, 110, 45);
+  }
+}
+</style>
