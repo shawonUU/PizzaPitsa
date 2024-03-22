@@ -11,7 +11,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::get();
+        $categories = Category::orderBy('order_by')->get();
         return view("admin.pages.product.category", compact('categories'));
     }
 
@@ -19,10 +19,12 @@ class CategoryController extends Controller
     {
         $request->validate([
             'category' => 'required|string|max:255',
+            'order_by' => 'required',
             'status' => 'required',
         ]);
         $category = new Category;
         $category->name = $request->category;
+        $category->order_by = $request->order_by;
         $category->status = $request->status;
         $category->created_by = auth()->user()->id;
         $category->save();
@@ -38,11 +40,13 @@ class CategoryController extends Controller
     {
         $request->validate([
             'category' => 'required|string|max:255',
+            'order_by' => 'required',
             'status' => 'required',
         ]);
         $category = Category::find($id);
         if ($category) {
             $category->name = $request->category;
+            $category->order_by = $request->order_by;
             $category->status = $request->status;
             $category->created_by = auth()->user()->id;
             $category->save();

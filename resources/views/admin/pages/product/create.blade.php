@@ -1,6 +1,15 @@
 @extends('admin.layout.app')
 
 @section('content')
+
+<style>
+    .preview-image {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+    }
+</style>
+
     <div class="page-content">
         <div class="container-fluid">
             @if ($errors->any())
@@ -56,7 +65,8 @@
                                     </div> -->
                                     <div class="col-xxl-3 col-md-6 mb-3">
                                         <label for="image" class="form-label">Image(366x366)</label>
-                                        <input type="file" multiple class="form-control" id="image" name="images">
+                                        <input type="file" class="form-control" id="image" name="images" onchange="previewImages(event)">
+                                        <div class="mt-2" id="image-preview-container"></div>
                                     </div>
                                     <div class="col-xxl-3 col-md-6 mb-3">
                                         <label for="status" class="form-label">Status</label>
@@ -96,6 +106,28 @@
         console.error(error);
     });
 
+</script>
+<script>
+    function previewImages(event) {
+        var previewContainer = document.getElementById('image-preview-container');
+        previewContainer.innerHTML = '';
+
+        var files = event.target.files;
+
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                var imgElement = document.createElement('img');
+                imgElement.src = e.target.result;
+                imgElement.classList.add('preview-image');
+                previewContainer.appendChild(imgElement);
+            };
+
+            reader.readAsDataURL(file);
+        }
+    }
 </script>
 @endsection
 @endsection

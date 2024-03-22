@@ -35,8 +35,7 @@
                                     <th>#</th>
                                     <th>Images</th>
                                     <th>Name</th>
-                                    <th>Category</th>
-                                    <th>Quantity</th>
+                                    <th>Category</th>                                 
                                     <th>status</th>
                                     <th>Action</th>
                                   </tr>
@@ -49,8 +48,7 @@
                                       <img width="60px" height="60px" src="{{ asset('frontend/product_images/' . $item->image) }}" alt="Product Image">
                                     </td>
                                     <td>{{ $item->name }}</td>
-                                    <td>{{ $item->category }}</td>
-                                    <td>{{ $item->quantity }}</td>
+                                    <td>{{ $item->category }}</td>                                 
                                     <td class="{{ $item->status=='1'?'text-danger':'' }}">{{ $item->status=='1'?'Active':'Inactive' }}</td>
                                       <td><button type="button" class="btn btn-sm btn-primary waves-effect waves-light"><a href="{{ route('products.edit',$item->id) }}"><i class="ri-ball-pen-line" style="color: #fff"></i></a></button>| <button type="button" data-bs-toggle="modal" data-bs-target="#myModal{{ $item->id }}" class="btn btn-sm btn-danger waves-effect waves-light"><i class="ri-delete-bin-line"></i></button>
                                       <div class="btn-group material-shadow">

@@ -145,6 +145,10 @@
                                         <i class="flaticon-shopping-cart" style="color:#fff"></i>
                                     </a>
                                 </li>
+                                <li class="d-lg-none">
+                                    <router-link v-if="isAuth" to="/dashboard" data-type="tertiary" data-size="small" class=""><img style="width:25px" src="frontend/assets/images/user.png" alt=""></router-link>
+                                    <button data-testid="header_login" v-else @click="loginModalEvent"  type="button" data-type="tertiary" data-size="small" class="sc-1rmt3mq-0 dOEDNV">Log in</button>
+                                </li>
                                 <li class="axil-mobile-toggle">
                                     <button class="menu-btn mobile-nav-toggler">
                                         <i  style="color:#fff" class="flaticon-menu-2"></i>

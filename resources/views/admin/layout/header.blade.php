@@ -460,7 +460,7 @@
                                                         <h6 class="mt-0 mb-2 lh-base">{{ $notification->message }}</h6>
                                                     </a>
                                                     <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
-                                                        <span><i class="mdi mdi-clock-outline"></i> Just 30 sec ago</span>
+                                                        <span><i class="mdi mdi-clock-outline"></i>{{ displayNotificationTime( $notification->created_at) }}</span>
                                                     </p>
                                                 </div>
                                                 <div class="px-2 fs-15">
@@ -660,7 +660,7 @@ Your browser does not support the audio element.
                                                     <h6 class="mt-0 mb-2 lh-base">${data.notification.message}</h6>
                                                 </a>
                                                 <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
-                                                    <span><i class="mdi mdi-clock-outline"></i> Just 30 sec ago</span>
+                                                    <span><i class="mdi mdi-clock-outline"></i>${data.notification_time}</span>
                                                 </p>
                                             </div>
                                             <div class="px-2 fs-15">

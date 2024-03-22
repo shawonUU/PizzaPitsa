@@ -98,6 +98,7 @@ class ProductContoller extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // return $request;
         $product = Product::where('id', $id)->first();
         $request->validate([
             'name' => 'required|string',
@@ -121,6 +122,7 @@ class ProductContoller extends Controller
             'name' => $request->input('name'),
             'category_id' => $request->category,
             'description' => $request->input('description'),
+            'image' => $imageName,
             'status' => $request->input('status'),
             'updated_by' => auth()->user()->id,
         ]);
@@ -330,36 +332,38 @@ class ProductContoller extends Controller
 
     public function getProducts()
     {
-        $categories = Category::leftJoin('products', 'categories.id', '=', 'products.category_id')
-    ->leftJoin('product_sizes', function ($join) {
-        $join->on('products.id', '=', 'product_sizes.product_id')
-            ->whereRaw('NOW() BETWEEN product_sizes.offer_from AND product_sizes.offer_to');
-    })
-    ->select(
-        'categories.id as category_id',
-        'categories.name as category_name',
-        'products.id as product_id',
-        'products.name as product_name',
-        'products.description as description',
-        'products.image as image',
-        DB::raw('(SELECT MIN(price) FROM product_sizes WHERE product_sizes.product_id = products.id) as min_price'),
-        'product_sizes.offer_price as calculated_offer_price'
-    )
-    ->orderBy('categories.id')
-    ->orderBy('products.id')
-    ->get();
-
-// Organize the result into a more usable format
-$groupedCategories = [];
-foreach ($categories as $category) {
-    $categoryId = $category->category_id;
-    if (!isset($groupedCategories[$categoryId])) {
-        $groupedCategories[$categoryId] = [
-            'category_name' => $category->category_name,
-            'products' => [],
-        ];
-    }
-
+    $categories = Category::leftJoin('products', 'categories.id', '=', 'products.category_id')
+        ->leftJoin('product_sizes', function ($join) {
+            $join->on('products.id', '=', 'product_sizes.product_id')
+                ->whereRaw('NOW() BETWEEN product_sizes.offer_from AND product_sizes.offer_to');
+        })
+        ->select(
+            'categories.id as category_id',
+            'categories.order_by as OrderBY',
+            'categories.name as category_name',
+            'products.id as product_id',
+            'products.name as product_name',
+            'products.description as description',
+            'products.image as image',
+            DB::raw('(SELECT MIN(price) FROM product_sizes WHERE product_sizes.product_id = products.id) as min_price'),
+            'product_sizes.offer_price as calculated_offer_price'
+        )
+        ->orderBy('categories.order_by') // Order by category order_by column
+        ->orderBy('products.id') // Optionally, you can add product sorting here
+        ->get();
+    // return $categories;
+    // Organize the result into a more usable format
+    $groupedCategories = [];
+    $categories = $categories->sortBy('order_by');
+    foreach ($categories as $category) {
+        $categoryId = $category->category_id;
+        if (!isset($groupedCategories[$categoryId])) {
+            $groupedCategories[$categoryId] = [
+                'category_name' => $category->category_name,
+                'order_by' => $category->OrderBY,
+                'products' => [],
+            ];
+        }
     if ($category->product_id) {
         $groupedCategories[$categoryId]['products'][] = [
             'id' => $category->product_id,
@@ -370,10 +374,11 @@ foreach ($categories as $category) {
             'calculated_offer_price' => $category->calculated_offer_price,
         ];
     }
+    // return $groupedCategories;
 }
+// $sortedCategories = collect($groupedCategories)->sortBy('order_by')->toArray();
 
 return $groupedCategories;
-
     
     }
 

@@ -110,6 +110,7 @@ class OrderController extends Controller
         $pusher->trigger('order', 'place-order', $data);
         $data = [
             'notification' => $notification,
+            'notification_time' => displayNotificationTime($notification->created_at),
             'unSeenNotifications' => unSeenNotifications(),
         ];
         $pusher->trigger('order', 'place-order-notification', $data);

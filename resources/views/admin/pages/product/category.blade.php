@@ -47,6 +47,10 @@
                                                 <input type="text" class="form-control" id="category" name="category" placeholder="Category" required>
                                             </div>
                                             <div>
+                                                <label for="basiInput" class="form-label">Order By</label>
+                                                <input type="text" class="form-control" id="order_by" name="order_by" placeholder="Order By" required>
+                                            </div>
+                                            <div>
                                                 <label for="basiInput" class="form-label">Status</label>
                                                 <select name="status" id="" class="form-control">
                                                     @foreach (getStatus() as $key => $status)
@@ -78,6 +82,7 @@
                                     <tr>
                                         <th scope="col">Id</th>
                                         <th scope="col">Category</th>
+                                        <th scope="col">Order By</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Action</th>
                                     </tr>
@@ -87,6 +92,7 @@
                                     <tr>
                                         <th scope="row">{{$loop->index+1}}</th>
                                         <td>{{$category->name}}</td>
+                                        <td>{{$category->order_by}}</td>
                                         <td>{{$category->status == 1 ? "Active" : "Deactive"}}</td>
                                         <td>
                                             <button class="btn btn-sm btn-primary" title="Edit" data-bs-toggle="modal" data-bs-target="#ctegory{{$category->id}}">
@@ -130,7 +136,11 @@
                                                             <div class="modal-body">
                                                                 <div>
                                                                     <label for="basiInput" class="form-label">Category</label>
-                                                                    <input type="text" class="form-control" id="category" name="category"value="{{$category->name}}" placeholder="Category" required>
+                                                                    <input type="text" class="form-control" id="category" name="category" value="{{$category->name}}" placeholder="Category" required>
+                                                                </div>
+                                                                <div>
+                                                                    <label for="basiInput" class="form-label">Order By</label>
+                                                                    <input type="text" class="form-control" id="order_by" value="{{$category->order_by}}" name="order_by" placeholder="Order By" required>
                                                                 </div>
                                                                 <div>
                                                                     <label for="basiInput" class="form-label">Status</label>

@@ -1,6 +1,14 @@
 @extends('admin.layout.app')
 
 @section('content')
+
+<style>
+    .preview-image {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+    }
+</style>
     <div class="page-content">
         <div class="container-fluid">
 
@@ -39,11 +47,11 @@
                                     </div>
                                     <div class="col-6">
                                         <label for="basiInput" class="form-label">Price</label>
-                                        <input type="number" class="form-control" name="price" required>
+                                        <input type="number" placeholder="Price" class="form-control" name="price" step="0.00001" required>
                                     </div>
                                     <div class="col-6">
                                         <label for="basiInput" class="form-label">Offer Price</label>
-                                        <input type="number" class="form-control" name="offer_price" >
+                                        <input type="number" placeholder="Offer Price" class="form-control" step="0.00001" name="offer_price" >
                                     </div>
                                     <div class="col-6">
                                         <label for="basiInput" class="form-label">Offer From</label>
@@ -55,11 +63,12 @@
                                     </div>
                                     <div class="col-6">
                                         <label for="basiInput" class="form-label">Quantity</label>
-                                        <input type="date" class="form-control" name="quantity" >
+                                        <input type="date" placeholder="Stock Qty" class="form-control" step="0.00001" name="quantity" >
                                     </div>
                                     <div class="col-6">
                                         <label for="basiInput" class="form-label">Image</label>
-                                        <input type="file" name="image" class="form-control">
+                                        <input type="file" name="image" class="form-control" onchange="previewImages(event)">
+                                        <div class="mt-2" id="image-preview-container"></div>
                                     </div>
                                     <div class="col-6">
                                         <label for="basiInput" class="form-label">Status</label>
@@ -78,9 +87,6 @@
                                          <button type="submit" class="btn btn-primary">Submit</button>
                                     </div>
                                 </div>
-
-
-
                             </form>
                         </div>
                     </div>
@@ -104,5 +110,28 @@
     });
 
 
+</script>
+
+<script>
+    function previewImages(event) {
+        var previewContainer = document.getElementById('image-preview-container');
+        previewContainer.innerHTML = '';
+
+        var files = event.target.files;
+
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                var imgElement = document.createElement('img');
+                imgElement.src = e.target.result;
+                imgElement.classList.add('preview-image');
+                previewContainer.appendChild(imgElement);
+            };
+
+            reader.readAsDataURL(file);
+        }
+    }
 </script>
 @endsection

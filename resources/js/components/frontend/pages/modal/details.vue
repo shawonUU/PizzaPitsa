@@ -5,7 +5,7 @@
     tabindex="-1"
     aria-modal="true"
     role="dialog"
-    style="padding-right: 17px; display: block"
+    style="display: block"
   >
 
     <div class="modal-dialog modal-dialog-centered">
@@ -40,9 +40,9 @@
                             tabindex="0"
                             style="width: 491px"
                           >
-                            <img class="sizeImages"  id="" :src="'/frontend/product_images/' + productData.image"  alt="Product Images" />
-                            <img class="sizeImages d-none" v-for="(productSize, sizeId) in productSizes" :key="sizeId" :id="'sizeImages'+sizeId"
-                             :src="'/frontend/product_images/' + productSize.image"  alt="Product Images"
+                            <img class="sizeImages"  id="" :src="productData.image ? '/frontend/product_images/' +productData.image : '/frontend/product_images/placeholder.jpg'" alt="Product Images" />
+                            <img class="sizeImages d-none"  v-for="(productSize, sizeId) in productSizes" :key="sizeId" :id="'sizeImages'+sizeId"
+                              :src="productSize.image ? '/frontend/product_images/' +productSize.image : '/frontend/product_images/placeholder.jpg'"  alt="Product Images"
                             />
                             <!-- <div class="label-block label-right">
                               <div class="product-badget">20% OFF</div>
@@ -446,4 +446,11 @@ export default {
           /* border: 1px solid red; */
           /* border-color: red; */
         }
+
+
+    @media only screen and (max-width: 768px) {
+        .sizeImages{
+          width: 300px!important;
+        }
+}
 </style>

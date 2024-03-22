@@ -1,6 +1,14 @@
 @extends('admin.layout.app')
 
 @section('content')
+
+<style>
+    .preview-image {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+    }
+</style>
     <div class="page-content">
         <div class="container-fluid">
 
@@ -40,11 +48,11 @@
                                     </div>
                                     <div class="col-6">
                                         <label for="basiInput" class="form-label">Price</label>
-                                        <input type="number" class="form-control" name="price" value="{{ $productSize->price }}" required>
+                                        <input type="number" class="form-control" name="price" value="{{ $productSize->price }}" step="0.00001" required>
                                     </div>
                                     <div class="col-4">
                                         <label for="basiInput" class="form-label">Offer Price</label>
-                                        <input type="number" class="form-control" name="offer_price" value={{ $productSize->offer_price }}>
+                                        <input type="number" class="form-control" name="offer_price" step="0.00001" value={{ $productSize->offer_price }}>
                                     </div>
                                     <div class="col-4">
                                         <label for="basiInput" class="form-label">Offer From</label>
@@ -56,11 +64,19 @@
                                     </div>
                                     <div class="col-6">
                                         <label for="basiInput" class="form-label">Quantity</label>
-                                        <input type="number" class="form-control" name="quantity" value="{{ $productSize->quantity }}">
+                                        <input type="number" class="form-control" name="quantity" step="0.00001" value="{{ $productSize->quantity }}">
                                     </div>
                                     <div class="col-6">
                                         <label for="basiInput" class="form-label">Image</label>
-                                        <input type="file" name="image" class="form-control">
+                                        <input type="file" name="image" class="form-control" onchange="previewImages(event)">
+                                        <div class="mt-2" id="image-preview-container"></div>
+                                        <ul>                                         
+                                            <ul class="list-group list-group-horizontal">
+                                                {{-- @foreach ($productImages as $item) --}}
+                                                <li class="list-group-item"><img width="60px" height="60px" src="{{ asset('frontend/product_images/' . $product->image) }}" alt="Product Image"></li>
+                                                {{-- @endforeach                                           --}}
+                                            </ul>                                       
+                                        </ul>
                                     </div>
                                     <div class="col-6">
                                         <label for="basiInput" class="form-label">Status</label>
@@ -102,5 +118,28 @@
     });
 
 
+</script>
+
+<script>
+    function previewImages(event) {
+        var previewContainer = document.getElementById('image-preview-container');
+        previewContainer.innerHTML = '';
+
+        var files = event.target.files;
+
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                var imgElement = document.createElement('img');
+                imgElement.src = e.target.result;
+                imgElement.classList.add('preview-image');
+                previewContainer.appendChild(imgElement);
+            };
+
+            reader.readAsDataURL(file);
+        }
+    }
 </script>
 @endsection

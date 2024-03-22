@@ -79,10 +79,42 @@ function userTypes()
 }
 
 function getNotifications(){
-    $notifications = Notification::where('status','1')->get();
+    $notifications = Notification::where('status','1')->orderBy('created_at','DESC')->get();
     return $notifications;
 }
 function unSeenNotifications(){
   $notifications = Notification::where('status','1')->where('isSeen','0')->get();
   return count($notifications);
 }
+
+function displayNotificationTime($timestamp) {
+  $time_ago = strtotime($timestamp);
+  $current_time = time();
+  $time_difference = $current_time - $time_ago;
+  $minutes = round($time_difference / 60);
+  $hours = round($time_difference / 3600);
+  $seconds = round($time_difference);
+
+  if ($seconds < 60) {
+      if ($seconds <= 1) {
+          return "1 second ago";
+      } else {
+          return "$seconds seconds ago";
+      }
+  } elseif ($minutes < 60) {
+      if ($minutes <= 1) {
+          return "1 minute ago";
+      } else {
+          return "$minutes minutes ago";
+      }
+  } elseif ($hours < 24) {
+      if ($hours <= 1) {
+          return "1 hour ago";
+      } else {
+          return "$hours hours ago";
+      }
+  } else {
+    return date("d M \a\\t H:i", $time_ago);
+  }
+}
+

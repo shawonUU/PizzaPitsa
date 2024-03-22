@@ -177,7 +177,7 @@
             </div>
             <!-- End Categorie Area  -->
             <!-- Start Flash Sale Area  -->
-            <div v-for="(category, categoryId) in products" :key="categoryId" class="axil-new-arrivals-product-area  flash-sale-area bg-color-white  pb--0 mt-5" :id="category.name">
+            <div v-for="(category, categoryId) in sortedCategories" :key="categoryId" class="axil-new-arrivals-product-area  flash-sale-area bg-color-white  pb--0 mt-5" :id="category.name">
                 <div class="container">
                 <template v-if="category.products.length > 0">
                     <div class="product-area pb--50">
@@ -194,7 +194,7 @@
                                     <div class="axil-product product-style-four">
                                     <div @click="getProductDetails(product.id)" class="thumbnail">
                                         <a @click="getProductDetails(product.id)">
-                                        <img :src="'/frontend/product_images/' + product.image" alt="Product Images">
+                                        <img :src="product.image ? '/frontend/product_images/' +product.image : '/frontend/product_images/placeholder.jpg'" alt="Product Images">
                                         </a>
                                         <div class="label-block label-right">
                                         <!-- <div class="product-badget">20% OFF</div> -->
@@ -295,7 +295,7 @@
                                                     <div>
                                                         <div class="d-flex flex-row bd-highlight mb-3">
                                                             <div class="p-2 bd-highlight">
-                                                                <img  style="width:80px;" :src="'/frontend/product_images/' + item.product.image" alt="Product Images">
+                                                                <img  style="width:80px;" :src="item.product.image ? '/frontend/product_images/' + item.product.image : '/frontend/product_images/placeholder.jpg'" alt="Product Images">
                                                             </div>
                                                             <div class="p-2 bd-highlight w-100">
                                                                 <div >
@@ -472,16 +472,26 @@ export default {
         this.loadCartFromLocalStorage();
         this.fetchBaseCurrencySymbol();
     },
+    computed: {
+      sortedCategories() {
+            // Convert object to array
+            const categoriesArray = Object.values(this.products);
+
+            // Sort categories by order_by value
+            categoriesArray.sort((a, b) => a.order_by - b.order_by);
+
+            return categoriesArray;
+        }
+    },
     methods: {
-        getCategoryWiseProduct(){
+        getCategoryWiseProduct() {
             axios.get('get-products')
-            .then((res)=>{
-            // console.log(res.data)
-                this.products = res.data;
+            .then((res) => {
+               this.products = res.data;
             })
-            .catch((err)=>{
+            .catch((err) => {
                 console.log(err);
-            })
+            });
         },
         getProductDetails(productId) {
             // alert(productId)
@@ -497,7 +507,7 @@ export default {
                         this.productSizes = res.data[1];
                         this.productTopings =  res.data[2];
                         this.maxMin =  res.data[3];
-                        console.log(this.maxMin);
+                        // console.log(this.maxMin);
                     }
             }).catch((err) => {
                     console.log(err);
@@ -672,17 +682,17 @@ export default {
         checkout(){
             var auth = localStorage.getItem('auth');
             auth = auth ? JSON.parse(auth) : null;
-            console.log(auth);
+            // console.log(auth);
             if(auth) this.showDeliveryPlace = true;
             else this.showAuthentication = true;
         },
         async fetchBaseCurrencySymbol() {
-            console.log(await this.showAmount(655))
+            // console.log(await this.showAmount(655))
             try {
                 this.baseCurrencySymbol = await getBaseCurrencySymbol();
             } catch (error) {
                 // Handle error (e.g., show an error message)
-                console.error('Error fetching base currency symbol in component:', error);
+                // console.error('Error fetching base currency symbol in component:', error);
             }
         },
         showMap() {               
@@ -693,7 +703,7 @@ export default {
                 // this.initMap();
                 var auth = localStorage.getItem('auth');
                 auth = auth ? JSON.parse(auth) : null;
-                console.log(auth);
+                // console.log(auth);
                 if(auth) this.showDeliveryPlace = true;
                 else this.showAuthentication = true;
             }else{
@@ -706,7 +716,7 @@ export default {
             this.orderType = 2;
             var auth = localStorage.getItem('auth');
             auth = auth ? JSON.parse(auth) : null;
-            console.log(auth);
+            // console.log(auth);
             if(auth) this.showDeliveryPlace = true;
             else this.showAuthentication = true;
         },
@@ -729,7 +739,7 @@ export default {
         const onSwiper = (swiper) => {
         };
         const onSlideChange = () => {
-            console.log('slide change');
+            // console.log('slide change');
         };
         return {
             onSwiper,

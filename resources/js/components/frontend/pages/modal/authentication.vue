@@ -5,7 +5,7 @@
       tabindex="-1"
       aria-modal="true"
       role="dialog"
-      style="padding-right: 17px; display: block"
+      style="display: block"
     >
 
       <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">

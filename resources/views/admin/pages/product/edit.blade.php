@@ -1,6 +1,14 @@
 @extends('admin.layout.app')
 
 @section('content')
+
+<style>
+    .preview-image {
+        max-width: 100%;
+        height: auto;
+        margin-bottom: 10px;
+    }
+</style>
     <div class="page-content">
         <div class="container-fluid">          
             <div class="row">
@@ -38,15 +46,14 @@
                                 @csrf
                                 @method('PATCH')
                                 <div class="row">
-                                    <div class="col-xxl-3 col-md-6 mb-3">
+                                    <div class="col-xxl-4 col-md-6 mb-3">
                                         <label for="name" class="form-label">Product Name</label>
                                         <input type="text" class="form-control" id="name" value="{{ $product->name }}" name="name" placeholder="Enter product name" required>
                                     </div>   
                                     <div class="col-xxl-3 col-md-6 mb-3">
                                         <label for="name" class="form-label">Category</label>
                                         <select class="form-select mb-3" name="category">
-                                            @foreach ($categories as $item)
-                                                <option selected>--Select Category--</option>
+                                            @foreach ($categories as $item)                                               
                                                 <option {{ $product->category_id == $item->id ?'selected':'' }} value="{{ $item->id }}">{{ $item->name }}</option>   
                                             @endforeach                                                                                                                                                                           
                                         </select>
@@ -54,12 +61,8 @@
                                     <!-- <div class="col-xxl-3 col-md-6 mb-3">
                                         <label for="price" class="form-label">Price</label>
                                         <input type="text" class="form-control" id="price" name="price" placeholder="Enter product price" value="{{ $product->price  }}" required>
-                                    </div> -->
-                                    <div class="col-xxl-3 col-md-6 mb-3">
-                                        <label for="quantity" class="form-label">Quantity</label>
-                                        <input type="text" class="form-control" id="quantity" name="quantity" value="{{ $product->quantity  }}" placeholder="Enter product quantity" required>
-                                    </div>                                  
-                                    <div class="col-xxl-3 col-md-6 mb-3">
+                                    </div> -->                                                                   
+                                    <div class="col-xxl-4 col-md-6 mb-3">
                                         <label for="status" class="form-label">Status</label>
                                         <select class="form-select mb-3" name="status">
                                             <option  {{ $product->status=='1'?'selected':''  }} selected="" value="1">Actve</option>                                            
@@ -72,7 +75,8 @@
                                     </div>                                                                                                      
                                     <div class="col-xxl-3 col-md-6 mb-3">
                                         <label for="image" class="form-label">Image(366x366)</label>
-                                        <input type="file" multiple class="form-control" id="image" name="images">
+                                        <input type="file" class="form-control" id="image" name="images" onchange="previewImages(event)">
+                                        <div class="mt-2" id="image-preview-container"></div>
                                     </div> 
                                     <ul>                                         
                                         <ul class="list-group list-group-horizontal">
@@ -106,6 +110,28 @@
         console.error(error);
     });
 
+</script>
+<script>
+    function previewImages(event) {
+        var previewContainer = document.getElementById('image-preview-container');
+        previewContainer.innerHTML = '';
+
+        var files = event.target.files;
+
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                var imgElement = document.createElement('img');
+                imgElement.src = e.target.result;
+                imgElement.classList.add('preview-image');
+                previewContainer.appendChild(imgElement);
+            };
+
+            reader.readAsDataURL(file);
+        }
+    }
 </script>
 @endsection
 @endsection

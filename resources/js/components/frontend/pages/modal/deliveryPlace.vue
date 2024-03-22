@@ -5,7 +5,7 @@
       tabindex="-1"
       aria-modal="true"
       role="dialog"
-      style="padding-right: 17px; display: block"
+      style="display: block"
     >
 
       <div class="modal-dialog modal-dialog-centered" :style="{ 'max-width': modalWidth + '%' }">
@@ -42,7 +42,10 @@
                         <form action="javascript:void(0)">
                             <div class="row">
                                 <div class="col-12 mb-5">
-                                  <input id="daliveryAddress" @change="changeDaliveryAddress" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" :value="selectedAddress" placeholder="Address">
+                                  <input id="daliveryAddress" @input="searchPlaces()" @change="changeDaliveryAddress" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" :value="selectedAddress" placeholder="Address">
+                                  <ul class="list-group shadow-lg" v-if="suggestions.length">
+                                    <li class="list-group-item mb-0 suggestion" style="cursor:pointer;" v-for="(suggestion, index) in suggestions" :key="index" @click="selectPlace(suggestion)">{{ suggestion.description }}</li>
+                                  </ul>
                                   <p v-if="deliveryAddressError" class="m-0 p-0" style="color :red;">{{ deliveryAddressError }}</p>
                                 </div>
                                 <div class="col-6">
@@ -183,7 +186,7 @@
                                                     <tr>
                                                       <td class="footable-first-visible" style="display: table-cell;">1</td>
                                                       <td style="display: table-cell;">                     
-                                                          <img height="50" :src="'/frontend/product_images/' + item.product.image">                     
+                                                          <img height="50" :src="item.product.image ? '/frontend/product_images/' +item.product.image : '/frontend/product_images/placeholder.jpg'">                     
                                                       </td>
                                                       <td style="display: table-cell;">
                                                         <strong> {{ item.product.name }}</strong>
@@ -318,6 +321,7 @@
                 shopSchedule:'',
                 deliveryCharge:0,
                 deliveryAddressError:'',
+                suggestions:[],
             };
         },
         mounted() {
@@ -542,7 +546,7 @@
                   var center = new google.maps.LatLng(this.lat, this.lng);
                   var current = new google.maps.LatLng(latLng.lat(), latLng.lng()); 
                   var distance = google.maps.geometry.spherical.computeDistanceBetween(center,current);
-                  console.log(distance);
+                  console.log("distance = "+distance);
                   this.selectedAddress = results[0].formatted_address;
                   this.deliveryAddressError = "";
                   this.latitude = null;
@@ -565,6 +569,42 @@
                    
                 } else {
                   console.error('Geocoder failed due to:', status);
+                }
+              });
+            },
+            searchPlaces(){
+              var queryTxt = document.getElementById("daliveryAddress").value;
+              this.selectedAddress = queryTxt;
+              this.deliveryAddressError = '';
+              if (!queryTxt) {
+                this.suggestions = [];
+                return;
+              }
+              let autocompleteService = new google.maps.places.AutocompleteService();
+              autocompleteService.getPlacePredictions({ input: queryTxt }, (predictions, status) => {
+                if (status === google.maps.places.PlacesServiceStatus.OK) {
+                  this.suggestions = predictions;
+                  console.log(predictions);
+                } else {
+                  this.suggestions = [];
+                }
+              });
+            },
+            selectPlace(place) {
+              this.suggestions = [];
+              let geocoder = new google.maps.Geocoder();
+              geocoder.geocode({ 'placeId': place.place_id }, (results, status) => {
+                if (status === 'OK') {
+                  if (results[0]) {
+                    this.selectedAddress = place.description;
+                    var lat = results[0].geometry.location.lat();
+                    var lng = results[0].geometry.location.lng();
+                    const latLng = new google.maps.LatLng(lat, lng);
+                    this.marker.setPosition(latLng);
+                    this.getAddress(latLng);
+                  }
+                } else {
+                  console.error('Geocode was not successful for the following reason:', status);
                 }
               });
             },
@@ -639,6 +679,10 @@
   schedule-div p {
     margin: 0;
 }
+
+.suggestion:hover {
+    background-color: #dddcdcd9;
+  }
 
 .social-login {
   align-items: center;
@@ -717,5 +761,14 @@ list-type-ulli, .socials {
           .topings:active{
             /* border: 1px solid red; */
             /* border-color: red; */
+          }
+          @media only screen and (max-width: 768px) { 
+          .modal-dialog {
+            max-width: 100%!important;
+          
+          }
+          #map[data-v-05123fd1] {
+            margin-top: 19px!important;          
+        }
           }
   </style>
