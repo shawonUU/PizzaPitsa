@@ -115,9 +115,9 @@
                                 </ul> -->
                                 <ul class="mainmenu">
                                     <li class="sc-xlo7eb-4 bvuzKi" v-for="(category,index) in catgories" :key="index" :value="category.id">
-                                        <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" :href="'#' + category.name" @click="scrollToSection(category.name)">{{ category.name }}</a>
+                                        <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" :href="'#' + category.name" @click.prevent="scrollToTeamSection(category.id)">{{ category.name }}</a>
                                     </li>
-                                </ul>
+                                </ul>                              
                             </nav>
                             <!-- End Mainmanu Nav -->
                         </div>
@@ -252,6 +252,9 @@ export default {
 
         loginModalEvent() {    
           this.emitter.emit('loginModalEvent', {'loginModalEvent': '1'})
+        },
+        scrollToTeamSection(id) {
+            this.emitter.emit('scrollToTeamSection',id);
         }
 
 

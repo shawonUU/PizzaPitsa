@@ -189,7 +189,7 @@ class ProductContoller extends Controller
             'size_id' => 'required|numeric',
             'price' => 'required|numeric',
             'status' => 'required|in:0,1',
-            'description' => 'required',
+            // 'description' => 'required',
             'offer_price' => 'nullable|numeric',
             'offer_from' => 'nullable|date',
             'offer_to' => 'nullable|date',
@@ -273,7 +273,7 @@ class ProductContoller extends Controller
         $request->validate([
             'product_id' => 'required|numeric',
             'size_id' => 'required|numeric',
-            'description' => 'required',
+            // 'description' => 'required',
             'price' => 'required|numeric',
             'status' => 'required|in:0,1',
             'offer_price' => 'nullable|numeric',
@@ -359,6 +359,7 @@ class ProductContoller extends Controller
         $categoryId = $category->category_id;
         if (!isset($groupedCategories[$categoryId])) {
             $groupedCategories[$categoryId] = [
+                'category_id' => $category->category_id,
                 'category_name' => $category->category_name,
                 'order_by' => $category->OrderBY,
                 'products' => [],

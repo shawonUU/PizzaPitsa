@@ -31,7 +31,7 @@
                                                     <div class="main-slider-content">
                                                         <h1 class="title">Up to 60% off Voucher</h1>
                                                         <div class="shop-btn">
-                                                            <a href="shop.html" class="axil-btn">Shop Now <i
+                                                            <a href="" class="axil-btn">Shop Now <i
                                                                     class="fal fa-long-arrow-right"></i></a>
                                                         </div>
                                                     </div>
@@ -97,7 +97,7 @@
             <div class="axil-categorie-area bg-color-white">
                 <div class="container">
                     <div class="section-title-wrapper">
-                        <h4 class="title">New and Popular</h4>
+                        <h4 class="title">New and Popular</h4>                        
                     </div>
 
                     <swiper :space-between="50"
@@ -177,7 +177,7 @@
             </div>
             <!-- End Categorie Area  -->
             <!-- Start Flash Sale Area  -->
-            <div v-for="(category, categoryId) in sortedCategories" :key="categoryId" class="axil-new-arrivals-product-area  flash-sale-area bg-color-white  pb--0 mt-5" :id="category.name">
+            <div v-for="(category, categoryId) in sortedCategories" :key="categoryId" class="axil-new-arrivals-product-area  flash-sale-area bg-color-white  pb--0 mt-5" :id="'product_section'+category.category_id">
                 <div class="container">
                 <template v-if="category.products.length > 0">
                     <div class="product-area pb--50">
@@ -266,6 +266,9 @@
                 
 
             </div>
+              <!-- <section id="team-section-1">
+                 <p>The team section</p>
+                </section> -->
         <!-- End Flash Sale Area  -->
             <div v-if="isVisible" class="toast-container">
                 <div class="toast">{{ message }}</div>
@@ -471,6 +474,7 @@ export default {
         this.getCategoryWiseProduct();
         this.loadCartFromLocalStorage();
         this.fetchBaseCurrencySymbol();
+        this.emitter.on('scrollToTeamSection', this.handleScrollToTeamSection);
     },
     computed: {
       sortedCategories() {
@@ -487,6 +491,7 @@ export default {
         getCategoryWiseProduct() {
             axios.get('get-products')
             .then((res) => {
+                console.log(res.data);
                this.products = res.data;
             })
             .catch((err) => {
@@ -734,7 +739,19 @@ export default {
                 this.isVisible = false;
             }, 2000);
         },
+        handleScrollToTeamSection(id) {
+          
+            const targetId = 'product_section' + id;
+              console.log(targetId); // Assuming your team section IDs follow a pattern
+            const teamSection = document.getElementById(targetId);
+            if (teamSection) {
+                teamSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
     },
+    beforeDestroy() {
+        this.emitter.off('scrollToTeamSection', this.handleScrollToTeamSection);
+     },
     setup() {
         const onSwiper = (swiper) => {
         };
