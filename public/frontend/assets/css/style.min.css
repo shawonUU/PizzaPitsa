@@ -7681,12 +7681,13 @@ button.axil-btn.btn-size-md i {
     right: 0;
     left: 0;
     z-index: 5;
-    background-color: var(--color-white);
+    background-color: rgb(238, 110, 45);
     box-shadow: 0 2px 10px 0 rgba(0, 0, 0, .1);
     transition: var(--transition)
 }
 
 .axil-mainmenu.axil-sticky .mainmenu>li>a {
+    color:#fff;
     height: 80px;
     line-height: 80px
 }

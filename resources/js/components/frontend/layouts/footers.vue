@@ -6,7 +6,25 @@
                 <div class="container">
                     <div class="row">
                         <!-- Start Single Widget  -->
-                        <div class="col-lg-3 col-sm-6">
+                        <div class="col-lg-4 col-sm-6">
+                            <div class="axil-footer-widget">                              
+                                <div class="logo mb--30">
+                                <a href="index.html">
+                                    <img class="light-logo" :src="'/frontend/assets/images/logo/pizza logo-02.jpg'" alt="Logo Images">
+                                </a>
+                            </div>
+                                <div class="inner">
+                                    <p>
+                                        Introducing Pizza Pitsa: Finland's newest pizza sensation! Born in December 2023, we're dedicated to crafting perfect pizzas that celebrate flavor, freshness, and authenticity. Join us for a culinary experience where passion and quality meet.
+                                    </p>                                  
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Single Widget  -->
+                        <!-- Start Single Widget  -->                    
+                        <!-- End Single Widget  -->
+                        <!-- Start Single Widget  -->
+                     <div class="col-lg-4 col-sm-6">
                             <div class="axil-footer-widget">
                                 <h5 class="widget-title">Support</h5>
                                 <!-- <div class="logo mb--30">
@@ -31,54 +49,13 @@
                         </div>
                         <!-- End Single Widget  -->
                         <!-- Start Single Widget  -->
-                        <div class="col-lg-3 col-sm-6">
-                            <div class="axil-footer-widget">
-                                <h5 class="widget-title">Account</h5>
-                                <div class="inner">
-                                    <ul>
-                                        <li><a href="my-account.html">My Account</a></li>
-                                        <li><a href="sign-up.html">Login / Register</a></li>
-                                        <li><a href="cart.html">Cart</a></li>
-                                        <li><a href="wishlist.html">Wishlist</a></li>
-                                        <li><a href="shop.html">Shop</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Single Widget  -->
-                        <!-- Start Single Widget  -->
-                        <div class="col-lg-3 col-sm-6">
-                            <div class="axil-footer-widget">
-                                <h5 class="widget-title">Quick Link</h5>
-                                <div class="inner">
-                                    <ul>
-                                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                                        <li><a href="terms-of-service.html">Terms Of Use</a></li>
-                                        <li><a href="#">FAQ</a></li>
-                                        <li><a href="contact.html">Contact</a></li>
-                                        <li><a href="contact.html">Contact</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Single Widget  -->
-                        <!-- Start Single Widget  -->
-                        <div class="col-lg-3 col-sm-6">
+                        <div class="col-lg-4 col-sm-6">
                             <div class="axil-footer-widget">
                                 <h5 class="widget-title">Download App</h5>
                                 <div class="inner">
-                                    <span>Save $3 With App & New User only</span>
-                                    <div class="download-btn-group">
-                                        <div class="qr-code">
-                                            <img src="" alt="Axilthemes">
-                                        </div>
-                                        <div class="app-link">
-                                            <a href="#">
-                                                <img src="" alt="App Store">
-                                            </a>
-                                            <a href="#">
-                                                <img src="" alt="Play Store">
-                                            </a>
+                                      <div class="mapouter">
+                                        <div class="gmap_canvas">
+                                            <iframe width="1080" height="300" id="gmap_canvas" src="https://maps.google.com/maps?q=melbourne&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=&amp;output=embed"></iframe>
                                         </div>
                                     </div>
                                 </div>
@@ -110,12 +87,17 @@
                             </div>
                         </div>
                         <div class="col-xl-4 col-lg-12">
-                            <div class="copyright-right d-flex flex-wrap justify-content-xl-end justify-content-center align-items-center">
-                                <span class="card-text">Accept For</span>
+                            <div class="copyright-right d-flex flex-wrap justify-content-xl-end justify-content-center align-items-center">                                
                                 <ul class="payment-icons-bottom quick-link">
-                                    <li><img src="" alt="paypal cart"></li>
-                                    <li><img src="" alt="paypal cart"></li>
-                                    <li><img src="" alt="paypal cart"></li>
+                                   <li class="sc-xlo7eb-4 bvuzKi">
+                                    <router-link to="/about" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" data-active="false" data-type="primary" data-size="normal">About</router-link>
+                                    </li>
+                                    <li class="sc-xlo7eb-4 bvuzKi">
+                                        <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" data-active="false" data-type="primary" data-size="normal">Franchise</a>
+                                    </li>
+                                    <li class="sc-xlo7eb-4 bvuzKi">
+                                        <router-link to="/contact" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR"    data-active="false" data-type="primary" data-size="normal">Contact</router-link>
+                                    </li>
                                 </ul>
                             </div>
                         </div>

@@ -31,8 +31,8 @@
                                             <div>
                                                 <label for="basiInput" class="form-label">Toping</label>
                                                 <select class="form-select mb-3 select2" name="toping">
-                                                    @foreach ($topings as $item)
-                                                        <option selected>--Select Category--</option>
+                                                    <option selected>--Select Category--</option>
+                                                    @foreach ($topings as $item)                                                    
                                                         <option value="{{ $item->id }}">{{ $item->name }}</option>   
                                                     @endforeach                                                                                                                                                                           
                                                 </select>
@@ -68,6 +68,7 @@
                                     <tr>
                                         <th scope="col">Id</th>
                                         <th scope="col">Image</th>
+                                        <th scope="col">Name</th>
                                         <th scope="col">Price</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Action</th>
@@ -78,6 +79,7 @@
                                     <tr>
                                         <th scope="row">{{$loop->index+1}}</th>
                                         <td><img width="60px" height="60px" src="{{ asset('frontend/toping_images/' . $item->image) }}" alt="Toping Image">  </td>
+                                        <td>{{ $item->name }}</td>
                                         <td>{{$item->price}}</td>
                                         <td>{{$item->status == 1 ? "Active" : "Deactive"}}</td>
                                         <td>
