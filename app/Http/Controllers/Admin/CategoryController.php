@@ -74,6 +74,6 @@ class CategoryController extends Controller
 
     public function getCategories()
     {
-        return $categories = Category::where('status', '1')->orderBy('id', 'asc')->get();
+        return $categories = Category::where('status', '1')->orderBy('order_by')->get();
     }
 }
