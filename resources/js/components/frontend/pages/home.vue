@@ -701,7 +701,7 @@ export default {
             }
         },
         showMap() {               
-            if(this.grandTotal>=300){
+            if(this.grandTotal>=12){
                 // this.deliveryPlace = false;
                 this.orderType = 1;
                 // this.modalWidth = 80;
@@ -713,7 +713,7 @@ export default {
                 else this.showAuthentication = true;
             }else{
                 this.isVisible = true;
-                this.message = 'Minium Order Amount is 300';
+                this.message = 'Minium Order Amount is 12';
                 this.showToast(this.message,0);
             }
         },
