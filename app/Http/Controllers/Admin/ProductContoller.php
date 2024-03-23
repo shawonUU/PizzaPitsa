@@ -88,9 +88,15 @@ class ProductContoller extends Controller
      */
     public function edit(string $id)
     {
+        $productSizes = ProductSize::join('sizes', 'sizes.id', '=', 'product_sizes.size_id')
+            ->where('product_id', $id)
+            ->select('product_sizes.*', 'sizes.name')->get();
+        $productTopings = ProductToping::join('topings', 'topings.id', '=', 'product_topings.toping_id')->where('product_topings.product_id', $id)->select('topings.*', 'product_topings.id as topId')->get();
+        $topings = Toping::where('status', '1')->get();
         $product = Product::where('id', $id)->first();
         $categories = Category::where('status', '1')->get();
-        return view('admin.pages.product.edit', compact('categories', 'product'));
+        $sizes = Size::where('status', '1')->get();
+        return view('admin.pages.product.edit', compact('categories', 'product','productSizes','productTopings','topings','id','sizes'));
     }
 
     /**
@@ -224,7 +230,8 @@ class ProductContoller extends Controller
             'text' => 'Product Size Added',
         ]);
 
-        return redirect()->route('product_size', $request->product_id);
+        // return redirect()->route('product_size', $request->product_id);
+        return redirect()->back();
     }
     //Assign topings
     public function topings($id)
