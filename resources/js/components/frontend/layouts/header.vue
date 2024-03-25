@@ -55,7 +55,7 @@
                                 <router-link to="/about" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">About</router-link>
                             </li>
                             <li class="sc-xlo7eb-4 bvuzKi">
-                                <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">Franchise</a>
+                                <router-link to="/franchise" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">Franchise</router-link>
                             </li>
                             <li class="sc-xlo7eb-4 bvuzKi">
                                 <router-link to="/contact" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">Contact</router-link>
@@ -103,9 +103,9 @@
                             <nav class="mainmenu-nav">
                                 <button class="mobile-close-btn mobile-nav-toggler"><i class="fas fa-times"></i></button>
                                 <div class="mobile-nav-brand">
-                                    <a href="index-2.html" class="logo">
+                                    <router-link to="/" class="logo">
                                         <img :src="'/frontend/assets/images/logo/2 pizza logo-02.png'" alt="Site Logo">
-                                    </a>
+                                    </router-link>
                                 </div>
                                 <!-- <ul class="mainmenu">
                                     <li>
@@ -114,6 +114,18 @@
                                     <li><a href="contact.html">Contact</a></li>
                                 </ul> -->
                                 <ul class="mainmenu">
+                                <p class="menucategory" style="color:#fff; text-align:center;">Menus</p>
+                                <li class="mobileMenu">
+                                    <router-link to="/about" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">About</router-link>
+                                </li>
+                                <li class="mobileMenu">
+                                    <router-link to="/franchise" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">Franchise</router-link>
+                                </li>
+                                <li class="mobileMenu">
+                                    <router-link to="/contact" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">Contact</router-link>
+                                </li>
+                                    <hr style="background:#fff">
+                                    <p class="menucategory" style="color:#fff; text-align:center;">Categories</p>
                                     <li class="sc-xlo7eb-4 bvuzKi" v-for="(category,index) in catgories" :key="index" :value="category.id">
                                         <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" :href="'#' + category.name" @click.prevent="scrollToTeamSection(category.id)">{{ category.name }}</a>
                                     </li>
@@ -140,7 +152,7 @@
                                     <button data-testid="header_login" type="button" data-type="tertiary" data-size="small" class="sc-1rmt3mq-0 dOEDNV">My Orders</button>
                                 </li> -->
                                 <li class="shopping-cart" @click="handleCartClick">
-                                    <a href="javascript:void(0)" style="margin-top:4px" class="cart-dropdown-btn mobileCart">
+                                    <a href="javascript:void(0)" style="font-size: 33px;margin-top: 8px;" class="cart-dropdown-btn mobileCart">
                                         <span class="cart-count">{{ cartItemCount }}</span>
                                         <i class="flaticon-shopping-cart" style="color:#fff"></i>
                                     </a>
@@ -430,6 +442,12 @@ export default {
 .mobileCart {
     display: none;
 }
+.menucategory {
+    display: none;
+}
+.mobileMenu {
+    display: none;
+}
 @media only screen and (max-width: 768px) {
   .header-brand {
        display: block;
@@ -464,6 +482,12 @@ export default {
 }
 .header-action>ul>li {
     margin: 0px 16px 10px 5px;
+}
+.menucategory {
+    display: block;
+}
+.mobileMenu {
+    display: block;
 }
 }
 </style>

@@ -3,17 +3,26 @@ import Home from '../components/frontend/pages/home.vue';
 import Dashboard from '../components/frontend/pages/dashboard.vue';
 import About from '../components/frontend/pages/about.vue';
 import Contact from '../components/frontend/pages/contact.vue';
+import Francise from '../components/frontend/pages/francise.vue';
 
 const routes = [
   { path: '/', component: Home, name: 'home' },
   { path: '/about', component: About, name: 'about' },
   { path: '/contact', component: Contact, name: 'contact' },
+  { path: '/franchise', component: Francise, name: 'franchise' },
   { path: '/dashboard', component: Dashboard, name: 'dashboard', meta: { requiresAuth: true } },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { top: 0 }; // Scroll to the top of the page when navigating to a new route
+    }
+  }
 });
 
 // Navigation guard for checking authentication

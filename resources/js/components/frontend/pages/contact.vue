@@ -73,10 +73,18 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="contact-location mb--40">
-                                <h4 class="title mb--20">Our Store</h4>
-                                <span class="address mb--20">Työnjohtajankatu 5, 00880 Helsinki</span>
-                                <span class="phone"><a href="tel:+35826220208">+35826220208</a></span>
-                                <span class="email">Email: <a href="mailto:info@pizzapitsa.fi">info@pizzapitsa.fi</a></span>
+                                <h4 class="title mb--20">Our Store</h4>                                
+                                <p>Työnjohtajankatu 5, 00880 Helsinki
+                                    </p>                                
+                                    <ul class="support-list-item">
+                                        <li><a  href="mailto:info@pizzapitsa.fi"><i class="fal fa-envelope-open"></i>info@pizzapitsa.fi</a></li>
+                                        <li><a  href="mailto:maria@pizzapitsa.fi"><i class="fal fa-envelope-open"></i>maria@pizzapitsa.fi</a></li>
+                                        <li><a  href="mailto:feedback@pizzapitsa.fi"><i class="fal fa-envelope-open"></i>feedback@pizzapitsa.fi</a></li>
+                                        <li><a  href="mailto:iFRANCHISE@pizzapitsa.fi"><i class="fal fa-envelope-open"></i>FRANCHISE@pizzapitsa.fi</a></li>
+                                        <li><a  href="mailto:order@pizzapitsa.fi"><i class="fal fa-envelope-open"></i>order@pizzapitsa.fi</a></li>
+                                        <li><a  href="tel:+35826220208"><i class="fal fa-phone-alt"></i>+35826220208</a></li>
+                                        <!-- <li><i class="fal fa-map-marker-alt"></i> 685 Market Street,  <br> Las Vegas, LA 95820, <br> United States.</li> -->
+                                    </ul>
                             </div>                         
                             <div class="opening-hour">
                                 <h4 class="title mb--20">Opening Hours:</h4>
@@ -91,7 +99,7 @@
                 <div class="axil-google-map-wrap axil-section-gap pb--0">
                     <div class="mapouter">
                         <div class="gmap_canvas">
-                            <iframe width="1080" height="500" id="gmap_canvas" src="https://maps.google.com/maps?q=melbourne&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=&amp;output=embed"></iframe>
+                            <iframe width="1080" height="500" id="gmap_canvas" src="https://maps.google.com/maps?width=600&amp;height=400&amp;hl=en&amp;q=University ofTyönjohtajankatu 5, 00880 Helsinki Oxford&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"></iframe>
                         </div>
                     </div>
                 </div>
@@ -219,3 +227,8 @@
         },
     };
 </script>
+<style scoped>
+ ul li {
+    list-style: none;
+ }
+</style>

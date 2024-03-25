@@ -14,14 +14,14 @@
                                             <swiper-slide>
                                                 <div class="single-slide slick-slide">
                                                     <div class="main-slider-content">
-                                                        <h1 class="title">Up to 60% off Sale</h1>
+                                                        <h1 class="title">Burger pizza</h1>
                                                         <div class="shop-btn">
-                                                            <a href="shop.html" class="axil-btn">Shop Now <i
-                                                                    class="fal fa-long-arrow-right"></i></a>
+                                                            <!-- <a href="shop.html" class="axil-btn">Shop Now <i
+                                                                    class="fal fa-long-arrow-right"></i></a> -->
                                                         </div>
                                                     </div>
                                                     <div class="main-slider-thumb">
-                                                        <img src="https://dodopizza-a.akamaihd.net/static/Img/Products/e9a8dcd478f2459f9c645d7b96e0bef2_366x366.webp"
+                                                        <img src="https://pizzapitsa.com/frontend/product_images/20240321203335.jpg"
                                                             alt="Product">
                                                     </div>
                                                 </div>
@@ -29,14 +29,14 @@
                                             <swiper-slide>
                                                 <div class="single-slide slick-slide">
                                                     <div class="main-slider-content">
-                                                        <h1 class="title">Up to 60% off Voucher</h1>
+                                                        <h1 class="title">Mega Sydney</h1>
                                                         <div class="shop-btn">
-                                                            <a href="" class="axil-btn">Shop Now <i
-                                                                    class="fal fa-long-arrow-right"></i></a>
+                                                            <!-- <a href="" class="axil-btn">Shop Now <i
+                                                                    class="fal fa-long-arrow-right"></i></a> -->
                                                         </div>
                                                     </div>
                                                     <div class="main-slider-thumb">
-                                                        <img src="https://dodopizza-a.akamaihd.net/static/Img/Products/95d174f38e8340248aee29afa3dff5e9_366x366.webp"
+                                                        <img src="https://pizzapitsa.com/frontend/product_images/20240321155733.jpg"
                                                             alt="Product">
                                                     </div>
                                                 </div>
@@ -44,14 +44,14 @@
                                             <swiper-slide>
                                                 <div class="single-slide slick-slide">
                                                     <div class="main-slider-content">
-                                                        <h1 class="title">Up to 60% off Voucher</h1>
+                                                        <h1 class="title">Kana pizza</h1>
                                                         <div class="shop-btn">
-                                                            <a href="shop.html" class="axil-btn">Shop Now <i
-                                                                    class="fal fa-long-arrow-right"></i></a>
+                                                            <!-- <a href="shop.html" class="axil-btn">Shop Now <i
+                                                                    class="fal fa-long-arrow-right"></i></a> -->
                                                         </div>
                                                     </div>
                                                     <div class="main-slider-thumb">
-                                                        <img src="https://dodopizza-a.akamaihd.net/static/Img/Products/1fd214b146f14696a630ffff0f529c82_366x366.webp"
+                                                        <img src="https://pizzapitsa.com/frontend/product_images/20240322132414.jpg"
                                                             alt="Product">
                                                     </div>
                                                 </div>
@@ -66,22 +66,21 @@
                                     <div class="col-6">
                                          <div class="slider-product-box">
                                             <div class="product-thumb">
-                                                <a href="single-product.html">
-                                                    <img style="width:180px" src="https://dodopizza-a.akamaihd.net/static/Img/Products/11ee812a80cc48f7a14a00c77e41bfce_366x366.webp" alt="Product">
+                                                <a href="javacript:void(0)">
+                                                    <img style="width:180px" src="https://pizzapitsa.com/frontend/product_images/20240321161154.jpg" alt="Product">
                                                 </a>
                                             </div>
-                                            <h1 class="title"><a href="single-product.html">Stylish Leather Bag</a></h1>
-                                            <span class="price">$29.99</span>
+                                            <h1 class="title"><a href="javacript:void(0)">Caesar-salaatti</a></h1>
+                                            <span class="price">From13.90€</span>
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                         <div class="slider-product-box">
-
-                                            <h1 class="title"><a href="single-product.html">Stylish Leather Bag</a></h1>
-                                            <span class="price">$29.99</span>
+                                         <div class="slider-product-box">  
+                                            <h1 class="title"><a href="javacript:void(0)">Kebab Pitsone</a></h1>
+                                            <span class="price">From12.90€</span>
                                              <div class="product-thumb">
-                                                <a href="single-product.html">
-                                                    <img style="width:180px" src="https://dodopizza-a.akamaihd.net/static/Img/Products/11ee812a80cc48f7a14a00c77e41bfce_366x366.webp" alt="Product">
+                                                <a href="javacript:void(0)">
+                                                    <img style="width:180px" src="https://pizzapitsa.com/frontend/product_images/20240321181211.jpg" alt="Product">
                                                 </a>
                                             </div>
                                         </div>
@@ -124,12 +123,12 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img style="width:70px"
-                                        src="https://dodopizza-a.akamaihd.net/static/Img/Products/b5f5e56ce2a94e29a8ef6d52b6945258_366x366.webp"
+                                        src="https://pizzapitsa.com/frontend/product_images/20240321155638.jpg"
                                         alt="...">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
-                                    <span>Julienne</span><br>
-                                    <strong>from 11.25 €</strong>
+                                    <span>Mega Omavalinta</span><br>
+                                    <strong>From15.90€</strong>
                                 </div>
                             </div>
                         </swiper-slide>
@@ -137,12 +136,12 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img style="width:70px"
-                                        src="https://dodopizza-a.akamaihd.net/static/Img/Products/11ee812a80cc48f7a14a00c77e41bfce_366x366.webp"
+                                        src="https://pizzapitsa.com/frontend/product_images/20240322132414.jpg"
                                         alt="...">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
-                                    <span>Julienne</span><br>
-                                    <strong>from 11.25 €</strong>
+                                    <span>Kana pizza</span><br>
+                                    <strong>From11.90€</strong>
                                 </div>
                             </div>
                         </swiper-slide>
@@ -150,12 +149,12 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img style="width:70px"
-                                        src="https://dodopizza-a.akamaihd.net/static/Img/Products/b00a55e947524c0ab1a05b48d0d9bebe_183x183.webp"
+                                        src="https://pizzapitsa.com/frontend/product_images/20240321160355.jpg"
                                         alt="...">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
-                                    <span>Julienne</span><br>
-                                    <strong>from 11.25 €</strong>
+                                    <span>Kotkot</span><br>
+                                    <strong>From15.90€</strong>
                                 </div>
                             </div>
                         </swiper-slide>
@@ -163,12 +162,103 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img style="width:70px"
-                                        src="https://dodopizza-a.akamaihd.net/static/Img/Products/11ee96c94a1ad044b0a88a81e24f3a11_183x183.webp"
+                                        src="https://pizzapitsa.com/frontend/product_images/20240321161154.jpg"
                                         alt="...">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
-                                    <span>Julienne</span><br>
-                                    <strong>from 11.25 €</strong>
+                                    <span>Caesar-salaatti</span><br>
+                                    <strong>From13.90€</strong>
+                                </div>
+                            </div>
+                        </swiper-slide>
+                        <swiper-slide>
+                        <div class="d-flex align-items-center">
+                            <div class="flex-shrink-0">
+                                <img style="width:70px"
+                                    src="https://pizzapitsa.com/frontend/product_images/20240321181122.jpg"
+                                    alt="...">
+                            </div>
+                            <div class="flex-grow-1 ms-3">
+                                <span>Kana-Feta Pitsonne</span><br>
+                                <strong>From12.90€</strong>
+                            </div>
+                        </div>
+                        </swiper-slide>
+                        <swiper-slide>
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <img style="width:70px"
+                                        src="https://pizzapitsa.com/frontend/product_images/20240321185936.jpg"
+                                        alt="...">
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <span>Kebab Rulla</span><br>
+                                    <strong>From11.90€</strong>
+                                </div>
+                            </div>
+                        </swiper-slide>
+                        <swiper-slide>
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <img style="width:70px"
+                                        src="https://pizzapitsa.com/frontend/product_images/20240321191945.jpg"
+                                        alt="...">
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <span>Chilidippi</span><br>
+                                    <strong>From1.20€</strong>
+                                </div>
+                            </div>
+                        </swiper-slide>
+                         <swiper-slide>
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <img style="width:70px"
+                                        src="https://pizzapitsa.com/frontend/product_images/20240321185936.jpg"
+                                        alt="...">
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <span>JYMY LUOMUJÄÄTELÖ 500ML LIQUORICE</span><br>
+                                    <strong>From8.90€</strong>
+                                </div>
+                            </div>
+                        </swiper-slide>
+                        <swiper-slide>
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <img style="width:70px"
+                                        src="https://pizzapitsa.com/frontend/product_images/20240321185936.jpg"
+                                        alt="...">
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <span>CocaCola 1.5L</span><br>
+                                    <strong>From5.90€</strong>
+                                </div>
+                            </div>
+                        </swiper-slide>
+                        <swiper-slide>
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <img style="width:70px"
+                                        src="https://pizzapitsa.com/frontend/product_images/20240322092107.jpg"
+                                        alt="...">
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <span>Taffel sips</span><br>
+                                    <strong>From3.45€</strong>
+                                </div>
+                            </div>
+                        </swiper-slide>
+                        <swiper-slide>
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0">
+                                    <img style="width:70px"
+                                        src="https://pizzapitsa.com/frontend/product_images/20240322091114.jpg"
+                                        alt="...">
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <span>Donitsi</span><br>
+                                    <strong>From4.90€</strong>
                                 </div>
                             </div>
                         </swiper-slide>
@@ -231,19 +321,19 @@
                 </template>
                 </div>
 
-                <div v-if="categoryId==2" class="axil-new-arrivals-product-area  flash-sale-area bg-color-white  pb--0" >
+                <div v-if="categoryId==2" class="axil-new-arrivals-product-area  flash-sale-area bg-color-white  pb--0" style="background-image: url('/frontend/assets/images/Pizza-Pitsa-full-shop-footer.jpg');  background-size: cover; background-position: center; backdrop-filter: blur(5px);">
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-7 col-sm-12">                        
-                                <div class="francicise" style="margin-top:100px">
-                                <h2 class="elementor-heading-title elementor-size-default" style="font-size:40px">Are you interested in entrepreneurship?</h2>
+                                <div class="francicise" style="margin-top:100px; margin-bottom:20px">
+                                <h2 class="elementor-heading-title elementor-size-default" style="font-size:40px; color:#fff">Are you interested in entrepreneurship?</h2>
                                                                                               
-                                <p class="elementor-heading-title elementor-size-default" >We are looking for lovers of good street food to become new Elias döner entrepreneurs Previous restaurant experience, managerial experience and/or entrepreneurial experience is considered an advantage.</p> 
+                                <p class="elementor-heading-title elementor-size-default" style="color:#fff">We are looking for lovers of good street food to become new Elias döner entrepreneurs Previous restaurant experience, managerial experience and/or entrepreneurial experience is considered an advantage.</p> 
                               
                                 
                                 <a href="#" class="elementor-button-link elementor-button elementor-size-sm" role="button">
                                
-                                <span class="elementor-button-text btn btn-warning mt-3" style="color:#fff; padding:10px; font-size:20px;" >Contact Us</span>
+                                <span class="elementor-button-text btn mt-3" style="background:rgb(238, 110, 45);color:#fff; padding:10px; font-size:20px;" >Contact Us</span>
                               
                                 </a>
                                 &nbsp;&nbsp;&nbsp;
@@ -254,10 +344,8 @@
                                 </a>
                                 </div>    
                             </div>
-                        <div class="col-lg-5 col-sm-12">
-                            
-                                <img src="https://templatekit.jegtheme.com/icelab/wp-content/uploads/sites/175/2021/09/vanillaice.png" title="" alt="">
-                            
+                        <div class="col-lg-5 col-sm-12">                            
+                            <img style="width:400px; border-radius:10px" :src="'/frontend/assets/images/Pizza-Pitsa-model-ed.jpg'" title="" alt="">                            
                         </div>
                       
                         </div>
@@ -783,5 +871,9 @@ export default {
         padding: 8px;
         background: rgb(238, 110, 45);
   }
+}
+
+.flash-sale-section{
+    margin-bottom: 0;
 }
 </style>
