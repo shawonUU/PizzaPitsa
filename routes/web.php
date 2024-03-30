@@ -1,6 +1,8 @@
 <?php
 
+use App\Mail\VerificationMail;
 use App\Models\Admin\DelivaryCharge;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Location;
 use App\Http\Controllers\OrderController;
@@ -31,6 +33,7 @@ use App\Http\Controllers\Admin\ProductMnagementController;
 */
 
 Route::get('/', function () {
+//    Mail::to("shawonmahmodul12@gmail.com")->send(new VerificationMail(123456));
     return view('frontend.layouts.app');
 });
 

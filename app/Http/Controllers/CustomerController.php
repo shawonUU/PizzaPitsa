@@ -19,6 +19,7 @@ class CustomerController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'regex:/^[a-zA-Z\s]+$/'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'phone' => 'required|regex:/^[0-9]+$/',
             'password' => ['required', 'string', 'min:6'],
         ]);
 
@@ -35,6 +36,7 @@ class CustomerController extends Controller
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'phone' => $data['phone'],
             'password' => Hash::make($data['password']),
             'role_id' => 2,
             'is_verified' => false,
@@ -42,6 +44,18 @@ class CustomerController extends Controller
         ]);
 
         //Mail::to($user->email)->send(new VerificationMail($user->verification_code));
+        //sendEmployeeCredential([]);
+
+        $to_email = 'shawonmahmodul12@gmail.com';
+        $to_name = 'Recipient Name';
+        $subject = 'Test Email';
+        $content = 'This is a test email from Laravel. Hello!';
+    
+        Mail::raw($content, function($message) use ($to_email, $to_name, $subject) {
+            $message->to($to_email, $to_name)
+                    ->subject($subject);
+        });
+        
         $response = [
             'success' => true,
             'message' => 'Successfully Registered',

@@ -53,11 +53,15 @@
                         <input type="text" style="height: 40px; padding:5px; border: 1px solid #cfcbcb;" class="form-control" id="new_name" name="new_name" placeholder="Name">
                     </div>
                     <div class="col-12">
-                        <label for="name" class="form-label">Email</label>
+                        <label for="new_email" class="form-label">Email</label>
                         <input type="text" style="height: 40px; padding:5px; border: 1px solid #cfcbcb;" class="form-control"  id="new_email" name="new_email" placeholder="Email">
                     </div>
                     <div class="col-12">
-                        <label for="name" class="form-label">Password</label>
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="text" style="height: 40px; padding:5px; border: 1px solid #cfcbcb;" class="form-control"  id="phone" name="phone" placeholder="Phone">
+                    </div>
+                    <div class="col-12">
+                        <label for="new_password" class="form-label">Password</label>
                         <input type="password" style="height: 40px; padding:5px;border: 1px solid #cfcbcb;" class="form-control" id="new_password" name="new_password" placeholder="Password">
                     </div>
                     <div class="col-12 mt-3">
@@ -153,16 +157,21 @@
         signUp(){
             var name = document.getElementById('new_name').value.trim();
             var email = document.getElementById('new_email').value.trim();
+            var phone = document.getElementById('phone').value.trim();
             var password = document.getElementById('new_password').value.trim();
             this.signUpDataError = '';
 
             if(name=='') {this.signUpDataError = 'Name is required';return;}
             if(email=='') {this.signUpDataError = 'Email is required';return;}
+            if(phone=='') {this.signUpDataError = 'Phone number is required';return;}
+            var digitPattern = /^[0-9]+$/;
+            if (!digitPattern.test(phone)) {this.signUpDataError = 'Enter a valid phone number';return;}
             if(password=='') {this.signUpDataError = 'Password is required'; return;}
 
             axios.post('customer-signUp', {
                 name: name,
                 email: email,
+                phone:phone,
                 password: password,
             })
             .then((res)=>{
@@ -199,9 +208,7 @@
                     localStorage.setItem('auth', JSON.stringify(res.data.user));
                     this.handleButtonClick();
                     this.updateHeaderAfterLogin();
-                    toast.success('Login Success', {
-                        timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
-                    });
+                    //Toaster
                 }else{
                     if(res.data.isVerification){
                         this.verificationError = res.data.message;
@@ -263,9 +270,7 @@
                     localStorage.setItem('auth', JSON.stringify(res.data.user));
                     this.handleButtonClick();
                     this.updateHeaderAfterLogin();
-                    toast.success('Login Success', {
-                        timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
-                    });
+                     //Toaster
                 }else{
                     this.verificationError = res.data.message;
                 }

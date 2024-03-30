@@ -1,4 +1,4 @@
-﻿@import"https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&amp;family=Poppins:wght@400;500;600;700&amp;display=swap";
+@import"https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&amp;family=Poppins:wght@400;500;600;700&amp;display=swap";
 :root {
     --color-primary: #3577f0;
     --light-primary: #8c71db;
@@ -5447,7 +5447,7 @@ button.axil-btn.btn-size-md i {
         margin-left: 10px
     }
 }
-
+/* 
 .main-slider-style-2 .main-slider-thumb::after {
     content: "";
     height: 288px;
@@ -5458,15 +5458,15 @@ button.axil-btn.btn-size-md i {
     top: -5px;
     left: -100px;
     z-index: -1
-}
+} */
 
 @media only screen and (max-width: 767px) {
-    .main-slider-style-2 .main-slider-thumb::after {
+    /* .main-slider-style-2 .main-slider-thumb::after {
         height: 150px;
         width: 150px;
         left: 0;
         top: 0
-    }
+    } */
 }
 
 @media only screen and (max-width: 575px) {

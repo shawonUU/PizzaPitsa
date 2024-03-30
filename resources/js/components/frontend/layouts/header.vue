@@ -7,18 +7,31 @@
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-lg-6 col-sm-6 col-12">
-                            <div class="header-top-dropdown">
-                                <div class="dropdown">
-                                    <button class="dropdown-toggle" @click="toggleDropdown()" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                       {{selectedLanguage}}
-                                    </button>
-                                    <ul :class="['dropdown-menu', { 'show': isOpen }]">
-                                        <li v-for="(language, index) in languages" :key="index">
-                                            <a class="dropdown-item" @click="selectLanguage(language)">{{ language }}</a>
-                                        </li>
-                                    </ul>
+                            <div class="header-top-link">
+                            <ul class="langAndNum">
+                                <li>
+                                <div class="header-top-dropdown">
+                                    <div class="dropdown">
+                                        <button class="dropdown-toggle" @click="toggleDropdown()" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        {{selectedLanguage}}
+                                        </button>
+                                        <ul :class="['dropdown-menu', { 'show': isOpen }]">
+                                            <li v-for="(language, index) in languages" :key="index">
+                                                <a class="dropdown-item" @click="selectLanguage(language)">{{ language }}</a>
+                                            </li>                                        
+                                        </ul>
+                                    </div>
                                 </div>
+                                </li>
+                                <li>
+                                    <a  href="tel:+35826220208" style="color:#fff">Call: +35826220208</a>
+                                </li>
+                                <li>
+                                    <a  href="mailto:info@pizzapitsa.fi" style="color:#fff">Email: info@pizzapitsa.fi</a>
+                                </li>
+                            </ul>
                             </div>
+                             
                         </div>
                         <div class="col-lg-6 col-sm-6 col-12">
                             <div class="header-top-link">
@@ -44,12 +57,12 @@
                         </span>
 
                         </div>
-                        <div class="sc-52lbjw-0 fpBABM contacts-phone">
+                        <!-- <div class="sc-52lbjw-0 fpBABM contacts-phone">
                         <div class="contacts-phone__number">
                             <a class="contacts-phone__number-link" href="tel:+35826220208" style="color:#fff">+35826220208</a>
                             <div class="contacts-phone__description"><span class="contacts-phone__description-text" style="color:#fff">Call</span></div>
                         </div>
-                        </div>
+                        </div> -->
                         <ul class="mainmenu">
                             <li class="sc-xlo7eb-4 bvuzKi">
                                 <router-link to="/about" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">About</router-link>
@@ -114,21 +127,23 @@
                                     <li><a href="contact.html">Contact</a></li>
                                 </ul> -->
                                 <ul class="mainmenu">
-                                <p class="menucategory" style="color:#fff; text-align:center;">Menus</p>
-                                <li class="mobileMenu">
-                                    <router-link to="/about" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">About</router-link>
-                                </li>
-                                <li class="mobileMenu">
-                                    <router-link to="/franchise" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">Franchise</router-link>
-                                </li>
-                                <li class="mobileMenu">
-                                    <router-link to="/contact" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">Contact</router-link>
-                                </li>
-                                    <hr style="background:#fff">
-                                    <p class="menucategory" style="color:#fff; text-align:center;">Categories</p>
+                                        <!-- <p class="menucategory" style="color:#fff; text-align:center;">Categories</p> -->
                                     <li class="sc-xlo7eb-4 bvuzKi" v-for="(category,index) in catgories" :key="index" :value="category.id">
                                         <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" :href="'#' + category.name" @click.prevent="scrollToTeamSection(category.id)">{{ category.name }}</a>
                                     </li>
+                                     <hr style="background:#fff">
+                                    <!-- <p class="menucategory" style="color:#fff; text-align:center;">Menus</p> -->
+                                    <li class="mobileMenu">
+                                        <router-link to="/about" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">About</router-link>
+                                    </li>
+                                    <li class="mobileMenu">
+                                        <router-link to="/franchise" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">Franchise</router-link>
+                                    </li>
+                                    <li class="mobileMenu">
+                                        <router-link to="/contact" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">Contact</router-link>
+                                    </li>
+                               
+                                  
                                 </ul>                              
                             </nav>
                             <!-- End Mainmanu Nav -->
@@ -489,5 +504,14 @@ export default {
 .mobileMenu {
     display: block;
 }
+}
+.header-top-link .langAndNum {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -10px -33px;
+    list-style: none;
+}
+.header-top-link .langAndNum li {
+    padding-left: 24px;
 }
 </style>

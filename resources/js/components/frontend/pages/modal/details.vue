@@ -116,10 +116,10 @@
                       <div class="product-variation">
                         <h6 class="title">Size:</h6>
                         <ul class="range-variant">
-                          <li  v-for="(productSize, sizeId) in productSizes" :key="sizeId" @click="clickOnSize(sizeId)" class="sizeRadioBtn" :id="'sizeRadioBtn'+productSize.id" style="padding: 2px; font-size:14px; height:30px; padding: 0 8px; cursor:pointer; margin:0 2px;">
+                          <li  v-for="(productSize, sizeId) in productSizes" :key="sizeId" @click="clickOnSize(sizeId)" class="sizeRadioBtn" :id="'sizeRadioBtn'+productSize.id" style=" padding: 0px 15px; font-size: 14px; min-height: 30px !important; padding: 0 8px; cursor:pointer; margin:0 2px;">
                               <div class="input-group" style="cursor:pointer;">
                                   <input style="" class="sizeRadio" type="radio" :id="'sizeRadio'+productSize.id"  name="sizeRadio" :value="productSize.id">
-                                  <label style="display:none !important; cursor:pointer;" :for="'sizeRadio'+productSize.id"></label>
+                                  <label class="sizeRadioLbl" style="display:none !important; cursor:pointer;" :for="'sizeRadio'+productSize.id"></label>
                                   <span style="cursor:pointer;">{{productSize.name}}</span>
                               </div>
                           </li>
@@ -201,7 +201,8 @@ export default {
     mounted(){
         // console.log(this.productSize);
         this.loadCartFromLocalStorage();
-         this.fetchBaseCurrencySymbol();
+        this.fetchBaseCurrencySymbol();
+        this.selectFirstSizeAsDefault();
     },
     methods: {
        handleButtonClick() {
@@ -356,9 +357,9 @@ export default {
       },
      showToast(message,type) {
         if(type){
-          toast.success(message, {timeout: 2000});
+          //toast.success(message, {timeout: 2000});
         }else{
-          toast.warning(message, {timeout: 2000});
+          //toast.warning(message, {timeout: 2000});
         }
           
           this.message = message;
@@ -371,16 +372,23 @@ export default {
     emitMyEvent() {
           this.emitter.emit('my-event', {'eventContent': 'String changed'})
     },
-       async fetchBaseCurrencySymbol() {
-            try {
-                this.baseCurrencySymbol = await getBaseCurrencySymbol();
-            } catch (error) {
-                // Handle error (e.g., show an error message)
-                console.error('Error fetching base currency symbol in component:', error);
-            }
-        },
+    async fetchBaseCurrencySymbol() {
+        try {
+            this.baseCurrencySymbol = await getBaseCurrencySymbol();
+        } catch (error) {
+            // Handle error (e.g., show an error message)
+            console.error('Error fetching base currency symbol in component:', error);
+        }
+    },
+    selectFirstSizeAsDefault(){
+      const clickEvent = new Event('click', { bubbles: true });
+      var eles = document.getElementsByClassName("sizeRadio");
+      if(eles[0] != undefined)eles[0].checked = true;
+      var eles = document.getElementsByClassName("sizeRadioBtn");
+      if(eles[0] != undefined)eles[0].dispatchEvent(clickEvent);
+    },
 
-    }
+  }
 }
 </script>
 

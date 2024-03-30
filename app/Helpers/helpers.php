@@ -5,6 +5,7 @@ use App\Models\Notification;
 use App\Models\Admin\Product;
 use App\Models\Admin\Currency;
 use App\Models\Admin\ProductImage;
+use Illuminate\Support\Facades\Mail;
 
 function getProductImage($id)
 {
@@ -116,5 +117,19 @@ function displayNotificationTime($timestamp) {
   } else {
     return date("d M \a\\t H:i", $time_ago);
   }
+}
+
+function sendEmployeeCredential($data)
+{
+    $data['email'] = "shawonmahmodul12@gmail.com";
+
+    $companyName = 'Company Name';
+    $companyEmail = 'shawonmahmodul12@gmail.com';
+
+    Mail::send('emails.employee',  ['data' => $data], function ($m) use ($data, $companyEmail, $companyName) {
+        $m->from($companyEmail, 'Credentials of ' . $companyName);
+        $m->to($data['email'])->subject('HRIS Access Information');
+    });
+   
 }
 

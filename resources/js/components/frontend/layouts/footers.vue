@@ -13,7 +13,7 @@
                             <div class="axil-footer-widget">                              
                                 <div class="logo mb--30">
                                 <a href="index.html">
-                                    <img class="light-logo"  :src="'/frontend/assets/images/logo/2 pizza logo-02.png'" alt="Logo Images">
+                                    <img width="300px" :src="'/frontend/assets/images/logo/Pizzapitsa-logo-balck-footer.png'" alt="Logo Images">
                                 </a>
                             </div>
                                 <div class="inner">
@@ -39,12 +39,12 @@
                                     <p>Työnjohtajankatu 5, 00880 Helsinki
                                     </p>
                                     <ul class="support-list-item">
+                                        <li><a style="color:#fff" href="tel:+35826220208"><i class="fal fa-phone-alt"></i>+35826220208</a></li>
                                         <li><a style="color:#fff" href="mailto:info@pizzapitsa.fi"><i class="fal fa-envelope-open"></i>info@pizzapitsa.fi</a></li>
                                         <li><a style="color:#fff" href="mailto:maria@pizzapitsa.fi"><i class="fal fa-envelope-open"></i>maria@pizzapitsa.fi</a></li>
                                         <li><a style="color:#fff" href="mailto:feedback@pizzapitsa.fi"><i class="fal fa-envelope-open"></i>feedback@pizzapitsa.fi</a></li>
                                         <li><a style="color:#fff" href="mailto:iFRANCHISE@pizzapitsa.fi"><i class="fal fa-envelope-open"></i>FRANCHISE@pizzapitsa.fi</a></li>
-                                        <li><a style="color:#fff" href="mailto:order@pizzapitsa.fi"><i class="fal fa-envelope-open"></i>order@pizzapitsa.fi</a></li>
-                                        <li><a style="color:#fff" href="tel:+35826220208"><i class="fal fa-phone-alt"></i>+35826220208</a></li>
+                                        <li><a style="color:#fff" href="mailto:order@pizzapitsa.fi"><i class="fal fa-envelope-open"></i>order@pizzapitsa.fi</a></li>                                        
                                         <!-- <li><i class="fal fa-map-marker-alt"></i> 685 Market Street,  <br> Las Vegas, LA 95820, <br> United States.</li> -->
                                     </ul>
                                 </div>
@@ -132,5 +132,9 @@ export default {
 }
 .social-share a i{
     color: #fff!important;
+}
+.axil-footer-widget .logo img {
+    height: 65px;
+    width: auto;
 }
  </style>

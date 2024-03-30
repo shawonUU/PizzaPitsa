@@ -13,7 +13,6 @@
           <div class="modal-body" style="padding-top: 0px; padding-right: 13px;">
             <div class="d-flex justify-content-end pt-3">
                 <button type="button" class="btn-close" style="height:5px; width:5px; margin-bottom: 15px;" data-bs-dismiss="modal" aria-label="Close" @click="handleButtonClick">
-
                 </button>
             </div>
             <div v-if="deliveryPlace" class="d-none">
@@ -238,7 +237,7 @@
                                             <td>
                                               <strong class="text-muted">Total :</strong>
                                             </td>
-                                            <td class="text-muted h5">{{ grandTotal+deliveryCharge }} {{baseCurrencySymbol}} </td>
+                                            <td class="text-muted h5">{{ parseFloat(grandTotal)+parseFloat(deliveryCharge) }} {{baseCurrencySymbol}} </td>
                                           </tr>
                                         </tbody>
                                       </table>
@@ -327,11 +326,11 @@
         mounted() {
           axios.get('get-location-schedule')
           .then((res)=>{                  
-            console.log(res.data);
+            console.log(this.orderType);
             this.shopAddress = res.data.address;
             this.shopSchedule = res.data.schedule;
-            this.lng = res.data.longitude;
-            this.lat = res.data.latitude;
+            this.lng = parseFloat(res.data.longitude);
+            this.lat = parseFloat(res.data.latitude);
             if(this.orderType==1){this.showMap();}
             if(this.orderType==2){this.showSchedule();}
           })
@@ -344,7 +343,7 @@
                 this.$emit('closeModal');
             },
             showMap() {
-                if(this.grandTotal>=300){
+                if(this.grandTotal>=12){
                   this.deliveryPlace = false;
                   this.mapSection = true;
                   this.modalWidth = 80;
@@ -361,8 +360,8 @@
                   });
                 }else{
                   this.isVisible = true;
-                  this.message = 'Minium Order Amount is 300';
-                  this.showToast(this.message,0);
+                  this.message = 'Minium Order Amount is 12';
+                 // this.showToast(this.message,0);
                 }
             },
             showSchedule(){
@@ -377,7 +376,7 @@
               }
 
               if(type==1 && !(this.latitude && this.longitude)){
-                   this.showToast('select delivery address',0);
+                   //this.showToast('select delivery address',0);
                    return;
               }
 
@@ -393,7 +392,7 @@
                   cart: savedCart,
                   subTotal:this.subTotal,
                   discount:this.discount,
-                  grandTotal:this.grandTotal+this.deliveryCharge,
+                  grandTotal:parseFloat(this.grandTotal)+parseFloat(this.deliveryCharge),
                   deliveryCharge:this.deliveryCharge,
                   latitude:this.latitude,
                   longitude:this.longitude,
@@ -407,15 +406,15 @@
                 .then((res)=>{   
                   console.log(res.data);               
                   if(res.data.success){
-                    //localStorage.setItem('cart', '');
+                    localStorage.setItem('cart', '');
                     this.handleButtonClick();
                     this.emitMyEvent();
-                    this.showToast(res.data.message,1);
+                   // this.showToast(res.data.message,1);
                     this.handleCart();
                   }else{
                       this.checkOutError = true;
                       this.checkOutMessage = res.data.message;
-                      this.showToast(res.data.message,0);
+                     // this.showToast(res.data.message,0);
                   }
                 })
                 .catch((err)=>{
@@ -424,9 +423,9 @@
             },
             showToast(message,type) {
                 if(type){
-                  toast.success(message, {timeout: 2000});
+                  //toast.success(message, {timeout: 2000});
                 }else{
-                  toast.warning(message, {timeout: 2000});
+                  //toast.warning(message, {timeout: 2000});
                 }
                   
                   this.message = message;

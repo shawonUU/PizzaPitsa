@@ -127,106 +127,106 @@
     </main>
     </div>
     <div>
-      <div data-v-05123fd1="" :class="{ 'modal fade quick-view-product': true, 'show': isModalOpen }" class=" " id="quick-view-modal" tabindex="-1" aria-modal="true" role="dialog" :style="{ 'padding-right': '17px', 'display': dynamicDisplay }">
-  <div data-v-05123fd1="" class="modal-dialog modal-dialog-centered" style="max-width: 80%;">
-    <div data-v-05123fd1="" class="modal-content">
-      <div data-v-05123fd1="" class="modal-body" style="padding-top: 0px; padding-right: 13px;">
-        <div data-v-05123fd1="" class="d-flex justify-content-end pt-3">
-          <button data-v-05123fd1="" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="height: 5px; width: 5px; margin-bottom: 15px;" @click="handleModalClose"></button>
+      <div  :class="{ 'modal fade quick-view-product': true, 'show': isModalOpen }" class=" " id="quick-view-modal" tabindex="-1" aria-modal="true" role="dialog" :style="{ 'padding-right': '17px', 'display': dynamicDisplay }">
+  <div  class="modal-dialog modal-dialog-centered" style="max-width: 80%;">
+    <div  class="modal-content">
+      <div  class="modal-body" style="padding-top: 0px; padding-right: 13px;">
+        <div  class="d-flex justify-content-end pt-3">
+          <button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="height: 5px; width: 5px; margin-bottom: 15px;" @click="handleModalClose"></button>
         </div>
         <!--v-if-->
         <!--v-if-->
         <!--v-if-->
-        <div data-v-05123fd1="">
-          <div data-v-05123fd1="" class="row">
-            <div data-v-05123fd1="" class="col-12">
-              <h3 data-v-05123fd1="">Order Details</h3>
-              <div data-v-05123fd1="" class="page-content">
-                <div data-v-05123fd1="" class="container-fluid">
-                  <div data-v-05123fd1="" class="aiz-main-content">
-                    <div data-v-05123fd1="" class="">
-                      <div data-v-05123fd1="" class="card">
-                        <div data-v-05123fd1="" class="card-body">
-                          <div data-v-05123fd1="" class="row gutters-5">
-                            <div data-v-05123fd1="" class="col-6">
-                              <strong data-v-05123fd1="">Delivery Address Info</strong>
-                              <hr data-v-05123fd1="">
-                              <address data-v-05123fd1="">
-                                <div data-v-05123fd1="" class="d-flex justify-content-between">
-                                  <div data-v-05123fd1="">
-                                    <strong data-v-05123fd1="" class="text-main"> Name: {{productDetails.name}}</strong>
+        <div >
+          <div  class="row">
+            <div  class="col-12">
+              <h3 >Order Details</h3>
+              <div  class="page-content">
+                <div  class="container-fluid">
+                  <div  class="aiz-main-content">
+                    <div  class="">
+                      <div  class="card">
+                        <div  class="card-body">
+                          <div  class="row gutters-5">
+                            <div  class="col-6 col-sm-6">
+                              <strong >Delivery Address Info</strong>
+                              <hr >
+                              <address >
+                                <div  class="d-flex justify-content-between">
+                                  <div >
+                                    <strong  class="text-main"> Name: {{productDetails.name}}</strong>
                                   </div>
                                 </div>
-                                <br data-v-05123fd1=""> Email: {{productDetails.email}} <br data-v-05123fd1=""> Selected Address: {{productDetails.selectedAddress}}  <br data-v-05123fd1=""> Entrance:  {{productDetails.entrance}} <br data-v-05123fd1=""> Door Code:  {{productDetails.door_code}}  <br data-v-05123fd1=""> Floor: {{productDetails.floor}} <br data-v-05123fd1=""> Apartment: {{productDetails.apartment}} <br data-v-05123fd1=""> Comment: {{productDetails.comment}} <br data-v-05123fd1="">
+                                <br > Email: {{productDetails.email}} <br > Selected Address: {{productDetails.selectedAddress}}  <br > Entrance:  {{productDetails.entrance}} <br > Door Code:  {{productDetails.door_code}}  <br > Floor: {{productDetails.floor}} <br > Apartment: {{productDetails.apartment}} <br > Comment: {{productDetails.comment}} <br >
                               </address>
                             </div>
-                            <div data-v-05123fd1="" class="col-md-6">
-                              <strong data-v-05123fd1="">Order Info</strong>
-                              <hr data-v-05123fd1="">
-                              <table data-v-05123fd1="">
-                                <tbody data-v-05123fd1="">
-                                  <tr data-v-05123fd1="">
-                                    <td data-v-05123fd1="" class="text-main text-bold">Order Type</td>
-                                    <td data-v-05123fd1="" class="text-main text-bold">
+                            <div  class="col-md-6 col-sm-6">
+                              <strong >Order Info</strong>
+                              <hr >
+                              <table >
+                                <tbody >
+                                  <tr >
+                                    <td  class="text-main text-bold">Order Type</td>
+                                    <td  class="text-main text-bold">
                                         <span v-if="productDetails.type === '1'">Home Delivery</span>
                                         <span v-else>Dine in or Pickup</span>
                                       </td>
                                   </tr>
-                                  <tr data-v-05123fd1="">
-                                    <td data-v-05123fd1="" class="text-main text-bold">Order date </td>
-                                    <td data-v-05123fd1="" class="text-right">{{ formatCreatedAt(productDetails.created_at) }}</td>
+                                  <tr >
+                                    <td  class="text-main text-bold">Order date </td>
+                                    <td  class="text-right">{{ formatCreatedAt(productDetails.created_at) }}</td>
                                   </tr>
-                                  <tr data-v-05123fd1="">
-                                    <td data-v-05123fd1="" class="text-main text-bold"> Total amount </td>
-                                    <td data-v-05123fd1="" class="text-right">{{productDetails.total_amount}}€</td>
+                                  <tr >
+                                    <td  class="text-main text-bold"> Total amount </td>
+                                    <td  class="text-right">{{productDetails.total_amount}}€</td>
                                   </tr>
                                 </tbody>
                               </table>
                             </div>
                           </div>
-                          <hr data-v-05123fd1="" class="new-section-sm bord-no">
-                          <div data-v-05123fd1="" class="row">
-                            <div data-v-05123fd1="" class="col-lg-12 table-responsive">
-                              <table data-v-05123fd1="" class="table-bordered aiz-table invoice-summary table footable footable-1 breakpoint-xl">
-                                <thead data-v-05123fd1="">
-                                  <tr data-v-05123fd1="" class="bg-trans-dark footable-header">
-                                    <th data-v-05123fd1="" data-breakpoints="lg" class="min-col footable-first-visible" style="display: table-cell;">#</th>
-                                    <th data-v-05123fd1="" width="10%" style="display: table-cell;">Photo</th>
-                                    <th data-v-05123fd1="" class="text-uppercase" style="display: table-cell;">Name</th>
-                                    <th data-v-05123fd1="" data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Qty</th>
-                                    <th data-v-05123fd1="" data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Topping Price</th>
-                                    <th data-v-05123fd1="" data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Product Price</th>
-                                    <th data-v-05123fd1="" data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Total Topping Price</th>
-                                    <th data-v-05123fd1="" data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;"> Total Product Price</th>
-                                    <th data-v-05123fd1="" data-breakpoints="lg" class="min-col text-uppercase text-center footable-last-visible" style="display: table-cell;">Total Price</th>
+                          <hr  class="new-section-sm bord-no">
+                          <div  class="row">
+                            <div  class="col-lg-12 table-responsive">
+                              <table  class="table-bordered aiz-table invoice-summary table footable footable-1 breakpoint-xl">
+                                <thead >
+                                  <tr  class="bg-trans-dark footable-header">
+                                    <th  data-breakpoints="lg" class="min-col footable-first-visible" style="display: table-cell;">#</th>
+                                    <th  width="10%" style="display: table-cell;">Photo</th>
+                                    <th  class="text-uppercase" style="display: table-cell;">Name</th>
+                                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Qty</th>
+                                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">T.Price</th>
+                                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">P.Price</th>
+                                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">T.T Price</th>
+                                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;"> T.P Price</th>
+                                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center footable-last-visible" style="display: table-cell;">Total Price</th>
                                   </tr>
                                 </thead>
-                                <tbody data-v-05123fd1="">
-                                  <tr v-for="(product,index) in products" :key="index" data-v-05123fd1="">
-                                    <td data-v-05123fd1="" class="footable-first-visible" style="display: table-cell;">1</td>
-                                    <td data-v-05123fd1="" style="display: table-cell;">
-                                      <img data-v-05123fd1="" height="50" :src="'/frontend/product_images/' + product.image">
+                                <tbody >
+                                  <tr v-for="(product,index) in products" :key="index" >
+                                    <td  class="footable-first-visible" style="display: table-cell;">1</td>
+                                    <td  style="display: table-cell;">
+                                      <img  height="50" :src="'/frontend/product_images/' + product.image">
                                     </td>
-                                    <td data-v-05123fd1="" style="display: table-cell;">
-                                      <strong data-v-05123fd1="">{{product.proName}}</strong>
-                                      <br data-v-05123fd1="">
-                                      <small data-v-05123fd1="">Size: {{ product.sizeName }}</small>
-                                      <br data-v-05123fd1="">
-                                      <small data-v-05123fd1="">Toppings: {{ product.topingNames }} </small>
-                                      <br data-v-05123fd1="">
+                                    <td  style="display: table-cell;">
+                                      <strong >{{product.proName}}</strong>
+                                      <br >
+                                      <small >Size: {{ product.sizeName }}</small>
+                                      <br >
+                                      <small >Toppings: {{ product.topingNames }} </small>
+                                      <br >
                                     </td>
-                                    <td data-v-05123fd1="" class="text-center" style="display: table-cell;">{{product.quantity}}</td>
-                                    <td data-v-05123fd1="" class="text-center" style="display: table-cell;">{{product.toping_price}}{{baseCurrencySymbol}}</td>
-                                    <td data-v-05123fd1="" class="text-center" style="display: table-cell;">{{product.price }}{{baseCurrencySymbol}}</td>
-                                    <td data-v-05123fd1="" class="text-center" style="display: table-cell;">{{product.toping_price * product.quantity}}{{baseCurrencySymbol}}</td>
-                                    <td data-v-05123fd1="" class="text-center" style="display: table-cell;">{{product.price * product.quantity }}{{baseCurrencySymbol}}</td>
-                                    <td data-v-05123fd1="" class="text-center footable-last-visible" style="display: table-cell;">{{(product.price * product.quantity) + (product.toping_price * product.quantity)}}{{baseCurrencySymbol}}</td>
+                                    <td  class="text-center" style="display: table-cell;">{{product.quantity}}</td>
+                                    <td  class="text-center" style="display: table-cell;">{{product.toping_price}}{{baseCurrencySymbol}}</td>
+                                    <td  class="text-center" style="display: table-cell;">{{product.price }}{{baseCurrencySymbol}}</td>
+                                    <td  class="text-center" style="display: table-cell;">{{product.toping_price * product.quantity}}{{baseCurrencySymbol}}</td>
+                                    <td  class="text-center" style="display: table-cell;">{{product.price * product.quantity }}{{baseCurrencySymbol}}</td>
+                                    <td  class="text-center footable-last-visible" style="display: table-cell;">{{(product.price * product.quantity) + (product.toping_price * product.quantity)}}{{baseCurrencySymbol}}</td>
                                   </tr>
                                 </tbody>
                               </table>
                             </div>
                           </div>
-                          <div data-v-05123fd1="" class="clearfix float-right" style="width: 300px; float: right;">
+                          <div  class="clearfix float-right" style="width: 300px; float: right;">
                              <table class="table">
                               <tbody>
                                 <tr>
@@ -255,9 +255,9 @@
                                 </tr>
                               </tbody>
                             </table>
-                            <div data-v-05123fd1="" class="no-print text-right">
-                              <a data-v-05123fd1="" href="" type="button" class="btn btn-icon btn-light">
-                                <i data-v-05123fd1="" class="las la-print"></i>
+                            <div  class="no-print text-right">
+                              <a  href="" type="button" class="btn btn-icon btn-light">
+                                <i  class="las la-print"></i>
                               </a>
                             </div>
                           </div>
@@ -462,3 +462,14 @@ export default {
 
 };
 </script>
+<style scoped>
+  @media only screen and (max-width: 768px) { 
+          .modal-dialog {
+            max-width: 100%!important;
+          
+          }
+  }
+  .axil-dashboard-order .table thead th {
+    padding: 0px 0px!important;
+}
+</style>

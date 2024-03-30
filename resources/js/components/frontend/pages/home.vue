@@ -10,52 +10,16 @@
                                 <div class="slider-box-wrap">
                                     <div class="slider-activation-one axil-slick-dots">
                                         <swiper :slides-per-view="1" :space-between="50" @swiper="onSwiper"
-                                            @slideChange="onSlideChange">
+                                            @slideChange="onSlideChange">                                        
                                             <swiper-slide>
-                                                <div class="single-slide slick-slide">
-                                                    <div class="main-slider-content">
-                                                        <h1 class="title">Burger pizza</h1>
-                                                        <div class="shop-btn">
-                                                            <!-- <a href="shop.html" class="axil-btn">Shop Now <i
-                                                                    class="fal fa-long-arrow-right"></i></a> -->
+                                                    <div class="single-slide slick-slide">
+                                                    
+                                                        <div class="main-slider-thumb">
+                                                            <img style="border-radius:10px" src="/frontend/assets/images/mega-pizza-slider-new-1.jpg"
+                                                                alt="Product">
                                                         </div>
                                                     </div>
-                                                    <div class="main-slider-thumb">
-                                                        <img src="https://pizzapitsa.com/frontend/product_images/20240321203335.jpg"
-                                                            alt="Product">
-                                                    </div>
-                                                </div>
-                                            </swiper-slide>
-                                            <swiper-slide>
-                                                <div class="single-slide slick-slide">
-                                                    <div class="main-slider-content">
-                                                        <h1 class="title">Mega Sydney</h1>
-                                                        <div class="shop-btn">
-                                                            <!-- <a href="" class="axil-btn">Shop Now <i
-                                                                    class="fal fa-long-arrow-right"></i></a> -->
-                                                        </div>
-                                                    </div>
-                                                    <div class="main-slider-thumb">
-                                                        <img src="https://pizzapitsa.com/frontend/product_images/20240321155733.jpg"
-                                                            alt="Product">
-                                                    </div>
-                                                </div>
-                                            </swiper-slide>
-                                            <swiper-slide>
-                                                <div class="single-slide slick-slide">
-                                                    <div class="main-slider-content">
-                                                        <h1 class="title">Kana pizza</h1>
-                                                        <div class="shop-btn">
-                                                            <!-- <a href="shop.html" class="axil-btn">Shop Now <i
-                                                                    class="fal fa-long-arrow-right"></i></a> -->
-                                                        </div>
-                                                    </div>
-                                                    <div class="main-slider-thumb">
-                                                        <img src="https://pizzapitsa.com/frontend/product_images/20240322132414.jpg"
-                                                            alt="Product">
-                                                    </div>
-                                                </div>
-                                            </swiper-slide>
+                                                </swiper-slide>
                                         </swiper>
 
                                     </div>
@@ -67,20 +31,17 @@
                                          <div class="slider-product-box">
                                             <div class="product-thumb">
                                                 <a href="javacript:void(0)">
-                                                    <img style="width:180px" src="https://pizzapitsa.com/frontend/product_images/20240321161154.jpg" alt="Product">
+                                                    <img style="border-radius:10px" src="/frontend/assets/images/mega-pizza-add-up.jpg" alt="Product">
                                                 </a>
                                             </div>
-                                            <h1 class="title"><a href="javacript:void(0)">Caesar-salaatti</a></h1>
-                                            <span class="price">From13.90€</span>
+                                            
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                         <div class="slider-product-box">  
-                                            <h1 class="title"><a href="javacript:void(0)">Kebab Pitsone</a></h1>
-                                            <span class="price">From12.90€</span>
+                                         <div class="slider-product-box">                                              
                                              <div class="product-thumb">
                                                 <a href="javacript:void(0)">
-                                                    <img style="width:180px" src="https://pizzapitsa.com/frontend/product_images/20240321181211.jpg" alt="Product">
+                                                    <img style="border-radius:10px" src="/frontend/assets/images/mega-pizza-add-bottom.jpg" alt="Product">
                                                 </a>
                                             </div>
                                         </div>
@@ -123,7 +84,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img style="width:70px"
-                                        src="https://pizzapitsa.com/frontend/product_images/20240321155638.jpg"
+                                        src="/frontend/product_images/20240321155638.jpg"
                                         alt="...">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
@@ -136,7 +97,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img style="width:70px"
-                                        src="https://pizzapitsa.com/frontend/product_images/20240322132414.jpg"
+                                        src="/frontend/product_images/20240322132414.jpg"
                                         alt="...">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
@@ -149,7 +110,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img style="width:70px"
-                                        src="https://pizzapitsa.com/frontend/product_images/20240321160355.jpg"
+                                        src="/frontend/product_images/20240321160355.jpg"
                                         alt="...">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
@@ -162,7 +123,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img style="width:70px"
-                                        src="https://pizzapitsa.com/frontend/product_images/20240321161154.jpg"
+                                        src="/frontend/product_images/20240321161154.jpg"
                                         alt="...">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
@@ -175,7 +136,7 @@
                         <div class="d-flex align-items-center">
                             <div class="flex-shrink-0">
                                 <img style="width:70px"
-                                    src="https://pizzapitsa.com/frontend/product_images/20240321181122.jpg"
+                                    src="/frontend/product_images/20240321181122.jpg"
                                     alt="...">
                             </div>
                             <div class="flex-grow-1 ms-3">
@@ -188,7 +149,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img style="width:70px"
-                                        src="https://pizzapitsa.com/frontend/product_images/20240321185936.jpg"
+                                        src="/frontend/product_images/20240321185936.jpg"
                                         alt="...">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
@@ -201,7 +162,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img style="width:70px"
-                                        src="https://pizzapitsa.com/frontend/product_images/20240321191945.jpg"
+                                        src="/frontend/product_images/20240321191945.jpg"
                                         alt="...">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
@@ -214,7 +175,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img style="width:70px"
-                                        src="https://pizzapitsa.com/frontend/product_images/20240321185936.jpg"
+                                        src="/frontend/product_images/20240321185936.jpg"
                                         alt="...">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
@@ -227,7 +188,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img style="width:70px"
-                                        src="https://pizzapitsa.com/frontend/product_images/20240321185936.jpg"
+                                        src="/frontend/product_images/20240321185936.jpg"
                                         alt="...">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
@@ -240,7 +201,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img style="width:70px"
-                                        src="https://pizzapitsa.com/frontend/product_images/20240322092107.jpg"
+                                        src="/frontend/product_images/20240322092107.jpg"
                                         alt="...">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
@@ -253,7 +214,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img style="width:70px"
-                                        src="https://pizzapitsa.com/frontend/product_images/20240322091114.jpg"
+                                        src="/frontend/product_images/20240322091114.jpg"
                                         alt="...">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
@@ -321,7 +282,7 @@
                 </template>
                 </div>
 
-                <div v-if="categoryId==2" class="axil-new-arrivals-product-area  flash-sale-area bg-color-white  pb--0" style="background-image: url('/frontend/assets/images/Pizza-Pitsa-full-shop-footer.jpg');  background-size: cover; background-position: center; backdrop-filter: blur(5px);">
+                <div v-if="categoryId==2" class="axil-new-arrivals-product-area  flash-sale-area bg-color-white  pb--0" style="position: relative; background-image: linear-gradient(rgb(0 0 0 / 67%), rgb(0 0 0 / 56%)), url(/frontend/assets/images/Pizza-Pitsa-full-shop-footer.jpg); background-size: cover; background-position: center; backdrop-filter: blur(5px);">
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-7 col-sm-12">                        
@@ -331,17 +292,17 @@
                                 <p class="elementor-heading-title elementor-size-default" style="color:#fff">We are looking for lovers of good street food to become new Elias döner entrepreneurs Previous restaurant experience, managerial experience and/or entrepreneurial experience is considered an advantage.</p> 
                               
                                 
-                                <a href="#" class="elementor-button-link elementor-button elementor-size-sm" role="button">
+                                <router-link to="/contact" class="elementor-button-link elementor-button elementor-size-sm" role="button">
                                
                                 <span class="elementor-button-text btn mt-3" style="background:rgb(238, 110, 45);color:#fff; padding:10px; font-size:20px;" >Contact Us</span>
                               
-                                </a>
+                                </router-link>
                                 &nbsp;&nbsp;&nbsp;
-                                <a href="#" class="elementor-button-link elementor-button elementor-size-sm" role="button">
+                                <router-link to="/franchise" class="elementor-button-link elementor-button elementor-size-sm" role="button">
                                 <span class="elementor-button-content-wrapper">
                                 <span class="elementor-button-text btn btn-secondary mt-3" style="color:#fff; padding:10px; font-size:20px;" >Read More</span>
                                 </span>
-                                </a>
+                                </router-link>
                                 </div>    
                             </div>
                         <div class="col-lg-5 col-sm-12">                            
@@ -464,6 +425,7 @@
                             <div class="col-12 col-md-6 mt-5 mb-3">
                                 <div class="input-group" style="cursor:pointer;">
                                     <button @click="showMap()" type="button" class="btn" style=" cursor:pointer !important; background: #ee6e2d; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Specify The Delivery Address</button>
+                                    <span style="font-size:10px; color: red; width:100%; text-align: center;">Minimal order delivery value is 12{{ baseCurrencySymbol }}</span>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6 mt-5 mb-3">
@@ -642,7 +604,7 @@ export default {
                             var topingsPrice = 0;
                             for (const i in topings) {
                                 if(topings[i])  {
-                                    topingsPrice += topings[i].price;
+                                    topingsPrice += parseFloat(topings[i].price);
                                 }
                             }
                             this.subTotal += (item.size.price * item.quantity) + topingsPrice;
@@ -687,9 +649,9 @@ export default {
             this.cart = cart;
             localStorage.setItem('cart', JSON.stringify(this.cart));
             this.loadCartFromLocalStorage();
-            toast.success('Qty Change success', {
-                timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
-            });
+            // toast.success('Qty Change success', {
+            //     timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
+            // });
         },
         qtyDn(id){
             let parts = id.split('_');
@@ -706,9 +668,9 @@ export default {
             this.cart = cart;
             localStorage.setItem('cart', JSON.stringify(this.cart));
             this.loadCartFromLocalStorage();
-            toast.success('Qty update success', {
-                timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
-            });
+            // toast.success('Qty update success', {
+            //     timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
+            // });
         },
         qtyUp(id){
             let parts = id.split('_');
@@ -724,9 +686,9 @@ export default {
             this.cart = cart;
             localStorage.setItem('cart', JSON.stringify(this.cart));
             this.loadCartFromLocalStorage();
-            toast.success('Qty update success', {
-                timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
-            });
+            // toast.success('Qty update success', {
+            //     timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
+            // });
         },
         removeItem(id){
             let parts = id.split('_');
@@ -738,9 +700,9 @@ export default {
             localStorage.setItem('cart', JSON.stringify(this.cart));
             this.loadCartFromLocalStorage();
             this.emitMyEvent();
-            toast.success('Remove to cart success', {
-                timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
-            });
+            // toast.success('Remove to cart success', {
+            //     timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
+            // });
 
         },
         emitMyEvent() {
@@ -815,9 +777,9 @@ export default {
         },
         showToast(message,type) {
             if(type){
-                toast.success(message, {timeout: 2000});
+                // toast.success(message, {timeout: 2000});
             }else{
-                toast.warning(message, {timeout: 2000});
+                // toast.warning(message, {timeout: 2000});
             }
                 
                 this.message = message;
@@ -875,5 +837,18 @@ export default {
 
 .flash-sale-section{
     margin-bottom: 0;
+}
+
+.main-slider-style-2 .slider-box-wrap {
+    background-color:#fff;
+    border-radius: 6px;
+    padding: 0px 0px;
+}
+.main-slider-style-2 .slider-product-box {
+    background-color: #fff;
+    border-radius: 6px;
+    text-align: center;
+    padding: 0px 0px;
+    overflow: hidden;
 }
 </style>

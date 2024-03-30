@@ -105,7 +105,7 @@
                                                     <div class="modal-dialog modal-xl">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h5 class="modal-title" id="myModalLabel">Assign Product Topings</h5>
+                                                                <h5 class="modal-title" id="myModalLabel">Add product Size</h5>
                                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
                                                             </div>
                                                             <div class="modal-body">
@@ -192,7 +192,6 @@
                                                             <th scope="col">Offer To</th>
                                                             <th scope="col">Quantity</th>
                                                             <th scope="col">Status</th>
-                                                            <th scope="col">Description</th>
                                                             <th scope="col">Action</th>
                                                         </tr>
                                                     </thead>
@@ -208,7 +207,6 @@
                                                             <td>{{$productSize->offer_to}}</td>
                                                             <td>{{$productSize->quantity}}</td>
                                                             <td>{{$productSize->status == 1 ? "Active" : "Deactive"}}</td>
-                                                            <td stype="padding: 5px;">{!!  $productSize->description !!}</td>
                                                             <td>
                                                                 <button class="btn btn-sm btn-primary" title="Edit" data-bs-toggle="modal" data-bs-target="#editSize{{$productSize->id}}">
                                                                     <i class="bx bx-edit"></i>
@@ -402,10 +400,11 @@
                                             </div>
                     
                                             <div class="card-body">
-                                                <table class="table table-stripedw-100">
+                                                <table class="table table-striped w-100">
                                                     <thead>
                                                         <tr>
                                                             <th scope="col">Id</th>
+                                                            <th scope="col">Name</th>
                                                             <th scope="col">Image</th>
                                                             <th scope="col">Price</th>
                                                             <th scope="col">Status</th>
@@ -416,6 +415,7 @@
                                                         @foreach($productTopings as $item)
                                                         <tr>
                                                             <th scope="row">{{$loop->index+1}}</th>
+                                                            <th scope="row">{{$item->name}}</th>
                                                             <td><img width="60px" height="60px" src="{{ asset('frontend/toping_images/' . $item->image) }}" alt="Toping Image">  </td>
                                                             <td>{{$item->price}}</td>
                                                             <td>{{$item->status == 1 ? "Active" : "Deactive"}}</td>
