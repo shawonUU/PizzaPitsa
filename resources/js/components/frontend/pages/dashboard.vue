@@ -43,20 +43,18 @@
                                         <div class="table-responsive">
                                             <table class="table">
                                                 <thead>
-                                                    <tr>
-                                                        <th >SL</th>
+                                                    <tr>                                                  
                                                         <th >Order</th>
                                                         <th >Date</th>
-                                                        <th >Status</th>                                                        
-                                                        <th >Actions</th>
+                                                        <th style="width:10px" >Status</th>                                                        
+                                                        <th style="width:10px">Actions</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                  <tr v-for="(order,index) in orders" :key="index">
-                                                      <th scope="row">{{index+1}}</th>
+                                                  <tr v-for="(order,index) in orders" :key="index">                                                      
                                                       <th scope="row">#{{order.order_number}}</th>
                                                       <td>{{ formatCreatedAt(order.created_at) }}</td>                                                       
-                                                      <td>                                                                                                              
+                                                      <td style="width:10px">                                                                                                              
                                                         {{
                                                           order.order_status === 1 ? 'Pending'
                                                           : order.order_status === 2 ? 'Processing'
@@ -71,7 +69,7 @@
                                                           : 'Unknown'
                                                         }}                                                   
                                                       </td>                                                    
-                                                      <td><a href="javascript:void(0)" @click="handleModalOpen(order.order_number)" class="axil-btn view-btn">View</a></td>
+                                                      <td style="width:10px"><a href="javascript:void(0)" @click="handleModalOpen(order.order_number)" class="axil-btn view-btn">View</a></td>
                                                   </tr>                                                    
                                                 </tbody>
                                             </table>
@@ -132,152 +130,137 @@
     </div>
     <div>
       <div  :class="{ 'modal fade quick-view-product': true, 'show': isModalOpen }" class=" " id="quick-view-modal" tabindex="-1" aria-modal="true" role="dialog" :style="{ 'padding-right': '17px', 'display': dynamicDisplay }">
-  <div  class="modal-dialog modal-dialog-centered" style="max-width: 80%;">
-    <div  class="modal-content">
-      <div  class="modal-body" style="padding-top: 0px; padding-right: 13px;">
-        <div  class="d-flex justify-content-end pt-3">
-          <button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="height: 5px; width: 5px; margin-bottom: 15px;" @click="handleModalClose"></button>
-        </div>
-        <!--v-if-->
-        <!--v-if-->
-        <!--v-if-->
-        <div >
-          <div  class="row">
-            <div  class="col-12">
-              <h3 >Order Details</h3>
-              <div  class="page-content">
-                <div  class="container-fluid">
-                  <div  class="aiz-main-content">
-                    <div  class="">
-                      <div  class="card">
-                        <div  class="card-body">
-                          <div  class="row gutters-5">
-                            <div  class="col-6 col-sm-6">
-                              <strong >Delivery Address Info</strong>
-                              <hr >
-                              <address >
-                                <div  class="d-flex justify-content-between">
-                                  <div >
-                                    <strong  class="text-main"> Name: {{productDetails.name}}</strong>
-                                  </div>
-                                </div>
-                                <br > Email: {{productDetails.email}} <br > Selected Address: {{productDetails.selectedAddress}}  <br > Entrance:  {{productDetails.entrance}} <br > Door Code:  {{productDetails.door_code}}  <br > Floor: {{productDetails.floor}} <br > Apartment: {{productDetails.apartment}} <br > Comment: {{productDetails.comment}} <br >
-                              </address>
-                            </div>
-                            <div  class="col-md-6 col-sm-6">
-                              <strong >Order Info</strong>
-                              <hr >
-                              <table >
-                                <tbody >
-                                  <tr >
-                                    <td  class="text-main text-bold">Order Type</td>
-                                    <td  class="text-main text-bold">
-                                        <span v-if="productDetails.type === '1'">Home Delivery</span>
-                                        <span v-else>Dine in or Pickup</span>
-                                      </td>
-                                  </tr>
-                                  <tr >
-                                    <td  class="text-main text-bold">Order date </td>
-                                    <td  class="text-right">{{ formatCreatedAt(productDetails.created_at) }}</td>
-                                  </tr>
-                                  <tr >
-                                    <td  class="text-main text-bold"> Total amount </td>
-                                    <td  class="text-right">{{productDetails.total_amount}}€</td>
-                                  </tr>
-                                </tbody>
-                              </table>
+        <div  class="modal-dialog modal-dialog-centered" style="max-width: 80%;">
+          <div  class="modal-content">
+            <div  class="modal-body" style="padding-top: 0px; padding-right: 13px;">
+              <div  class="d-flex justify-content-end pt-3">
+                <button  type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="height: 5px; width: 5px; margin-bottom: 15px;" @click="handleModalClose"></button>
+              </div>
+              <!--v-if-->
+              <!--v-if-->
+              <!--v-if-->
+              <div >
+                <div  class="row">           
+                    <h3 >Order Details</h3>
+                    <div  class="row">
+                      <div  class="col-6 col-sm-6 col-xsm-6">
+                        <strong style="color:#0000">Delivery Address Info</strong>
+                        <hr>
+                        <address >
+                          <div  class="d-flex justify-content-between">
+                            <div >
+                              <strong  class="text-main"> Name: {{productDetails.name}}</strong>
                             </div>
                           </div>
-                          <hr  class="new-section-sm bord-no">
-                          <div  class="row">
-                            <div  class="col-lg-12 table-responsive">
-                              <table  class="table-bordered aiz-table invoice-summary table footable footable-1 breakpoint-xl">
-                                <thead >
-                                  <tr  class="bg-trans-dark footable-header">
-                                    <th  data-breakpoints="lg" class="min-col footable-first-visible" style="display: table-cell;">#</th>
-                                    <th  width="10%" style="display: table-cell;">Photo</th>
-                                    <th  class="text-uppercase" style="display: table-cell;">Name</th>
-                                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Qty</th>
-                                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">T.Price</th>
-                                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">P.Price</th>
-                                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">T.T Price</th>
-                                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;"> T.P Price</th>
-                                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center footable-last-visible" style="display: table-cell;">Total Price</th>
-                                  </tr>
-                                </thead>
-                                <tbody >
-                                  <tr v-for="(product,index) in products" :key="index" >
-                                    <td  class="footable-first-visible" style="display: table-cell;">1</td>
-                                    <td  style="display: table-cell;">
-                                      <img  height="50" :src="'/frontend/product_images/' + product.image">
-                                    </td>
-                                    <td  style="display: table-cell;">
-                                      <strong >{{product.proName}}</strong>
-                                      <br >
-                                      <small >Size: {{ product.sizeName }}</small>
-                                      <br >
-                                      <small >Toppings: {{ product.topingNames }} </small>
-                                      <br >
-                                    </td>
-                                    <td  class="text-center" style="display: table-cell;">{{product.quantity}}</td>
-                                    <td  class="text-center" style="display: table-cell;">{{product.toping_price}}{{baseCurrencySymbol}}</td>
-                                    <td  class="text-center" style="display: table-cell;">{{product.price }}{{baseCurrencySymbol}}</td>
-                                    <td  class="text-center" style="display: table-cell;">{{product.toping_price * product.quantity}}{{baseCurrencySymbol}}</td>
-                                    <td  class="text-center" style="display: table-cell;">{{product.price * product.quantity }}{{baseCurrencySymbol}}</td>
-                                    <td  class="text-center footable-last-visible" style="display: table-cell;">{{(product.price * product.quantity) + (product.toping_price * product.quantity)}}{{baseCurrencySymbol}}</td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
-                          <div  class="clearfix float-right" style="width: 300px; float: right;">
-                             <table class="table">
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <strong class="text-muted">Sub Total :</strong>
-                                  </td>
-                                  <td>{{ subtotal }}{{ baseCurrencySymbol }}</td>
-                                </tr>                                                             
-                                <tr>
-                                  <td>
-                                    <strong class="text-muted">Shipping :</strong>
-                                  </td>
-                                  <td>{{ shippingCostAmount }}{{ baseCurrencySymbol }}</td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <strong class="text-muted">Discount :</strong>
-                                  </td>
-                                  <td class="text-muted h5">{{ productDetails.discount }}{{ baseCurrencySymbol }}</td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <strong class="text-muted">Total :</strong>
-                                  </td>
-                                  <td class="text-muted h5">{{ total-productDetails.discount }}{{ baseCurrencySymbol }}</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <div  class="no-print text-right">
-                              <a  href="" type="button" class="btn btn-icon btn-light">
-                                <i  class="las la-print"></i>
-                              </a>
-                            </div>
-                          </div>
-                        </div>                       
+                          <br > Email: {{productDetails.email}} <br > Selected Address: {{productDetails.selectedAddress}}  <br > Entrance:  {{productDetails.entrance}} <br > Door Code:  {{productDetails.door_code}}  <br > Floor: {{productDetails.floor}} <br > Apartment: {{productDetails.apartment}} <br > Comment: {{productDetails.comment}} <br >
+                        </address>
+                      </div>
+                      <div  class="col-6 col-sm-6 col-xsm-6">
+                        <strong style="color:#0000">Order Info</strong>
+                        <hr >
+                        <table >
+                          <tbody >
+                            <tr >
+                              <td  class="text-main text-bold">Order Type</td>
+                              <td  class="text-main text-bold">
+                                  <span v-if="productDetails.type === '1'">Home Delivery</span>
+                                  <span v-else>Dine in or Pickup</span>
+                                </td>
+                            </tr>
+                            <tr >
+                              <td  class="text-main text-bold">Order date </td>
+                              <td  class="text-right">{{ formatCreatedAt(productDetails.created_at) }}</td>
+                            </tr>
+                            <tr >
+                              <td  class="text-main text-bold"> Total amount </td>
+                              <td  class="text-right">{{productDetails.total_amount}}€</td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>                         
+                    <div  class="row">
+                      <div  class="col-lg-12 table-responsive">
+                        <table  class="table-bordered aiz-table invoice-summary table footable footable-1 breakpoint-xl">
+                          <thead >
+                            <tr  class="bg-trans-dark footable-header">
+                              <th  data-breakpoints="lg" class="min-col footable-first-visible" style="display: table-cell;">#</th>
+                              <th  width="10%" style="display: table-cell;">Photo</th>
+                              <th  class="text-uppercase" style="display: table-cell;">Name</th>
+                              <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Qty</th>
+                              <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">T.Price</th>
+                              <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">P.Price</th>
+                              <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">T.T Price</th>
+                              <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;"> T.P Price</th>
+                              <th  data-breakpoints="lg" class="min-col text-uppercase text-center footable-last-visible" style="display: table-cell;">Total Price</th>
+                            </tr>
+                          </thead>
+                          <tbody >
+                            <tr v-for="(product,index) in products" :key="index" >
+                              <td  class="footable-first-visible" style="display: table-cell;">1</td>
+                              <td  style="display: table-cell;">
+                                <img  height="50" :src="'/frontend/product_images/' + product.image">
+                              </td>
+                              <td  style="display: table-cell;">
+                                <strong >{{product.proName}}</strong>
+                                <br >
+                                <small >Size: {{ product.sizeName }}</small>
+                                <br >
+                                <small >Toppings: {{ product.topingNames }} </small>
+                                <br >
+                              </td>
+                              <td  class="text-center" style="display: table-cell;">{{product.quantity}}</td>
+                              <td  class="text-center" style="display: table-cell;">{{product.toping_price}}{{baseCurrencySymbol}}</td>
+                              <td  class="text-center" style="display: table-cell;">{{product.price }}{{baseCurrencySymbol}}</td>
+                              <td  class="text-center" style="display: table-cell;">{{product.toping_price * product.quantity}}{{baseCurrencySymbol}}</td>
+                              <td  class="text-center" style="display: table-cell;">{{product.price * product.quantity }}{{baseCurrencySymbol}}</td>
+                              <td  class="text-center footable-last-visible" style="display: table-cell;">{{(product.price * product.quantity) + (product.toping_price * product.quantity)}}{{baseCurrencySymbol}}</td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </div>
-                  </div>
+                    <div >
+                        <table class="table">
+                        <tbody>
+                          <tr>
+                            <td>
+                              <strong class="text-muted">Sub Total :</strong>
+                            </td>
+                            <td>{{ subtotal }}{{ baseCurrencySymbol }}</td>
+                          </tr>                                                             
+                          <tr>
+                            <td>
+                              <strong class="text-muted">Shipping :</strong>
+                            </td>
+                            <td>{{ shippingCostAmount }}{{ baseCurrencySymbol }}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <strong class="text-muted">Discount :</strong>
+                            </td>
+                            <td class="text-muted h5">{{ productDetails.discount }}{{ baseCurrencySymbol }}</td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <strong class="text-muted">Total :</strong>
+                            </td>
+                            <td class="text-muted h5">{{ total-productDetails.discount }}{{ baseCurrencySymbol }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div  class="no-print text-right">
+                        <a  href="" type="button" class="btn btn-icon btn-light">
+                          <i  class="las la-print"></i>
+                        </a>
+                      </div>
+                    </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
     </div>
 </template>
 <script>
@@ -404,7 +387,8 @@ export default {
 
                 return date.toLocaleDateString('en-US', options);
             },   
-            handleModalOpen(orderNumber) {   
+            handleModalOpen(orderNumber) {                
+              document.body.classList.add('modal-open'); 
                axios.get('order-info', {
                     params: {
                         orderNumber: orderNumber
@@ -428,6 +412,7 @@ export default {
             handleModalClose() {
                 this.isModalOpen = false;
                 this.dynamicDisplay = 'none';
+                document.body.classList.remove('modal-open'); 
             },
             orderDetailsInfo() {                
               var auth = localStorage.getItem('auth');
@@ -475,5 +460,49 @@ export default {
   }
   .axil-dashboard-order .table thead th {
     padding: 0px 0px!important;
+}
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000; /* Ensure modal appears on top of overlay */
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #0000009e;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.modal-content {
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.modal-overlay {
+  position: fixed;
+  z-index: 999; /* Ensure overlay appears behind modal */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+}
+.axil-dashboard-order .table tbody .view-btn {
+    padding: 0px 20px;    
+}
+body {
+  overflow-y: scroll;
+}
+
+body.modal-open {
+  overflow: hidden!important;
 }
 </style>
