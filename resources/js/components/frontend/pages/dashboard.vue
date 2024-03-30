@@ -43,17 +43,15 @@
                                         <div class="table-responsive">
                                             <table class="table">
                                                 <thead>
-                                                    <tr>
-                                                        <th >SL</th>
+                                                    <tr>                                                  
                                                         <th >Order</th>
                                                         <th >Date</th>
-                                                        <th >Status</th>                                                        
+                                                        <th style="width:10px" >Status</th>                                                        
                                                         <th >Actions</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                  <tr v-for="(order,index) in orders" :key="index">
-                                                      <th scope="row">{{index+1}}</th>
+                                                  <tr v-for="(order,index) in orders" :key="index">                                                      
                                                       <th scope="row">#{{order.order_number}}</th>
                                                       <td>{{ formatCreatedAt(order.created_at) }}</td>                                                       
                                                       <td>                                                                                                              
