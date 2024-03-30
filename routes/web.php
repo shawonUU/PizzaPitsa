@@ -33,7 +33,7 @@ use App\Http\Controllers\Admin\ProductMnagementController;
 */
 
 Route::get('/', function () {
-//    Mail::to("shawonmahmodul12@gmail.com")->send(new VerificationMail(123456));
+   //Mail::to("shawonmahmodul12@gmail.com")->send(new VerificationMail(123456));
     return view('frontend.layouts.app');
 });
 

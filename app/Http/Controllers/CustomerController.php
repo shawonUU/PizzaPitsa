@@ -40,21 +40,11 @@ class CustomerController extends Controller
             'password' => Hash::make($data['password']),
             'role_id' => 2,
             'is_verified' => false,
-            'verification_code' => 123456, //rand(100000, 999999),
+            'verification_code' => rand(100000, 999999),
         ]);
 
-        //Mail::to($user->email)->send(new VerificationMail($user->verification_code));
-        //sendEmployeeCredential([]);
-
-        $to_email = 'shawonmahmodul12@gmail.com';
-        $to_name = 'Recipient Name';
-        $subject = 'Test Email';
-        $content = 'This is a test email from Laravel. Hello!';
-    
-        Mail::raw($content, function($message) use ($to_email, $to_name, $subject) {
-            $message->to($to_email, $to_name)
-                    ->subject($subject);
-        });
+        Mail::to($user->email)->send(new VerificationMail($user->verification_code));
+        
         
         $response = [
             'success' => true,
