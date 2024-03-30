@@ -31,7 +31,7 @@
                                          <div class="slider-product-box">
                                             <div class="product-thumb">
                                                 <a href="javacript:void(0)">
-                                                    <img style="border-radius:10px" src="/frontend/assets/images/mega-pizza-add-up.jpg" alt="Product">
+                                                    <img style="border-radius:10px" src="/frontend/assets/images/mega-pizza-add-2.jpg" alt="Product">
                                                 </a>
                                             </div>
                                             
@@ -41,7 +41,7 @@
                                          <div class="slider-product-box">                                              
                                              <div class="product-thumb">
                                                 <a href="javacript:void(0)">
-                                                    <img style="border-radius:10px" src="/frontend/assets/images/mega-pizza-add-bottom.jpg" alt="Product">
+                                                    <img style="border-radius:10px" src="/frontend/assets/images/mega-pizza-add-1.jpg" alt="Product">
                                                 </a>
                                             </div>
                                         </div>
@@ -228,7 +228,7 @@
             </div>
             <!-- End Categorie Area  -->
             <!-- Start Flash Sale Area  -->
-            <div v-for="(category, categoryId) in sortedCategories" :key="categoryId" class="axil-new-arrivals-product-area  flash-sale-area bg-color-white  pb--0 mt-5" :id="'product_section'+category.category_id">
+            <div v-for="(category, categoryId) in sortedCategories" :key="categoryId" class="axil-new-arrivals-product-area  flash-sale-area bg-color-white  pb--0" :id="'product_section'+category.category_id">
                 <div class="container">
                 <template v-if="category.products.length > 0">
                     <div class="product-area pb--50">
@@ -851,4 +851,9 @@ export default {
     padding: 0px 0px;
     overflow: hidden;
 }
+.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+    padding-left: 9px!important;
+    padding-right: 16px!important;
+}
+
 </style>

@@ -167,7 +167,7 @@
                                     <button data-testid="header_login" type="button" data-type="tertiary" data-size="small" class="sc-1rmt3mq-0 dOEDNV">My Orders</button>
                                 </li> -->
                                 <li class="shopping-cart" @click="handleCartClick">
-                                    <a href="javascript:void(0)" style="font-size: 33px;margin-top: 8px;" class="cart-dropdown-btn mobileCart">
+                                    <a href="javascript:void(0)" style="font-size: 28px;margin-top: 8px;" class="cart-dropdown-btn mobileCart">
                                         <span class="cart-count">{{ cartItemCount }}</span>
                                         <i class="flaticon-shopping-cart" style="color:#fff"></i>
                                     </a>
@@ -514,4 +514,14 @@ export default {
 .header-top-link .langAndNum li {
     padding-left: 24px;
 }
+.jzJZpw[data-v-af80eab4] {
+    flex-direction: unset; 
+}
+@media only screen and (max-width: 768px){
+.axil-mainmenu[data-v-af80eab4] {
+    background: rgb(238, 110, 45);
+    padding: 2px 0;
+}
+}
+
 </style>

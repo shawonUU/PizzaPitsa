@@ -44,31 +44,35 @@
                                             <table class="table">
                                                 <thead>
                                                     <tr>
-                                                        <th scope="col">SL</th>
-                                                        <th scope="col">Order</th>
-                                                        <th scope="col">Date</th>
-                                                        <th scope="col">Status</th>
-                                                        <th scope="col">Total Amount</th>
-                                                        <th scope="col">Actions</th>
+                                                        <th >SL</th>
+                                                        <th >Order</th>
+                                                        <th >Date</th>
+                                                        <th >Status</th>                                                        
+                                                        <th >Actions</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-
-                                                    <tr v-for="(order,index) in orders" :key="index">
-                                                        <th scope="row">{{index+1}}</th>
-                                                        <th scope="row">#{{order.order_number}}</th>
-                                                        <td>{{ formatCreatedAt(order.created_at) }}</td>                                                       
-                                                        <td>
-                                                            <select name="" id="" disabled>
-                                                                <option  v-for="(status,index) in orderStatuses" :key="index" :selected="index==order.order_status">
-                                                                    {{ status }}
-                                                                </option>
-                                                            </select>
-                                                        </td>
-                                                        <td>{{order.total_amount}}</td>
-                                                        <td><a href="javascript:void(0)" @click="handleModalOpen(order.order_number)" class="axil-btn view-btn">View</a></td>
-                                                    </tr>
-                                                    
+                                                  <tr v-for="(order,index) in orders" :key="index">
+                                                      <th scope="row">{{index+1}}</th>
+                                                      <th scope="row">#{{order.order_number}}</th>
+                                                      <td>{{ formatCreatedAt(order.created_at) }}</td>                                                       
+                                                      <td>                                                                                                              
+                                                        {{
+                                                          order.order_status === 1 ? 'Pending'
+                                                          : order.order_status === 2 ? 'Processing'
+                                                          : order.order_status === 3 ? 'Shipped'
+                                                          : order.order_status === 4 ? 'Out for Delivery'
+                                                          : order.order_status === 5 ? 'Delivered'
+                                                          : order.order_status === 6 ? 'Canceled'
+                                                          : order.order_status === 7 ? 'Refunded'
+                                                          : order.order_status === 8 ? 'On Hold'
+                                                          : order.order_status === 9 ? 'Backordered'
+                                                          : order.order_status === 10 ? 'Returned'
+                                                          : 'Unknown'
+                                                        }}                                                   
+                                                      </td>                                                    
+                                                      <td><a href="javascript:void(0)" @click="handleModalOpen(order.order_number)" class="axil-btn view-btn">View</a></td>
+                                                  </tr>                                                    
                                                 </tbody>
                                             </table>
                                         </div>
