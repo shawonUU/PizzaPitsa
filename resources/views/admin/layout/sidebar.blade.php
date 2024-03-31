@@ -176,7 +176,7 @@
                                 <a href="{{ route('users.index') }}" class="nav-link">User</a>
                             </li>
                             <li class="nav-item">
-                                <a href="advance-ui-nestable.html" class="nav-link" data-key="t-nestable-list">Role</a>
+                                <a href="{{ route('role.index') }}" class="nav-link" data-key="t-nestable-list">Role</a>
                             </li>
                         </ul>
                     </div>
