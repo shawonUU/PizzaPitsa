@@ -268,15 +268,15 @@ export default {
         }
         if(!selectedSize) return;
 
-        var orderPrice = this.productSizes[selectedSize].price * this.quantity;
+        var orderPrice = parseFloat(this.productSizes[selectedSize].price) * parseFloat(this.quantity);
         var elements = document.getElementsByClassName('topingsItem');
         for(var i=0; i<elements.length; i++){
           if(elements[i].checked){
-              orderPrice += this.productTopings[elements[i].value].price;
+              orderPrice += parseFloat(this.productTopings[elements[i].value].price);
           }
         }
 
-        this.orderPrice = orderPrice;
+        this.orderPrice = orderPrice.toFixed(2);
 
       },
       addTocart(){
@@ -331,9 +331,9 @@ export default {
                         }
                     }
 
-                    existingItem.totalPrice = existingItem.quantity * item.size.price;
+                    existingItem.totalPrice = parseFloat(existingItem.quantity) * parseFloat(item.size.price);
                      for (const i in bindTopings) {
-                        existingItem.totalPrice += bindTopings[i].price;
+                        existingItem.totalPrice += parseFloat(bindTopings[i].price);
                     }
 
                     existingItem.topings = bindTopings;

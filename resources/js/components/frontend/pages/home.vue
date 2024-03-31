@@ -630,6 +630,9 @@ export default {
                     this.grandTotal -= coupon.discount;
                 }
 
+                this.grandTotal = this.grandTotal.toFixed(2);
+                this.subTotal = this.subTotal.toFixed(2);
+
 
 
             }

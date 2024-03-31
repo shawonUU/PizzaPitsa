@@ -50,7 +50,7 @@ class ProductContoller extends Controller
         $imageName = "";
         if ($request->hasFile('images')) {
             $image = $request->file('images');
-            $destinationPath = 'frontend/product_images/';
+            $destinationPath = public_path('frontend/product_images/');
             $imageName = now()->format('YmdHis') . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
             $image->move($destinationPath, $imageName);
         }
@@ -117,7 +117,7 @@ class ProductContoller extends Controller
             if ($product->image != NULL) {
                 unlink(public_path('frontend/product_images/' . $product->image));
             }
-            $destinationPath = 'frontend/product_images/';
+            $destinationPath = public_path('frontend/product_images/');
             $imageName = date('YmdHis') . "." . $image->getClientOriginalExtension();
             $image->move($destinationPath, $imageName);
         } else {
@@ -205,7 +205,7 @@ class ProductContoller extends Controller
         $imageName = "";
         if ($request->hasFile('image')) {
             $image = $request->file('image');
-            $destinationPath = 'frontend/product_images/';
+            $destinationPath = public_path('frontend/product_images/');
             $imageName = now()->format('YmdHis') . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
             $image->move($destinationPath, $imageName);
         }
@@ -294,7 +294,7 @@ class ProductContoller extends Controller
             $imageName = $size->image;
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
-                $destinationPath = 'frontend/product_images/';
+                $destinationPath = public_path('frontend/product_images/');
                 $imageName = now()->format('YmdHis') . '_' . Str::random(10) . '.' . $image->getClientOriginalExtension();
                 $image->move($destinationPath, $imageName);
                 if ($size->image)

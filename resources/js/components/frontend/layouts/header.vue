@@ -10,7 +10,7 @@
                             <div class="header-top-link">
                             <ul class="langAndNum">
                                 <li>
-                                <div class="header-top-dropdown">
+                                <div class="header-top-dropdown" style="margin-top: 4px">
                                     <div class="dropdown">
                                         <button class="dropdown-toggle" @click="toggleDropdown()" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                         {{selectedLanguage}}
@@ -111,7 +111,7 @@
                                 <img width="200px" :src="'/frontend/assets/images/logo/2 pizza logo-02.png'" alt="Site Logo">
                             </router-link>
                         </div>
-                        <div class="header-main-nav">
+                        <div class="header-main-nav" id="headerMainNav">
                             <!-- Start Mainmanu Nav -->
                             <nav class="mainmenu-nav">
                                 <button class="mobile-close-btn mobile-nav-toggler"><i class="fas fa-times"></i></button>
@@ -134,13 +134,13 @@
                                      <hr style="background:#fff">
                                     <!-- <p class="menucategory" style="color:#fff; text-align:center;">Menus</p> -->
                                     <li class="mobileMenu">
-                                        <router-link to="/about" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">About</router-link>
+                                        <router-link to="/about" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" @click="closeNav()"  data-size="normal">About</router-link>
                                     </li>
                                     <li class="mobileMenu">
-                                        <router-link to="/franchise" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">Franchise</router-link>
+                                        <router-link to="/franchise" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" @click="closeNav()" data-size="normal">Franchise</router-link>
                                     </li>
                                     <li class="mobileMenu">
-                                        <router-link to="/contact" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">Contact</router-link>
+                                        <router-link to="/contact" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" @click="closeNav()" data-size="normal">Contact</router-link>
                                     </li>
                                
                                   
@@ -281,7 +281,12 @@ export default {
           this.emitter.emit('loginModalEvent', {'loginModalEvent': '1'})
         },
         scrollToTeamSection(id) {
-            this.emitter.emit('scrollToTeamSection',id);
+            this.emitter.emit('scrollToTeamSection',id); 
+            this.closeNav();          
+        },
+        closeNav () {
+            document.getElementById('headerMainNav').classList.remove('open');
+            document.getElementsByClassName('closeMask')[0].classList.remove('closeMask');
         }
 
 
@@ -406,7 +411,7 @@ export default {
 .jzJZpw {
     display: flex;
     position: relative;
-    flex-direction: column;
+    flex-direction: unset;
     -webkit-box-align: center;
     align-items: center;
 }
@@ -472,7 +477,7 @@ export default {
  }
  .axil-mainmenu {
     background: rgb(238, 110, 45);
-    padding: 10px 0;
+    padding: 2px 0;
 }
 .header-main-nav.open .mainmenu-nav {
     background: rgb(238, 110, 45);
@@ -514,14 +519,4 @@ export default {
 .header-top-link .langAndNum li {
     padding-left: 24px;
 }
-.jzJZpw[data-v-af80eab4] {
-    flex-direction: unset; 
-}
-@media only screen and (max-width: 768px){
-.axil-mainmenu[data-v-af80eab4] {
-    background: rgb(238, 110, 45);
-    padding: 2px 0;
-}
-}
-
 </style>

@@ -32,7 +32,7 @@ class VerificationMail extends Mailable
     {
         $pinCode = $this->pinCode;
         return $this->view('layouts.verificationMail',compact('pinCode'))
-                    ->subject('Your PIN Code');
+                    ->subject('Verification code');
     }
 }
 

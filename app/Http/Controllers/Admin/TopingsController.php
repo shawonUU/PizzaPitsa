@@ -38,7 +38,7 @@ class TopingsController extends Controller
         ]);
         $imageName = "";
         if ($image = $request->file('images')) {
-            $destinationPath = 'frontend/toping_images/';
+            $destinationPath = public_path('frontend/toping_images/');
             $imageName = date('YmdHis') . "." . $image->getClientOriginalExtension();
             $image->move($destinationPath, $imageName);
         }
@@ -85,6 +85,7 @@ class TopingsController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        
         $product = Toping::where('id', $id)->first();
         $request->validate([
             'name' => 'required|string',
@@ -92,18 +93,19 @@ class TopingsController extends Controller
             'status' => 'required|in:0,1',
             // Add any other validation rules as needed
         ]);
-
+        
         $imageName = "";
         if ($image = $request->file('images')) {
             if ($product->image != NULL) {
                 unlink(public_path('frontend/toping_images/' . $product->image));
             }
-            $destinationPath = 'frontend/toping_images/';
+            $destinationPath = public_path('frontend/toping_images/');
             $imageName = date('YmdHis') . "." . $image->getClientOriginalExtension();
             $image->move($destinationPath, $imageName);
         } else {
             $imageName = $product->image;
         }
+        // return $imageName;
         $product->update([
             'name' => $request->input('name'),
             'price' => $request->input('price'),

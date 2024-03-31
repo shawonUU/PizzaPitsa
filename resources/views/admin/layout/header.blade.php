@@ -630,7 +630,7 @@
 </header>
 
 <audio id="myAudio" controls >
-<source src="{{ asset('audio/notification.wav') }}" type="audio/wav">
+<source src="{{ asset('audio/level-up-191997.mp3') }}" type="audio/wav">
 Your browser does not support the audio element.
 </audio>
 

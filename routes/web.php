@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\NutritionController;
 use App\Http\Controllers\Admin\TimeScheduleController;
 use App\Http\Controllers\Admin\DelivaryChargeController;
 use App\Http\Controllers\Admin\ProductMnagementController;
+use App\Http\Controllers\Admin\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +34,7 @@ use App\Http\Controllers\Admin\ProductMnagementController;
 */
 
 Route::get('/', function () {
-//    Mail::to("shawonmahmodul12@gmail.com")->send(new VerificationMail(123456));
+   //Mail::to("shawonmahmodul12@gmail.com")->send(new VerificationMail(123456));
     return view('frontend.layouts.app');
 });
 
@@ -68,6 +69,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::post('assign-delivery-boy',[OrderController::class, 'assignDeliveryBoy'])->name('assign.deliveryboy');
     Route::post('update-address',[OrderController::class, 'updateAddress'])->name('address.update');
     Route::resource('users', UserController::class);
+    Route::resource('roles', RoleController::class);
 });
 
 Route::get('get-location-schedule', [Location::class, 'locationSchedule']);
@@ -78,7 +80,11 @@ Route::prefix('frontend')->middleware(['auth'])->group(function () {
 });
 
 
-Auth::routes();
+Auth::routes([
+    'register' => false,
+    'reset' => false,
+    'verify' => false,
+]);
 
 
 //Api for axios

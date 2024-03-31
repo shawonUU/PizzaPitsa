@@ -3,8 +3,9 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Pizza Pitso</title>
+        <title>Pizza Pitsa</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
+        <link rel="icon" type="image/x-icon" href="{{ asset('') }}">
          <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="{{ asset('frontend') }}/assets/css/vendor/bootstrap.min.css">
         <link rel="stylesheet" href="{{ asset('frontend') }}/assets/css/vendor/font-awesome.css">

@@ -47,7 +47,7 @@
                                                         <th >Order</th>
                                                         <th >Date</th>
                                                         <th style="width:10px" >Status</th>                                                        
-                                                        <th style="width:10px">Actions</th>
+                                                        <th >Actions</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>

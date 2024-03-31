@@ -7,7 +7,7 @@
     <title>Your PIN Code</title>
 </head>
 <body>
-    <p>Your PIN code is: {{ $pinCode }}</p>
-    <p>Please use this PIN code for authentication purposes.</p>
+    <p>Your verification code is: {{ $pinCode }}</p>
+    <p>Please use this code for authentication purposes.</p>
 </body>
 </html>
