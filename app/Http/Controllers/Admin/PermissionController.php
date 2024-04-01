@@ -2,21 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 
-class RoleController extends Controller
+class PermissionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $users = Role::get();
-        return view('admin.pages.role.index', compact('users'));
+        $permissions = Permission::get();
+        return view('admin.pages.permission.index', compact('permissions'));
     }
 
     /**
@@ -24,8 +22,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $permissions = Permission::get();
-        return view('admin.pages.role.create',compact('permissions'));
+        return view('admin.pages.permission.create');
     }
 
     /**
@@ -33,27 +30,24 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request;
         $rules = [
             'name' => 'required|string',
         ];
 
         $validatedData = $request->validate($rules);
 
-        $user = new Role();
-        $user->name = $validatedData['name'];
+        $user = new Permission();
+        $user->name =strtolower( $validatedData['name']);
+        $user->guard_name  = 'web';
         $user->save();
-        foreach ($request->permissions as $permission) {
-            // return $permission;
-            DB::insert('INSERT INTO role_has_permissions (role_id, permission_id) VALUES (?, ?)', [$user->id, $permission]);
-        }
+
         session()->flash('sweet_alert', [
             'type' => 'success',
             'title' => 'Success!',
             'text' => 'User added success',
         ]);
         // Redirect or return a response as needed
-        return redirect()->route('role.index')->with('success', 'Role created successfully');
+        return redirect()->route('permission.index')->with('success', 'Permission created successfully');
     }
 
     /**
@@ -85,13 +79,13 @@ class RoleController extends Controller
      */
     public function destroy(string $id)
     {
-        $category = Role::findOrFail($id);
+        $category = Permission::findOrFail($id);
         $category->delete();
         session()->flash('sweet_alert', [
             'type' => 'success',
             'title' => 'Success!',
-            'text' => 'Role Delete success',
+            'text' => 'Permission Delete success',
         ]);
-        return redirect()->route('Role.index');
+        return redirect()->route('permission.index');
     }
 }
