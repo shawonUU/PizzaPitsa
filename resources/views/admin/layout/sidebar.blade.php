@@ -173,11 +173,14 @@
                     <div class="collapse menu-dropdown" id="sidebarAuthorizition">
                         <ul class="nav nav-sm flex-column">
                             <li class="nav-item">
-                                <a href="{{ route('users.index') }}" class="nav-link">User</a>
+                                <a href="{{ route('permission.index') }}" class="nav-link" data-key="t-nestable-list">Permission</a>
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('role.index') }}" class="nav-link" data-key="t-nestable-list">Role</a>
-                            </li>
+                            </li>                           
+                            <li class="nav-item">
+                                <a href="{{ route('users.index') }}" class="nav-link">User</a>
+                            </li>                          
                         </ul>
                     </div>
                 </li>

@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\CurrencyController;
 use App\Http\Controllers\Admin\NutritionController;
 use App\Http\Controllers\Admin\TimeScheduleController;
 use App\Http\Controllers\Admin\DelivaryChargeController;
+use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\ProductMnagementController;
 use App\Http\Controllers\Admin\RoleController;
 
@@ -70,6 +71,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::post('update-address',[OrderController::class, 'updateAddress'])->name('address.update');
     Route::resource('users', UserController::class);
     Route::resource('role', RoleController::class);
+    Route::resource('permission', PermissionController::class);
 });
 
 Route::get('get-location-schedule', [Location::class, 'locationSchedule']);
