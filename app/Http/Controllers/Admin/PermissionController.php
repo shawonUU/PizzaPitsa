@@ -37,7 +37,7 @@ class PermissionController extends Controller
         $validatedData = $request->validate($rules);
 
         $user = new Permission();
-        $user->name =strtolower( $validatedData['name']);
+        $user->name = $validatedData['name'];
         $user->guard_name  = 'web';
         $user->save();
 

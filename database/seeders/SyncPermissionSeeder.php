@@ -14,7 +14,6 @@ class SyncPermissionSeeder extends Seeder
     public function run(): void
     {
         DB::table('role_has_permissions')->insert([
-
             'role_id' => '1',
             'permission_id' => '1',
         ]);
