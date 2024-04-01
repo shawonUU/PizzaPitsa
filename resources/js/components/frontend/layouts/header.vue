@@ -3,10 +3,10 @@
         <a href="#top" class="back-to-top" id="backto-top"><i class="fal fa-arrow-up"></i></a>
         <!-- Start Header -->
         <header class="header axil-header header-style-5">
-            <div class="axil-header-top d-none d-lg-block">
+            <div class="axil-header-top d-none d-lg-block d-md-block">
                 <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-lg-6 col-sm-6 col-12">
+                    <div class="row align-items-center pb-2">
+                        <div class="col-lg-6 col-sm-6 col-md-8 col-12">
                             <div class="header-top-link">
                             <ul class="langAndNum">
                                 <li>
@@ -33,7 +33,7 @@
                             </div>
                              
                         </div>
-                        <div class="col-lg-6 col-sm-6 col-12">
+                        <div class="col-lg-6 col-sm-6 col-md-4 col-12">
                             <div class="header-top-link">
                                 <ul class="quick-link">
                                     <li><a href="#">Tracking</a></li>
@@ -44,7 +44,7 @@
                     </div>
                 </div>
             </div>
-            <div class="d-none d-lg-block" style="background-color:rgb(238 110 45)">
+            <div class="d-none d-lg-block d-md-none" style="background-color:rgb(238 110 45)">
                 <div class="sc-1of5u0p-0 guZDAe container">
                     <div class="left">
                         <router-link to="/"  class="sc-2c0aw7-0 wwSTC sc-1of5u0p-1 ibZIbo" data-active="true" data-type="primary" data-size="normal">
@@ -467,6 +467,31 @@ export default {
 }
 .mobileMenu {
     display: none;
+}
+@media only screen and (max-width: 991px){
+.header-style-5 .axil-mainmenu {
+    background: rgb(238 110 45);    
+}
+.mobileCart {
+    display: block;
+}
+.header-brand {
+    display: block;
+}
+.header-main-nav .mainmenu-nav {
+    background-color: rgb(238 110 45);
+   
+}
+.header-main-nav .mainmenu-nav .mainmenu>li>a {
+    color: #ffffff;
+}
+.mobile-nav-brand img {
+    margin-left: -26px;
+    max-height: 35px;
+}
+.mobileMenu {
+    display: block;
+}
 }
 @media only screen and (max-width: 768px) {
   .header-brand {

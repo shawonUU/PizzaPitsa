@@ -240,7 +240,7 @@
                         </div>
                         <div class="new-arrivals-product-activation slick-layout-wrapper--15 axil-slick-arrow  arrow-top-slide">
                         <div class="row">
-                            <div v-for="product in category.products" :key="product.id" class="col-6 col-md-3">
+                            <div v-for="product in category.products" :key="product.id" class="col-6 col-lg-3 col-md-6">
                                 <div class="slick-single-layout">
                                     <div class="axil-product product-style-four">
                                     <div @click="getProductDetails(product.id)" class="thumbnail">
@@ -857,6 +857,27 @@ export default {
 .container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
     padding-left: 9px!important;
     padding-right: 16px!important;
+}
+
+
+/* CSS for devices with screen widths between 449px and 767px */
+@media screen and (min-width: 449px) and (max-width: 767px) {
+    .main-slider-style-2 .main-slider-thumb {
+    position: relative;
+    margin-left: 9px;
+    z-index: 1;
+    flex: 1;
+    text-align: right;
+}
+}
+
+@media screen and (min-width: 768px) and (max-width: 990px) { 
+       .main-slider-style-2 .main-slider-thumb {
+        position: relative;
+        margin-left: 60px;
+        z-index: 1;
+        flex: 1;
+    } 
 }
 
 </style>
