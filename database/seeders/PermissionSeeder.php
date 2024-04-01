@@ -13,7 +13,7 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         Permission::create([
-            'name' => 'administration',
+            'name' => 'Administration',
             'guard_name' => 'web',
         ]); 
     }

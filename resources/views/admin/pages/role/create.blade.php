@@ -37,25 +37,24 @@
                             <form action="{{ route('role.store') }}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">                                
-                                    <div class="col-xxl-3 col-md-6 mb-3">
+                                    <div class="col-12 col-md-4">
                                         <label for="name" class="form-label">Name</label>
                                         <input type="text" class="form-control" value="{{ old('name') }}" id="name" name="name" placeholder="Enter User name" >
+                                    </div>
+                                    <div class="col-12 col-md-8">
+                                        <h5>Parmissions</h5>
+                                        <hr style="margin:0px;">
+                                        <div class="row mt-2">
+                                            @foreach ($permissions as $item)
+                                            <div class="col-12 col-sm-6 col-md-4 col-lg-3 shadow-lg">
+                                                <div class="form-check form-switch" style="padding: 0px;">
+                                                    <label  for="permission_{{ $item->id }}" >{{ $item->name }}</label><br>
+                                                    <input class="form-check-input mb-2" style="margin-left: 0.5em !important;" type="checkbox" role="switch" name="permissions[]" id="permission_{{ $item->id }}" value="{{ $item->id }}" />
+                                                </div>
+                                            </div>
+                                            @endforeach
+                                        </div>
                                     </div>                                                                                                       
-                                </div>
-                                <div>
-                                    <style>
-                                        ul li {
-                                            list-style: none;
-                                        }
-                                    </style>
-                                    <ul>
-                                        @foreach ($permissions as $item)
-                                            <li>
-                                                <input type="checkbox" name="permissions[]" id="permission_{{ $item->id }}" value="{{ $item->id }}">
-                                                <label for="permission_{{ $item->id }}">{{ $item->name }}</label>
-                                            </li>
-                                        @endforeach
-                                    </ul>
                                 </div>
                                 <button type="submit" class="btn btn-primary float-end">Submit</button>
                             </form>

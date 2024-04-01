@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -23,7 +24,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin.pages.users.create');
+        $roles = Role::get();
+        return view('admin.pages.users.create',compact('roles'));
     }
 
     /**
@@ -32,7 +34,8 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $rules = [
-            'role_id' => 'required',
+            // 'role_id' => 'required',
+            'user_role' => 'required',
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'phone' => 'unique:users,phone',
@@ -52,7 +55,7 @@ class UserController extends Controller
         }
         // Create a new product instance
         $user = new User();
-        $user->role_id = $validatedData['role_id'];
+        $user->role_id = $validatedData['user_role'];
         $user->name = $validatedData['name'];
         $user->email = $validatedData['email'];
         $user->phone = $validatedData['phone'];
@@ -60,6 +63,9 @@ class UserController extends Controller
         $user->images = $imageName; // Hash password
         $user->status = $validatedData['status'];
         $user->save();
+
+        $role = Role::where('id', $validatedData['user_role'])->first();
+        $user->assignRole($role);
 
         session()->flash('sweet_alert', [
             'type' => 'success',

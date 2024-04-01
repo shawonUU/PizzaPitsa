@@ -287,9 +287,9 @@
                         <div class="row">
                             <div class="col-lg-7 col-sm-12">                        
                                 <div class="francicise" style="margin-top:100px; margin-bottom:20px">
-                                <h2 class="elementor-heading-title elementor-size-default" style="font-size:40px; color:#fff">Are you interested in entrepreneurship?</h2>
+                                <h4 class="elementor-heading-title elementor-size-default" style="font-size:40px; color:#fff">Are you interested in entrepreneurship?</h4>
                                                                                               
-                                <p class="elementor-heading-title elementor-size-default" style="color:#fff">We are looking for lovers of good street food to become new Elias döner entrepreneurs Previous restaurant experience, managerial experience and/or entrepreneurial experience is considered an advantage.</p> 
+                                <p class="elementor-heading-title elementor-size-default" style="color:#fff">we are looking for lovers of good pizza food to become new pizzapitsa enterpreneurs.</p> 
                               
                                 
                                 <router-link to="/contact" class="elementor-button-link elementor-button elementor-size-sm" role="button">
