@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Admin\Size;
 use App\Models\Admin\Toping;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use App\Models\SizeVsTopingPrice;
 use App\Models\Admin\ProductToping;
+use App\Http\Controllers\Controller;
 
 class TopingsController extends Controller
 {
@@ -23,7 +25,8 @@ class TopingsController extends Controller
      */
     public function create()
     {
-        return view('admin.pages.toping.create');
+        $sizes = Size::where('status','1')->get();
+        return view('admin.pages.toping.create',compact('sizes'));
     }
 
     /**
@@ -31,6 +34,9 @@ class TopingsController extends Controller
      */
     public function store(Request $request)
     {
+
+        // return $request->all();
+
         $request->validate([
             'name' => 'required|string',
             'price' => 'required|numeric',
@@ -50,9 +56,25 @@ class TopingsController extends Controller
             'status' => $request->input('status'),
             'created_by' => auth()->user()->id,
         ]);
-
-        // Save the product
         $product->save();
+
+        $sizeIds = $request->sizeId;
+        $prices = $request->prices;
+        
+        foreach($sizeIds as $key => $sizeId){
+            if($sizeId){
+                $row = SizeVsTopingPrice::where('size_id',$sizeId)->where('toping_id', $product->id)->first();
+                if(!$row){
+                    $row = new  SizeVsTopingPrice;
+                    $row->size_id = $sizeId;
+                    $row->toping_id = $product->id;
+                    $row->price = $prices[$key]??0;
+                    $row->save();
+                }
+            }
+        }
+
+
 
         session()->flash('sweet_alert', [
             'type' => 'success',
