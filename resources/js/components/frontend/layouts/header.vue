@@ -544,4 +544,10 @@ export default {
 .header-top-link .langAndNum li {
     padding-left: 24px;
 }
+@media screen and (min-width: 992px) and (max-width: 1199px) { 
+    .header-style-5 .mainmenu>li {
+        margin: 0 7px;
+    }
+}
+
 </style>
