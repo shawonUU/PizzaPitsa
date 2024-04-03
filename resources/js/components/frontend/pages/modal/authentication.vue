@@ -31,7 +31,7 @@
                     <div class="col-12">
                         <label for="name" class="form-label">Password</label>
                         <input type="password" style="height: 40px; padding:5px;border: 1px solid #cfcbcb;" class="form-control" id="password" name="password" placeholder="Password">
-                        <a href="javascript:void(0)" @click="forgotPassword" style="color:blue">Forgot Password?</a>
+                        <!-- <a href="javascript:void(0)" @click="forgotPassword" style="color:blue">Forgot Password?</a> -->
                     </div>
 
                     <div class="col-12 mt-3">
