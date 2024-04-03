@@ -31,7 +31,9 @@
                     <div class="col-12">
                         <label for="name" class="form-label">Password</label>
                         <input type="password" style="height: 40px; padding:5px;border: 1px solid #cfcbcb;" class="form-control" id="password" name="password" placeholder="Password">
+                        <a href="javascript:void(0)" @click="forgotPassword" style="color:blue">Forgot Password?</a>
                     </div>
+
                     <div class="col-12 mt-3">
                         <div class="d-flex justify-content-end">
                             <button type="button" class="btn btn-primary p-2" style="font-size: 12px; width: 15%;" @click="signIn()">Sign In</button>
@@ -71,7 +73,7 @@
                     </div>
                 </div>
 
-                <div style="margin-top:60px;">
+                <!-- <div style="margin-top:60px;">
                     <p style="display:block;text-align:center; margin:0;"><span class="social-label">Or login with</span></p>
                     <div class="social-login d-flex justify-content-center" style="margin-top:20px;">
 
@@ -81,7 +83,7 @@
                             <li><a href="#"><i style="margin: 2px; color: white; background: #31aa52; padding: 5px; border-radius: 15%;" class="flaticon-google"><b>G</b></i></a></li>
                         </ul>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div v-if="verificationSection">
                 <h4 class="text-center m-0 p-0">Verification</h4>
@@ -99,12 +101,33 @@
                     </div>
                     <div class="col-12 mt-3">
                         <div class="d-flex justify-content-end">
-                            <button @click="verify()" type="button" class="btn btn-primary p-2" style="font-size: 12px; width: 15%;">Verify</button>
+                            <button @click="verify('forVerifyCode')" type="button" class="btn btn-primary p-2" style="font-size: 12px; width: 15%;">Verify</button>
                         </div>
                     </div>
                 </div>
             </div>
-
+           <div v-if="forgotPasswordSection">
+                <h4 class="text-center m-0 p-0">Forgot password?</h4>
+                <!-- <p class="text-center m-0 p-0"> Sent verification code again? <a class="text-center m-0 p-0"  href="javascript:void(0)" @click="sentVerificationMail()"><u>Sent</u></a> </p> -->
+                <div class="row">
+                    <p>Instruction: You will get a verification code in your email. Input the code in the verification code field and click the 'Submit' button. Then you will be able to change your password.</p>
+                    <div class="col-12">
+                        <p v-if="verificationError!=''" style="text-align:center; color:white; padding:5px; background:red; opacity: 0.5;" v-html="verificationError">
+                        </p>
+                        <p v-if="verificationMessage!=''" style="text-align:center; color:white; padding:5px; background:green; opacity: 0.5;" v-html="verificationMessage">
+                        </p>
+                    </div>
+                    <div class="col-12">
+                        <label for="verification_mail" class="form-label">Email</label>
+                        <input type="email" style="height: 40px; padding:5px;border: 1px solid #cfcbcb;" class="form-control" id="verification_mail" name="verification_mail" v-model="verification_mail" placeholder="Enter mail">
+                    </div>
+                    <div class="col-12 mt-3">
+                        <div class="d-flex justify-content-end">
+                            <button @click="verify('forVerifEmail')" type="button" class="btn btn-primary p-2" style="font-size: 12px; width: 30%;">Send Verification</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
           </div>
         </div>
       </div>
@@ -131,6 +154,8 @@
             signInDataError:'',
             verificationError:'',
             verificationMessage:'',
+            forgotPasswordSection:false,
+            verification_mail:'',
           }
       },
       components: {
@@ -248,7 +273,29 @@
                 console.log(err);
             })
         },
-        verify(){
+        verify(type){        
+        if(type == 'forVerifEmail') {
+            axios.post('send-verification-mail', {
+            email: this.verification_mail,
+            type: 'veryForForgot',
+            })
+            .then((res)=>{
+                console.log(res);
+                this.signInSection = false;
+                this.signUpSection = false;
+                this.verificationSection = false;
+                this.verificationError = '';
+                this.verificationMessage = '';
+                if(res.data.success){
+                    this.verificationMessage =  res.data.message;
+                }else{
+                    this.verificationError = res.data.message;
+                }
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+        } else {
             var code = document.getElementById('verification_code').value.trim();
             this.verificationError = '';
 
@@ -278,10 +325,18 @@
             .catch((err)=>{
                 console.log(err);
             })
+        }
+            
         },
         updateHeaderAfterLogin() {
           this.emitter.emit('updateHeaderAfterLogin', {'updateHeaderAfterLogin': '1'})
-        }
+        },
+        forgotPassword(){
+            this.signInSection = false;
+            this.signUpSection = false;
+            this.verificationSection = false;
+            this.forgotPasswordSection = true;
+        },
       }
   }
   </script>
