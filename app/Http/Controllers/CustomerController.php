@@ -104,21 +104,41 @@ class CustomerController extends Controller
     public function sendVerificationMail(Request $request)
     {
         $user = User::where('email', $request->email)->first();
-        if ($user) {
-            $user->verification_code = rand(100000, 999999);
-            $user->update();
-            Mail::to($user->email)->send(new VerificationMail($user->verification_code));
+        if ( $request->type == "veryForForgot") {
+            if ($user) {
+                $user->verification_code = rand(100000, 999999);
+                $user->update();
+                Mail::to($user->email)->send(new VerificationMail($user->verification_code));
+                $response = [
+                    'success' => true,
+                    'message' => 'Verification code sended',
+                    'type' =>'forgotPassword'
+                ];
+                return response()->json($response);
+            }
             $response = [
-                'success' => true,
-                'message' => 'Verification code sended',
+                'success' => false,
+                'message' => 'Invalid Operation',
+            ];
+            return response()->json($response);
+        } else {
+            if ($user) {
+                $user->verification_code = rand(100000, 999999);
+                $user->update();
+                Mail::to($user->email)->send(new VerificationMail($user->verification_code));
+                $response = [
+                    'success' => true,
+                    'message' => 'Verification code sended',
+                ];
+                return response()->json($response);
+            }
+            $response = [
+                'success' => false,
+                'message' => 'Invalid Operation',
             ];
             return response()->json($response);
         }
-        $response = [
-            'success' => false,
-            'message' => 'Invalid Operation',
-        ];
-        return response()->json($response);
+       
     }
 
     public function verifyAccount(Request $request)
