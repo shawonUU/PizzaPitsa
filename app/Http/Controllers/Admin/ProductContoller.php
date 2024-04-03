@@ -412,6 +412,8 @@ return $groupedCategories;
             ->select('topings.*')
             ->get();
 
+        $allTopings = ProductToping::where('status', '1')->get();
+
         $tem = [];
         foreach($productTopings as $row){
             $tem[$row->id] = $row;
@@ -420,6 +422,6 @@ return $groupedCategories;
 
            
         $maxMin = [$minPrice,$maxPrice];
-        return response()->json([$product, $productSizes,$productTopings,$maxMin]);
+        return response()->json([$product, $productSizes,$productTopings,$maxMin,$allTopings]);
     }
 }

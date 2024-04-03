@@ -128,7 +128,7 @@
                       <!-- End Product Variation  -->
                     </div>
 
-
+                    <h6 style="margin-bottom: 5px;">Favorit Topping</h6>
                     <div class="row">
                       <div class="col-3 p-2" v-for="(productToping, topingId) in productTopings" :key="topingId">
                           <div :id="'topingDiv'+topingId" @click="clickOnTopings(topingId)" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border-radius: 10%; cursor:pointer;">
@@ -138,6 +138,13 @@
                               <input :id="'topingsItem'+topingId" :value="productToping.id" name="topingsItem" class="topingsItem" type="checkbox" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
                           </div>
                       </div>
+                    </div>
+
+                    <h6 style="margin-bottom: 5px;">More Topping</h6>
+                    <div class="row">
+                         <select id="multi-select" multiple v-model="selectedOptions">
+                          <option v-for="(toping, topingId) in allTopings" :key="topingId" :value="toping.id">{{ option.label }}</option>
+                        </select>
                     </div>
 
                     <!-- Start Product Action Wrapper  -->
@@ -162,7 +169,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> 
         </div>
       </div>
     </div>
@@ -180,6 +187,7 @@ export default {
         productData: Object,
         productSizes: Object,
         productTopings: Object,
+        allTopings: Object,
         maxMin:""
         // maxMin: object,
       },
