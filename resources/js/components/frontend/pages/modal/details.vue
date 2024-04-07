@@ -140,11 +140,11 @@
                       </div>
                     </div>
                     
-                    <h6 v-if="allTopings.length>0" style="margin-bottom:5px;">All Toppings</h6>
+                    <h6 v-if="moreTopings.length>0" style="margin-bottom:5px;">All Toppings</h6>
                     <div class="row mb-2">
                           <div>
                             <select style="height:30px; border:1px solid #ee6e2d;">
-                              <option v-for="(topping, topingId) in allTopings" :key="topingId" :value="topping.id" @click="selectExtraTopping(topping)">{{topping.name}}</option>
+                              <option v-for="(topping, topingId) in moreTopings" :key="topingId" :value="topping.id" @click="selectExtraTopping(topping)">{{topping.name}}</option>
                             </select>
                           </div>
                     </div>
@@ -198,6 +198,7 @@ export default {
         productSizes: Object,
         productTopings: Object,
         allTopings: Object,
+        moreTopings: Object,
         maxMin:""
         // maxMin: object,
       },
@@ -291,7 +292,7 @@ export default {
         var elements = document.getElementsByClassName('topingsItem');
         for(var i=0; i<elements.length; i++){
           if(elements[i].checked){
-              orderPrice += parseFloat(this.productTopings[elements[i].value].price);
+              orderPrice += parseFloat(this.allTopings[elements[i].value].price);
           }
         }
 
@@ -409,7 +410,7 @@ export default {
     selectExtraTopping(topping){
         var html = `
           <div class="col-3 p-2">
-              <div :id="topingDiv${topping.id}" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border-radius: 10%; cursor:pointer;">
+              <div id="topingDiv${topping.id}" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border-radius: 10%; cursor:pointer;">
                   <img class="p-2" src="/frontend/toping_images/${topping.image}" alt="" style="width: 65px; ">
                   <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">${topping.name}</p>
                   <p class="text-center m-0" style="font-size:12px;"><b>${topping.price}${ this.baseCurrencySymbol }</b></p>
@@ -418,7 +419,10 @@ export default {
           </div>
         `;
 
-        document.getElementById('selectdeExtraTopping').innerHTML += html;
+        //document.getElementById('selectdeExtraTopping').innerHTML += html;
+        document.getElementById('selectdeExtraTopping').insertAdjacentHTML('beforeend', html);
+        var id = "topingDiv"+topping.id;
+        document.getElementById(id).addEventListener('click', () => this.clickOnTopings(topping.id));
     }
 
   }
