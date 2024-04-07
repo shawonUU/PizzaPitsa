@@ -174,6 +174,28 @@ class CustomerController extends Controller
         return response()->json($response);
     }
 
+    public function verifyAccountForgotPassword (Request $request) {       
+            $user = User::where('email', $request->email)->first();
+            if ($user) {
+                if ($user->verification_code == $request->code) {
+                    $user->is_verified = true;
+                    $user->update();
+                    $response = [
+                        'success' => true,
+                        'message' => 'Verified',
+                        'user' => $user,
+                    ];
+                    return response()->json($response);
+                } else {                  
+                    $response = [
+                        'success' => false,
+                        'message' => 'Verification code is not matched',
+                    ];
+                    return response()->json($response);
+                }
+            }             
+    }
+
     public function updateCustomerData(Request $request)
     {
         // Get current authenticated user
@@ -204,5 +226,33 @@ class CustomerController extends Controller
         $user->save();
         $user = User::where('email', $user->email)->first();
         return response()->json(['message' => 'User updated successfully.', 'user' => $user]);
+    }
+
+    public function changePassword (Request $request) {
+        
+        $validator = Validator::make($request->all(), [           
+            'newPassword' => ['required', 'string', 'min:6'],
+            'newConfirmPassword' => 'same:newPassword',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = implode('<br>', $validator->errors()->all());
+            $response = [
+                'success' => false,
+                'message' => $errors,
+            ];
+            return response()->json($response);
+        }
+
+        $data = $request->all();
+        $user = User::where('email',$request->email)->first();
+        $user->password =  Hash::make($data['newPassword']);
+        $user->update();        
+        $response = [
+            'success' => true,
+            'message' => 'Password forgot success',
+        ];
+
+        return response()->json($response);
     }
 }
