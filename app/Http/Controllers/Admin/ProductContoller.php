@@ -411,8 +411,12 @@ return $groupedCategories;
             ->where('product_topings.status', '1')
             ->select('topings.*')
             ->get();
+        $favoritToppingsIds = [];
+        foreach($productTopings as $toping){
+            $favoritToppingsIds[$toping->id] = $toping->id;
+        }
 
-        $allTopings = Toping::where('status', '1')->get();
+        $allTopings = Toping::whereNotIn('id',$favoritToppingsIds)->where('status', '1')->get();
 
         $tem = [];
         foreach($productTopings as $row){
