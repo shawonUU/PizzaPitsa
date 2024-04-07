@@ -412,7 +412,7 @@ return $groupedCategories;
             ->select('topings.*')
             ->get();
 
-        $allTopings = ProductToping::where('status', '1')->get();
+        $allTopings = Toping::where('status', '1')->get();
 
         $tem = [];
         foreach($productTopings as $row){

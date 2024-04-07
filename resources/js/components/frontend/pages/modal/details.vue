@@ -142,10 +142,11 @@
 
                     <h6 style="margin-bottom: 5px;">More Topping</h6>
                     <div class="row">
-                         <select id="multi-select" multiple v-model="selectedOptions">
-                          <option v-for="(toping, topingId) in allTopings" :key="topingId" :value="toping.id">{{ option.label }}</option>
-                        </select>
+                       
+                        
                     </div>
+
+                    
 
                     <!-- Start Product Action Wrapper  -->
                     <div class="product-action-wrapper d-flex-center">
@@ -207,7 +208,8 @@ export default {
        
     },
     mounted(){
-        // console.log(this.productSize);
+        console.log("jh");
+        console.log(this.allTopings);
         this.loadCartFromLocalStorage();
         this.fetchBaseCurrencySymbol();
         this.selectFirstSizeAsDefault();
