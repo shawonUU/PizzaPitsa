@@ -128,20 +128,31 @@
                       <!-- End Product Variation  -->
                     </div>
 
+                    <h6 v-if="productTopings.length>0" style="margin-bottom:5px;">Favorit Toppings</h6>
                     <div class="row">
                       <div class="col-3 p-2" v-for="(productToping, topingId) in productTopings" :key="topingId">
-                          <div :id="'topingDiv'+topingId" @click="clickOnTopings(topingId)" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border-radius: 10%; cursor:pointer;">
+                          <div :id="'topingDiv'+productToping.id" @click="clickOnTopings(productToping.id)" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border-radius: 10%; cursor:pointer;">
                               <img class="p-2" :src="'/frontend/toping_images/' + productToping.image" alt="" style="width: 65px; ">
                               <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">{{productToping.name}}</p>
                               <p class="text-center m-0" style="font-size:12px;"><b>{{productToping.price}}{{ baseCurrencySymbol }}</b></p>
-                              <input :id="'topingsItem'+topingId" :value="productToping.id" name="topingsItem" class="topingsItem" type="checkbox" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
+                              <input :id="'topingsItem'+productToping.id" :value="productToping.id" name="topingsItem" class="topingsItem" type="checkbox" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
                           </div>
                       </div>
                     </div>
-
-                    <div class="row">
-                        
+                    
+                    <h6 v-if="moreTopings.length>0" style="margin-bottom:5px;">All Toppings</h6>
+                    <div class="row mb-2">
+                          <div>
+                            <select style="height:30px; border:1px solid #ee6e2d;">
+                              <option v-for="(topping, topingId) in moreTopings" :key="topingId" :value="topping.id" @click="selectExtraTopping(topping)">{{topping.name}}</option>
+                            </select>
+                          </div>
                     </div>
+                    <div class="row mb-5" id="selectdeExtraTopping">
+                      
+                    </div>
+
+                    
 
                     <!-- Start Product Action Wrapper  -->
                     <div class="product-action-wrapper d-flex-center">
@@ -177,6 +188,9 @@ import axios from 'axios';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 import { getBaseCurrencySymbol } from '../../helpers.js';
+import $ from 'jquery'; 
+import Select2 from 'select2';
+import 'select2/dist/css/select2.css';
 export default {
     name: 'details',
       props: {
@@ -184,6 +198,7 @@ export default {
         productSizes: Object,
         productTopings: Object,
         allTopings: Object,
+        moreTopings: Object,
         maxMin:""
         // maxMin: object,
       },
@@ -196,20 +211,22 @@ export default {
             isVisible:false,
             message:'',
             cart: [],
-            baseCurrencySymbol:''
+            baseCurrencySymbol:'',
+           
         }
     },
     components: {
-       
     },
     mounted(){
-        // console.log(this.productSize);
+        console.log("jh");
+        console.log(this.allTopings);
         this.loadCartFromLocalStorage();
         this.fetchBaseCurrencySymbol();
         this.selectFirstSizeAsDefault();
     },
     methods: {
-       handleButtonClick() {
+
+      handleButtonClick() {
         this.$emit('closeModal');
       },
       clickOnSize(sizeid){
@@ -251,7 +268,6 @@ export default {
         this.generatePrice();
       },
       clickOnTopings(id){
-        // alert('');
         if(document.getElementById('topingsItem'+id).checked){
             document.getElementById('topingDiv'+id).style.border="none";
             document.getElementById('topingsItem'+id).checked = false;
@@ -276,7 +292,7 @@ export default {
         var elements = document.getElementsByClassName('topingsItem');
         for(var i=0; i<elements.length; i++){
           if(elements[i].checked){
-              orderPrice += parseFloat(this.productTopings[elements[i].value].price);
+              orderPrice += parseFloat(this.allTopings[elements[i].value].price);
           }
         }
 
@@ -391,9 +407,27 @@ export default {
       var eles = document.getElementsByClassName("sizeRadioBtn");
       if(eles[0] != undefined)eles[0].dispatchEvent(clickEvent);
     },
+    selectExtraTopping(topping){
+        var html = `
+          <div class="col-3 p-2">
+              <div id="topingDiv${topping.id}" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border-radius: 10%; cursor:pointer;">
+                  <img class="p-2" src="/frontend/toping_images/${topping.image}" alt="" style="width: 65px; ">
+                  <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">${topping.name}</p>
+                  <p class="text-center m-0" style="font-size:12px;"><b>${topping.price}${ this.baseCurrencySymbol }</b></p>
+                  <input id="topingsItem${topping.id}" value="${topping.id}" name="topingsItem" class="topingsItem" type="checkbox" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
+              </div>
+          </div>
+        `;
+
+        //document.getElementById('selectdeExtraTopping').innerHTML += html;
+        document.getElementById('selectdeExtraTopping').insertAdjacentHTML('beforeend', html);
+        var id = "topingDiv"+topping.id;
+        document.getElementById(id).addEventListener('click', () => this.clickOnTopings(topping.id));
+    }
 
   }
 }
+
 </script>
 
 <style scoped>

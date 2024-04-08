@@ -72,7 +72,11 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);
+    
 });
+
+
+
 
 Route::get('get-location-schedule', [Location::class, 'locationSchedule']);
 Route::get('get-delivery-charge', [DelivaryChargeController::class, 'getDeliveryCharge']);

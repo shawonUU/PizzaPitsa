@@ -411,8 +411,11 @@ return $groupedCategories;
             ->where('product_topings.status', '1')
             ->select('topings.*')
             ->get();
+        $favoritToppingsIds = [];
+        foreach($productTopings as $toping){
+            $favoritToppingsIds[$toping->id] = $toping->id;
+        }
 
-        $allTopings = ProductToping::where('status', '1')->get();
 
         $tem = [];
         foreach($productTopings as $row){
@@ -420,8 +423,24 @@ return $groupedCategories;
         }
         $productTopings = $tem;
 
+        $allTopings = Toping::where('status', '1')->get();
+
+        $tem = [];
+        foreach($allTopings as $row){
+            $tem[$row->id] = $row;
+        }
+        $allTopings = $tem;
+
+        $moreTopings = Toping::whereNotIn('id',$favoritToppingsIds)->where('status', '1')->get();
+
+        $tem = [];
+        foreach($moreTopings as $row){
+            $tem[$row->id] = $row;
+        }
+        $moreTopings = $tem;
+
            
         $maxMin = [$minPrice,$maxPrice];
-        return response()->json([$product, $productSizes,$productTopings,$maxMin,$allTopings]);
+        return response()->json([$product, $productSizes,$productTopings,$maxMin,$allTopings,$moreTopings]);
     }
 }

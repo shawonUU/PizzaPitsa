@@ -6,7 +6,6 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-
 class RoleSeeder extends Seeder
 {
     /**
@@ -16,6 +15,10 @@ class RoleSeeder extends Seeder
     {
         DB::table('roles')->insert([
             'name' => 'Administrator',
+            'guard_name' => 'web',
+        ]);
+        DB::table('roles')->insert([
+            'name' => 'Manager',
             'guard_name' => 'web',
         ]);
     }

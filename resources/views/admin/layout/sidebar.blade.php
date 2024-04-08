@@ -75,7 +75,7 @@
             </div>
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboard</span>
                     </a>
@@ -104,87 +104,93 @@
                             </li>
                         </ul>
                     </div>
-                </li> <!-- end Dashboard Menu -->
-
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarAdvanceUI" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
-                        <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Product Management</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarAdvanceUI">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('categories.index') }}" class="nav-link">Categories</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('sizes.index') }}" class="nav-link">Size</a>
-                            </li>
-                            <li class="nav-item d-none">
-                                <a href="{{ route('nutritions.index') }}" class="nav-link">Nutrition</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('topings.index') }}" class="nav-link" data-key="t-nestable-list">Topings</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('products.index') }}" class="nav-link" data-key="t-nestable-list">Products</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#orderManagement" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
-                        <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Order Management</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="orderManagement">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('orders.index') }}" class="nav-link">Orders</a>
-                            </li>                         
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarCouponUI" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
-                        <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Settings</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarCouponUI">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('coupons.index') }}" class="nav-link">Coupons</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('delivery_charges.index') }}" class="nav-link">Delivery Charge</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('currency.index') }}" class="nav-link">Currency</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('schedule.index') }}" class="nav-link">Shop Time Schedule</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('location.index') }}" class="nav-link">Location(Long&Lat)</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarAuthorizition" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAuthorizition">
-                        <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Authorizition</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarAuthorizition">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="{{ route('permission.index') }}" class="nav-link" data-key="t-nestable-list">Permission</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('role.index') }}" class="nav-link" data-key="t-nestable-list">Role</a>
-                            </li>                           
-                            <li class="nav-item">
-                                <a href="{{ route('users.index') }}" class="nav-link">User</a>
-                            </li>                          
-                        </ul>
-                    </div>
-                </li>
-
+                </li> <!-- end Dashboard Menu --> --}}
+                @role('Administrator')
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sidebarAdvanceUI" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
+                            <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Product Management</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarAdvanceUI">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="{{ route('categories.index') }}" class="nav-link">Categories</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('sizes.index') }}" class="nav-link">Size</a>
+                                </li>
+                                <li class="nav-item d-none">
+                                    <a href="{{ route('nutritions.index') }}" class="nav-link">Nutrition</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('topings.index') }}" class="nav-link" data-key="t-nestable-list">Topings</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('products.index') }}" class="nav-link" data-key="t-nestable-list">Products</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                @endrole
+                @role('Administrator|Manager')
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#orderManagement" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
+                            <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Order Management</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="orderManagement">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="{{ route('orders.index') }}" class="nav-link">Orders</a>
+                                </li>                         
+                            </ul>
+                        </div>
+                    </li>
+                @endrole
+                @role('Administrator')
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sidebarCouponUI" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
+                            <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Settings</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarCouponUI">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="{{ route('coupons.index') }}" class="nav-link">Coupons</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('delivery_charges.index') }}" class="nav-link">Delivery Charge</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('currency.index') }}" class="nav-link">Currency</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('schedule.index') }}" class="nav-link">Shop Time Schedule</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('location.index') }}" class="nav-link">Location(Long&Lat)</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                @endrole
+                @role('Administrator')
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#sidebarAuthorizition" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAuthorizition">
+                            <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Authorizition</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="sidebarAuthorizition">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="{{ route('permission.index') }}" class="nav-link" data-key="t-nestable-list">Permission</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{ route('role.index') }}" class="nav-link" data-key="t-nestable-list">Role</a>
+                                </li>                           
+                                <li class="nav-item">
+                                    <a href="{{ route('users.index') }}" class="nav-link">User</a>
+                                </li>                          
+                            </ul>
+                        </div>
+                    </li>  
+                @endrole
             </ul>
         </div>
         <!-- Sidebar -->
