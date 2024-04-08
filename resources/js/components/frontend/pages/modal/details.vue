@@ -128,7 +128,7 @@
                       <!-- End Product Variation  -->
                     </div>
 
-                    <h6 v-if="productTopings.length>0" style="margin-bottom:5px;">Favorit Toppings</h6>
+                    <h6  style="margin-bottom:5px;">Your Favorit Toppings</h6>
                     <div class="row">
                       <div class="col-3 p-2" v-for="(productToping, topingId) in productTopings" :key="topingId">
                           <div :id="'topingDiv'+productToping.id" @click="clickOnTopings(productToping.id)" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border-radius: 10%; cursor:pointer;">
@@ -136,14 +136,32 @@
                               <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">{{productToping.name}}</p>
                               <p class="text-center m-0" style="font-size:12px;"><b>{{productToping.price}}{{ baseCurrencySymbol }}</b></p>
                               <input :id="'topingsItem'+productToping.id" :value="productToping.id" name="topingsItem" class="topingsItem" type="checkbox" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
+                              
+                              <div style="padding: 0 5px; padding-left: 20%;"  onclick="event.stopPropagation();">
+                                <div  class="input-group" >
+                                  <div  class="input-group-prepend" style="cursor: pointer;" >
+                                    <span :id="'toppingQtyMuns'+productToping.id"  class="input-group-text" style="padding: 0.20rem .50rem;" @click="qtyMinus(productToping.id)">
+                                      <b >-</b>
+                                    </span>
+                                  </div>
+                                  <input @change="updateToppingQty(productToping.id)"  :id="'toppingQty'+productToping.id" min="1" type="text" value="1" class="" style="margin-left: 0px;text-align: center; font-size: 14px; height: 20px; width: 35% !important; padding: 0px; border: solid 1px #000; font-size: 10px;">
+                                  <div  class="input-group-append" style="cursor: pointer;" >
+                                    <span :id="'toppingQtyPls'+productToping.id" @click="qtyPlus(productToping.id)" class="input-group-text" style="padding: 0.20rem .50rem;" >
+                                      <b >+</b>
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+
                           </div>
                       </div>
                     </div>
                     
-                    <h6 v-if="moreTopings.length>0" style="margin-bottom:5px;">All Toppings</h6>
+                    <h6  style="margin-bottom:5px;">All Toppings</h6>
                     <div class="row mb-2">
                           <div>
                             <select style="height:30px; border:1px solid #ee6e2d;">
+                              <option value="">--Select--</option>
                               <option v-for="(topping, topingId) in moreTopings" :key="topingId" :value="topping.id" @click="selectExtraTopping(topping)">{{topping.name}}</option>
                             </select>
                           </div>
@@ -292,12 +310,14 @@ export default {
         var elements = document.getElementsByClassName('topingsItem');
         for(var i=0; i<elements.length; i++){
           if(elements[i].checked){
-              orderPrice += parseFloat(this.allTopings[elements[i].value].price);
+            
+              var pric = parseFloat(this.allTopings[elements[i].value].price);
+              var qty = parseInt(document.getElementById('toppingQty'+elements[i].value).value.trim());
+              console.log(qty);
+              orderPrice += (pric*qty);
           }
         }
-
         this.orderPrice = orderPrice.toFixed(2);
-
       },
       addTocart(){
           var elements = document.getElementsByClassName('sizeRadio');
@@ -310,9 +330,11 @@ export default {
 
           var elements = document.getElementsByClassName('topingsItem');
           var topings = [];
+          var toppingQtys = [];
           for(var i=0; i<elements.length; i++){
             if(elements[i].checked){
-                topings.push(this.productTopings[elements[i].value]);
+                topings[this.productTopings[elements[i].value].id] = this.productTopings[elements[i].value];
+                toppingQtys[this.productTopings[elements[i].value].id] = document.getElementById('toppingQty'+elements[i].value).value.trim();
             }
           }
 
@@ -326,6 +348,7 @@ export default {
                     product: this.productData,
                     size: this.productSizes[selectedSize],
                     topings: topings,
+                    toppingQtys: toppingQtys,
                     totalPrice: this.orderPrice
                 };
 
@@ -348,12 +371,14 @@ export default {
                     for (const i in topings){
                         if ( typeof bindTopings[topings[i].id] === 'undefined'){
                             if(topings[i])bindTopings[topings[i].id] = topings[i];
+                        }else{
+                          existingItem.toppingQtys[topings[i].id] += item.toppingQtys[topings[i].id];
                         }
                     }
 
                     existingItem.totalPrice = parseFloat(existingItem.quantity) * parseFloat(item.size.price);
                      for (const i in bindTopings) {
-                        existingItem.totalPrice += parseFloat(bindTopings[i].price);
+                        existingItem.totalPrice += parseFloat(bindTopings[i].price) * parseInt(existingItem.toppingQtys[bindTopings[i].id]);
                     }
 
                     existingItem.topings = bindTopings;
@@ -415,14 +440,59 @@ export default {
                   <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">${topping.name}</p>
                   <p class="text-center m-0" style="font-size:12px;"><b>${topping.price}${ this.baseCurrencySymbol }</b></p>
                   <input id="topingsItem${topping.id}" value="${topping.id}" name="topingsItem" class="topingsItem" type="checkbox" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
+
+
+                  <div style="padding: 0 5px; padding-left: 20%;"  onclick="event.stopPropagation();">
+                    <div  class="input-group" >
+                      <div  class="input-group-prepend" style="cursor: pointer;" >
+                        <span id="toppingQtyMuns${topping.id}"  class="input-group-text" style="padding: 0.20rem .50rem;">
+                          <b >-</b>
+                        </span>
+                      </div>
+                      <input id="toppingQty${topping.id}" min="1" type="text" value="1" class="" style="margin-left: 0px;text-align: center; font-size: 14px; height: 20px; width: 35% !important; padding: 0px; border: solid 1px #000; font-size: 10px;">
+                      <div  class="input-group-append" style="cursor: pointer;" >
+                        <span id="toppingQtyPls${topping.id}" class="input-group-text" style="padding: 0.20rem .50rem;" >
+                          <b >+</b>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+
               </div>
           </div>
         `;
 
-        //document.getElementById('selectdeExtraTopping').innerHTML += html;
         document.getElementById('selectdeExtraTopping').insertAdjacentHTML('beforeend', html);
-        var id = "topingDiv"+topping.id;
-        document.getElementById(id).addEventListener('click', () => this.clickOnTopings(topping.id));
+        document.getElementById("topingDiv"+topping.id).addEventListener('click', () => this.clickOnTopings(topping.id));
+        document.getElementById("toppingQtyMuns"+topping.id).addEventListener('click', () => this.qtyMinus(topping.id));
+        document.getElementById("toppingQty"+topping.id).addEventListener('change', () => this.updateToppingQty(topping.id));
+        document.getElementById("toppingQtyPls"+topping.id).addEventListener('click', () => this.qtyPlus(topping.id));
+        this.clickOnTopings(topping.id);
+    },
+    qtyPlus(toppingId){
+        var currentQty = document.getElementById('toppingQty'+toppingId).value.trim();
+        if(currentQty=="") currentQty = 1;
+        currentQty = parseInt(currentQty);
+        currentQty++;
+        document.getElementById('toppingQty'+toppingId).value = currentQty;
+        this.generatePrice();
+    },
+    qtyMinus(toppingId){
+        var currentQty = document.getElementById('toppingQty'+toppingId).value.trim();
+        if(currentQty=="") currentQty = 1;
+        currentQty = parseInt(currentQty);
+        currentQty--;
+        if(currentQty<1) currentQty = 1;
+        document.getElementById('toppingQty'+toppingId).value = currentQty;
+        this.generatePrice();
+    },
+    updateToppingQty(toppingId){
+      var currentQty = document.getElementById('toppingQty'+toppingId).value.trim();
+      if(currentQty=="") currentQty = 1;
+      currentQty = parseInt(currentQty);
+      document.getElementById('toppingQty'+toppingId).value = currentQty;
+      this.generatePrice();
     }
 
   }
