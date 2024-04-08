@@ -72,7 +72,11 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);
+    
 });
+
+
+
 
 Route::get('get-location-schedule', [Location::class, 'locationSchedule']);
 Route::get('get-delivery-charge', [DelivaryChargeController::class, 'getDeliveryCharge']);
@@ -100,6 +104,8 @@ Route::post('customer-signUp', [CustomerController::class, 'customerSignUp']);
 Route::post('customer-signIn', [CustomerController::class, 'customerLogin']);
 Route::post('send-verification-mail', [CustomerController::class, 'sendVerificationMail']);
 Route::post('verify-account', [CustomerController::class, 'verifyAccount']);
+Route::post('verify-account-forgot-password', [CustomerController::class, 'verifyAccountForgotPassword']);
+Route::post('change-password', [CustomerController::class, 'changePassword']);
 Route::get('get-my-orders', [OrderController::class, 'getCustomerProduct']);
 Route::get('get-order-status', [OrderController::class, 'getOrderStatus']);
 Route::get('order-info', [OrderController::class, 'getCustomerOrderInfo']);
