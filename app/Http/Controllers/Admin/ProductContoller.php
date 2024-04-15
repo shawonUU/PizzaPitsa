@@ -13,6 +13,7 @@ use App\Models\Admin\ProductImage;
 use Illuminate\Support\Facades\DB;
 use App\Models\Admin\ProductToping;
 use App\Http\Controllers\Controller;
+use App\Models\SizeVsTopingPrice;
 
 class ProductContoller extends Controller
 {
@@ -397,7 +398,7 @@ return $groupedCategories;
         $productSizes = ProductSize::join('sizes', 'sizes.id', '=', 'product_sizes.size_id')
             ->where('product_id', $productId)
             ->where('product_sizes.status', '1')
-            ->select('product_sizes.*', 'sizes.name')
+            ->select('product_sizes.*', 'sizes.name', 'sizes.id as size_id')
             ->get();
         $maxPrice = $productSizes->max('price');
         $minPrice = $productSizes->min('price');
@@ -439,8 +440,14 @@ return $groupedCategories;
         }
         $moreTopings = $tem;
 
-           
+        $sizeVsTopings = SizeVsTopingPrice::get();
+        $bindData = [];
+        foreach($sizeVsTopings as $item){
+            $bindData[$item->toping_id][$item->size_id] = $item->price;
+        }
+        $sizeVsTopings = $bindData;
+
         $maxMin = [$minPrice,$maxPrice];
-        return response()->json([$product, $productSizes,$productTopings,$maxMin,$allTopings,$moreTopings]);
+        return response()->json([$product, $productSizes,$productTopings,$maxMin,$allTopings,$moreTopings,$sizeVsTopings]);
     }
 }

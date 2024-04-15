@@ -116,7 +116,7 @@
                       <div class="product-variation">
                         <h6 class="title">Size:</h6>
                         <ul class="range-variant">
-                          <li  v-for="(productSize, sizeId) in productSizes" :key="sizeId" @click="clickOnSize(sizeId)" class="sizeRadioBtn" :id="'sizeRadioBtn'+productSize.id" style=" padding: 0px 15px; font-size: 14px; min-height: 30px !important; padding: 0 8px; cursor:pointer; margin:0 2px;">
+                          <li  v-for="(productSize, sizeId) in productSizes" :key="sizeId" @click="clickOnSize(productSize.id, productSize.size_id)" class="sizeRadioBtn" :id="'sizeRadioBtn'+productSize.id" style=" padding: 0px 15px; font-size: 14px; min-height: 30px !important; padding: 0 8px; cursor:pointer; margin:0 2px;">
                               <div class="input-group" style="cursor:pointer;">
                                   <input style="" class="sizeRadio" type="radio" :id="'sizeRadio'+productSize.id"  name="sizeRadio" :value="productSize.id">
                                   <label class="sizeRadioLbl" style="display:none !important; cursor:pointer;" :for="'sizeRadio'+productSize.id"></label>
@@ -134,7 +134,7 @@
                           <div :id="'topingDiv'+productToping.id" @click="clickOnTopings(productToping.id)" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border-radius: 10%; cursor:pointer;">
                               <img class="p-2" :src="'/frontend/toping_images/' + productToping.image" alt="" style="width: 65px; ">
                               <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">{{productToping.name}}</p>
-                              <p class="text-center m-0" style="font-size:12px;"><b>{{productToping.price}}{{ baseCurrencySymbol }}</b></p>
+                              <p class="text-center m-0" style="font-size:12px;"><b class="showToppingPrice" :data-toppingId="productToping.id" :id="'showToppingPrice'+productToping.id">{{productToping.price}}</b><b>{{ baseCurrencySymbol }}</b></p>
                               <input :id="'topingsItem'+productToping.id" :value="productToping.id" name="topingsItem" class="topingsItem" type="checkbox" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
                               
                               <div style="padding: 0 5px; padding-left: 20%;"  onclick="event.stopPropagation();">
@@ -217,6 +217,7 @@ export default {
         productTopings: Object,
         allTopings: Object,
         moreTopings: Object,
+        sizeVsTopings: Object,
         maxMin:""
         // maxMin: object,
       },
@@ -236,8 +237,8 @@ export default {
     components: {
     },
     mounted(){
-        console.log("jh");
-        console.log(this.allTopings);
+        //console.log("jh");
+        //console.log(this.allTopings);
         this.loadCartFromLocalStorage();
         this.fetchBaseCurrencySymbol();
         this.selectFirstSizeAsDefault();
@@ -247,7 +248,7 @@ export default {
       handleButtonClick() {
         this.$emit('closeModal');
       },
-      clickOnSize(sizeid){
+      clickOnSize(sizeid, lib_size){
           var elements = document.getElementsByClassName('sizeImages');
           for(var i=0; i<elements.length; i++){
             elements[i].classList.add('d-none');
@@ -266,12 +267,21 @@ export default {
             elements[i].style.border = '2px solid #f6f7fb';
           }
 
-
-
           document.getElementById('tooltipItem'+sizeid).classList.remove('d-none');
           document.getElementById('sizeImages'+sizeid).classList.remove('d-none');
           document.getElementById('sizeWisePrice'+sizeid).classList.remove('d-none');
           document.getElementById('sizeRadioBtn'+sizeid).style.border = '1px solid red';
+       
+          var eles = document.getElementsByClassName("showToppingPrice");
+          for(var i=0; i<eles.length; i++){
+            var topingId = eles[i].dataset.toppingid;
+            if (this.sizeVsTopings[topingId] && this.sizeVsTopings[topingId][lib_size]) {
+              eles[i].innerHTML = this.sizeVsTopings[topingId][lib_size];
+            } else {
+              eles[i].innerHTML = this.allTopings[topingId].price;
+            }
+          }
+
           this.generatePrice();
       },
       decrementQuantity() {
@@ -438,9 +448,8 @@ export default {
               <div id="topingDiv${topping.id}" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border-radius: 10%; cursor:pointer;">
                   <img class="p-2" src="/frontend/toping_images/${topping.image}" alt="" style="width: 65px; ">
                   <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">${topping.name}</p>
-                  <p class="text-center m-0" style="font-size:12px;"><b>${topping.price}${ this.baseCurrencySymbol }</b></p>
+                  <p class="text-center m-0" style="font-size:12px;"><b class="showToppingPrice" data-toppingId="${topping.id}" id="showToppingPrice${topping.id}">${topping.price}</b><b>${ this.baseCurrencySymbol }</b></p>
                   <input id="topingsItem${topping.id}" value="${topping.id}" name="topingsItem" class="topingsItem" type="checkbox" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
-
 
                   <div style="padding: 0 5px; padding-left: 20%;"  onclick="event.stopPropagation();">
                     <div  class="input-group" >
