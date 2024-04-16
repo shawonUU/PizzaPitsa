@@ -597,9 +597,9 @@ export default {
                     for (const sizeId in productSizes) {
                         if (productSizes.hasOwnProperty(sizeId)) {
                             const item = productSizes[sizeId];
-                            //console.log("CART");
-                            //console.log(item);
-                            //console.log("END");
+                            console.log("CART");
+                            console.log(item);
+                            console.log("END");
                             // Access item properties
                             // console.log('Quantity:', item.quantity);
                             // console.log('Product:', item.product);

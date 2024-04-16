@@ -416,7 +416,8 @@ export default {
                             }
                         }else{
                           //existingItem.toppingQtys[topings[i].id] += item.toppingQtys[topings[i].id];
-                          bindQtys[topings[i].id] += item.toppingQtys[topings[i].id];
+                          bindQtys[topings[i].id] = parseFloat(bindQtys[topings[i].id]);
+                          bindQtys[topings[i].id] += parseFloat(item.toppingQtys[topings[i].id]);
                         }
                     }
 
