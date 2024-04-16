@@ -58,6 +58,38 @@
                                         <img width="60px" height="60px" src="{{ asset('frontend/toping_images/' . $toping->image) }}" alt="Product Image">
                                     </div>                                                                   
                                 </div>
+                                <div class="row">
+                                    <h4>Size Wise Topping Price</h4><br><br>
+                                    <div style="max-width: 500px;">
+                                        <div class="row">
+                                            <div class="col-6"><h5>Size</h5></div>
+                                            <div class="col-6"><h5>Price</h5></div>
+                                        </div>
+                                        <div id="itemContainer">
+                                            @foreach ($sizeVsToppings as $storedSize)
+                                            <div class="row" id="item{{$storedSize['sizeId']}}" data-item="{{$storedSize['sizeId']}}">
+                                                <div class="col-6">
+                                                    <select onchange="rearrangeSize()" name="sizeId[]" class="form-select itemSize" id="itemSize{{$storedSize['sizeId']}}">
+                                                        <option value="">--Select Size--</option>
+                                                        <option value="{{$storedSize['sizeId']}}" selected>
+                                                            {{$storedSize['name']}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-4">
+                                                    <input type="number" name="prices[]" id="itemPrice{{$storedSize['sizeId']}}" class="form-control itemPrice" value="{{ $storedSize['price'] }}">
+                                                </div>
+                                                <div class="col-2">
+                                                    <button class="btn btn-danger" onclick="removeItem('item{{$storedSize['sizeId']}}')">X</button>
+                                                </div>
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                        <div class="mt-2 item-end">
+                                            <button type="button" class="btn btn-sm btn-primary" onclick="addNewItem()">Add One</button>
+                                        </div>
+                                    </div>
+                                </div>
                                 <button type="submit" class="btn btn-primary float-end">Submit</button>
                             </form>
                                                
@@ -81,6 +113,60 @@
     .catch(error => {
         console.error(error);
     });
+
+</script>
+<script>
+    var G_ITEM_NUMBER = {{ count($sizeVsToppings) }} + 1;
+
+    function addNewItem(){
+    G_ITEM_NUMBER++;
+    
+    var addedSizeIds = Array.from(document.querySelectorAll('.itemSize')).map(select => select.value);
+    
+    var newSizes = @json($sizes).filter(size => !addedSizeIds.includes(String(size.id)));
+
+    var sizeOptions = newSizes.map(size => `<option value="${size.id}">${size.name}</option>`).join('');
+
+    var html = `
+        <div class="row" id="item${G_ITEM_NUMBER}" data-item="${G_ITEM_NUMBER}">
+            <div class="col-6">
+                <select onchange="rearrangeSize()" name="sizeId[]" class="form-select itemSize" id="itemSize${G_ITEM_NUMBER}">
+                    <option value="" >--Select Size--</option>
+                    ${sizeOptions}
+                </select>
+            </div>
+            <div class="col-4">
+                <input type="number" name="prices[]" id="itemPrice${G_ITEM_NUMBER}" class="form-control itemPrice">
+            </div>
+            <div class="col-2">
+                <button type="button" class="btn btn-danger" onclick="removeItem('item${G_ITEM_NUMBER}')">X</button>
+            </div>
+        </div>
+    `;
+
+    document.getElementById("itemContainer").insertAdjacentHTML('beforeend', html);
+}
+
+function removeItem(id){
+    var removedElement = document.getElementById(id);
+    removedElement.remove();
+    rearrangeSize();
+}
+
+function rearrangeSize(){
+    var items = document.querySelectorAll('.itemSize');
+    
+    items.forEach((item, index) => {
+        var itemId = `itemSize${index + 1}`;
+        var priceId = `itemPrice${index + 1}`;
+        var removeButton = `removeItem('item${index + 1}')`;
+
+        item.id = itemId;
+        item.parentNode.parentNode.id = `item${index + 1}`;
+        item.nextElementSibling.childNodes[1].id = priceId;
+        item.parentNode.nextElementSibling.childNodes[1].setAttribute('onclick', removeButton);
+    });
+}
 
 </script>
 @endsection

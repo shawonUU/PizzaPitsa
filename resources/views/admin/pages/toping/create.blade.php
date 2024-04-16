@@ -58,36 +58,35 @@
                                     </div>                                    
                                 </div>
                                 <div class="row">
-                            <h4>Size Wise Topping Price</h4><br><br>
-                            <div style="max-width: 500px;">
-                                     <div class="row">
-                                        <div class="col-6"><h5>Size</h5></div>
-                                        <div class="col-6"><h5>Price</h5></div>
-                                    </div>
-                                    <div id="itemContainer">
-                                        <div class="row" id="item1" data-item="1">
-                                            <div class="col-6">
-                                                <select onchange="rearrangeSize()" name="sizeId[]" class="form-select itemSize" id="itemSize1">
-                                                    <option value="" >--Select Size--</option>
-                                                    @foreach ($sizes as $size)
-                                                        <option value="{{$size->id}}">{{$size->name}}</option>
-                                                    @endforeach
-                                                </select>
+                                    <h4>Size Wise Topping Price</h4><br><br>
+                                    <div style="max-width: 500px;">
+                                            <div class="row">
+                                                <div class="col-6"><h5>Size</h5></div>
+                                                <div class="col-6"><h5>Price</h5></div>
                                             </div>
-                                            <div class="col-4">
-                                                <input type="number" name="prices[]" id="itemPrice1" class="form-control itemPrice">
+                                            <div id="itemContainer">
+                                                <div class="row" id="item1" data-item="1">
+                                                    <div class="col-6">
+                                                        <select onchange="rearrangeSize()" name="sizeId[]" class="form-select itemSize" id="itemSize1">
+                                                            <option value="" >--Select Size--</option>
+                                                            @foreach ($sizes as $size)
+                                                                <option value="{{$size->id}}">{{$size->name}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-4">
+                                                        <input type="number" name="prices[]" id="itemPrice1" class="form-control itemPrice">
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <button class="btn btn-danger" onclick="removeItem('item1')">X</button>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="col-2">
-                                                <button class="btn btn-danger" onclick="removeItem('item1')">X</button>
+                                            <div class="mt-2 item-end">
+                                                <button type="button" class="btn btn-sm btn-primary" onclick="addNewItem()">Add One</button>
                                             </div>
-                                        </div>
                                     </div>
-                                    <div class="mt-2 item-end">
-                                        <button type="button" class="btn btn-sm btn-primary" onclick="addNewItem()">Add One</button>
-                                        <button type="button" class="btn btn-sm btn-primary">Save</button>
-                                    </div>
-                            </div>
-                        </div>
+                                </div>
                                 <button type="submit" class="btn btn-primary float-end">Submit</button>
                             </form>
                                                
