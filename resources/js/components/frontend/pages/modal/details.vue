@@ -118,7 +118,7 @@
                         <ul class="range-variant">
                           <li  v-for="(productSize, sizeId) in productSizes" :key="sizeId" @click="clickOnSize(productSize.id, productSize.size_id)" class="sizeRadioBtn" :id="'sizeRadioBtn'+productSize.id" style=" padding: 0px 15px; font-size: 14px; min-height: 30px !important; padding: 0 8px; cursor:pointer; margin:0 2px;">
                               <div class="input-group" style="cursor:pointer;">
-                                  <input style="" class="sizeRadio" type="radio" :id="'sizeRadio'+productSize.id"  name="sizeRadio" :value="productSize.id">
+                                  <input style="" class="sizeRadio" type="radio" :id="'sizeRadio'+productSize.id" :data-libsizeid="productSize.size_id"  name="sizeRadio" :value="productSize.id">
                                   <label class="sizeRadioLbl" style="display:none !important; cursor:pointer;" :for="'sizeRadio'+productSize.id"></label>
                                   <span style="cursor:pointer;">{{productSize.name}}</span>
                               </div>
@@ -130,7 +130,7 @@
 
                     <h6  style="margin-bottom:5px;">Your Favorit Toppings</h6>
                     <div class="row">
-                      <div class="col-3 p-2" v-for="(productToping, topingId) in productTopings" :key="topingId">
+                      <div class="col-6 col-md-3 p-2" v-for="(productToping, topingId) in productTopings" :key="topingId">
                           <div :id="'topingDiv'+productToping.id" @click="clickOnTopings(productToping.id)" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border-radius: 10%; cursor:pointer;">
                               <img class="p-2" :src="'/frontend/toping_images/' + productToping.image" alt="" style="width: 65px; ">
                               <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">{{productToping.name}}</p>
@@ -309,9 +309,11 @@ export default {
       generatePrice(){
         var elements = document.getElementsByClassName('sizeRadio');
         var selectedSize = null;
+        var lib_size = null;
         for(var i=0; i<elements.length; i++){
           if(elements[i].checked){
               selectedSize = elements[i].value;
+              lib_size = elements[i].dataset.libsizeid;
           }
         }
         if(!selectedSize) return;
@@ -320,11 +322,16 @@ export default {
         var elements = document.getElementsByClassName('topingsItem');
         for(var i=0; i<elements.length; i++){
           if(elements[i].checked){
-            
-              var pric = parseFloat(this.allTopings[elements[i].value].price);
-              var qty = parseInt(document.getElementById('toppingQty'+elements[i].value).value.trim());
-              console.log(qty);
-              orderPrice += (pric*qty);
+            var topingId = elements[i].value;
+            var pric = 0;
+            if (this.sizeVsTopings[topingId] && this.sizeVsTopings[topingId][lib_size]) {
+              pric = this.sizeVsTopings[topingId][lib_size];
+            } else {
+              pric = this.allTopings[topingId].price;
+            }
+            pric = parseFloat(pric);
+            var qty = parseInt(document.getElementById('toppingQty'+elements[i].value).value.trim());
+            orderPrice += (pric*qty);
           }
         }
         this.orderPrice = orderPrice.toFixed(2);
@@ -332,19 +339,32 @@ export default {
       addTocart(){
           var elements = document.getElementsByClassName('sizeRadio');
           var selectedSize = null;
+          var lib_size = null;
           for(var i=0; i<elements.length; i++){
             if(elements[i].checked){
                 selectedSize = elements[i].value;
+                lib_size = elements[i].dataset.libsizeid;
             }
           }
 
           var elements = document.getElementsByClassName('topingsItem');
           var topings = [];
           var toppingQtys = [];
+          var toppingPrices = [];
           for(var i=0; i<elements.length; i++){
             if(elements[i].checked){
-                topings[this.productTopings[elements[i].value].id] = this.productTopings[elements[i].value];
-                toppingQtys[this.productTopings[elements[i].value].id] = document.getElementById('toppingQty'+elements[i].value).value.trim();
+
+                var topingId = elements[i].value;
+                var pric = 0;
+                if (this.sizeVsTopings[topingId] && this.sizeVsTopings[topingId][lib_size]) {
+                  pric = this.sizeVsTopings[topingId][lib_size];
+                } else {
+                  pric = this.allTopings[topingId].price;
+                }
+
+                topings[topingId] = this.productTopings[topingId];
+                toppingQtys[topingId] = document.getElementById('toppingQty'+topingId).value.trim();
+                toppingPrices[topingId] = pric;
             }
           }
 
@@ -359,6 +379,7 @@ export default {
                     size: this.productSizes[selectedSize],
                     topings: topings,
                     toppingQtys: toppingQtys,
+                    toppingPrices:toppingPrices,
                     totalPrice: this.orderPrice
                 };
 
@@ -373,16 +394,29 @@ export default {
                     existingItem.quantity += parseInt(item.quantity);
 
                     var bindTopings = [];
+                    var bindQtys = [];
+                    var bindPrices = [];
                     var exTopings =  existingItem.topings;
+                    var exQtys =  existingItem.toppingQtys;
+                    var exPrices =  existingItem.toppingPrices;
                     for (const i in exTopings) {
-                        if(exTopings[i])bindTopings[exTopings[i].id] = exTopings[i];
+                        if(exTopings[i]){
+                            bindTopings[exTopings[i].id] = exTopings[i];
+                            bindQtys[exTopings[i].id] = exQtys[exTopings[i].id];
+                            bindPrices[exTopings[i].id] = exPrices[exTopings[i].id];
+                        }
                     }
 
                     for (const i in topings){
                         if ( typeof bindTopings[topings[i].id] === 'undefined'){
-                            if(topings[i])bindTopings[topings[i].id] = topings[i];
+                            if(topings[i]){
+                              bindTopings[topings[i].id] = topings[i];
+                              bindQtys[topings[i].id] = toppingQtys[topings[i].id];
+                              bindPrices[topings[i].id] = toppingPrices[topings[i].id];
+                            }
                         }else{
-                          existingItem.toppingQtys[topings[i].id] += item.toppingQtys[topings[i].id];
+                          //existingItem.toppingQtys[topings[i].id] += item.toppingQtys[topings[i].id];
+                          bindQtys[topings[i].id] += item.toppingQtys[topings[i].id];
                         }
                     }
 
@@ -392,6 +426,8 @@ export default {
                     }
 
                     existingItem.topings = bindTopings;
+                    existingItem.toppingQtys = bindQtys;
+                    existingItem.toppingPrices = bindPrices;
 
                    this.cart[this.productData.id][this.productSizes[selectedSize].id] = existingItem;
               }
