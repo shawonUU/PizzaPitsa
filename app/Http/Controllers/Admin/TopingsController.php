@@ -99,7 +99,9 @@ class TopingsController extends Controller
     public function edit(string $id)
     {
         $toping = Toping::where('id', $id)->first();
-        return view('admin.pages.toping.edit', compact('toping'));
+        $sizes = Size::where('status','1')->get();
+        $sizeVsToppings = SizeVsTopingPrice::join('sizes','sizes.id','=','size_vs_toping_price.size_id')->select('size_vs_toping_price.id as mainId','sizes.name','sizes.id as sizeId','size_vs_toping_price.price')->where('size_vs_toping_price.toping_id',$id)->get();
+        return view('admin.pages.toping.edit', compact('toping','sizes','sizeVsToppings'));
     }
 
     /**
@@ -107,16 +109,20 @@ class TopingsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        
-        $product = Toping::where('id', $id)->first();
+        $product = Toping::findOrFail($id);
+    
         $request->validate([
             'name' => 'required|string',
             'price' => 'required|numeric',
             'status' => 'required|in:0,1',
-            // Add any other validation rules as needed
+            'sizeId' => 'required|array',
+            'sizeId.*' => 'exists:sizes,id',
+            'prices' => 'required|array',
+            'prices.*' => 'numeric',
         ]);
-        
-        $imageName = "";
+    
+        $imageName = $product->image;
+    
         if ($image = $request->file('images')) {
             if ($product->image != NULL) {
                 unlink(public_path('frontend/toping_images/' . $product->image));
@@ -124,10 +130,8 @@ class TopingsController extends Controller
             $destinationPath = public_path('frontend/toping_images/');
             $imageName = date('YmdHis') . "." . $image->getClientOriginalExtension();
             $image->move($destinationPath, $imageName);
-        } else {
-            $imageName = $product->image;
         }
-        // return $imageName;
+    
         $product->update([
             'name' => $request->input('name'),
             'price' => $request->input('price'),
@@ -135,14 +139,32 @@ class TopingsController extends Controller
             'image' => $imageName,
             'updated_by' => auth()->user()->id,
         ]);
+    
+        // Delete existing SizeVsTopingPrice records for the product
+        SizeVsTopingPrice::where('toping_id', $product->id)->delete();
+    
+        $sizeIds = $request->sizeId;
+        $prices = $request->prices;
+    
+        foreach($sizeIds as $key => $sizeId){
+            if($sizeId){
+                $row = new SizeVsTopingPrice;
+                $row->size_id = $sizeId;
+                $row->toping_id = $product->id;
+                $row->price = $prices[$key] ?? 0;
+                $row->save();
+            }
+        }
+    
         session()->flash('sweet_alert', [
             'type' => 'success',
             'title' => 'Success!',
             'text' => 'Toping update success',
         ]);
-        // Redirect or return a response as needed
+    
         return redirect()->route('topings.index')->with('success', 'Toping update successfully');
     }
+    
 
     /**
      * Remove the specified resource from storage.
