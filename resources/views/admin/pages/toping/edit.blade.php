@@ -87,7 +87,6 @@
                                         </div>
                                         <div class="mt-2 item-end">
                                             <button type="button" class="btn btn-sm btn-primary" onclick="addNewItem()">Add One</button>
-                                            <button type="button" class="btn btn-sm btn-primary">Save</button>
                                         </div>
                                     </div>
                                 </div>

@@ -188,7 +188,7 @@
                                               <small>Toppings: 
                                                 <template  v-for="(toping, topingId) in item.topings" :key="topingId">
                                                   <template v-if="toping">
-                                                      {{ toping.name }}({{ toping.price }}),
+                                                      {{ toping.name }}({{ item.toppingPrices[toping.id]}} x {{item.toppingQtys[toping.id]}}),
                                                   </template>
                                                 </template>
                                               </small>

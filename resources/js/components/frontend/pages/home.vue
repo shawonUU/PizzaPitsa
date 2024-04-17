@@ -364,7 +364,7 @@
                                                                 <p style="margin: 0; padding: 0; line-height:1.3; font-size: 14px; text-align:left;">{{ item.size.name }}({{ item.size.price }})</p>
                                                                 <p style=" width:100% !important; line-height:1.3;">
                                                                     <template  v-for="(toping, topingId) in item.topings" :key="topingId">
-                                                                        <span style="margin:0; padding:0; font-size:12px; padding: 0 2px;" v-if="toping">{{ toping.name }}({{ toping.price }})</span>
+                                                                        <span style="margin:0; padding:0; font-size:12px; padding: 0 2px;" v-if="toping">{{ toping.name }}({{ item.toppingPrices[toping.id]}} x {{item.toppingQtys[toping.id]}})</span>
                                                                     </template>
                                                                 </p>
                                                             </div>
@@ -589,16 +589,17 @@ export default {
             const savedCart = localStorage.getItem('cart');
             this.cart = savedCart ? JSON.parse(savedCart) : [];
 
-
             this.subTotal = 0;
-            this.cartItemCount = 0;
+            //this.cartItemCount = 0;
             for (const productId in this.cart) {
                 if (this.cart.hasOwnProperty(productId)) {
                     const productSizes = this.cart[productId];
-                    // Loop through product sizes
                     for (const sizeId in productSizes) {
                         if (productSizes.hasOwnProperty(sizeId)) {
                             const item = productSizes[sizeId];
+                            console.log("CART");
+                            console.log(item);
+                            console.log("END");
                             // Access item properties
                             // console.log('Quantity:', item.quantity);
                             // console.log('Product:', item.product);
@@ -607,10 +608,16 @@ export default {
                             // console.log('Total Price:', item.totalPrice);
 
                             var topings = item.topings;
+                            var toppingQtys = item.toppingQtys;
+                            var toppingPrices = item.toppingPrices;
                             var topingsPrice = 0;
                             for (const i in topings) {
                                 if(topings[i])  {
-                                    topingsPrice += parseFloat(topings[i].price);
+                                    var price = toppingPrices[topings[i].id];
+                                    var qty = toppingQtys[topings[i].id];
+                                    price = parseFloat(price);
+                                    qty = parseFloat(qty);
+                                    topingsPrice += parseFloat(price*qty);
                                 }
                             }
                             this.subTotal += (item.size.price * item.quantity) + topingsPrice;

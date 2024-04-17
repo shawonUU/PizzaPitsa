@@ -118,7 +118,7 @@
                         <ul class="range-variant">
                           <li  v-for="(productSize, sizeId) in productSizes" :key="sizeId" @click="clickOnSize(productSize.id, productSize.size_id)" class="sizeRadioBtn" :id="'sizeRadioBtn'+productSize.id" style=" padding: 0px 15px; font-size: 14px; min-height: 30px !important; padding: 0 8px; cursor:pointer; margin:0 2px;">
                               <div class="input-group" style="cursor:pointer;">
-                                  <input style="" class="sizeRadio" type="radio" :id="'sizeRadio'+productSize.id"  name="sizeRadio" :value="productSize.id">
+                                  <input style="" class="sizeRadio" type="radio" :id="'sizeRadio'+productSize.id" :data-libsizeid="productSize.size_id"  name="sizeRadio" :value="productSize.id">
                                   <label class="sizeRadioLbl" style="display:none !important; cursor:pointer;" :for="'sizeRadio'+productSize.id"></label>
                                   <span style="cursor:pointer;">{{productSize.name}}</span>
                               </div>
@@ -130,7 +130,7 @@
 
                     <h6  style="margin-bottom:5px;">Your Favorit Toppings</h6>
                     <div class="row">
-                      <div class="col-3 p-2" v-for="(productToping, topingId) in productTopings" :key="topingId">
+                      <div class="col-6 col-md-3 p-2" v-for="(productToping, topingId) in productTopings" :key="topingId">
                           <div :id="'topingDiv'+productToping.id" @click="clickOnTopings(productToping.id)" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border-radius: 10%; cursor:pointer;">
                               <img class="p-2" :src="'/frontend/toping_images/' + productToping.image" alt="" style="width: 65px; ">
                               <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">{{productToping.name}}</p>
@@ -159,6 +159,15 @@
                     
                     <h6  style="margin-bottom:5px;">All Toppings</h6>
                     <div class="row mb-2">
+                         <div class="multi-select2">
+                                <multiselect
+                                v-model="selectedOptions"
+                                :options="options"
+                                multiple
+                                track-by="id"
+                                label="text"
+                                ></multiselect>
+                            </div>
                           <div>
                             <select style="height:30px; border:1px solid #ee6e2d;">
                               <option value="">--Select--</option>
@@ -209,6 +218,7 @@ import { getBaseCurrencySymbol } from '../../helpers.js';
 import $ from 'jquery'; 
 import Select2 from 'select2';
 import 'select2/dist/css/select2.css';
+import Multiselect from 'vue-multiselect';
 export default {
     name: 'details',
       props: {
@@ -231,10 +241,17 @@ export default {
             message:'',
             cart: [],
             baseCurrencySymbol:'',
+            selectedOptions: [],
+            options: [
+                { id: 'op1', text: 'Option 1' },
+                { id: 'op2', text: 'Option 2' },
+                { id: 'op3', text: 'Option 3' },
+            ],
            
         }
     },
     components: {
+      Multiselect
     },
     mounted(){
         //console.log("jh");
@@ -309,9 +326,11 @@ export default {
       generatePrice(){
         var elements = document.getElementsByClassName('sizeRadio');
         var selectedSize = null;
+        var lib_size = null;
         for(var i=0; i<elements.length; i++){
           if(elements[i].checked){
               selectedSize = elements[i].value;
+              lib_size = elements[i].dataset.libsizeid;
           }
         }
         if(!selectedSize) return;
@@ -320,11 +339,16 @@ export default {
         var elements = document.getElementsByClassName('topingsItem');
         for(var i=0; i<elements.length; i++){
           if(elements[i].checked){
-            
-              var pric = parseFloat(this.allTopings[elements[i].value].price);
-              var qty = parseInt(document.getElementById('toppingQty'+elements[i].value).value.trim());
-              console.log(qty);
-              orderPrice += (pric*qty);
+            var topingId = elements[i].value;
+            var pric = 0;
+            if (this.sizeVsTopings[topingId] && this.sizeVsTopings[topingId][lib_size]) {
+              pric = this.sizeVsTopings[topingId][lib_size];
+            } else {
+              pric = this.allTopings[topingId].price;
+            }
+            pric = parseFloat(pric);
+            var qty = parseInt(document.getElementById('toppingQty'+elements[i].value).value.trim());
+            orderPrice += (pric*qty);
           }
         }
         this.orderPrice = orderPrice.toFixed(2);
@@ -332,19 +356,32 @@ export default {
       addTocart(){
           var elements = document.getElementsByClassName('sizeRadio');
           var selectedSize = null;
+          var lib_size = null;
           for(var i=0; i<elements.length; i++){
             if(elements[i].checked){
                 selectedSize = elements[i].value;
+                lib_size = elements[i].dataset.libsizeid;
             }
           }
 
           var elements = document.getElementsByClassName('topingsItem');
           var topings = [];
           var toppingQtys = [];
+          var toppingPrices = [];
           for(var i=0; i<elements.length; i++){
             if(elements[i].checked){
-                topings[this.productTopings[elements[i].value].id] = this.productTopings[elements[i].value];
-                toppingQtys[this.productTopings[elements[i].value].id] = document.getElementById('toppingQty'+elements[i].value).value.trim();
+
+                var topingId = elements[i].value;
+                var pric = 0;
+                if (this.sizeVsTopings[topingId] && this.sizeVsTopings[topingId][lib_size]) {
+                  pric = this.sizeVsTopings[topingId][lib_size];
+                } else {
+                  pric = this.allTopings[topingId].price;
+                }
+
+                topings[topingId] = this.allTopings[topingId];
+                toppingQtys[topingId] = document.getElementById('toppingQty'+topingId).value.trim();
+                toppingPrices[topingId] = pric;
             }
           }
 
@@ -359,6 +396,7 @@ export default {
                     size: this.productSizes[selectedSize],
                     topings: topings,
                     toppingQtys: toppingQtys,
+                    toppingPrices:toppingPrices,
                     totalPrice: this.orderPrice
                 };
 
@@ -373,17 +411,31 @@ export default {
                     existingItem.quantity += parseInt(item.quantity);
 
                     var bindTopings = [];
+                    var bindQtys = [];
+                    var bindPrices = [];
                     var exTopings =  existingItem.topings;
+                    var exQtys =  existingItem.toppingQtys;
+                    var exPrices =  existingItem.toppingPrices;
                     for (const i in exTopings) {
-                        if(exTopings[i])bindTopings[exTopings[i].id] = exTopings[i];
+                        if(exTopings[i]){
+                            bindTopings[exTopings[i].id] = exTopings[i];
+                            bindQtys[exTopings[i].id] = exQtys[exTopings[i].id];
+                            bindPrices[exTopings[i].id] = exPrices[exTopings[i].id];
+                        }
                     }
 
                     for (const i in topings){
+                      if(topings[i]){
                         if ( typeof bindTopings[topings[i].id] === 'undefined'){
-                            if(topings[i])bindTopings[topings[i].id] = topings[i];
+                              bindTopings[topings[i].id] = topings[i];
+                              bindQtys[topings[i].id] = toppingQtys[topings[i].id];
+                              bindPrices[topings[i].id] = toppingPrices[topings[i].id];
                         }else{
-                          existingItem.toppingQtys[topings[i].id] += item.toppingQtys[topings[i].id];
+                          //existingItem.toppingQtys[topings[i].id] += item.toppingQtys[topings[i].id];
+                          bindQtys[topings[i].id] = parseFloat(bindQtys[topings[i].id]);
+                          bindQtys[topings[i].id] += parseFloat(item.toppingQtys[topings[i].id]);
                         }
+                      }
                     }
 
                     existingItem.totalPrice = parseFloat(existingItem.quantity) * parseFloat(item.size.price);
@@ -392,6 +444,8 @@ export default {
                     }
 
                     existingItem.topings = bindTopings;
+                    existingItem.toppingQtys = bindQtys;
+                    existingItem.toppingPrices = bindPrices;
 
                    this.cart[this.productData.id][this.productSizes[selectedSize].id] = existingItem;
               }
@@ -443,12 +497,32 @@ export default {
       if(eles[0] != undefined)eles[0].dispatchEvent(clickEvent);
     },
     selectExtraTopping(topping){
+
+      var topingId = topping.id;
+      var elements = document.getElementsByClassName('sizeRadio');
+      var selectedSize = null;
+      var lib_size = null;
+      for(var i=0; i<elements.length; i++){
+        if(elements[i].checked){
+            selectedSize = elements[i].value;
+            lib_size = elements[i].dataset.libsizeid;
+        }
+      }
+      if(!selectedSize)return;
+
+      var pric = 0;
+      if (this.sizeVsTopings[topingId] && this.sizeVsTopings[topingId][lib_size]) {
+        pric = this.sizeVsTopings[topingId][lib_size];
+      } else {
+        pric = this.allTopings[topingId].price;
+      }
+
         var html = `
           <div class="col-3 p-2">
               <div id="topingDiv${topping.id}" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border-radius: 10%; cursor:pointer;">
                   <img class="p-2" src="/frontend/toping_images/${topping.image}" alt="" style="width: 65px; ">
                   <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">${topping.name}</p>
-                  <p class="text-center m-0" style="font-size:12px;"><b class="showToppingPrice" data-toppingId="${topping.id}" id="showToppingPrice${topping.id}">${topping.price}</b><b>${ this.baseCurrencySymbol }</b></p>
+                  <p class="text-center m-0" style="font-size:12px;"><b class="showToppingPrice" data-toppingId="${topping.id}" id="showToppingPrice${topping.id}">${pric}</b><b>${ this.baseCurrencySymbol }</b></p>
                   <input id="topingsItem${topping.id}" value="${topping.id}" name="topingsItem" class="topingsItem" type="checkbox" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
 
                   <div style="padding: 0 5px; padding-left: 20%;"  onclick="event.stopPropagation();">
@@ -508,9 +582,11 @@ export default {
 }
 
 </script>
-
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>
 <style scoped>
-
+.multi-select2 {
+  width: 100%;
+}
 .toast-container {
   position: fixed;
   bottom: 20px;
