@@ -364,7 +364,7 @@
                                                                 <p style="margin: 0; padding: 0; line-height:1.3; font-size: 14px; text-align:left;">{{ item.size.name }}({{ item.size.price }})</p>
                                                                 <p style=" width:100% !important; line-height:1.3;">
                                                                     <template  v-for="(toping, topingId) in item.topings" :key="topingId">
-                                                                        <span style="margin:0; padding:0; font-size:12px; padding: 0 2px;" v-if="toping">{{ toping.name }}({{ toping.price }})</span>
+                                                                        <span style="margin:0; padding:0; font-size:12px; padding: 0 2px;" v-if="toping">{{ toping.name }}({{ item.toppingPrices[toping.id]}} x {{item.toppingQtys[toping.id]}})</span>
                                                                     </template>
                                                                 </p>
                                                             </div>

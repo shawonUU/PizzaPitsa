@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
@@ -21,6 +21,8 @@ return new class extends Migration
             $table->decimal('price');
             $table->decimal('total_price');
             $table->string('toping_ids');
+            $table->string('toping_prices');
+            $table->string('toping_qtys');
             $table->decimal('toping_price');
             $table->timestamps();
         });

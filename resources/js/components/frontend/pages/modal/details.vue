@@ -362,7 +362,7 @@ export default {
                   pric = this.allTopings[topingId].price;
                 }
 
-                topings[topingId] = this.productTopings[topingId];
+                topings[topingId] = this.allTopings[topingId];
                 toppingQtys[topingId] = document.getElementById('toppingQty'+topingId).value.trim();
                 toppingPrices[topingId] = pric;
             }
@@ -408,17 +408,17 @@ export default {
                     }
 
                     for (const i in topings){
+                      if(topings[i]){
                         if ( typeof bindTopings[topings[i].id] === 'undefined'){
-                            if(topings[i]){
                               bindTopings[topings[i].id] = topings[i];
                               bindQtys[topings[i].id] = toppingQtys[topings[i].id];
                               bindPrices[topings[i].id] = toppingPrices[topings[i].id];
-                            }
                         }else{
                           //existingItem.toppingQtys[topings[i].id] += item.toppingQtys[topings[i].id];
                           bindQtys[topings[i].id] = parseFloat(bindQtys[topings[i].id]);
                           bindQtys[topings[i].id] += parseFloat(item.toppingQtys[topings[i].id]);
                         }
+                      }
                     }
 
                     existingItem.totalPrice = parseFloat(existingItem.quantity) * parseFloat(item.size.price);
@@ -480,12 +480,32 @@ export default {
       if(eles[0] != undefined)eles[0].dispatchEvent(clickEvent);
     },
     selectExtraTopping(topping){
+
+      var topingId = topping.id;
+      var elements = document.getElementsByClassName('sizeRadio');
+      var selectedSize = null;
+      var lib_size = null;
+      for(var i=0; i<elements.length; i++){
+        if(elements[i].checked){
+            selectedSize = elements[i].value;
+            lib_size = elements[i].dataset.libsizeid;
+        }
+      }
+      if(!selectedSize)return;
+
+      var pric = 0;
+      if (this.sizeVsTopings[topingId] && this.sizeVsTopings[topingId][lib_size]) {
+        pric = this.sizeVsTopings[topingId][lib_size];
+      } else {
+        pric = this.allTopings[topingId].price;
+      }
+
         var html = `
           <div class="col-3 p-2">
               <div id="topingDiv${topping.id}" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border-radius: 10%; cursor:pointer;">
                   <img class="p-2" src="/frontend/toping_images/${topping.image}" alt="" style="width: 65px; ">
                   <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">${topping.name}</p>
-                  <p class="text-center m-0" style="font-size:12px;"><b class="showToppingPrice" data-toppingId="${topping.id}" id="showToppingPrice${topping.id}">${topping.price}</b><b>${ this.baseCurrencySymbol }</b></p>
+                  <p class="text-center m-0" style="font-size:12px;"><b class="showToppingPrice" data-toppingId="${topping.id}" id="showToppingPrice${topping.id}">${pric}</b><b>${ this.baseCurrencySymbol }</b></p>
                   <input id="topingsItem${topping.id}" value="${topping.id}" name="topingsItem" class="topingsItem" type="checkbox" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
 
                   <div style="padding: 0 5px; padding-left: 20%;"  onclick="event.stopPropagation();">
