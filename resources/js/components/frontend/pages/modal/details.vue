@@ -158,25 +158,22 @@
                     </div>
                     
                     <h6  style="margin-bottom:5px;">All Toppings</h6>
-                    <div class="row mb-2">
-                         <div class="multi-select2">
-                                <multiselect
-                                v-model="selectedOptions"
-                                :options="options"
-                                multiple
-                                track-by="id"
-                                label="text"
-                                ></multiselect>
-                            </div>
-                          <div>
-                            <select style="height:30px; border:1px solid #ee6e2d;">
-                              <option value="">--Select--</option>
-                              <option v-for="(topping, topingId) in moreTopings" :key="topingId" :value="topping.id" @click="selectExtraTopping(topping)">{{topping.name}}</option>
-                            </select>
-                          </div>
-                    </div>
+                    
+                    <templat>
+                        <div class="multi-select2">
+                            <multiselect
+                            v-model="selectedOptions"
+                            :options="options"
+                            :change="selectExtraTopping()"
+                            multiple
+                            track-by="id"
+                            label="text"
+                            ></multiselect>
+                        </div>
+                    </templat>
+                         
                     <div class="row mb-5" id="selectdeExtraTopping">
-                      
+
                     </div>
 
                     
@@ -242,11 +239,7 @@ export default {
             cart: [],
             baseCurrencySymbol:'',
             selectedOptions: [],
-            options: [
-                { id: 'op1', text: 'Option 1' },
-                { id: 'op2', text: 'Option 2' },
-                { id: 'op3', text: 'Option 3' },
-            ],
+            options: [],
            
         }
     },
@@ -259,9 +252,17 @@ export default {
         this.loadCartFromLocalStorage();
         this.fetchBaseCurrencySymbol();
         this.selectFirstSizeAsDefault();
+        this.setOptionToMultiSelect();
     },
     methods: {
-
+      setOptionToMultiSelect(){
+          for(const i in this.moreTopings){
+            if(this.moreTopings[i]){
+              var option = {id:this.moreTopings[i].id, text:this.moreTopings[i].name};
+            }
+            this.options.push(option);
+          }
+      },
       handleButtonClick() {
         this.$emit('closeModal');
       },
@@ -464,7 +465,7 @@ export default {
           this.cart = savedCart ? JSON.parse(savedCart) : [];
           //console.log(this.cart);
       },
-     showToast(message,type) {
+      showToast(message,type) {
         if(type){
           //toast.success(message, {timeout: 2000});
         }else{
@@ -477,106 +478,127 @@ export default {
         setTimeout(() => {
           this.isVisible = false;
         }, 2000);
-    },
-    emitMyEvent() {
-          this.emitter.emit('my-event', {'eventContent': 'String changed'})
-    },
-    async fetchBaseCurrencySymbol() {
-        try {
-            this.baseCurrencySymbol = await getBaseCurrencySymbol();
-        } catch (error) {
-            // Handle error (e.g., show an error message)
-            console.error('Error fetching base currency symbol in component:', error);
+      },
+      emitMyEvent() {
+            this.emitter.emit('my-event', {'eventContent': 'String changed'})
+      },
+      async fetchBaseCurrencySymbol() {
+          try {
+              this.baseCurrencySymbol = await getBaseCurrencySymbol();
+          } catch (error) {
+              // Handle error (e.g., show an error message)
+              console.error('Error fetching base currency symbol in component:', error);
+          }
+      },
+      selectFirstSizeAsDefault(){
+        const clickEvent = new Event('click', { bubbles: true });
+        var eles = document.getElementsByClassName("sizeRadio");
+        if(eles[0] != undefined)eles[0].checked = true;
+        var eles = document.getElementsByClassName("sizeRadioBtn");
+        if(eles[0] != undefined)eles[0].dispatchEvent(clickEvent);
+      },
+      selectExtraTopping(){
+        var selectedOptionids = [];
+
+        for(const i in this.selectedOptions){
+          selectedOptionids.push(this.selectedOptions[i].id);
         }
-    },
-    selectFirstSizeAsDefault(){
-      const clickEvent = new Event('click', { bubbles: true });
-      var eles = document.getElementsByClassName("sizeRadio");
-      if(eles[0] != undefined)eles[0].checked = true;
-      var eles = document.getElementsByClassName("sizeRadioBtn");
-      if(eles[0] != undefined)eles[0].dispatchEvent(clickEvent);
-    },
-    selectExtraTopping(topping){
 
-      var topingId = topping.id;
-      var elements = document.getElementsByClassName('sizeRadio');
-      var selectedSize = null;
-      var lib_size = null;
-      for(var i=0; i<elements.length; i++){
-        if(elements[i].checked){
-            selectedSize = elements[i].value;
-            lib_size = elements[i].dataset.libsizeid;
+        var eles = document.getElementsByClassName('more-toppings');
+        var currentTpnId = [];
+        for (var i = 0; i < eles.length; i++) {
+          var tpngId = eles[i].dataset.toppingid;
+          tpngId = parseInt(tpngId);
+          if (!selectedOptionids.includes(tpngId)) {
+            eles[i].remove();
+          }else{
+            selectedOptionids = selectedOptionids.filter(item => item !== tpngId);
+          }
         }
-      }
-      if(!selectedSize)return;
 
-      var pric = 0;
-      if (this.sizeVsTopings[topingId] && this.sizeVsTopings[topingId][lib_size]) {
-        pric = this.sizeVsTopings[topingId][lib_size];
-      } else {
-        pric = this.allTopings[topingId].price;
-      }
+        var elements = document.getElementsByClassName('sizeRadio');
+        var selectedSize = null;
+        var lib_size = null;
+        for(var i=0; i<elements.length; i++){
+          if(elements[i].checked){
+              selectedSize = elements[i].value;
+              lib_size = elements[i].dataset.libsizeid;
+          }
+        }
+        if(!selectedSize)return;
+      
+        for(var i=0; i<selectedOptionids.length; i++){
+          var topping = this.allTopings[selectedOptionids[i]];
 
-        var html = `
-          <div class="col-3 p-2">
-              <div id="topingDiv${topping.id}" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border-radius: 10%; cursor:pointer;">
-                  <img class="p-2" src="/frontend/toping_images/${topping.image}" alt="" style="width: 65px; ">
-                  <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">${topping.name}</p>
-                  <p class="text-center m-0" style="font-size:12px;"><b class="showToppingPrice" data-toppingId="${topping.id}" id="showToppingPrice${topping.id}">${pric}</b><b>${ this.baseCurrencySymbol }</b></p>
-                  <input id="topingsItem${topping.id}" value="${topping.id}" name="topingsItem" class="topingsItem" type="checkbox" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
+          var topingId = topping.id;
+          var pric = 0;
+          if (this.sizeVsTopings[topingId] && this.sizeVsTopings[topingId][lib_size]) {
+            pric = this.sizeVsTopings[topingId][lib_size];
+          } else {
+            pric = this.allTopings[topingId].price;
+          }
 
-                  <div style="padding: 0 5px; padding-left: 20%;"  onclick="event.stopPropagation();">
-                    <div  class="input-group" >
-                      <div  class="input-group-prepend" style="cursor: pointer;" >
-                        <span id="toppingQtyMuns${topping.id}"  class="input-group-text" style="padding: 0.20rem .50rem;">
-                          <b >-</b>
-                        </span>
-                      </div>
-                      <input id="toppingQty${topping.id}" min="1" type="text" value="1" class="" style="margin-left: 0px;text-align: center; font-size: 14px; height: 20px; width: 35% !important; padding: 0px; border: solid 1px #000; font-size: 10px;">
-                      <div  class="input-group-append" style="cursor: pointer;" >
-                        <span id="toppingQtyPls${topping.id}" class="input-group-text" style="padding: 0.20rem .50rem;" >
-                          <b >+</b>
-                        </span>
+          var html = `
+            <div id="topingContainer${topping.id}" class="col-3 p-2 more-toppings" data-toppingid="${topping.id}" >
+                <div id="topingDiv${topping.id}" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border-radius: 10%; cursor:pointer;">
+                    <img class="p-2" src="/frontend/toping_images/${topping.image}" alt="" style="width: 65px; ">
+                    <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">${topping.name}</p>
+                    <p class="text-center m-0" style="font-size:12px;"><b class="showToppingPrice" data-toppingId="${topping.id}" id="showToppingPrice${topping.id}">${pric}</b><b>${ this.baseCurrencySymbol }</b></p>
+                    <input id="topingsItem${topping.id}" value="${topping.id}" name="topingsItem" class="topingsItem" type="checkbox" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
+
+                    <div style="padding: 0 5px; padding-left: 20%;"  onclick="event.stopPropagation();">
+                      <div  class="input-group" >
+                        <div  class="input-group-prepend" style="cursor: pointer;" >
+                          <span id="toppingQtyMuns${topping.id}"  class="input-group-text" style="padding: 0.20rem .50rem;">
+                            <b >-</b>
+                          </span>
+                        </div>
+                        <input id="toppingQty${topping.id}" min="1" type="text" value="1" class="" style="margin-left: 0px;text-align: center; font-size: 14px; height: 20px; width: 35% !important; padding: 0px; border: solid 1px #000; font-size: 10px;">
+                        <div  class="input-group-append" style="cursor: pointer;" >
+                          <span id="toppingQtyPls${topping.id}" class="input-group-text" style="padding: 0.20rem .50rem;" >
+                            <b >+</b>
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
 
-              </div>
-          </div>
-        `;
+                </div>
+            </div>
+          `;
 
-        document.getElementById('selectdeExtraTopping').insertAdjacentHTML('beforeend', html);
-        document.getElementById("topingDiv"+topping.id).addEventListener('click', () => this.clickOnTopings(topping.id));
-        document.getElementById("toppingQtyMuns"+topping.id).addEventListener('click', () => this.qtyMinus(topping.id));
-        document.getElementById("toppingQty"+topping.id).addEventListener('change', () => this.updateToppingQty(topping.id));
-        document.getElementById("toppingQtyPls"+topping.id).addEventListener('click', () => this.qtyPlus(topping.id));
-        this.clickOnTopings(topping.id);
-    },
-    qtyPlus(toppingId){
+          document.getElementById('selectdeExtraTopping').insertAdjacentHTML('beforeend', html);
+          document.getElementById("topingDiv"+topping.id).addEventListener('click', () => this.clickOnTopings(topping.id));
+          document.getElementById("toppingQtyMuns"+topping.id).addEventListener('click', () => this.qtyMinus(topping.id));
+          document.getElementById("toppingQty"+topping.id).addEventListener('change', () => this.updateToppingQty(topping.id));
+          document.getElementById("toppingQtyPls"+topping.id).addEventListener('click', () => this.qtyPlus(topping.id));
+          this.clickOnTopings(topping.id);
+        }
+      },
+      qtyPlus(toppingId){
+          var currentQty = document.getElementById('toppingQty'+toppingId).value.trim();
+          if(currentQty=="") currentQty = 1;
+          currentQty = parseInt(currentQty);
+          currentQty++;
+          document.getElementById('toppingQty'+toppingId).value = currentQty;
+          this.generatePrice();
+      },
+      qtyMinus(toppingId){
+          var currentQty = document.getElementById('toppingQty'+toppingId).value.trim();
+          if(currentQty=="") currentQty = 1;
+          currentQty = parseInt(currentQty);
+          currentQty--;
+          if(currentQty<1) currentQty = 1;
+          document.getElementById('toppingQty'+toppingId).value = currentQty;
+          this.generatePrice();
+      },
+      updateToppingQty(toppingId){
         var currentQty = document.getElementById('toppingQty'+toppingId).value.trim();
         if(currentQty=="") currentQty = 1;
         currentQty = parseInt(currentQty);
-        currentQty++;
         document.getElementById('toppingQty'+toppingId).value = currentQty;
         this.generatePrice();
-    },
-    qtyMinus(toppingId){
-        var currentQty = document.getElementById('toppingQty'+toppingId).value.trim();
-        if(currentQty=="") currentQty = 1;
-        currentQty = parseInt(currentQty);
-        currentQty--;
-        if(currentQty<1) currentQty = 1;
-        document.getElementById('toppingQty'+toppingId).value = currentQty;
-        this.generatePrice();
-    },
-    updateToppingQty(toppingId){
-      var currentQty = document.getElementById('toppingQty'+toppingId).value.trim();
-      if(currentQty=="") currentQty = 1;
-      currentQty = parseInt(currentQty);
-      document.getElementById('toppingQty'+toppingId).value = currentQty;
-      this.generatePrice();
-    }
+      }
 
   }
 }
