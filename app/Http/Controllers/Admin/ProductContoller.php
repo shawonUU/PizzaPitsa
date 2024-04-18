@@ -13,6 +13,7 @@ use App\Models\Admin\ProductImage;
 use Illuminate\Support\Facades\DB;
 use App\Models\Admin\ProductToping;
 use App\Http\Controllers\Controller;
+use App\Models\Admin\ProductTag;
 use App\Models\SizeVsTopingPrice;
 
 class ProductContoller extends Controller
@@ -40,6 +41,7 @@ class ProductContoller extends Controller
      */
     public function store(Request $request)
     {
+        // return $request;
         $request->validate([
             'name' => 'required|string',
             // 'description' => 'string',
@@ -66,7 +68,28 @@ class ProductContoller extends Controller
         ]);
 
         $product->save();
+        $tags = $request->tags;
+        $removeables = $request->removeable;
 
+        // Determine the number of tags and removable checkboxes
+        $numberOfTags = count($tags);
+        $numberOfRemoveables = count($removeables);
+
+        // Use the larger count to ensure all tags are processed
+        $limit = max($numberOfTags, $numberOfRemoveables);
+
+        for($key = 0; $key < $limit; $key++) {
+            $tag = $tags[$key] ?? null;
+            $isRemovable = isset($removeables[$key]) && $removeables[$key] == 'on' ? '1' : '0';
+
+            if($tag) {                            
+                $row = new ProductTag();
+                $row->pro_id = $product->id;
+                $row->tag_name = $tag;
+                $row->is_removeable = $isRemovable;
+                $row->save();                
+            }
+        }
         session()->flash('sweet_alert', [
             'type' => 'success',
             'title' => 'Success!',
@@ -97,7 +120,8 @@ class ProductContoller extends Controller
         $product = Product::where('id', $id)->first();
         $categories = Category::where('status', '1')->get();
         $sizes = Size::where('status', '1')->get();
-        return view('admin.pages.product.edit', compact('categories', 'product','productSizes','productTopings','topings','id','sizes'));
+        $productTags = ProductTag::where('pro_id',$id)->get();
+        return view('admin.pages.product.edit', compact('categories', 'product','productSizes','productTopings','topings','id','sizes','productTags'));
     }
 
     /**
@@ -133,7 +157,42 @@ class ProductContoller extends Controller
             'status' => $request->input('status'),
             'updated_by' => auth()->user()->id,
         ]);
-
+        $tags = $request->tags;
+        $removeables = $request->removeable;
+        
+        // Delete existing ProductTag items
+        ProductTag::where('pro_id', $product->id)->delete();
+        
+        // Determine the number of tags and removable checkboxes
+        $numberOfTags = count($tags);
+        $numberOfRemoveables = count($removeables);
+        
+        // Use the larger count to ensure all tags are processed
+        $limit = max($numberOfTags, $numberOfRemoveables);
+        
+        for($key = 0; $key < $limit; $key++) {
+            $tag = $tags[$key] ?? null;
+            $isRemovable = isset($removeables[$key]) && $removeables[$key] == 'on' ? '1' : '0';
+        
+            if($tag) {
+                // Check if the ProductTag already exists, if so, update it; otherwise, create a new one
+                $existingTag = ProductTag::where('pro_id', $product->id)
+                                         ->where('tag_name', $tag)
+                                         ->first();
+        
+                if($existingTag) {
+                    $existingTag->is_removeable = $isRemovable;
+                    $existingTag->save();
+                } else {
+                    $row = new ProductTag();
+                    $row->pro_id = $product->id;
+                    $row->tag_name = $tag;
+                    $row->is_removeable = $isRemovable;
+                    $row->save();
+                }
+            }
+        }
+        
 
 
         session()->flash('sweet_alert', [
@@ -153,6 +212,10 @@ class ProductContoller extends Controller
         $product = Product::where('id', $id)->first();
         if ($product->image != NULL) {
             unlink(public_path('frontend/product_images/' . $product->image));
+        }
+        $productTags = ProductTag::where('pro_id',$id)->get();
+        foreach($productTags as $item) {
+            $item->delete();
         }
         $product->delete();
 

@@ -57,7 +57,7 @@ class TopingsController extends Controller
             'created_by' => auth()->user()->id,
         ]);
         $product->save();
-
+        
         $sizeIds = $request->sizeId;
         $prices = $request->prices;
         
