@@ -405,7 +405,7 @@
                             <p v-if="isCouponNotMatched" style="color: red; font-size:12px;">Coupon code not matched</p>
                         </div><br>
                         <p class="cart-subtotal m-0">
-                            <span class="subtotal-title">Subtotal:</span>
+                            <span class="subtotal-title">Sub Total:</span>
                             <span class="subtotal-amount">{{ subTotal }}{{ baseCurrencySymbol }}</span>
                         </p>
                         <p class="cart-subtotal m-0" v-if="isDiscount">
@@ -413,7 +413,7 @@
                             <span class="subtotal-amount">{{ showDiscount }}</span>
                         </p>
                          <p class="cart-subtotal m-0">
-                            <span class="subtotal-title">GrandTotal:</span>
+                            <span class="subtotal-title">Grand Total:</span>
                             <span class="subtotal-amount">{{ grandTotal }}{{ baseCurrencySymbol }}</span>
                         </p>
                         <div class="group-btn d-none">
@@ -502,26 +502,30 @@ export default {
     },
     created (){
         this.emitter.on('my-event', (evt) => {
-        this.testEvent = evt.eventContent;
-        this.loadCartFromLocalStorage();
-        const dropdownElement = document.getElementById('cart-dropdown');
-        // Check if the element exists and remove the 'open' class
-        if (dropdownElement) {
-            dropdownElement.classList.remove('open');
-        }
-        const closeMaskElement = document.querySelector('.closeMask');
+            this.testEvent = evt.eventContent;
+            console.log(this.testEvent);
+            this.loadCartFromLocalStorage();
+            const dropdownElement = document.getElementById('cart-dropdown');
+            // Check if the element exists and remove the 'open' class
+            if (dropdownElement) {
+                if(this.testEvent != "form cart")
+                    dropdownElement.classList.remove('open');
+            }
+            
+            const closeMaskElement = document.querySelector('.closeMask');
 
-        // Check if the element exists and remove it
-        if (closeMaskElement) {
-            closeMaskElement.remove();
-        }
-    });
-    this.emitter.on('loginModalEvent', (evt) => {
-        var loginModalEvent = evt.loginModalEvent;
-        if(loginModalEvent == '1') {            
-            this.showAuthentication = true;
-        }
-    });
+            // Check if the element exists and remove it
+            if (closeMaskElement) {
+                if(this.testEvent != "form cart")
+                    closeMaskElement.remove();
+            }
+        });
+        this.emitter.on('loginModalEvent', (evt) => {
+            var loginModalEvent = evt.loginModalEvent;
+            if(loginModalEvent == '1') {            
+                this.showAuthentication = true;
+            }
+        });
     },
     mounted(){
         this.getCategoryWiseProduct();
@@ -643,12 +647,9 @@ export default {
                     this.grandTotal -= coupon.discount;
                 }
 
-                this.grandTotal = this.grandTotal.toFixed(2);
-                this.subTotal = this.subTotal.toFixed(2);
-
-
-
             }
+            this.grandTotal = this.grandTotal.toFixed(2);
+            this.subTotal = this.subTotal.toFixed(2);
         },
         changeQty(id){
             let parts = id.split('_');
@@ -722,7 +723,7 @@ export default {
 
         },
         emitMyEvent() {
-          this.emitter.emit('my-event', {'eventContent': 'String changed'})
+          this.emitter.emit('my-event', {'eventContent': 'form cart'})
         },
         applyCoupon(){
             var coupon = document.getElementById('coupon').value.trim();

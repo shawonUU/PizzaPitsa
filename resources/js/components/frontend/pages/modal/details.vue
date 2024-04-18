@@ -313,8 +313,8 @@ export default {
         this.quantity++;
         this.generatePrice();
       },
-      clickOnTopings(id){
-        if(document.getElementById('topingsItem'+id).checked){
+      clickOnTopings(id, flg=false){
+        if(document.getElementById('topingsItem'+id).checked && flg==false){
             document.getElementById('topingDiv'+id).style.border="none";
             document.getElementById('topingsItem'+id).checked = false;
             // console.log(document.getElementById('topingDiv'+id));
@@ -582,6 +582,7 @@ export default {
           currentQty++;
           document.getElementById('toppingQty'+toppingId).value = currentQty;
           this.generatePrice();
+          this.clickOnTopings(toppingId,true);
       },
       qtyMinus(toppingId){
           var currentQty = document.getElementById('toppingQty'+toppingId).value.trim();
@@ -591,6 +592,7 @@ export default {
           if(currentQty<1) currentQty = 1;
           document.getElementById('toppingQty'+toppingId).value = currentQty;
           this.generatePrice();
+          this.clickOnTopings(toppingId,true);
       },
       updateToppingQty(toppingId){
         var currentQty = document.getElementById('toppingQty'+toppingId).value.trim();
