@@ -79,8 +79,32 @@
                                         <label for="description" class="form-label">Description</label>
                                         <textarea class="form-control" id="editor" name="description" placeholder="Enter product description" rows="3">{{ old('description')}}</textarea>
                                     <div>
-
-
+                                    <div class="row">
+                                        <h4>Product Tags</h4><br><br>
+                                        <div style="max-width: 500px;">
+                                                <div class="row">
+                                                    <div class="col-6"><h5>Tag</h5></div>
+                                                    <div class="col-4"><h5>Removeable?</h5></div>
+                                                    <div class="col-2"><h5>Action</h5></div>
+                                                </div>
+                                                <div id="itemContainer">
+                                                    <div class="row" id="item1" data-item="1">
+                                                        <div class="col-6">
+                                                            <input type="text" name="tags[]" id="itemSize1" placeholder="Tag name" class="form-control itemSize">
+                                                        </div>
+                                                        <div class="col-4">
+                                                            <input type="checkbox" name="removeable[]" id="itemPrice1"  class="form-check-input itemPrice">
+                                                        </div>
+                                                        <div class="col-2">
+                                                            <button class="btn btn-danger" onclick="removeItem('item1')">X</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-2 item-end">
+                                                    <button type="button" class="btn btn-sm btn-primary" onclick="addNewItem()">Add One</button>
+                                                </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary float-end">Submit</button>
                             </form>
@@ -126,6 +150,38 @@
             };
 
             reader.readAsDataURL(file);
+        }
+    }
+</script>
+<script>
+    var G_ITEM_NUMBER = 1;
+    function addNewItem(){
+        G_ITEM_NUMBER++;
+        var html = `
+            <div class="row mt-2" id="item${G_ITEM_NUMBER}" data-item="${G_ITEM_NUMBER}">
+                <div class="col-6">
+                    <input type="text" name="tags[]" id="itemSize${G_ITEM_NUMBER}" placeholder="Tag name" class="form-control itemSize">                   
+                </div>
+                <div class="col-4">
+                    <input type="checkbox" name="removeable[]" id="itemPrice${G_ITEM_NUMBER}"  class="form-check-input itemPrice">
+                </div>
+                <div class="col-2">
+                    <button type="button" class="btn btn-danger" onclick="removeItem('item${G_ITEM_NUMBER}')">X</button>
+                </div>
+            </div>
+        `;
+
+        document.getElementById("itemContainer").insertAdjacentHTML('beforeend', html);
+    }
+    function removeItem(id){
+        document.getElementById(id).remove();
+        rearrangeSize();
+    }
+    function rearrangeSize(){
+        return;
+        var eles = document.getElementsByClassName("itemSize");
+        for(i=0; i<eles.length; i++){
+
         }
     }
 </script>

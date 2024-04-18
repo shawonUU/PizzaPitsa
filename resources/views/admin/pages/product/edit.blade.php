@@ -85,7 +85,35 @@
                                         </div>
                                             
                                     </div> 
-                                                                
+                                    <div class="row">
+                                        <h4>Product Tags</h4><br><br>
+                                        <div style="max-width: 500px;">
+                                                <div class="row">
+                                                    <div class="col-6"><h5>Tag</h5></div>
+                                                    <div class="col-4"><h5>Removeable?</h5></div>
+                                                    <div class="col-2"><h5>Action</h5></div>
+                                                </div>
+                                                <div id="itemContainer">
+                                                    @foreach ($productTags as $productTag)
+                                                        <div class="row mt-2" id="item{{ $productTag->id }}" data-item="{{ $productTag->id }}">
+                                                            <div class="col-6">
+                                                                <input type="text" name="tags[]" id="itemSize{{ $productTag->id }}" value="{{ $productTag->tag_name }}" placeholder="Tag name" class="form-control itemSize">
+                                                            </div>
+                                                            <div class="col-4">
+                                                                <input type="checkbox" name="removeable[]" id="itemPrice{{ $productTag->id }}"  {{ $productTag->is_removeable=='1'?'checked':''}} class="form-check-input itemPrice">
+                                                            </div>
+                                                            <div class="col-2">
+                                                                <button class="btn btn-danger" onclick="removeItem('item{{ $productTag->id }}')">X</button>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                    
+                                                </div>
+                                                <div class="mt-2 item-end">
+                                                    <button type="button" class="btn btn-sm btn-primary" onclick="addNewItem()">Add One</button>
+                                                </div>
+                                        </div>
+                                    </div>                             
                                 </div>
                                 <button type="submit" class="btn btn-primary float-end">Submit</button>
                             </form>
@@ -552,5 +580,51 @@
         }
     }
 </script>
+<script>
+    var G_ITEM_NUMBER = {{ count($productTags) }} + 1;
+
+    function addNewItem(){
+        G_ITEM_NUMBER++;
+        
+        var html = `
+            <div class="row mt-2" id="item${G_ITEM_NUMBER}" data-item="${G_ITEM_NUMBER}">
+                <div class="col-6">
+                    <input type="text" name="tags[]" id="itemSize${G_ITEM_NUMBER}" placeholder="Tag name" class="form-control itemSize">
+                </div>
+                <div class="col-4">
+                    <input type="checkbox" name="removeable[]" id="itemPrice${G_ITEM_NUMBER}" class="form-check-input itemPrice">
+                </div>
+                <div class="col-2">
+                    <button type="button" class="btn btn-danger" onclick="removeItem('item${G_ITEM_NUMBER}')">X</button>
+                </div>
+            </div>
+        `;
+
+        document.getElementById("itemContainer").insertAdjacentHTML('beforeend', html);
+    }
+
+    function removeItem(id){
+        var removedElement = document.getElementById(id);
+        removedElement.remove();
+        rearrangeSize();
+    }
+
+    function rearrangeSize(){
+        var items = document.querySelectorAll('.itemSize');
+        
+        items.forEach((item, index) => {
+            var itemId = `itemSize${index + 1}`;
+            var priceId = `itemPrice${index + 1}`;
+            var removeButton = `removeItem('item${index + 1}')`;
+
+            item.id = itemId;
+            item.parentNode.parentNode.id = `item${index + 1}`;
+            item.parentNode.nextElementSibling.childNodes[1].id = priceId;
+            item.parentNode.parentNode.nextElementSibling.childNodes[1].setAttribute('onclick', removeButton);
+        });
+    }
+
+</script>
+
 @endsection
 @endsection
