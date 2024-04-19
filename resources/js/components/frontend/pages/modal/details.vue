@@ -108,7 +108,7 @@
                     <div class="sc-1subij5-0 cXTjGP">
                         <template v-for="(tag, tagkey) in pdoductTages" :key="tagkey"> 
                             <template v-if="tag.is_removeable==1">
-                                <a :id="'protag'+tag.id" @click="clickOnTag(tag.id)" role="button" data-removed="false" class="sc-1subij5-1 fqOpCo">
+                                <a :id="'protag'+tag.id" @click="clickOnTag(tag.id)" role="button" data-removed="false" class=" sc-1subij5-1 fqOpCo protag">
                                   {{tag.tag_name}}
                                   <i class="sc-1xbmuk-0 cjWXAF svg-icon" :id="'tagicon'+tag.id">
                                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -211,7 +211,7 @@
                           <br>
                           <ul class="product-action d-flex-center mb--0">
                             <li class="add-to-cart">
-                              <a href="javascript:void(0)" class="axil-btn btn" style="background:rgb(238, 110, 45); color:#fff" @click="addTocart">Add to Cart for {{orderPrice ? baseCurrencySymbol : ''}} {{orderPrice}}</a>
+                              <a href="javascript:void(0)" class="axil-btn btn" style="background:rgb(238, 110, 45); color:#fff" @click="addTocart">Add to Cart for {{orderPrice}}{{orderPrice ? baseCurrencySymbol : ''}} </a>
                             </li>
                           </ul>
                     </div>
@@ -392,7 +392,6 @@ export default {
           var toppingPrices = [];
           for(var i=0; i<elements.length; i++){
             if(elements[i].checked){
-
                 var topingId = elements[i].value;
                 var pric = 0;
                 if (this.sizeVsTopings[topingId] && this.sizeVsTopings[topingId][lib_size]) {
