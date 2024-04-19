@@ -438,7 +438,7 @@
                 </div>
             </div>
 
-             <Details :productData="product" :productSizes="productSizes" :productTopings="productTopings" :allTopings="allTopings" :moreTopings="moreTopings" :sizeVsTopings="sizeVsTopings" :maxMin="maxMin" v-if="showAddToCart" @closeModal="handleModalClose"></Details>
+             <Details :productData="product" :productSizes="productSizes" :productTopings="productTopings" :allTopings="allTopings" :moreTopings="moreTopings" :sizeVsTopings="sizeVsTopings" :maxMin="maxMin" :pdoductTages="pdoductTages" v-if="showAddToCart" @closeModal="handleModalClose"></Details>
             <Authentication  v-if="showAuthentication" @closeModal="handleAuthenticationModalClose"></Authentication>
             <DeliveryPlace :discount="discount" :subTotal="subTotal" :grandTotal="grandTotal" :orderType="orderType"  v-if="showDeliveryPlace" @closeModal="handleDeliveryPlaceModalClose"></DeliveryPlace>
         </main>
@@ -482,6 +482,7 @@ export default {
             allTopings:null,
             moreTopings:null,
             sizeVsTopings:null,
+            pdoductTages:null,
             maxMin:null,
             showAddToCart:false,
             showAuthentication:false,
@@ -572,6 +573,7 @@ export default {
                         this.allTopings =  res.data[4];
                         this.moreTopings = res.data[5];
                         this.sizeVsTopings = res.data[6];
+                        this.pdoductTages = res.data[7];
                         // console.log(this.maxMin);
                     }
             }).catch((err) => {

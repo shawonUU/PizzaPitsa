@@ -105,6 +105,26 @@
 
                     <p v-html="productData.description" class="description m-0 p-0"></p>
 
+                    <div class="sc-1subij5-0 cXTjGP">
+                        <template v-for="(tag, tagkey) in pdoductTages" :key="tagkey"> 
+                            <template v-if="tag.is_removeable==1">
+                                <a :id="'protag'+tag.id" @click="clickOnTag(tag.id)" role="button" data-removed="false" class="sc-1subij5-1 fqOpCo">
+                                  {{tag.tag_name}}
+                                  <i class="sc-1xbmuk-0 cjWXAF svg-icon" :id="'tagicon'+tag.id">
+                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                      <circle cx="7" cy="7" r="6.6" stroke="#737272" stroke-width="0.8"></circle>
+                                      <path d="M5 5L9 9" stroke="#737272" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                      <path d="M9 5L5 9" stroke="#737272" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                  </i>
+                                </a>,
+                            </template>
+                            <template v-else>
+                                {{tag.tag_name}},
+                            </template>
+                        </template>
+                    </div>
+
 
                     <div class="product-variations-wrapper">
                       <!-- Start Product Variation  -->
@@ -225,6 +245,7 @@ export default {
         allTopings: Object,
         moreTopings: Object,
         sizeVsTopings: Object,
+        pdoductTages:Object,
         maxMin:""
         // maxMin: object,
       },
@@ -505,12 +526,13 @@ export default {
         }
 
         var eles = document.getElementsByClassName('more-toppings');
-        var currentTpnId = [];
         for (var i = 0; i < eles.length; i++) {
           var tpngId = eles[i].dataset.toppingid;
           tpngId = parseInt(tpngId);
           if (!selectedOptionids.includes(tpngId)) {
             eles[i].remove();
+            this.generatePrice();
+            return;
           }else{
             selectedOptionids = selectedOptionids.filter(item => item !== tpngId);
           }
@@ -574,6 +596,7 @@ export default {
           document.getElementById("toppingQtyPls"+topping.id).addEventListener('click', () => this.qtyPlus(topping.id));
           this.clickOnTopings(topping.id);
         }
+        this.generatePrice();
       },
       qtyPlus(toppingId){
           var currentQty = document.getElementById('toppingQty'+toppingId).value.trim();
@@ -600,6 +623,27 @@ export default {
         currentQty = parseInt(currentQty);
         document.getElementById('toppingQty'+toppingId).value = currentQty;
         this.generatePrice();
+      },
+      clickOnTag(id){     
+          var tag = document.getElementById('protag'+id);
+          if(tag.dataset.removed=="true"){
+            var icon = document.getElementById('tagicon'+id);
+              icon.innerHTML = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="7" cy="7" r="6.6" stroke="#737272" stroke-width="0.8"></circle>
+                                <path d="M5 5L9 9" stroke="#737272" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M9 5L5 9" stroke="#737272" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"></path>
+                              </svg>`;
+              tag.dataset.removed="false";
+          }
+          else if(tag.dataset.removed=="false"){
+            var icon = document.getElementById('tagicon'+id);
+              icon.innerHTML = `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                  <circle cx="7" cy="7" r="6.6" stroke="#737272" stroke-width="0.8"></circle>
+                                  <path d="M4.687 9.41667C4.687 9.41667 5.58895 9.41667 8.1095 9.41667C10.63 9.41667 10.6303 5.46995 8.1095 5.46995C5.58871 5.46995 5.88146 5.46995 4.82073 5.46995M3.5 5.46995L5.55039 6.90736L4.82073 5.46995M3.5 5.46995L5.55039 4L4.82073 5.46995M3.5 5.46995C3.5 5.46995 4.19855 5.46995 4.82073 5.46995" stroke="#737272" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>`;
+              tag.dataset.removed="true";
+          }
+
       }
 
   }
@@ -677,5 +721,25 @@ export default {
         .sizeImages{
           width: 300px!important;
         }
-}
+    }
+
+    .fqOpCo[data-removed="true"] {
+        text-decoration: line-through;
+    }
+
+    .fqOpCo {
+      position: relative;
+      cursor: pointer;
+      outline: none;
+      background: transparent;
+      border: medium;
+      margin: 0px;
+      padding: 0px;
+      font-size: 14px;
+      line-height: 20px;
+      text-align: left;
+      text-decoration: underline dotted;
+      text-underline-offset: 3px;
+    }
+
 </style>

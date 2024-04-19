@@ -403,7 +403,7 @@ class ProductContoller extends Controller
 
     public function getProducts()
     {
-    $categories = Category::leftJoin('products', 'categories.id', '=', 'products.category_id')
+        $categories = Category::leftJoin('products', 'categories.id', '=', 'products.category_id')
         ->leftJoin('product_sizes', function ($join) {
             $join->on('products.id', '=', 'product_sizes.product_id')
                 ->whereRaw('NOW() BETWEEN product_sizes.offer_from AND product_sizes.offer_to');
@@ -419,38 +419,38 @@ class ProductContoller extends Controller
             DB::raw('(SELECT MIN(price) FROM product_sizes WHERE product_sizes.product_id = products.id) as min_price'),
             'product_sizes.offer_price as calculated_offer_price'
         )
-        ->orderBy('categories.order_by') // Order by category order_by column
-        ->orderBy('products.id') // Optionally, you can add product sorting here
+        ->orderBy('categories.order_by')
+        ->orderBy('products.id') 
         ->get();
-    // return $categories;
-    // Organize the result into a more usable format
-    $groupedCategories = [];
-    $categories = $categories->sortBy('order_by');
-    foreach ($categories as $category) {
-        $categoryId = $category->category_id;
-        if (!isset($groupedCategories[$categoryId])) {
-            $groupedCategories[$categoryId] = [
-                'category_id' => $category->category_id,
-                'category_name' => $category->category_name,
-                'order_by' => $category->OrderBY,
-                'products' => [],
-            ];
+        // return $categories;
+        // Organize the result into a more usable format
+        $groupedCategories = [];
+        $categories = $categories->sortBy('order_by');
+        foreach ($categories as $category) {
+            $categoryId = $category->category_id;
+            if (!isset($groupedCategories[$categoryId])) {
+                $groupedCategories[$categoryId] = [
+                    'category_id' => $category->category_id,
+                    'category_name' => $category->category_name,
+                    'order_by' => $category->OrderBY,
+                    'products' => [],
+                ];
+            }
+            if ($category->product_id) {
+                $groupedCategories[$categoryId]['products'][] = [
+                    'id' => $category->product_id,
+                    'name' => $category->product_name,
+                    'description' => $category->description,
+                    'image' => $category->image,
+                    'min_price' => $category->min_price,
+                    'calculated_offer_price' => $category->calculated_offer_price,
+                ];
+            }
+            // return $groupedCategories;
         }
-    if ($category->product_id) {
-        $groupedCategories[$categoryId]['products'][] = [
-            'id' => $category->product_id,
-            'name' => $category->product_name,
-            'description' => $category->description,
-            'image' => $category->image,
-            'min_price' => $category->min_price,
-            'calculated_offer_price' => $category->calculated_offer_price,
-        ];
-    }
-    // return $groupedCategories;
-}
-// $sortedCategories = collect($groupedCategories)->sortBy('order_by')->toArray();
+        // $sortedCategories = collect($groupedCategories)->sortBy('order_by')->toArray();
 
-return $groupedCategories;
+        return $groupedCategories;
     
     }
 
@@ -511,6 +511,9 @@ return $groupedCategories;
         $sizeVsTopings = $bindData;
 
         $maxMin = [$minPrice,$maxPrice];
-        return response()->json([$product, $productSizes,$productTopings,$maxMin,$allTopings,$moreTopings,$sizeVsTopings]);
+
+        $productTages = ProductTag::where('pro_id',$productId)->get()->toArray();
+
+        return response()->json([$product, $productSizes,$productTopings,$maxMin,$allTopings,$moreTopings,$sizeVsTopings,$productTages]);
     }
 }
