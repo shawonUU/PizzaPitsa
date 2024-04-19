@@ -65,6 +65,7 @@ class OrderController extends Controller
         $order->delivery_address_id = $address_id;
         $order->save();
 
+        // return $cart;
         foreach ($cart as $product_id => $productWiseItem) {
             if ($productWiseItem) {
                 foreach ($productWiseItem as $size_id => $sizeWiseItem) {
@@ -80,6 +81,21 @@ class OrderController extends Controller
                            
                         }
 
+                        $topping_prices = [];
+                        foreach($sizeWiseItem['toppingPrices'] as $topingid => $price){
+                            if($price){
+                                $topping_prices[$topingid] = $price;
+                            }
+                        }
+
+                        $topping_qtys = [];
+                        foreach($sizeWiseItem['toppingQtys'] as $topingid => $qty){
+                            if($qty){
+                                $topping_qtys[$topingid] = $qty;
+                            }
+                        }
+                        
+
                         $orderItem = new OrderItem;
                         $orderItem->order_id = $order->id;
                         $orderItem->order_number = $order->order_number;
@@ -89,6 +105,8 @@ class OrderController extends Controller
                         $orderItem->price = $sizeWiseItem['size']['price'];
                         $orderItem->total_price = $sizeWiseItem['quantity'] * $sizeWiseItem['size']['price'];
                         $orderItem->toping_ids = implode(',',$toping_ids);
+                        $orderItem->toping_qtys = implode(',',$topping_qtys);
+                        $orderItem->toping_prices = implode(',',$topping_prices);
                         $orderItem->toping_price = $toping_price;
                         $orderItem->save();
                     }

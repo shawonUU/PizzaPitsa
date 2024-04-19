@@ -80,7 +80,7 @@
             <div v-if="scheduleSection">                
                 <div class="row">
                     <div class="col-12 col-md-4">
-                        <h3>Pic Up/ Dine In</h3>
+                        <h3>Pick Up/ Dine In</h3>
                           <div v-if="isVisible" class="toast-container">
                             <div class="toast">{{ message }}</div>
                           </div>
