@@ -79,6 +79,36 @@
                                         <label for="description" class="form-label">Description</label>
                                         <textarea class="form-control" id="editor" name="description" placeholder="Enter product description" rows="3">{{ old('description')}}</textarea>
                                     <div>
+                                        
+                                    <div class="row mt-2">
+                                        <h4>Product Option</h4><br><br>
+                                        <div class="col-xxl-3 col-md-6 mb-3">
+                                            <label for="name" class="form-label">Title</label>
+                                            <select class="form-select mb-3" name="title">
+                                                <option selected>--Select Title--</option>
+                                                @foreach ($optionTitles as $item)
+                                                    <option {{ old('optionTitles') == $item->id ? 'selected':''}} value="{{ $item->id }}">{{ $item->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-xxl-3 col-md-6 mb-3">
+                                            <label for="name" class="form-label">Topping</label>
+                                            <select class="form-select mb-3" name="topping">
+                                                <option selected>--Select Topping--</option>
+                                                @foreach ($toppings as $item)
+                                                    <option {{ old('topping') == $item->id ? 'selected':''}} value="{{ $item->id }}">{{ $item->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="col-xxl-3 col-md-6 mb-3">
+                                            <label for="name" class="form-label">Type</label>
+                                            <select class="form-select mb-3" name="type">
+                                                <option selected>--Select Type--</option>
+                                                <option value="checkbox">Checkbox</option>                                                
+                                                <option value="Radio">Radio</option>                                                
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <h4>Product Tags</h4><br><br>
                                         <div style="max-width: 500px;">
@@ -101,10 +131,11 @@
                                                     </div>
                                                 </div>
                                                 <div class="mt-2 item-end">
-                                                    <button type="button" class="btn btn-sm btn-primary" onclick="addNewItem()">Add One</button>
+                                                    <button type="button" class="btn btn-sm btn-primary" onclick="addNewItem()">Add new</button>
                                                 </div>
                                         </div>
                                     </div>
+
                                 </div>
                                 <button type="submit" class="btn btn-primary float-end">Submit</button>
                             </form>

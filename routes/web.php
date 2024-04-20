@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\CurrencyController;
 use App\Http\Controllers\Admin\NutritionController;
 use App\Http\Controllers\Admin\TimeScheduleController;
 use App\Http\Controllers\Admin\DelivaryChargeController;
+use App\Http\Controllers\Admin\OptionTitleController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\ProductMnagementController;
 use App\Http\Controllers\Admin\RoleController;
@@ -46,6 +47,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::resource('sizes', SizeController::class);
     Route::resource('nutritions', NutritionController::class);
     Route::resource('coupons', CouponController::class);
+    Route::resource('optiontitles', OptionTitleController::class);
     Route::get('product-sizes/{id}', [ProductContoller::class, 'size'])->name('product_size');
     Route::delete('delete-product-sizes/{id}', [ProductContoller::class, 'deleteProductSize'])->name('productSize.destroy');
 

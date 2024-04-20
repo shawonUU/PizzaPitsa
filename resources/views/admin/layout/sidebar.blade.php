@@ -122,6 +122,9 @@
                                     <a href="{{ route('nutritions.index') }}" class="nav-link">Nutrition</a>
                                 </li>
                                 <li class="nav-item">
+                                    <a href="{{ route('optiontitles.index') }}" class="nav-link">Option Title</a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="{{ route('topings.index') }}" class="nav-link" data-key="t-nestable-list">Topings</a>
                                 </li>
                                 <li class="nav-item">
