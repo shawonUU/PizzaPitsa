@@ -31,7 +31,7 @@
                                          <div class="slider-product-box">
                                             <div class="product-thumb">
                                                 <a href="javacript:void(0)">
-                                                    <img style="border-radius:10px" src="/frontend/assets/images/mega-pizza-add-2.jpg" alt="Product">
+                                                    <img style="border-radius:10px" src="/frontend/assets/images/mega-pizza-add-1.jpg" alt="Product">
                                                 </a>
                                             </div>
                                             
@@ -40,9 +40,9 @@
                                     <div class="col-6">
                                          <div class="slider-product-box">                                              
                                              <div class="product-thumb">
-                                                <a href="javacript:void(0)">
-                                                    <img style="border-radius:10px" src="/frontend/assets/images/mega-pizza-add-1.jpg" alt="Product">
-                                                </a>
+                                                 <a href="javacript:void(0)">
+                                                    <img style="border-radius:10px" src="/frontend/assets/images/mega-pizza-add-2.jpg" alt="Product">
+                                                </a>                                              
                                             </div>
                                         </div>
                                     </div>
@@ -84,11 +84,11 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img style="width:70px"
-                                        src="/frontend/product_images/20240321203154.jpg"
+                                        src="/frontend/product_images/20240322191731_u8B4dGgTFs.jpg"
                                         alt="...">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
-                                    <span>Mega Sydney</span><br>
+                                    <span>Margherita</span><br>
                                     <strong>From11.90€</strong>
                                 </div>
                             </div>
@@ -105,20 +105,7 @@
                                     <strong>From11.90€</strong>
                                 </div>
                             </div>
-                        </swiper-slide>
-                        <swiper-slide>
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <img style="width:70px"
-                                        src="/frontend/product_images/20240321160355.jpg"
-                                        alt="...">
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <span>Jauheliha pizza</span><br>
-                                    <strong>From11.90€</strong>
-                                </div>
-                            </div>
-                        </swiper-slide>
+                        </swiper-slide>                     
                         <swiper-slide>
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">

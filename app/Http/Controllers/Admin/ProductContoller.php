@@ -419,6 +419,7 @@ class ProductContoller extends Controller
             DB::raw('(SELECT MIN(price) FROM product_sizes WHERE product_sizes.product_id = products.id) as min_price'),
             'product_sizes.offer_price as calculated_offer_price'
         )
+        ->where('products.status','1')
         ->orderBy('categories.order_by')
         ->orderBy('products.id') 
         ->get();
