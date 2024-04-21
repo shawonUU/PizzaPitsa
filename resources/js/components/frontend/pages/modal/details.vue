@@ -108,7 +108,7 @@
                     <div class="sc-1subij5-0 cXTjGP">
                         <template v-for="(tag, tagkey) in pdoductTages" :key="tagkey"> 
                             <template v-if="tag.is_removeable==1">
-                                <a :id="'protag'+tag.id" @click="clickOnTag(tag.id)" role="button" data-removed="false" class=" sc-1subij5-1 fqOpCo protag">
+                                <a :id="'protag'+tag.id" @click="clickOnTag(tag.id)" role="button" :data-tagid="tag.id" data-removed="false" class=" sc-1subij5-1 fqOpCo protag">
                                   {{tag.tag_name}}
                                   <i class="sc-1xbmuk-0 cjWXAF svg-icon" :id="'tagicon'+tag.id">
                                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -406,6 +406,14 @@ export default {
             }
           }
 
+          var elements = document.getElementsByClassName('protag');
+          var removedTags = [];
+          for(var i=0; i<elements.length; i++){
+              if(elements[i].dataset.removed=='true'){
+                removedTags.push(elements[i].dataset.tagid);
+              }
+          }
+
           if(!selectedSize){
             this.showToast('Select Any Size',0);return;
           }
@@ -417,8 +425,9 @@ export default {
                     size: this.productSizes[selectedSize],
                     topings: topings,
                     toppingQtys: toppingQtys,
-                    toppingPrices:toppingPrices,
-                    totalPrice: this.orderPrice
+                    toppingPrices: toppingPrices,
+                    totalPrice: this.orderPrice,
+                    removedTags: removedTags,
                 };
 
                 if (!this.cart[this.productData.id]) {
@@ -464,6 +473,9 @@ export default {
                         existingItem.totalPrice += parseFloat(bindTopings[i].price) * parseInt(existingItem.toppingQtys[bindTopings[i].id]);
                     }
 
+                    var merged = [...new Set([...existingItem.removedTags, ...item.removedTags])];
+
+                    existingItem.removedTags = merged;
                     existingItem.topings = bindTopings;
                     existingItem.toppingQtys = bindQtys;
                     existingItem.toppingPrices = bindPrices;

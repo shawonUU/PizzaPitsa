@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('toping_prices');
             $table->string('toping_qtys');
             $table->decimal('toping_price');
+            $table->string('removed_tags');
             $table->timestamps();
         });
     }

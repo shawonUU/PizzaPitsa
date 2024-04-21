@@ -347,7 +347,7 @@
                                                     <div>
                                                         <div class="d-flex flex-row bd-highlight mb-3">
                                                             <div class="p-2 bd-highlight">
-                                                                <img  style="width:80px;" :src="item.product.image ? '/frontend/product_images/' + item.product.image : '/frontend/product_images/placeholder.jpg'" alt="Product Images">
+                                                                <img  style="width:100px;" :src="item.product.image ? '/frontend/product_images/' + item.product.image : '/frontend/product_images/placeholder.jpg'" alt="Product Images">
                                                             </div>
                                                             <div class="p-2 bd-highlight w-100">
                                                                 <div >
@@ -362,9 +362,16 @@
 
                                                                 </div>
                                                                 <p style="margin: 0; padding: 0; line-height:1.3; font-size: 14px; text-align:left;">{{ item.size.name }}({{ item.size.price }})</p>
-                                                                <p style=" width:100% !important; line-height:1.3;">
+                                                                <p style=" width:100% !important; line-height: 0.8; margin: 0;">
+                                                                    <span>+</span>
                                                                     <template  v-for="(toping, topingId) in item.topings" :key="topingId">
                                                                         <span style="margin:0; padding:0; font-size:12px; padding: 0 2px;" v-if="toping">{{ toping.name }}({{ item.toppingPrices[toping.id]}} x {{item.toppingQtys[toping.id]}})</span>
+                                                                    </template>
+                                                                </p>
+                                                                <p v-if="productAllTages" style=" width:100% !important; line-height: 0.8;">
+                                                                    <span>-</span>
+                                                                    <template  v-for="(tag, tagid) in item.removedTags" :key="tagid">
+                                                                        <span style="margin:0; padding:0; font-size:12px; padding: 0 2px;">{{ productAllTages[tag] }}</span>,
                                                                     </template>
                                                                 </p>
                                                             </div>
@@ -440,7 +447,7 @@
 
              <Details :productData="product" :productSizes="productSizes" :productTopings="productTopings" :allTopings="allTopings" :moreTopings="moreTopings" :sizeVsTopings="sizeVsTopings" :maxMin="maxMin" :pdoductTages="pdoductTages" v-if="showAddToCart" @closeModal="handleModalClose"></Details>
             <Authentication  v-if="showAuthentication" @closeModal="handleAuthenticationModalClose"></Authentication>
-            <DeliveryPlace :discount="discount" :subTotal="subTotal" :grandTotal="grandTotal" :orderType="orderType"  v-if="showDeliveryPlace" @closeModal="handleDeliveryPlaceModalClose"></DeliveryPlace>
+            <DeliveryPlace :discount="discount" :subTotal="subTotal" :grandTotal="grandTotal" :orderType="orderType" :productAllTages="productAllTages"  v-if="showDeliveryPlace" @closeModal="handleDeliveryPlaceModalClose"></DeliveryPlace>
         </main>
     </div>
      <!-- <div class="input-group">
@@ -483,6 +490,7 @@ export default {
             moreTopings:null,
             sizeVsTopings:null,
             pdoductTages:null,
+            productAllTages:null,
             maxMin:null,
             showAddToCart:false,
             showAuthentication:false,
@@ -504,7 +512,6 @@ export default {
     created (){
         this.emitter.on('my-event', (evt) => {
             this.testEvent = evt.eventContent;
-            console.log(this.testEvent);
             this.loadCartFromLocalStorage();
             const dropdownElement = document.getElementById('cart-dropdown');
             // Check if the element exists and remove the 'open' class
@@ -549,21 +556,19 @@ export default {
         getCategoryWiseProduct() {
             axios.get('get-products')
             .then((res) => {
-                console.log(res.data);
-               this.products = res.data;
+               this.products = res.data[0];
+               this.productAllTages = res.data[1];
+                console.log(this.productAllTages);
             })
             .catch((err) => {
-                console.log(err);
             });
         },
         getProductDetails(productId) {
-            // alert(productId)
             axios.get('get-product-details', {
                     params: {
                         id: productId
                     }
             }).then((res) => {
-                    // console.log();
                     if (res.data[0]) {
                         this.showAddToCart = true;
                         this.product = res.data[0];
@@ -574,10 +579,8 @@ export default {
                         this.moreTopings = res.data[5];
                         this.sizeVsTopings = res.data[6];
                         this.pdoductTages = res.data[7];
-                        // console.log(this.maxMin);
                     }
             }).catch((err) => {
-                    console.log(err);
             });
         },
         handleModalClose() {
@@ -603,15 +606,6 @@ export default {
                     for (const sizeId in productSizes) {
                         if (productSizes.hasOwnProperty(sizeId)) {
                             const item = productSizes[sizeId];
-                            console.log("CART");
-                            console.log(item);
-                            console.log("END");
-                            // Access item properties
-                            // console.log('Quantity:', item.quantity);
-                            // console.log('Product:', item.product);
-                            // console.log('Size:', item.size);
-                            // // console.log('Toppings:', item.topings);
-                            // console.log('Total Price:', item.totalPrice);
 
                             var topings = item.topings;
                             var toppingQtys = item.toppingQtys;
@@ -748,7 +742,6 @@ export default {
                     this.loadCartFromLocalStorage();
                 })
                 .catch((err)=>{
-                    console.log(err);
                 })
             }
 
@@ -756,17 +749,13 @@ export default {
         checkout(){
             var auth = localStorage.getItem('auth');
             auth = auth ? JSON.parse(auth) : null;
-            // console.log(auth);
             if(auth) this.showDeliveryPlace = true;
             else this.showAuthentication = true;
         },
         async fetchBaseCurrencySymbol() {
-            // console.log(await this.showAmount(655))
             try {
                 this.baseCurrencySymbol = await getBaseCurrencySymbol();
             } catch (error) {
-                // Handle error (e.g., show an error message)
-                // console.error('Error fetching base currency symbol in component:', error);
             }
         },
         showMap() {               
@@ -777,7 +766,6 @@ export default {
                 // this.initMap();
                 var auth = localStorage.getItem('auth');
                 auth = auth ? JSON.parse(auth) : null;
-                // console.log(auth);
                 if(auth) this.showDeliveryPlace = true;
                 else this.showAuthentication = true;
             }else{
@@ -790,7 +778,6 @@ export default {
             this.orderType = 2;
             var auth = localStorage.getItem('auth');
             auth = auth ? JSON.parse(auth) : null;
-            // console.log(auth);
             if(auth) this.showDeliveryPlace = true;
             else this.showAuthentication = true;
         },
@@ -811,7 +798,6 @@ export default {
         handleScrollToTeamSection(id) {
           
             const targetId = 'product_section' + id;
-              console.log(targetId); // Assuming your team section IDs follow a pattern
             const teamSection = document.getElementById(targetId);
             if (teamSection) {
                 teamSection.scrollIntoView({ behavior: 'smooth' });
@@ -825,7 +811,6 @@ export default {
         const onSwiper = (swiper) => {
         };
         const onSlideChange = () => {
-            // console.log('slide change');
         };
         return {
             onSwiper,

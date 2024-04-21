@@ -70,7 +70,6 @@ class OrderController extends Controller
             if ($productWiseItem) {
                 foreach ($productWiseItem as $size_id => $sizeWiseItem) {
                     if ($sizeWiseItem) {
-
                         $toping_ids = [];
                         $toping_price = 0;
                         foreach (isset($sizeWiseItem['topings']) ? $sizeWiseItem['topings'] : [] as $toping) {
@@ -108,6 +107,7 @@ class OrderController extends Controller
                         $orderItem->toping_qtys = implode(',',$topping_qtys);
                         $orderItem->toping_prices = implode(',',$topping_prices);
                         $orderItem->toping_price = $toping_price;
+                        $orderItem->removed_tags = implode(',',$sizeWiseItem['removedTags']);
                         $orderItem->save();
                     }
                 }

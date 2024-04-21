@@ -446,11 +446,10 @@ class ProductContoller extends Controller
                     'calculated_offer_price' => $category->calculated_offer_price,
                 ];
             }
-            // return $groupedCategories;
         }
-        // $sortedCategories = collect($groupedCategories)->sortBy('order_by')->toArray();
+        $productAllTages = ProductTag::pluck('tag_name','id');
 
-        return $groupedCategories;
+        return [$groupedCategories,$productAllTages];
     
     }
 
@@ -513,7 +512,7 @@ class ProductContoller extends Controller
         $maxMin = [$minPrice,$maxPrice];
 
         $productTages = ProductTag::where('pro_id',$productId)->get()->toArray();
-
+        
         return response()->json([$product, $productSizes,$productTopings,$maxMin,$allTopings,$moreTopings,$sizeVsTopings,$productTages]);
     }
 }

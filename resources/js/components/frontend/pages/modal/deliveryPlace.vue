@@ -181,17 +181,21 @@
                                                 <img height="50" :src="item.product.image ? '/frontend/product_images/' +item.product.image : '/frontend/product_images/placeholder.jpg'">                     
                                             </td>
                                             <td style="display: table-cell;">
-                                              <strong> {{ item.product.name }}</strong>
-                                              <br>
-                                              <small>Size:  {{ item.size.name }} </small>
-                                              <br>
-                                              <small>Toppings: 
+                                              <strong style="display:block;"> {{ item.product.name }}</strong>
+                                              <small style="display:block;">Size:  {{ item.size.name }} </small>
+                                              <small><span>+</span> 
                                                 <template  v-for="(toping, topingId) in item.topings" :key="topingId">
                                                   <template v-if="toping">
                                                       {{ toping.name }}({{ item.toppingPrices[toping.id]}} x {{item.toppingQtys[toping.id]}}),
                                                   </template>
                                                 </template>
                                               </small>
+                                              <p v-if="productAllTages" style=" width:100% !important; line-height: 0.8;">
+                                                  <span>-</span>
+                                                  <template  v-for="(tag, tagid) in item.removedTags" :key="tagid">
+                                                      <span style="margin:0; padding:0; font-size:12px; padding: 0 2px;">{{ productAllTages[tag] }}</span>,
+                                                  </template>
+                                              </p>
                                               <br>                  
                                             </td>                   
                                             <td class="text-center" style="display: table-cell;"> {{ item.quantity }} </td>
@@ -274,6 +278,7 @@
           subTotal: Object,
           grandTotal: Object,
           orderType:Object,
+          productAllTages:Object,
         },
         data() {
             return {
@@ -390,7 +395,7 @@
                   comment:comment,
                 })
                 .then((res)=>{   
-                  console.log(res.data);               
+                  console.log(res.data);              
                   if(res.data.success){
                     localStorage.setItem('cart', '');
                     this.handleButtonClick();
