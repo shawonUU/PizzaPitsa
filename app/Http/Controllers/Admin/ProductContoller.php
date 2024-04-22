@@ -13,6 +13,8 @@ use App\Models\Admin\ProductImage;
 use Illuminate\Support\Facades\DB;
 use App\Models\Admin\ProductToping;
 use App\Http\Controllers\Controller;
+use App\Models\Admin\OptionTitle;
+use App\Models\Admin\ProductOption;
 use App\Models\Admin\ProductTag;
 use App\Models\SizeVsTopingPrice;
 
@@ -33,7 +35,9 @@ class ProductContoller extends Controller
     public function create()
     {
         $categories = Category::where('status', '1')->get();
-        return view('admin.pages.product.create', compact('categories'));
+        $optionTitles = OptionTitle::where('status','1')->get();
+        $toppings = Toping::where('status','1')->get();
+        return view('admin.pages.product.create', compact('categories','optionTitles','toppings'));
     }
 
     /**
@@ -90,6 +94,12 @@ class ProductContoller extends Controller
                 $row->save();                
             }
         }
+        $productOption  = new ProductOption();
+        $productOption->title_id = $request->title;
+        $productOption->product_id = $product->id;
+        $productOption->toping_id = $request->topping;
+        $productOption->type = $request->type;
+        $productOption->save();
         session()->flash('sweet_alert', [
             'type' => 'success',
             'title' => 'Success!',
@@ -419,6 +429,7 @@ class ProductContoller extends Controller
             DB::raw('(SELECT MIN(price) FROM product_sizes WHERE product_sizes.product_id = products.id) as min_price'),
             'product_sizes.offer_price as calculated_offer_price'
         )
+        ->where('products.status','1')
         ->orderBy('categories.order_by')
         ->orderBy('products.id') 
         ->get();

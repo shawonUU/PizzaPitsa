@@ -2,74 +2,73 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Admin\Size;
 use Illuminate\Http\Request;
-use App\Models\Admin\Category;
+use App\Models\Admin\OptionTitle;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
-class SizeController extends Controller
+class OptionTitleController extends Controller
 {
     public function index()
     {
-        $sizes = Size::get();
-        return view("admin.pages.product.size", compact('sizes'));
+        $sizes = OptionTitle::get();
+        return view("admin.pages.optiontitle.index", compact('sizes'));
     }
 
     public function store(Request $request)
     {
+        // return $request;
         $validator = Validator::make($request->all(), [
-            'size' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'status' => 'required',
         ]);
         if ($validator->fails()) {
             return redirect()->back()->with(['errors' => $validator->errors()], 422);
         }
 
-        $size = new Size;
-        $size->name = $request->size;
-        $size->status = $request->status;
-        $size->created_by = auth()->user()->id;
+        $size = new OptionTitle();
+        $size->name = $request->title;
+        $size->status = $request->status;        
         $size->save();
         session()->flash('sweet_alert', [
             'type' => 'success',
             'title' => 'Success!',
-            'text' => 'Size Added success',
+            'text' => 'OptionTitle Added success',
         ]);
-        return redirect()->route('sizes.index');
+        return redirect()->route('optiontitles.index');
     }
     public function destroy($id)
     {
-        $category = Size::findOrFail($id);
+        $category = OptionTitle::findOrFail($id);
         $category->delete();
         session()->flash('sweet_alert', [
             'type' => 'success',
             'title' => 'Success!',
-            'text' => 'Size Delete success',
+            'text' => 'OptionTitle Delete success',
         ]);
-        return redirect()->route('sizes.index');
+        return redirect()->route('optiontitles.index');
     }
     public function update(Request $request, $id)
     {
+        // return $request;
         $validator = Validator::make($request->all(), [
-            'size' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'status' => 'required',
         ]);
         if ($validator->fails()) {
             return redirect()->back()->with(['errors' => $validator->errors()], 422);
         }
-        $size = Size::find($id);
+        $size = OptionTitle::find($id);
         if ($size) {
-            $size->name = $request->size;
-            $size->status = $request->status;
-            $size->created_by = auth()->user()->id;
+            $size->name = $request->title;
+            $size->status = $request->status;           
             $size->save();
         }
         session()->flash('sweet_alert', [
             'type' => 'success',
             'title' => 'Success!',
-            'text' => 'size update success',
+            'text' => 'OptionTitle update success',
         ]);
-        return redirect()->route('sizes.index');
+        return redirect()->route('optiontitles.index');
     }
 }
