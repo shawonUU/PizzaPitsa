@@ -30,16 +30,49 @@
                     </div>
                     <div class="col-12">
                         <label for="name" class="form-label">Password</label>
-                        <input type="password" style="height: 40px; padding:5px;border: 1px solid #cfcbcb;" class="form-control" id="password" name="password" placeholder="Password">
-                        <a href="javascript:void(0)" @click="forgotPassword" style="color:blue">Forgot Password?</a>
-                    </div>
+                        <input type="password" style="height: 40px; padding:5px;border: 1px solid #cfcbcb;" class="form-control" id="password" name="password" placeholder="Password">                        
+                    </div> 
+                    <div class="col-12">                        
+                         <div class="row">
+                            <div class="col-md-12 left-box">
+                                <!-- chars: if you want only numbers in your captcha -->
+                                <VueClientRecaptcha
+                                :value="inputValue"
+                                chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789"
+                                :hidelines="false"
+                                custom-text-color="black"
+                                @getCode="getCaptchaCode"
+                                @isValid="checkValidCaptcha"
+                                class="vue-recaptcha"
+                                >                                                             
+                                </VueClientRecaptcha>
 
-                    <div class="col-12 mt-3">
+                                <input
+                                type="text"
+                                style="height: 40px; padding:5px;border: 1px solid #cfcbcb;" 
+                                v-model="inputValue"
+                                placeholder="Captcha"
+                                />
+                            </div>
+                            </div>
+                            <div class="row">
+                            <div class="col-md-12 mt-2">
+                                <button
+                                style="font-size: 14px;"
+                                type="button"                              
+                                class="btn btn-primary p-2"
+                                @click="signIn()"
+                                >Sign In</button>
+                                <a href="javascript:void(0)" @click="forgotPassword" style="color:blue">Forgot Password?</a>
+                            </div>
+                        </div>
+                    </div>                   
+                    <!-- <div class="col-12 mt-3">
                         <div class="d-flex justify-content-end">
                             <button type="button" class="btn btn-primary p-2" style="font-size: 12px; width: 15%;" @click="signIn()">Sign In</button>
                         </div>
-                    </div>
-                </div>
+                    </div>                     -->
+                </div>            
             </div>
             <div v-if="signUpSection">
                 <h4 class="text-center m-0 p-0">Sign Up</h4>
@@ -66,11 +99,40 @@
                         <label for="new_password" class="form-label">Password</label>
                         <input type="password" style="height: 40px; padding:5px;border: 1px solid #cfcbcb;" class="form-control" id="new_password" name="new_password" placeholder="Password">
                     </div>
-                    <div class="col-12 mt-3">
-                        <div class="d-flex justify-content-end">
-                            <button @click="signUp()" type="button" class="btn btn-primary p-2" style="font-size: 12px; width: 15%;">Sign Up</button>
+                    <div class="col-12">                        
+                         <div class="row">
+                            <div class="col-md-12 left-box">
+                                <!-- chars: if you want only numbers in your captcha -->
+                                <VueClientRecaptcha
+                                :value="inputValue"
+                                chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789"
+                                :hidelines="false"
+                                custom-text-color="black"
+                                @getCode="getCaptchaCode"
+                                @isValid="checkValidCaptcha"
+                                class="vue-recaptcha"
+                                >                                                             
+                                </VueClientRecaptcha>
+
+                                <input
+                                type="text"
+                                style="height: 40px; padding:5px;border: 1px solid #cfcbcb;" 
+                                v-model="inputValue"
+                                placeholder="Captcha"
+                                />
+                            </div>
+                            </div>
+                            <div class="row">
+                            <div class="col-md-12 mt-2">
+                                <button
+                                style="font-size: 14px;"
+                                type="button"                              
+                                class="btn btn-primary p-2"
+                                @click="signUp()"
+                                >Sign Up</button>                                
+                            </div>
                         </div>
-                    </div>
+                    </div>                      
                 </div>
 
                 <!-- <div style="margin-top:60px;">
@@ -185,6 +247,7 @@
   import axios from 'axios';
   import { toast } from 'vue3-toastify';
   import 'vue3-toastify/dist/index.css';
+  import VueClientRecaptcha from "vue-client-recaptcha";
   export default {
       name: 'authentication',
         props: {
@@ -208,10 +271,12 @@
             newPassword:'',
             newConfirmPassword:'',
             forgotPasswordErrorData:'',
+            inputValue: null,
+            isValidCaptcha: false,
           }
       },
       components: {
-
+        VueClientRecaptcha
       },
       mounted(){
 
@@ -232,77 +297,87 @@
             this.verificationSection = false;
         },
         signUp(){
-            var name = document.getElementById('new_name').value.trim();
-            var email = document.getElementById('new_email').value.trim();
-            var phone = document.getElementById('phone').value.trim();
-            var password = document.getElementById('new_password').value.trim();
-            this.signUpDataError = '';
+            if (this.isValidCaptcha) {
+                var name = document.getElementById('new_name').value.trim();
+                var email = document.getElementById('new_email').value.trim();
+                var phone = document.getElementById('phone').value.trim();
+                var password = document.getElementById('new_password').value.trim();
+                this.signUpDataError = '';
 
-            if(name=='') {this.signUpDataError = 'Name is required';return;}
-            if(email=='') {this.signUpDataError = 'Email is required';return;}
-            if(phone=='') {this.signUpDataError = 'Phone number is required';return;}
-            var digitPattern = /^[0-9]+$/;
-            if (!digitPattern.test(phone)) {this.signUpDataError = 'Enter a valid phone number';return;}
-            if(password=='') {this.signUpDataError = 'Password is required'; return;}
+                if(name=='') {this.signUpDataError = 'Name is required';return;}
+                if(email=='') {this.signUpDataError = 'Email is required';return;}
+                if(phone=='') {this.signUpDataError = 'Phone number is required';return;}
+                var digitPattern = /^[0-9]+$/;
+                if (!digitPattern.test(phone)) {this.signUpDataError = 'Enter a valid phone number';return;}
+                if(password=='') {this.signUpDataError = 'Password is required'; return;}
 
-            axios.post('customer-signUp', {
-                name: name,
-                email: email,
-                phone:phone,
-                password: password,
-            })
-            .then((res)=>{
-                if(res.data.success){
-                    this.signInSection = false;
-                    this.signUpSection = false;
-                    this.verificationSection = true;
-                    this.email = email;
-                    this.password = password;
-                    this.updateHeaderAfterLogin();                
-                }else{
-                    this.signUpDataError = res.data.message;
-                }
-            })
-            .catch((err)=>{
-                console.log(err);
-            })
-        },
-        signIn(){
-            var email = document.getElementById('email').value.trim();
-            var password = document.getElementById('password').value.trim();
-            this.signInDataError = '';
-            if(email=='') {this.signInDataError = 'Email is required';return;}
-            if(password=='') {this.signInDataError = 'Password is required'; return;}
-            this.email = email;
-            this.password = password;
-
-            axios.post('customer-signIn', {
-                email: email,
-                password: password,
-            })
-            .then((res)=>{
-                if(res.data.success){
-                    localStorage.setItem('auth', JSON.stringify(res.data.user));
-                    this.handleButtonClick();
-                    this.updateHeaderAfterLogin();
-                    //Toaster
-                }else{
-                    if(res.data.isVerification){
-                        this.verificationError = res.data.message;
+                axios.post('customer-signUp', {
+                    name: name,
+                    email: email,
+                    phone:phone,
+                    password: password,
+                })
+                .then((res)=>{
+                    if(res.data.success){
                         this.signInSection = false;
                         this.signUpSection = false;
                         this.verificationSection = true;
+                        this.email = email;
+                        this.password = password;
+                        this.updateHeaderAfterLogin();                
                     }else{
-                        this.signInDataError = res.data.message;
-                        this.signInSection = true;
-                        this.signUpSection = false;
-                        this.verificationSection = false;
+                        this.signUpDataError = res.data.message;
                     }
-                }
-            })
-            .catch((err)=>{
-                console.log(err);
-            })
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+            } else {
+                alert("Your Form Not Submited! captcha is inValid");
+            }
+           
+        },
+        signIn(){
+             if (this.isValidCaptcha) {
+                var email = document.getElementById('email').value.trim();
+                var password = document.getElementById('password').value.trim();
+                this.signInDataError = '';
+                if(email=='') {this.signInDataError = 'Email is required';return;}
+                if(password=='') {this.signInDataError = 'Password is required'; return;}
+                this.email = email;
+                this.password = password;
+
+                axios.post('customer-signIn', {
+                    email: email,
+                    password: password,
+                })
+                .then((res)=>{
+                    if(res.data.success){
+                        localStorage.setItem('auth', JSON.stringify(res.data.user));
+                        this.handleButtonClick();
+                        this.updateHeaderAfterLogin();
+                        //Toaster
+                    }else{
+                        if(res.data.isVerification){
+                            this.verificationError = res.data.message;
+                            this.signInSection = false;
+                            this.signUpSection = false;
+                            this.verificationSection = true;
+                        }else{
+                            this.signInDataError = res.data.message;
+                            this.signInSection = true;
+                            this.signUpSection = false;
+                            this.verificationSection = false;
+                        }
+                    }
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+            } else {
+                alert("Your Form Not Submited! captcha is inValid");
+            }
+            
         },
         sentVerificationMail(){
             axios.post('send-verification-mail', {
@@ -441,11 +516,28 @@
             .catch((err)=>{
                 console.log(err);
             }) 
-        }
+        },
+        getCaptchaCode(capthaResult) {
+                /* you can access captcha code */
+                console.log(capthaResult);
+        },
+        checkValidCaptcha(capthaResult) {
+            /* expected return boolean if your value and captcha code are same return True otherwise return False */
+            console.log("this is captha valid " + capthaResult);
+            this.isValidCaptcha = capthaResult;
+        },
+        save() {
+            /* you can call variable Or return checkValidCaptcha function */
+            console.log("this is from click " + this.isValidCaptcha);
+            if (this.isValidCaptcha) {
+                alert("Your Form Submited! captcha is valid");
+            } else {
+                alert("Your Form Not Submited! captcha is inValid");
+            }
+        },
       }
   }
   </script>
-
   <style scoped>
 
 .social-login {
@@ -526,4 +618,7 @@ list-type-ulli, .socials {
             /* border: 1px solid red; */
             /* border-color: red; */
           }
+
+          /* Style for the container */
+
   </style>
