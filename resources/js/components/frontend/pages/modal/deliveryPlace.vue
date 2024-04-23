@@ -160,7 +160,7 @@
                           </div>                          
                           <div class="row">
                             <div class="col-lg-12 table-responsive">
-                              <table class="table-bordered aiz-table invoice-summary table footable footable-1 breakpoint-xl" style="">
+                              <table  class="table-bordered aiz-table invoice-summary table footable footable-1 breakpoint-xl" style="font-size: 13px !important;">
                                 <thead>
                                   <tr class="bg-trans-dark footable-header">
                                     <th data-breakpoints="lg" class="min-col footable-first-visible" style="display: table-cell;">#</th>
@@ -168,6 +168,7 @@
                                     <th class="text-uppercase" style="display: table-cell;">Name</th>                  
                                     <th data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Qty</th>
                                     <th data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Price</th>
+                                    <th data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Topping Price</th>
                                     <th data-breakpoints="lg" class="min-col text-uppercase text-center footable-last-visible" style="display: table-cell;">Total</th>
                                   </tr>
                                 </thead>
@@ -183,23 +184,27 @@
                                             <td style="display: table-cell;">
                                               <strong style="display:block;"> {{ item.product.name }}</strong>
                                               <small style="display:block;">Size:  {{ item.size.name }} </small>
-                                              <small><span>+</span> 
+                                              <small v-if="item.topings.length>0">
+                                                <span>+</span> 
                                                 <template  v-for="(toping, topingId) in item.topings" :key="topingId">
                                                   <template v-if="toping">
-                                                      {{ toping.name }}({{ item.toppingPrices[toping.id]}} x {{item.toppingQtys[toping.id]}}),
+                                                      {{ toping.name }}({{ item.toppingPrices[toping.id]}}{{ baseCurrencySymbol }} x {{item.toppingQtys[toping.id]}})
+                                                      <span v-if="topingId != item.topings.length-1">,</span>
                                                   </template>
                                                 </template>
                                               </small>
-                                              <p v-if="productAllTages" style=" width:100% !important; line-height: 0.8;">
+                                              <p v-if="item.removedTags.length>0" style=" width:100% !important; line-height: 0.8;">
                                                   <span>-</span>
                                                   <template  v-for="(tag, tagid) in item.removedTags" :key="tagid">
-                                                      <span style="margin:0; padding:0; font-size:12px; padding: 0 2px;">{{ productAllTages[tag] }}</span>,
+                                                      <span style="margin:0; padding:0; font-size:12px; padding: 0 2px;">{{ productAllTages[tag] }}</span>
+                                                      <span v-if="tagid != item.removedTags.length-1">,</span>
                                                   </template>
                                               </p>
                                               <br>                  
                                             </td>                   
                                             <td class="text-center" style="display: table-cell;"> {{ item.quantity }} </td>
                                             <td class="text-center" style="display: table-cell;"> {{ item.size.price }}{{ baseCurrencySymbol }}</td>
+                                            <td class="text-center footable-last-visible" style="display: table-cell;"> {{ item.totalTopingPrice }}{{ baseCurrencySymbol }} </td>
                                             <td class="text-center footable-last-visible" style="display: table-cell;"> {{ item.totalPrice }}{{ baseCurrencySymbol }} </td>
                                           </tr>    
                                         </template>
@@ -271,6 +276,7 @@
     import axios from 'axios';
     import { toast } from 'vue3-toastify';
     import 'vue3-toastify/dist/index.css';
+    import { getBaseCurrencySymbol } from '../../helpers.js';
     export default {
         name: 'deliveryPlace',
         props: {
@@ -312,6 +318,7 @@
                 deliveryCharge:0,
                 deliveryAddressError:'',
                 suggestions:[],
+                baseCurrencySymbol:'',
             };
         },
         mounted() {
@@ -324,6 +331,7 @@
             this.lat = parseFloat(res.data.latitude);
             if(this.orderType==1){this.showMap();}
             if(this.orderType==2){this.showSchedule();}
+            this.fetchBaseCurrencySymbol();
           })
           .catch((err)=>{
               console.log(err);
@@ -332,6 +340,14 @@
         methods: {
             handleButtonClick() {
                 this.$emit('closeModal');
+            },
+            async fetchBaseCurrencySymbol() {
+              try {
+                  this.baseCurrencySymbol = await getBaseCurrencySymbol();
+              } catch (error) {
+                  // Handle error (e.g., show an error message)
+                  console.error('Error fetching base currency symbol in component:', error);
+              }
             },
             showMap() {
                 if(this.grandTotal>=12){

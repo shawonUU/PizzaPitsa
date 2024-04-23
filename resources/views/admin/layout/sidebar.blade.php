@@ -105,7 +105,7 @@
                         </ul>
                     </div>
                 </li> <!-- end Dashboard Menu --> --}}
-                @role('Administrator|Manager')
+                @can('Administration')
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#sidebarAdvanceUI" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
                             <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Product Management</span>
@@ -133,7 +133,7 @@
                             </ul>
                         </div>
                     </li>
-                @endrole
+                @endcan
                 @role('Administrator|Manager')
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#orderManagement" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
