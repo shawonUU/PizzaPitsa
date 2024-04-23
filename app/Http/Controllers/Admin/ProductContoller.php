@@ -8,15 +8,16 @@ use App\Models\Admin\Toping;
 use Illuminate\Http\Request;
 use App\Models\Admin\Product;
 use App\Models\Admin\Category;
+use App\Models\Admin\ProductTag;
+use App\Models\Admin\OptionTitle;
 use App\Models\Admin\ProductSize;
+use App\Models\SizeVsTopingPrice;
 use App\Models\Admin\ProductImage;
 use Illuminate\Support\Facades\DB;
+use App\Models\Admin\ProductOption;
 use App\Models\Admin\ProductToping;
 use App\Http\Controllers\Controller;
-use App\Models\Admin\OptionTitle;
-use App\Models\Admin\ProductOption;
-use App\Models\Admin\ProductTag;
-use App\Models\SizeVsTopingPrice;
+use App\Models\Admin\ProductOptionTopping;
 
 class ProductContoller extends Controller
 {
@@ -72,21 +73,69 @@ class ProductContoller extends Controller
         ]);
 
         $product->save();
-        $tags = $request->tags;
-        $removeables = $request->removeable;
+        $newTitles = $request->input('newTitles');
+        $newTypes = $request->input('newTypes');
 
-        // Determine the number of tags and removable checkboxes
-        $numberOfTags = count($tags);
-        $numberOfRemoveables = count($removeables);
+        // Combine all newToppings arrays
+        $newToppings = [];
+        foreach ($request->all() as $key => $value) {
+            if (strpos($key, 'newToppings') !== false) {
+                $newToppings = array_merge($newToppings, $value);
+            }
+        }
 
-        // Use the larger count to ensure all tags are processed
-        $limit = max($numberOfTags, $numberOfRemoveables);
+        // Debugging: Check if arrays are not null
+        if (!$newTitles || !$newToppings || !$newTypes) {
+            dd("Input arrays are null or empty");
+        }
 
-        for($key = 0; $key < $limit; $key++) {
+        $startIndex = 0;
+        foreach ($newTitles as $key => $titleId) {
+            $type = $newTypes[$key] ?? null;
+
+            if ($titleId && $type) {
+                // Create a new ProductOption
+                $productOption = new ProductOption();
+                $productOption->title_id = $titleId;
+                $productOption->product_id = $product->id; // Assuming you have a default product ID or set it dynamically
+                $productOption->type = $type;
+                $productOption->save();
+
+                // Determine the end index for toppings based on the current title
+                $endIndex = $startIndex + count($request->input("newToppings" . ($key + 1)));
+                
+                // Get toppings for the current title
+                $toppingsForCurrentTitle = array_slice($newToppings, $startIndex, $endIndex - $startIndex);
+
+                foreach ($toppingsForCurrentTitle as $toppingId) {
+                    $productOptionTopping = new ProductOptionTopping();
+                    $productOptionTopping->product_option_id = $productOption->id;
+                    $productOptionTopping->topping_id = $toppingId;
+                    $productOptionTopping->created_at = now();
+                    $productOptionTopping->updated_at = now();
+                    $productOptionTopping->save();
+                }
+
+                // Update the start index for the next iteration
+                $startIndex = $endIndex;
+            }
+        }
+
+        
+        // Save tags and removeables
+        $tags = $request->input('tags', []);
+        $removeables = $request->input('removeable', []);
+
+        $limitTags = count($tags);
+        $limitRemoveables = count($removeables);
+
+        $limit = max($limitTags, $limitRemoveables);
+
+        for ($key = 0; $key < $limit; $key++) {
             $tag = $tags[$key] ?? null;
             $isRemovable = isset($removeables[$key]) && $removeables[$key] == 'on' ? '1' : '0';
 
-            if($tag) {                            
+            if ($tag) {                            
                 $row = new ProductTag();
                 $row->pro_id = $product->id;
                 $row->tag_name = $tag;
@@ -94,17 +143,13 @@ class ProductContoller extends Controller
                 $row->save();                
             }
         }
-        $productOption  = new ProductOption();
-        $productOption->title_id = $request->title;
-        $productOption->product_id = $product->id;
-        $productOption->toping_id = $request->topping;
-        $productOption->type = $request->type;
-        $productOption->save();
+
         session()->flash('sweet_alert', [
             'type' => 'success',
             'title' => 'Success!',
             'text' => 'Product added success',
         ]);
+
         // Redirect or return a response as needed
         return redirect()->route('products.index')->with('success', 'Product created successfully');
     }
@@ -131,7 +176,9 @@ class ProductContoller extends Controller
         $categories = Category::where('status', '1')->get();
         $sizes = Size::where('status', '1')->get();
         $productTags = ProductTag::where('pro_id',$id)->get();
-        return view('admin.pages.product.edit', compact('categories', 'product','productSizes','productTopings','topings','id','sizes','productTags'));
+        $optionTitles = OptionTitle::where('status','1')->get();       
+        $productOptions = ProductOption::join('option_titles','option_titles.id','=','product_options.title_id')->select('product_options.*','option_titles.name')->where('product_options.product_id',$id)->get();
+        return view('admin.pages.product.edit', compact('categories', 'product','productSizes','productTopings','topings','id','sizes','productTags','productOptions','optionTitles'));
     }
 
     /**
@@ -139,7 +186,6 @@ class ProductContoller extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // return $request;
         $product = Product::where('id', $id)->first();
         $request->validate([
             'name' => 'required|string',

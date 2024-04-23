@@ -78,38 +78,49 @@
                                     <div class="col-xxl-12 col-md-12 mb-3">
                                         <label for="description" class="form-label">Description</label>
                                         <textarea class="form-control" id="editor" name="description" placeholder="Enter product description" rows="3">{{ old('description')}}</textarea>
-                                    <div>
-                                        
-                                    <div class="row mt-2">
+                                    <div>    
+                                    <div class="row">
                                         <h4>Product Option</h4><br><br>
-                                        <div class="col-xxl-3 col-md-6 mb-3">
-                                            <label for="name" class="form-label">Title</label>
-                                            <select class="form-select mb-3" name="title">
-                                                <option selected>--Select Title--</option>
-                                                @foreach ($optionTitles as $item)
-                                                    <option {{ old('optionTitles') == $item->id ? 'selected':''}} value="{{ $item->id }}">{{ $item->name }}</option>
-                                                @endforeach
-                                            </select>
+                                        
+                                        <div id="optionItemContainer">
+                                            <!-- Existing option item -->
+                                            <div class="row mt-2" id="item1" data-item="1">
+                                                <div class="col-xxl-3 col-md-6 mb-3">
+                                                    <label for="name" class="form-label">Title</label>
+                                                    <select class="form-select mb-3" name="newTitles[]" id="title1">
+                                                        <option selected>--Select Title--</option>
+                                                        @foreach ($optionTitles as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="col-xxl-3 col-md-6 mb-3">
+                                                    <label for="name" class="form-label">Select (Multiple) Topping</label>
+                                                    <select class="form-select mb-3" name="newToppings1[]" multiple="multiple" id="topping1">
+                                                        @foreach ($toppings as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="col-xxl-3 col-md-6 mb-3">
+                                                    <label for="name" class="form-label">Type</label>
+                                                    <select class="form-select mb-3" name="newTypes[]" id="type1">
+                                                        <option selected>--Select Type--</option>
+                                                        <option value="checkbox">Checkbox</option>
+                                                        <option value="Radio">Radio</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-2">
+                                                    <button class="btn btn-danger" onclick="removeOptionItem('item1')">X</button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-xxl-3 col-md-6 mb-3">
-                                            <label for="name" class="form-label">Topping</label>
-                                            <select class="form-select mb-3" name="topping">
-                                                <option selected>--Select Topping--</option>
-                                                @foreach ($toppings as $item)
-                                                    <option {{ old('topping') == $item->id ? 'selected':''}} value="{{ $item->id }}">{{ $item->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        <div class="col-xxl-3 col-md-6 mb-3">
-                                            <label for="name" class="form-label">Type</label>
-                                            <select class="form-select mb-3" name="type">
-                                                <option selected>--Select Type--</option>
-                                                <option value="checkbox">Checkbox</option>                                                
-                                                <option value="Radio">Radio</option>                                                
-                                            </select>
+                                    
+                                        <div class="item-end">
+                                            <button type="button" class="btn btn-sm btn-primary" onclick="addNewItemOption()">Add new</button>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <div class="row mt-3">
                                         <h4>Product Tags</h4><br><br>
                                         <div style="max-width: 500px;">
                                                 <div class="row">
@@ -215,6 +226,53 @@
 
         }
     }
+    var O_ITEM_NUMBER = 1;
+
+    function addNewItemOption() {
+        O_ITEM_NUMBER++;
+        var html = `
+            <div class="row mt-2" id="item${O_ITEM_NUMBER}" data-item="${O_ITEM_NUMBER}">
+                <div class="col-xxl-3 col-md-6 mb-3">
+                    <select class="form-select mb-3" name="newTitles[]" id="title${O_ITEM_NUMBER}">
+                        <option selected>--Select Title--</option>
+                        @foreach ($optionTitles as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-xxl-3 col-md-6 mb-3">
+                    <select class="form-select mb-3" name="newToppings${O_ITEM_NUMBER}[]" multiple="multiple" id="topping${O_ITEM_NUMBER}">
+                        @foreach ($toppings as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-xxl-3 col-md-6 mb-3">
+                    <select class="form-select mb-3" name="newTypes[]" id="type${O_ITEM_NUMBER}">
+                        <option selected>--Select Type--</option>
+                        <option value="checkbox">Checkbox</option>
+                        <option value="Radio">Radio</option>
+                    </select>
+                </div>
+                <div class="col-2">
+                    <button type="button" class="btn btn-danger" onclick="removeOptionItem('item${O_ITEM_NUMBER}')">X</button>
+                </div>
+            </div>
+        `;
+
+        document.getElementById("optionItemContainer").insertAdjacentHTML('beforeend', html);
+        $(document).ready(function() {
+            $('#topping'+O_ITEM_NUMBER).select2();
+        });
+    }
+
+    function removeOptionItem(id) {
+        document.getElementById(id).remove();
+        // No need to rearrange as we're using unique IDs
+    }
+    $(document).ready(function() {
+            $('#topping'+O_ITEM_NUMBER).select2();
+        });
 </script>
 @endsection
 @endsection
