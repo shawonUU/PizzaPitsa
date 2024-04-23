@@ -151,7 +151,7 @@
                     <h6  style="margin-bottom:5px;">Your Favorit Toppings</h6>
                     <div class="row">
                       <div class="col-6 col-md-3 p-2" v-for="(productToping, topingId) in productTopings" :key="topingId">
-                          <div :id="'topingDiv'+productToping.id" @click="clickOnTopings(productToping.id)" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border-radius: 10%; cursor:pointer;">
+                          <div :id="'topingDiv'+productToping.id" @click="clickOnTopings(productToping.id)" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border:1px solid white; border-radius: 10%; cursor:pointer;">
                               <img class="p-2" :src="'/frontend/toping_images/' + productToping.image" alt="" style="width: 65px; ">
                               <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">{{productToping.name}}</p>
                               <p class="text-center m-0" style="font-size:12px;"><b class="showToppingPrice" :data-toppingId="productToping.id" :id="'showToppingPrice'+productToping.id">{{productToping.price}}</b><b>{{ baseCurrencySymbol }}</b></p>
@@ -177,7 +177,7 @@
                       </div>
                     </div>
                     
-                    <h6  style="margin-bottom:5px;">All Toppings</h6>
+                    <h6  style="margin-bottom:5px;">More Toppings</h6>
                     
                     <templat>
                         <div class="multi-select2">
@@ -255,6 +255,7 @@ export default {
             tooltipVisible: false,
             quantity: 1,
             orderPrice: null,
+            totalTopingPrice:0,
             isVisible:false,
             message:'',
             cart: [],
@@ -336,7 +337,7 @@ export default {
       },
       clickOnTopings(id, flg=false){
         if(document.getElementById('topingsItem'+id).checked && flg==false){
-            document.getElementById('topingDiv'+id).style.border="none";
+            document.getElementById('topingDiv'+id).style.border="1px solid white";
             document.getElementById('topingsItem'+id).checked = false;
             // console.log(document.getElementById('topingDiv'+id));
         }else{
@@ -359,6 +360,7 @@ export default {
 
         var orderPrice = parseFloat(this.productSizes[selectedSize].price) * parseFloat(this.quantity);
         var elements = document.getElementsByClassName('topingsItem');
+        var totalTopingPrice = 0;
         for(var i=0; i<elements.length; i++){
           if(elements[i].checked){
             var topingId = elements[i].value;
@@ -371,9 +373,11 @@ export default {
             pric = parseFloat(pric);
             var qty = parseInt(document.getElementById('toppingQty'+elements[i].value).value.trim());
             orderPrice += (pric*qty);
+            totalTopingPrice += (pric*qty);
           }
         }
         this.orderPrice = orderPrice.toFixed(2);
+        this.totalTopingPrice = totalTopingPrice;
       },
       addTocart(){
           var elements = document.getElementsByClassName('sizeRadio');
@@ -418,7 +422,7 @@ export default {
             this.showToast('Select Any Size',0);return;
           }
 
-          if(selectedSize && this.orderPrice && this.productData && this.quantity){
+          if(selectedSize && this.orderPrice && this.productData && this.quantity && this.totalTopingPrice){
                 var item = {
                     quantity: this.quantity,
                     product: this.productData,
@@ -427,6 +431,7 @@ export default {
                     toppingQtys: toppingQtys,
                     toppingPrices: toppingPrices,
                     totalPrice: this.orderPrice,
+                    totalTopingPrice: this.totalTopingPrice,
                     removedTags: removedTags,
                 };
 
@@ -437,6 +442,7 @@ export default {
                     this.cart[this.productData.id][this.productSizes[selectedSize].id] = item;
                 } else {
                     var existingItem = this.cart[this.productData.id][this.productSizes[selectedSize].id];
+
                     existingItem.quantity = parseInt(existingItem.quantity);
                     existingItem.quantity += parseInt(item.quantity);
 
@@ -456,21 +462,23 @@ export default {
 
                     for (const i in topings){
                       if(topings[i]){
+                        topings[i].id = parseInt(topings[i].id);
                         if ( typeof bindTopings[topings[i].id] === 'undefined'){
                               bindTopings[topings[i].id] = topings[i];
                               bindQtys[topings[i].id] = toppingQtys[topings[i].id];
                               bindPrices[topings[i].id] = toppingPrices[topings[i].id];
                         }else{
-                          //existingItem.toppingQtys[topings[i].id] += item.toppingQtys[topings[i].id];
                           bindQtys[topings[i].id] = parseFloat(bindQtys[topings[i].id]);
                           bindQtys[topings[i].id] += parseFloat(item.toppingQtys[topings[i].id]);
                         }
                       }
                     }
 
+                    var totalTopingPrice = 0;
                     existingItem.totalPrice = parseFloat(existingItem.quantity) * parseFloat(item.size.price);
                      for (const i in bindTopings) {
-                        existingItem.totalPrice += parseFloat(bindTopings[i].price) * parseInt(existingItem.toppingQtys[bindTopings[i].id]);
+                        existingItem.totalPrice += parseFloat(bindPrices[bindTopings[i].id]) * parseInt(bindQtys[bindTopings[i].id]);
+                        totalTopingPrice += parseFloat(bindPrices[bindTopings[i].id]) * parseInt(bindQtys[bindTopings[i].id]);
                     }
 
                     var merged = [...new Set([...existingItem.removedTags, ...item.removedTags])];
@@ -479,8 +487,9 @@ export default {
                     existingItem.topings = bindTopings;
                     existingItem.toppingQtys = bindQtys;
                     existingItem.toppingPrices = bindPrices;
+                    existingItem.totalTopingPrice = totalTopingPrice;
 
-                   this.cart[this.productData.id][this.productSizes[selectedSize].id] = existingItem;
+                    this.cart[this.productData.id][this.productSizes[selectedSize].id] = existingItem;
               }
 
               this.updateLocalStorage();

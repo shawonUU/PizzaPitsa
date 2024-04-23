@@ -349,16 +349,21 @@
 
                                                                 </div>
                                                                 <p style="margin: 0; padding: 0; line-height:1.3; font-size: 14px; text-align:left;">{{ item.size.name }}({{ item.size.price }})</p>
-                                                                <p style=" width:100% !important; line-height: 0.8; margin: 0;">
+                                                                <p v-if="item.topings.length>0" style=" width:100% !important; line-height: 0.8; margin: 0;">
                                                                     <span>+</span>
                                                                     <template  v-for="(toping, topingId) in item.topings" :key="topingId">
-                                                                        <span style="margin:0; padding:0; font-size:12px; padding: 0 2px;" v-if="toping">{{ toping.name }}({{ item.toppingPrices[toping.id]}} x {{item.toppingQtys[toping.id]}})</span>
+                                                                        <template v-if="toping">
+                                                                            <span style="margin:0; padding:0; font-size:12px; padding: 0 2px;" >{{ toping.name }}({{ item.toppingPrices[toping.id]}}{{ baseCurrencySymbol }} x {{item.toppingQtys[toping.id]}})</span>
+                                                                            <span v-if="topingId != item.topings.length-1">,</span>
+                                                                        </template>
+                                                                        
                                                                     </template>
                                                                 </p>
-                                                                <p v-if="productAllTages" style=" width:100% !important; line-height: 0.8;">
+                                                                <p v-if="item.removedTags.length>0" style=" width:100% !important; line-height: 0.8;">
                                                                     <span>-</span>
                                                                     <template  v-for="(tag, tagid) in item.removedTags" :key="tagid">
-                                                                        <span style="margin:0; padding:0; font-size:12px; padding: 0 2px;">{{ productAllTages[tag] }}</span>,
+                                                                        <span style="margin:0; padding:0; font-size:12px; padding: 0 2px;">{{ productAllTages[tag] }}</span> 
+                                                                        <span v-if="tagid != item.removedTags.length-1">,</span>
                                                                     </template>
                                                                 </p>
                                                             </div>
