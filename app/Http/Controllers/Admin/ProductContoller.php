@@ -505,7 +505,6 @@ class ProductContoller extends Controller
             }
         }
         $productAllTages = ProductTag::pluck('tag_name','id');
-
         return [$groupedCategories,$productAllTages];
     
     }
@@ -569,7 +568,21 @@ class ProductContoller extends Controller
         $maxMin = [$minPrice,$maxPrice];
 
         $productTages = ProductTag::where('pro_id',$productId)->get()->toArray();
+
+        $options = ProductOption::join('product_option_toppings as option_topping', 'option_topping.product_option_id','=','product_options.id')
+        ->join('option_titles', 'option_titles.id', '=', 'product_options.title_id')
+        ->where('product_options.product_id', $productId)
+        ->select('option_topping.*','product_options.title_id','product_options.type','option_titles.name')->get();
+
+        $temp = [];
+        foreach($options as $option){
+            $option->type = strtolower($option->type);
+            $temp[$option->product_option_id]['details']['title'] = $option->name;
+            $temp[$option->product_option_id]['options'][] = $option;
+        }
+        $productOptions = $temp;
+
         
-        return response()->json([$product, $productSizes,$productTopings,$maxMin,$allTopings,$moreTopings,$sizeVsTopings,$productTages]);
+        return response()->json([$product, $productSizes,$productTopings,$maxMin,$allTopings,$moreTopings,$sizeVsTopings,$productTages,$productOptions]);
     }
 }

@@ -106,7 +106,7 @@
                     <p v-html="productData.description" class="description m-0 p-0"></p>
 
                     <div class="sc-1subij5-0 cXTjGP">
-                        <template v-for="(tag, tagkey) in pdoductTages" :key="tagkey"> 
+                        <template v-for="(tag, tagkey) in productTages" :key="tagkey"> 
                             <template v-if="tag.is_removeable==1">
                                 <a :id="'protag'+tag.id" @click="clickOnTag(tag.id)" role="button" :data-tagid="tag.id" data-removed="false" class=" sc-1subij5-1 fqOpCo protag">
                                   {{tag.tag_name}}
@@ -147,6 +147,40 @@
                       </div>
                       <!-- End Product Variation  -->
                     </div>
+
+                    <template v-for="(productOption, optionKey) in productOptions" :key="optionKey">
+                        <h6  style="margin-bottom:5px;">{{productOption.details.title}}</h6>
+
+                        <div class="row">
+                          <div class="col-6 col-md-3 p-2" v-for="(productToping, topingId) in productOption.options" :key="topingId">
+                              <div :id="'topingDiv'+allTopings[productToping.topping_id].id" @click="clickOnTopings(allTopings[productToping.topping_id].id)" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border:1px solid white; border-radius: 10%; cursor:pointer;">
+                                  <img class="p-2" :src="'/frontend/toping_images/' + allTopings[productToping.topping_id].image" alt="" style="width: 65px; ">
+                                  <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">{{allTopings[productToping.topping_id].name}}</p>
+                                  <p class="text-center m-0" style="font-size:12px;"><b class="showToppingPrice" :data-toppingId="allTopings[productToping.topping_id].id" :id="'showToppingPrice'+allTopings[productToping.topping_id].id">{{allTopings[productToping.topping_id].price}}</b><b>{{ baseCurrencySymbol }}</b></p>
+                                  <input :name="'productoption'+productToping.product_option_id" :id="'topingsItem'+allTopings[productToping.topping_id].id" :value="allTopings[productToping.topping_id].id" name="topingsItem" class="topingsItem" :type="productToping.type" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
+                                  
+                                  <div style="padding: 0 5px; padding-left: 20%;"  onclick="event.stopPropagation();">
+                                    <div  class="input-group" >
+                                      <div  class="input-group-prepend" style="cursor: pointer;" >
+                                        <span :id="'toppingQtyMuns'+allTopings[productToping.topping_id].id"  class="input-group-text" style="padding: 0.20rem .50rem;" @click="qtyMinus(allTopings[productToping.topping_id].id)">
+                                          <b >-</b>
+                                        </span>
+                                      </div>
+                                      <input @change="updateToppingQty(allTopings[productToping.topping_id].id)"  :id="'toppingQty'+allTopings[productToping.topping_id].id" min="1" type="text" value="1" class="" style="margin-left: 0px;text-align: center; font-size: 14px; height: 20px; width: 35% !important; padding: 0px; border: solid 1px #000; font-size: 10px;">
+                                      <div  class="input-group-append" style="cursor: pointer;" >
+                                        <span :id="'toppingQtyPls'+allTopings[productToping.topping_id].id" @click="qtyPlus(allTopings[productToping.topping_id].id)" class="input-group-text" style="padding: 0.20rem .50rem;" >
+                                          <b >+</b>
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                              </div>
+                          </div>
+                        </div>
+
+                    </template>
+
 
                     <h6  style="margin-bottom:5px;">Your Favorit Toppings</h6>
                     <div class="row">
@@ -245,7 +279,8 @@ export default {
         allTopings: Object,
         moreTopings: Object,
         sizeVsTopings: Object,
-        pdoductTages:Object,
+        productTages:Object,
+        productOptions:Object,
         maxMin:""
         // maxMin: object,
       },
@@ -269,8 +304,8 @@ export default {
       Multiselect
     },
     mounted(){
-        //console.log("jh");
-        //console.log(this.allTopings);
+        console.log("pppppppppppp");
+        console.log(this.productOptions);
         this.loadCartFromLocalStorage();
         this.fetchBaseCurrencySymbol();
         this.selectFirstSizeAsDefault();
@@ -344,6 +379,12 @@ export default {
             document.getElementById('topingDiv'+id).style.border="1px solid red";
             document.getElementById('topingsItem'+id).checked = true;
         }
+
+        var item = document.getElementById('topingsItem'+id);
+        if(item.type="radio"){
+          console.log("RADIOOOOO");
+        }
+
         this.generatePrice();
       },
       generatePrice(){
