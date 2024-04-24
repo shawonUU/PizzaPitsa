@@ -332,9 +332,19 @@ class ProductContoller extends Controller
             unlink(public_path('frontend/product_images/' . $product->image));
         }
         $productTags = ProductTag::where('pro_id',$id)->get();
-        foreach($productTags as $item) {
-            $item->delete();
+        if ($productTags) {
+            foreach($productTags as $item) {
+                $item->delete();
+            }
         }
+        $options = ProductOption::where('product_id',$id)->get();
+        if ($options) {
+            foreach ($options as $option) {
+                ProductOptionTopping::where('product_option_id', $option->id)->delete();
+                $option->delete();
+            }
+        }
+     
         $product->delete();
 
         session()->flash('sweet_alert', [
