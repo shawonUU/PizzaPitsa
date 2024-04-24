@@ -5,6 +5,7 @@ use App\Models\Notification;
 use App\Models\Admin\Product;
 use App\Models\Admin\Currency;
 use App\Models\Admin\ProductImage;
+use App\Models\Admin\ProductOptionTopping;
 use Illuminate\Support\Facades\Mail;
 
 function getProductImage($id)
@@ -131,5 +132,9 @@ function sendEmployeeCredential($data)
         $m->to($data['email'])->subject('HRIS Access Information');
     });
    
+}
+
+function getSelectedTopings($id){
+  return ProductOptionTopping::join('topings','topings.id','=','product_option_toppings.topping_id')->select('topings.*')->where('product_option_toppings.product_option_id',$id)->get();
 }
 

@@ -186,6 +186,7 @@ class ProductContoller extends Controller
      */
     public function update(Request $request, string $id)
     {
+        // return $request;
         $product = Product::where('id', $id)->first();
         $request->validate([
             'name' => 'required|string',
@@ -213,6 +214,67 @@ class ProductContoller extends Controller
             'status' => $request->input('status'),
             'updated_by' => auth()->user()->id,
         ]);
+
+
+        $newTitles = $request->input('newTitles');
+        $newTypes = $request->input('newTypes');
+        $options = ProductOption::where('product_id',$id)->get();
+        foreach ($options as $option) {
+            ProductOptionTopping::where('product_option_id', $option->id)->delete();
+            $option->delete();
+        }
+
+        // return 'dd';
+        // Combine all newToppings arrays
+        $newToppings = [];
+        foreach ($request->all() as $key => $value) {
+            if (strpos($key, 'newToppings') !== false) {
+                $newToppings = array_merge($newToppings, $value);
+            }
+        }
+
+        // Debugging: Check if arrays are not null
+        if (!$newTitles || !$newToppings || !$newTypes) {
+            dd("Input arrays are null or empty");
+        }
+
+        $startIndex = 0;
+        foreach ($newTitles as $key => $titleId) {
+            $type = $newTypes[$key] ?? null;
+
+            if ($titleId && $type) {
+                // Create a new ProductOption
+                $productOption = new ProductOption();
+                $productOption->title_id = $titleId;
+                $productOption->product_id = $product->id; // Assuming you have a default product ID or set it dynamically
+                $productOption->type = $type;
+                $productOption->save();
+
+                // Determine the end index for toppings based on the current title
+                $endIndex = $startIndex + count($request->input("newToppings" . ($key + 1)));
+                
+                // Get toppings for the current title
+                $toppingsForCurrentTitle = array_slice($newToppings, $startIndex, $endIndex - $startIndex);
+
+                foreach ($toppingsForCurrentTitle as $toppingId) {
+                    $productOptionTopping = new ProductOptionTopping();
+                    $productOptionTopping->product_option_id = $productOption->id;
+                    $productOptionTopping->topping_id = $toppingId;
+                    $productOptionTopping->created_at = now();
+                    $productOptionTopping->updated_at = now();
+                    $productOptionTopping->save();
+                }
+
+                // Update the start index for the next iteration
+                $startIndex = $endIndex;
+            }
+        }
+
+        
+
+
+
+
         $tags = $request->tags;
         $removeables = $request->removeable;
         

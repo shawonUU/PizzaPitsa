@@ -96,7 +96,7 @@
                                                 </div>
                                                 <div class="col-xxl-3 col-md-6 mb-3">
                                                     <label for="name" class="form-label">Select (Multiple) Topping</label>
-                                                    <select class="form-select mb-3" name="newToppings1[]" multiple="multiple" id="topping1">
+                                                    <select class="form-select mb-3 select2" name="newToppings1[]" multiple="multiple" id="topping1">
                                                         @foreach ($toppings as $item)
                                                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                                                         @endforeach
@@ -241,7 +241,7 @@
                     </select>
                 </div>
                 <div class="col-xxl-3 col-md-6 mb-3">
-                    <select class="form-select mb-3" name="newToppings${O_ITEM_NUMBER}[]" multiple="multiple" id="topping${O_ITEM_NUMBER}">
+                    <select class="form-select select2 mb-3" name="newToppings${O_ITEM_NUMBER}[]" multiple="multiple" id="topping${O_ITEM_NUMBER}">
                         @foreach ($toppings as $item)
                             <option value="{{ $item->id }}">{{ $item->name }}</option>
                         @endforeach
@@ -260,10 +260,10 @@
             </div>
         `;
 
-        document.getElementById("optionItemContainer").insertAdjacentHTML('beforeend', html);
+        document.getElementById("optionItemContainer").insertAdjacentHTML('beforeend', html);   
         $(document).ready(function() {
-            $('#topping'+O_ITEM_NUMBER).select2();
-        });
+            $('.select2').select2();
+        }); 
     }
 
     function removeOptionItem(id) {
@@ -271,7 +271,7 @@
         // No need to rearrange as we're using unique IDs
     }
     $(document).ready(function() {
-            $('#topping'+O_ITEM_NUMBER).select2();
+            $('.select2').select2();
         });
 </script>
 @endsection

@@ -90,37 +90,38 @@
                                         <div id="optionItemContainer">
                                             <!-- Existing option item -->
                                             @foreach ($productOptions as $key => $option) 
-                                            <div class="row mt-2" id="item{{ $key + 1 }}" data-item="{{ $key + 1 }}">
-                                                <div class="col-xxl-3 col-md-6 mb-3">
-                                                    <label for="name" class="form-label">Title</label>
-                                                    <select class="form-select mb-3" name="newTitles[]" id="title{{ $key + 1 }}">
-                                                        <option selected>--Select Title--</option>
-                                                        @foreach ($optionTitles as $item)
-                                                            <option value="{{ $item->id }}" {{ $option->title_id == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
-                                                        @endforeach
-                                                    </select>
+                                                <div class="row mt-2" id="item{{ $key + 1 }}" data-item="{{ $key + 1 }}">
+                                                    <div class="col-xxl-3 col-md-6 mb-3">
+                                                        <label for="name" class="form-label">Title</label>
+                                                        <select class="form-select mb-3" name="newTitles[]" id="title{{ $key + 1 }}">
+                                                            <option selected>--Select Title--</option>
+                                                            @foreach ($optionTitles as $item)
+                                                                <option value="{{ $item->id }}" {{ $option->title_id == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-xxl-3 col-md-6 mb-3">
+                                                        <label for="name" class="form-label">Select (Multiple) Topping</label>
+                                                        <select class="form-select mb-3 select2" name="newToppings{{ $key + 1 }}[]" multiple="multiple" id="topping{{ $key + 1 }}">
+                                                            @foreach ($topings as $item)
+                                                                <option {{ in_array($item->id, getSelectedTopings($option->id)->pluck('id')->toArray()) ? 'selected' : '' }} value="{{ $item->id }}">{{ $item->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-xxl-3 col-md-6 mb-3">
+                                                        <label for="name" class="form-label">Type</label>
+                                                        <select class="form-select mb-3" name="newTypes[]" id="type{{ $key + 1 }}">
+                                                            <option value="checkbox" {{ $option->type == 'checkbox' ? 'selected' : '' }}>Checkbox</option>
+                                                            <option value="Radio" {{ $option->type == 'Radio' ? 'selected' : '' }}>Radio</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-2">
+                                                        <button type="button" class="btn btn-danger" onclick="removeOptionItem('item{{ $key + 1 }}')">X</button>
+                                                    </div>
                                                 </div>
-                                                <div class="col-xxl-3 col-md-6 mb-3">
-                                                    <label for="name" class="form-label">Select (Multiple) Topping</label>
-                                                    <select class="form-select mb-3" name="newToppings{{ $key + 1 }}[]" multiple="multiple" id="topping{{ $key + 1 }}">
-                                                        @foreach ($topings as $item)
-                                                            <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                                <div class="col-xxl-3 col-md-6 mb-3">
-                                                    <label for="name" class="form-label">Type</label>
-                                                    <select class="form-select mb-3" name="newTypes[]" id="type{{ $key + 1 }}">
-                                                        <option value="checkbox" {{ $option->type == 'checkbox' ? 'selected' : '' }}>Checkbox</option>
-                                                        <option value="Radio" {{ $option->type == 'Radio' ? 'selected' : '' }}>Radio</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-2">
-                                                    <button class="btn btn-danger" onclick="removeOptionItem('item1{{ $key + 1 }}')">X</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        @endforeach
+                                            @endforeach
+                                        </div>                                            
+                                        
                                         <div class="item-end">
                                             <button type="button" class="btn btn-sm btn-primary" onclick="addNewItemOption()">Add new</button>
                                         </div>
@@ -664,9 +665,9 @@
         });
     }
 
-    var O_ITEM_NUMBER = 1;
+    var O_ITEM_NUMBER = {{ count($productOptions) }};
 
-function addNewItemOption() {
+    function addNewItemOption() {
     O_ITEM_NUMBER++;
     var html = `
         <div class="row mt-2" id="item${O_ITEM_NUMBER}" data-item="${O_ITEM_NUMBER}">
@@ -679,10 +680,10 @@ function addNewItemOption() {
                 </select>
             </div>
             <div class="col-xxl-3 col-md-6 mb-3">
-                <select class="form-select mb-3" name="newToppings${O_ITEM_NUMBER}[]" multiple="multiple" id="topping${O_ITEM_NUMBER}">
+                <select class="form-select mb-3 select2" name="newToppings${O_ITEM_NUMBER}[]" multiple="multiple" id="topping${O_ITEM_NUMBER}">
                     @foreach ($topings as $item)
                         <option value="{{ $item->id }}">{{ $item->name }}</option>
-                    @endforeach
+                    @endforeach 
                 </select>
             </div>
             <div class="col-xxl-3 col-md-6 mb-3">
@@ -699,21 +700,17 @@ function addNewItemOption() {
     `;
 
     document.getElementById("optionItemContainer").insertAdjacentHTML('beforeend', html);
-    
-    // Initialize select2 for the new select element
-    $('#topping'+O_ITEM_NUMBER).select2();
+    $('.select2').select2();
 }
 
 function removeOptionItem(id) {
     document.getElementById(id).remove();
-    // No need to rearrange as we're using unique IDs
 }
 
-$(document).ready(function() {
-    // Initialize select2 for the first select element
-    $('#topping1').select2();
-});
 
+$(document).ready(function() {
+    $('.select2').select2();
+});
 </script>
 
 @endsection
