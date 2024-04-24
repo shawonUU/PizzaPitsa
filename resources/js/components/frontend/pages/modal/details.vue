@@ -671,10 +671,64 @@ export default {
 
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
+<style>
+.multiselect__option--highlight {
+    background: rgb(238, 110, 45)!important;
+}
+.multiselect__option {
+    display: block;
+    padding: 5px!important;
+    min-height: 1px!important;
+    line-height: 15px!important;
+    text-decoration: none;
+    text-transform: none;
+    position: relative;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.multiselect__content li {
+    margin-top: 1px!important; 
+    margin-bottom: 1px!important;
+}
+
+.multiselect__tags input[type=text] {
+    height: auto;
+    line-height: 32px;
+    padding: 0 15px;
+}
+.multiselect__option::after{
+  background: rgba(238, 109, 45, 0)!important;
+}
+.multiselect__option--selected::after{
+  background: rgba(238, 109, 45, 0)!important;
+}
+.multiselect__tags {
+    padding: 2px 40px 0 11px;
+}
+.multiselect__tag {
+    position: relative;
+    display: inline-block;
+    padding: 4px 26px 4px 10px;
+    border-radius: 5px;
+    margin-right: 10px;
+    color: #fff;
+    line-height: 1;
+    background: rgb(238, 110, 45)!important;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 100%;
+    text-overflow: ellipsis;
+}
+.multiselect__tag-icon::after {
+    color: #fff;
+}
+</style>
 <style scoped>
 .multi-select2 {
   width: 100%;
 }
+
 .toast-container {
   position: fixed;
   bottom: 20px;

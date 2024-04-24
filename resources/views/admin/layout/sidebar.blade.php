@@ -2,44 +2,27 @@
     <!-- LOGO -->
     <div class="navbar-brand-box">
         <!-- Dark Logo-->
-        <a href="index.html" class="logo logo-dark">
-            <span class="logo-sm">
-                <a href="{{ route('dashboard') }}" class="logo logo-dark">
-                    <span class="logo-sm">
-                       Pizza Pitsa
-                    </span>
-
-                </a>
+        <a href="{{ route('dashboard') }}" class="logo logo-dark mt-4">
+            <span class="logo-sm text-white">
+                <h4>Pocket</h4>
             </span>
             <span class="logo-lg">
-                <a href="{{ route('dashboard') }}" class="logo logo-dark">
-                    <span class="logo-sm">
-                       Pizza Pitsa
-                    </span>
-
-                </a>
+                <h4>Pocket</h4>
             </span>
         </a>
         <!-- Light Logo-->
-        <a href="index.html" class="logo logo-light">
+        <a href="{{ route('dashboard') }}" class="logo logo-light mt-4">
             <span class="logo-sm">
-                <a href="{{ route('dashboard') }}" class="logo logo-dark">
-                    <span class="logo-sm">
-                       Pizza Pitsa
-                    </span>
-
-                </a>
+                {{-- <img src="assets/images/logo-sm.png" alt="" height="22"> --}}
+              
             </span>
             <span class="logo-lg">
-                <a href="{{ route('dashboard') }}" class="logo logo-dark">
-                    <span class="logo-sm">
-                       Pizza Pitsa
-                    </span>
-
-                </a>
+                <img width="150px" src="https://pizzapitsa.fi/frontend/assets/images/logo/2%20pizza%20logo-02.png" alt="">
+               
             </span>
         </a>
-        <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
+        <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
+            id="vertical-hover">
             <i class="ri-record-circle-line"></i>
         </button>
     </div>
@@ -105,7 +88,7 @@
                         </ul>
                     </div>
                 </li> <!-- end Dashboard Menu --> --}}
-                {{-- @can('Administration') --}}
+                @can('Administration')
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#sidebarAdvanceUI" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
                             <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Product Management</span>
@@ -133,7 +116,7 @@
                             </ul>
                         </div>
                     </li>
-                {{-- @endcan --}}
+                @endcan
                 @role('Administrator|Manager')
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#orderManagement" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
