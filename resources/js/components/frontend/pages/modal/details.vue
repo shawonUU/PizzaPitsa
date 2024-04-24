@@ -157,7 +157,7 @@
                                   <img class="p-2" :src="'/frontend/toping_images/' + allTopings[productToping.topping_id].image" alt="" style="width: 65px; ">
                                   <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">{{allTopings[productToping.topping_id].name}}</p>
                                   <p class="text-center m-0" style="font-size:12px;"><b class="showToppingPrice" :data-toppingId="allTopings[productToping.topping_id].id" :id="'showToppingPrice'+allTopings[productToping.topping_id].id">{{allTopings[productToping.topping_id].price}}</b><b>{{ baseCurrencySymbol }}</b></p>
-                                  <input :name="'productoption'+productToping.product_option_id" :id="'topingsItem'+allTopings[productToping.topping_id].id" :value="allTopings[productToping.topping_id].id" name="topingsItem" class="topingsItem" :type="productToping.type" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
+                                  <input :name="'productoption'+productToping.product_option_id" :data-toppingid="allTopings[productToping.topping_id].id" :id="'topingsItem'+allTopings[productToping.topping_id].id" :value="allTopings[productToping.topping_id].id" name="topingsItem" class="topingsItem" :type="productToping.type" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
                                   
                                   <div style="padding: 0 5px; padding-left: 20%;"  onclick="event.stopPropagation();">
                                     <div  class="input-group" >
@@ -381,8 +381,20 @@ export default {
         }
 
         var item = document.getElementById('topingsItem'+id);
-        if(item.type="radio"){
-          console.log("RADIOOOOO");
+        if(item.type=="radio"){
+          var name = item.name;
+          var els = document.getElementsByName(name);
+          for(var i=0; i<els.length; i++){
+              var tid = els[i].dataset.toppingid;
+              if(tid==id){
+                els[i].checked = true;
+                document.getElementById('topingDiv'+tid).style.border = "1px solid red";
+              }else{
+                els[i].checked = false;
+                document.getElementById('topingDiv'+tid).style.border = "1px solid white";
+              }
+          }
+          
         }
 
         this.generatePrice();
@@ -712,10 +724,64 @@ export default {
 
 </script>
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
+<style>
+.multiselect__option--highlight {
+    background: rgb(238, 110, 45)!important;
+}
+.multiselect__option {
+    display: block;
+    padding: 5px!important;
+    min-height: 1px!important;
+    line-height: 15px!important;
+    text-decoration: none;
+    text-transform: none;
+    position: relative;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.multiselect__content li {
+    margin-top: 1px!important; 
+    margin-bottom: 1px!important;
+}
+
+.multiselect__tags input[type=text] {
+    height: auto;
+    line-height: 32px;
+    padding: 0 15px;
+}
+.multiselect__option::after{
+  background: rgba(238, 109, 45, 0)!important;
+}
+.multiselect__option--selected::after{
+  background: rgba(238, 109, 45, 0)!important;
+}
+.multiselect__tags {
+    padding: 2px 40px 0 11px;
+}
+.multiselect__tag {
+    position: relative;
+    display: inline-block;
+    padding: 4px 26px 4px 10px;
+    border-radius: 5px;
+    margin-right: 10px;
+    color: #fff;
+    line-height: 1;
+    background: rgb(238, 110, 45)!important;
+    margin-bottom: 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 100%;
+    text-overflow: ellipsis;
+}
+.multiselect__tag-icon::after {
+    color: #fff;
+}
+</style>
 <style scoped>
 .multi-select2 {
   width: 100%;
 }
+
 .toast-container {
   position: fixed;
   bottom: 20px;
