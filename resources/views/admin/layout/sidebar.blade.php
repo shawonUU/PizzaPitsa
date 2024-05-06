@@ -88,7 +88,7 @@
                         </ul>
                     </div>
                 </li> <!-- end Dashboard Menu --> --}}
-                @can('Administration')
+                @can('administration')
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#sidebarAdvanceUI" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
                             <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Product Management</span>
@@ -117,7 +117,7 @@
                         </div>
                     </li>
                 @endcan
-                @role('Administrator|Manager')
+                @can('Customer Orders')
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#orderManagement" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
                             <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Order Management</span>
@@ -130,8 +130,8 @@
                             </ul>
                         </div>
                     </li>
-                @endrole
-                @role('Administrator')
+                @endcan
+                @can('administration')
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#sidebarCouponUI" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
                             <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Settings</span>
@@ -156,8 +156,8 @@
                             </ul>
                         </div>
                     </li>
-                @endrole
-                @role('Administrator')
+                @endcan
+                @can('administration')
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#sidebarAuthorizition" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAuthorizition">
                             <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Authorizition</span>
@@ -176,7 +176,7 @@
                             </ul>
                         </div>
                     </li>  
-                @endrole
+                @endcan
             </ul>
         </div>
         <!-- Sidebar -->

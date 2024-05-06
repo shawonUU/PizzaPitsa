@@ -33,9 +33,9 @@
             </div>
             <div v-if="mapSection"> 
                 <div class="container">
-                  <h4>Home delivery option is under development. You can order now only Pickup/Dine-in or Call us for order at <a href="tel:+35826220208" style="color:blue"> +35826220208 </a></h4>  
+                  <!-- <h4>Home delivery option is under development. You can order now only Pickup/Dine-in or Call us for order at <a href="tel:+35826220208" style="color:blue"> +35826220208 </a></h4>   -->
                 </div>               
-                <div class="row d-none">
+                <div class="row">
                     <div class="col-12 col-md-4">
                         <h3>New Address</h3>
                           <div v-if="isVisible" class="toast-container">
@@ -257,7 +257,7 @@
                               </div>
                               <div class="col-12 col-md-6 mt-5 mb-3">
                                   <div class="input-group" style="cursor:pointer;">
-                                      <button  type="button" class="btn" style="cursor:pointer !important; background: #f5c6ae; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Pay Online</button>
+                                      <button   @click="initiatePayment()" type="button" class="btn" style="cursor:pointer !important; background: #f5c6ae; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Pay Online</button>
                                   </div>
                               </div>
                           </div>
@@ -654,6 +654,17 @@
               this.scheduleSection=false;
               this.orderDetails = true;
               this.mapSection = false;
+            },
+            initiatePayment() {
+              // Make an AJAX request to initiate the payment
+              axios.post('/paytrail/create-payment')
+                .then(response => {
+                  console.log(response.data);
+                  window.location.href = response.data;
+                })
+                .catch(error => {
+                  console.error(error);
+                });
             }
         },
     };

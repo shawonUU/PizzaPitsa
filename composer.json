@@ -6,11 +6,12 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/guzzle": "^7.8",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.4",
+        "paytrail/paytrail-php-sdk": "^2.7",
         "pusher/pusher-php-server": "^7.2",
         "spatie/laravel-permission": "^6.3"
     },

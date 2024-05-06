@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Location;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\PaytrailController;
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SizeController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CouponController;
@@ -17,12 +19,11 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CurrencyController;
 use App\Http\Controllers\Admin\NutritionController;
+use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\OptionTitleController;
 use App\Http\Controllers\Admin\TimeScheduleController;
 use App\Http\Controllers\Admin\DelivaryChargeController;
-use App\Http\Controllers\Admin\OptionTitleController;
-use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\ProductMnagementController;
-use App\Http\Controllers\Admin\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,9 +37,10 @@ use App\Http\Controllers\Admin\RoleController;
 */
 
 Route::get('/', function () {
-   //Mail::to("shawonmahmodul12@gmail.com")->send(new VerificationMail(123456));
     return view('frontend.layouts.app');
 });
+
+// Route::get('/', [PaytrailController::class,'createPayment']);
 
 Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
@@ -77,6 +79,11 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     
 });
 
+Route::get('/success', [PaytrailController::class,'success']);
+Route::get('/cancel', [PaytrailController::class,'cancel']);
+Route::get('/pending', [PaytrailController::class,'pending']);
+Route::get('/notification', [PaytrailController::class,'notification']);
+
 
 
 
@@ -112,6 +119,7 @@ Route::get('get-my-orders', [OrderController::class, 'getCustomerProduct']);
 Route::get('get-order-status', [OrderController::class, 'getOrderStatus']);
 Route::get('order-info', [OrderController::class, 'getCustomerOrderInfo']);
 Route::post('update-notification', [NotificationController::class, 'update'])->name('update-notification');
+Route::post('/paytrail/create-payment', [PaytrailController::class,'createPayment']);
 
 Route::get('/{any}', function () {
     return view('frontend.layouts.app');

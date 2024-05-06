@@ -138,3 +138,10 @@ function getSelectedTopings($id){
   return ProductOptionTopping::join('topings','topings.id','=','product_option_toppings.topping_id')->select('topings.*')->where('product_option_toppings.product_option_id',$id)->get();
 }
 
+function getHost()
+{
+    $host = request()->getHost();
+    $host = str_replace('www.', '', $host);
+    return $host;
+}
+

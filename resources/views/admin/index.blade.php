@@ -4,7 +4,7 @@
     <div class="page-content">
         <div class="container-fluid">
 
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col">
 
                     <div class="h-100">
@@ -1277,7 +1277,7 @@
                     </div> <!-- end .rightbar-->
 
                 </div> <!-- end col -->
-            </div>
+            </div> --}}
 
         </div>
         <!-- container-fluid -->
