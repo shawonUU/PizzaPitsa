@@ -349,6 +349,15 @@
 
                                                                 </div>
                                                                 <p style="margin: 0; padding: 0; line-height:1.3; font-size: 14px; text-align:left;">{{ item.size.name }}({{ item.size.price }})</p>
+                                                                <p v-if="item.options.length>0" style=" width:100% !important; line-height: 0.8; margin: 0;">
+                                                                    <span>+</span>
+                                                                    <template  v-for="(toping, topingId) in item.options" :key="topingId">
+                                                                        <template v-if="toping">
+                                                                            <span style="margin:0; padding:0; font-size:12px; padding: 0 2px;" >{{ toping.name }}({{ item.optionPrices[toping.id]}}{{ baseCurrencySymbol }} x {{item.optionQtys[toping.id]}})</span>
+                                                                            <span v-if="topingId != item.options.length-1">,</span>
+                                                                        </template>
+                                                                    </template>
+                                                                </p>
                                                                 <p v-if="item.topings.length>0" style=" width:100% !important; line-height: 0.8; margin: 0;">
                                                                     <span>+</span>
                                                                     <template  v-for="(toping, topingId) in item.topings" :key="topingId">
@@ -474,6 +483,7 @@ export default {
     },
      data(){
         return{
+            freeOption:1,
             products:{},
             product:null,
             productSizes:null,
@@ -574,7 +584,6 @@ export default {
                         this.sizeVsTopings = res.data[6];
                         this.productTages = res.data[7];
                         this.productOptions = res.data[8];
-                        console.log(this.productOptions);
                     }
             }).catch((err) => {
             });
@@ -616,8 +625,26 @@ export default {
                                     topingsPrice += parseFloat(price*qty);
                                 }
                             }
-                            this.subTotal += (item.size.price * item.quantity) + topingsPrice;
-                            item.totalPrice = (item.size.price * item.quantity) + topingsPrice;
+
+                            // this.subTotal += (item.size.price * item.quantity) + topingsPrice;
+                            // item.totalPrice = (item.size.price * item.quantity) + topingsPrice;
+
+
+                            var options = item.options;
+                            var optionQtys = item.optionQtys;
+                            var optionPrices = item.optionPrices;
+                            var optionsPrice = 0;
+                            for (const i in options) {
+                                if(options[i])  {
+                                    var price = optionPrices[options[i].id];
+                                    var qty = optionQtys[options[i].id];
+                                    price = parseFloat(price);
+                                    qty = parseFloat(qty);
+                                    optionsPrice += parseFloat(price*(qty-this.freeOption));
+                                }
+                            }
+                            this.subTotal += (item.size.price * item.quantity) + topingsPrice + optionsPrice;
+                            item.totalPrice = (item.size.price * item.quantity) + topingsPrice + optionsPrice;
 
                         }
                     }

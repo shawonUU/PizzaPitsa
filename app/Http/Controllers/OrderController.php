@@ -19,6 +19,7 @@ class OrderController extends Controller
         // return $request->all();
 
         $cart = json_decode($request->cart, true);
+        $FREE_OPTION = 1;
 
         $address_id = null;
         if($request->type == 1){
@@ -75,9 +76,8 @@ class OrderController extends Controller
                         foreach (isset($sizeWiseItem['topings']) ? $sizeWiseItem['topings'] : [] as $toping) {
                             if($toping && !isset($toping_ids[$toping['id']])){
                                 $toping_ids[$toping['id']] = $toping['id'];
-                                $toping_price += $toping['price'];
+                                $toping_price += ($sizeWiseItem['toppingPrices'][$toping['id']] * $sizeWiseItem['toppingQtys'][$toping['id']]);
                             }
-                           
                         }
 
                         $topping_prices = [];
@@ -91,6 +91,31 @@ class OrderController extends Controller
                         foreach($sizeWiseItem['toppingQtys'] as $topingid => $qty){
                             if($qty){
                                 $topping_qtys[$topingid] = $qty;
+                            }
+                        }
+
+
+                        $option_ids = [];
+                        $option_price = 0;
+                        foreach (isset($sizeWiseItem['options']) ? $sizeWiseItem['options'] : [] as $toping) {
+                            if($toping && !isset($option_ids[$toping['id']])){
+                                $option_ids[$toping['id']] = $toping['id'];
+                                $option_price += ($sizeWiseItem['optionPrices'][$toping['id']] * ($sizeWiseItem['optionQtys'][$toping['id']]-$FREE_OPTION));
+                            }
+                           
+                        }
+
+                        $option_prices = [];
+                        foreach($sizeWiseItem['optionPrices'] as $topingid => $price){
+                            if($price){
+                                $option_prices[$topingid] = $price;
+                            }
+                        }
+
+                        $option_qtys = [];
+                        foreach($sizeWiseItem['optionQtys'] as $topingid => $qty){
+                            if($qty){
+                                $option_qtys[$topingid] = $qty;
                             }
                         }
                         
@@ -107,6 +132,10 @@ class OrderController extends Controller
                         $orderItem->toping_qtys = implode(',',$topping_qtys);
                         $orderItem->toping_prices = implode(',',$topping_prices);
                         $orderItem->toping_price = $toping_price;
+                        $orderItem->option_ids = implode(',',$option_ids);
+                        $orderItem->option_qtys = implode(',',$option_qtys);
+                        $orderItem->option_prices = implode(',',$option_prices);
+                        $orderItem->option_price = $option_price;
                         $orderItem->removed_tags = implode(',',$sizeWiseItem['removedTags']);
                         $orderItem->save();
                     }

@@ -184,6 +184,15 @@
                                             <td style="display: table-cell;">
                                               <strong style="display:block;"> {{ item.product.name }}</strong>
                                               <small style="display:block;">Size:  {{ item.size.name }} </small>
+                                              <small style="display:block;" v-if="item.options.length>0">
+                                                <span>+</span> 
+                                                <template  v-for="(toping, topingId) in item.options" :key="topingId">
+                                                  <template v-if="toping">
+                                                      {{ toping.name }}({{ item.optionPrices[toping.id]}}{{ baseCurrencySymbol }} x {{item.optionQtys[toping.id]}})
+                                                      <span v-if="topingId != item.options.length-1">,</span>
+                                                  </template>
+                                                </template>
+                                              </small>
                                               <small v-if="item.topings.length>0">
                                                 <span>+</span> 
                                                 <template  v-for="(toping, topingId) in item.topings" :key="topingId">
@@ -411,7 +420,7 @@
                   comment:comment,
                 })
                 .then((res)=>{   
-                  console.log(res.data);              
+                  console.log(res.data); return;             
                   if(res.data.success){
                     localStorage.setItem('cart', '');
                     this.handleButtonClick();

@@ -153,22 +153,21 @@
 
                         <div class="row">
                           <div class="col-6 col-md-3 p-2" v-for="(productToping, topingId) in productOption.options" :key="topingId">
-                              <div :id="'topingDiv'+allTopings[productToping.topping_id].id" @click="clickOnTopings(allTopings[productToping.topping_id].id)" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border:1px solid white; border-radius: 10%; cursor:pointer;">
+                              <div :id="'optionDiv'+allTopings[productToping.topping_id].id" @click="clickOnOptions(allTopings[productToping.topping_id].id)" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border:1px solid white; border-radius: 10%; cursor:pointer;">
                                   <img class="p-2" :src="'/frontend/toping_images/' + allTopings[productToping.topping_id].image" alt="" style="width: 65px; ">
                                   <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">{{allTopings[productToping.topping_id].name}}</p>
-                                  <p class="text-center m-0" style="font-size:12px;"><b class="showToppingPrice" :data-toppingId="allTopings[productToping.topping_id].id" :id="'showToppingPrice'+allTopings[productToping.topping_id].id">{{allTopings[productToping.topping_id].price}}</b><b>{{ baseCurrencySymbol }}</b></p>
-                                  <input :name="'productoption'+productToping.product_option_id" :data-toppingid="allTopings[productToping.topping_id].id" :id="'topingsItem'+allTopings[productToping.topping_id].id" :value="allTopings[productToping.topping_id].id" name="topingsItem" class="topingsItem" :type="productToping.type" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
-                                  
+                                  <p class="text-center m-0" style="font-size:12px;"><b class="showToppingPrice" :data-toppingId="allTopings[productToping.topping_id].id" :id="'showOptionPrice'+allTopings[productToping.topping_id].id">{{allTopings[productToping.topping_id].price}}</b><b>{{ baseCurrencySymbol }}</b></p>
+                                  <input :name="'productoption'+productToping.product_option_id" :data-toppingid="allTopings[productToping.topping_id].id" :id="'optionsItem'+allTopings[productToping.topping_id].id" :value="allTopings[productToping.topping_id].id" name="optionsItem" class="optionsItem" :type="productToping.type" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
                                   <div style="padding: 0 5px; padding-left: 20%;"  onclick="event.stopPropagation();">
                                     <div  class="input-group" >
                                       <div  class="input-group-prepend" style="cursor: pointer;" >
-                                        <span :id="'toppingQtyMuns'+allTopings[productToping.topping_id].id"  class="input-group-text" style="padding: 0.20rem .50rem;" @click="qtyMinus(allTopings[productToping.topping_id].id)">
+                                        <span :id="'optionQtyMuns'+allTopings[productToping.topping_id].id"  class="input-group-text" style="padding: 0.20rem .50rem;" @click="qtyMinus(allTopings[productToping.topping_id].id, 'optionQty')">
                                           <b >-</b>
                                         </span>
                                       </div>
-                                      <input @change="updateToppingQty(allTopings[productToping.topping_id].id)"  :id="'toppingQty'+allTopings[productToping.topping_id].id" min="1" type="text" value="1" class="" style="margin-left: 0px;text-align: center; font-size: 14px; height: 20px; width: 35% !important; padding: 0px; border: solid 1px #000; font-size: 10px;">
+                                      <input @change="updateQty(allTopings[productToping.topping_id].id,'optionQty')"  :id="'optionQty'+allTopings[productToping.topping_id].id" min="1" type="text" value="1" class="" style="margin-left: 0px;text-align: center; font-size: 14px; height: 20px; width: 35% !important; padding: 0px; border: solid 1px #000; font-size: 10px;">
                                       <div  class="input-group-append" style="cursor: pointer;" >
-                                        <span :id="'toppingQtyPls'+allTopings[productToping.topping_id].id" @click="qtyPlus(allTopings[productToping.topping_id].id)" class="input-group-text" style="padding: 0.20rem .50rem;" >
+                                        <span :id="'optionQtyPls'+allTopings[productToping.topping_id].id" @click="qtyPlus(allTopings[productToping.topping_id].id,'optionQty')" class="input-group-text" style="padding: 0.20rem .50rem;" >
                                           <b >+</b>
                                         </span>
                                       </div>
@@ -178,7 +177,6 @@
                               </div>
                           </div>
                         </div>
-
                     </template>
 
 
@@ -194,13 +192,13 @@
                               <div style="padding: 0 5px; padding-left: 20%;"  onclick="event.stopPropagation();">
                                 <div  class="input-group" >
                                   <div  class="input-group-prepend" style="cursor: pointer;" >
-                                    <span :id="'toppingQtyMuns'+productToping.id"  class="input-group-text" style="padding: 0.20rem .50rem;" @click="qtyMinus(productToping.id)">
+                                    <span :id="'toppingQtyMuns'+productToping.id"  class="input-group-text" style="padding: 0.20rem .50rem;" @click="qtyMinus(productToping.id,'toppingQty')">
                                       <b >-</b>
                                     </span>
                                   </div>
-                                  <input @change="updateToppingQty(productToping.id)"  :id="'toppingQty'+productToping.id" min="1" type="text" value="1" class="" style="margin-left: 0px;text-align: center; font-size: 14px; height: 20px; width: 35% !important; padding: 0px; border: solid 1px #000; font-size: 10px;">
+                                  <input @change="updateQty(productToping.id,'toppingQty')"  :id="'toppingQty'+productToping.id" min="1" type="text" value="1" class="" style="margin-left: 0px;text-align: center; font-size: 14px; height: 20px; width: 35% !important; padding: 0px; border: solid 1px #000; font-size: 10px;">
                                   <div  class="input-group-append" style="cursor: pointer;" >
-                                    <span :id="'toppingQtyPls'+productToping.id" @click="qtyPlus(productToping.id)" class="input-group-text" style="padding: 0.20rem .50rem;" >
+                                    <span :id="'toppingQtyPls'+productToping.id" @click="qtyPlus(productToping.id,'toppingQty')" class="input-group-text" style="padding: 0.20rem .50rem;" >
                                       <b >+</b>
                                     </span>
                                   </div>
@@ -286,11 +284,13 @@ export default {
       },
     data(){
         return{
+            freeOption:1,
             catgories:{},
             tooltipVisible: false,
             quantity: 1,
             orderPrice: null,
             totalTopingPrice:0,
+            totalOptionPrice:0,
             isVisible:false,
             message:'',
             cart: [],
@@ -380,7 +380,7 @@ export default {
             document.getElementById('topingsItem'+id).checked = true;
         }
 
-        var item = document.getElementById('topingsItem'+id);
+        /*var item = document.getElementById('topingsItem'+id);
         if(item.type=="radio"){
           var name = item.name;
           var els = document.getElementsByName(name);
@@ -394,9 +394,36 @@ export default {
                 document.getElementById('topingDiv'+tid).style.border = "1px solid white";
               }
           }
-          
+        }*/
+
+        this.generatePrice();
+      },
+      clickOnOptions(id, flg=false){
+
+        if(document.getElementById('optionsItem'+id).checked && flg==false){
+            document.getElementById('optionDiv'+id).style.border="1px solid white";
+            document.getElementById('optionsItem'+id).checked = false;
+            // console.log(document.getElementById('topingDiv'+id));
+        }else{
+            document.getElementById('optionDiv'+id).style.border="1px solid red";
+            document.getElementById('optionsItem'+id).checked = true;
         }
 
+        var item = document.getElementById('optionsItem'+id);
+        if(item.type=="radio"){
+          var name = item.name;
+          var els = document.getElementsByName(name);
+          for(var i=0; i<els.length; i++){
+              var tid = els[i].dataset.toppingid;
+              if(tid==id){
+                els[i].checked = true;
+                document.getElementById('optionDiv'+tid).style.border = "1px solid red";
+              }else{
+                els[i].checked = false;
+                document.getElementById('optionDiv'+tid).style.border = "1px solid white";
+              }
+          }
+        }
         this.generatePrice();
       },
       generatePrice(){
@@ -412,6 +439,7 @@ export default {
         if(!selectedSize) return;
 
         var orderPrice = parseFloat(this.productSizes[selectedSize].price) * parseFloat(this.quantity);
+
         var elements = document.getElementsByClassName('topingsItem');
         var totalTopingPrice = 0;
         for(var i=0; i<elements.length; i++){
@@ -429,8 +457,29 @@ export default {
             totalTopingPrice += (pric*qty);
           }
         }
+
+        var elements = document.getElementsByClassName('optionsItem');
+        var totalOptionPrice = 0;
+        for(var i=0; i<elements.length; i++){
+          if(elements[i].checked){
+            var topingId = elements[i].value;
+            var pric = 0;
+            if (this.sizeVsTopings[topingId] && this.sizeVsTopings[topingId][lib_size]) {
+              pric = this.sizeVsTopings[topingId][lib_size];
+            } else {
+              pric = this.allTopings[topingId].price;
+            }
+            pric = parseFloat(pric);
+            var qty = parseInt(document.getElementById('optionQty'+elements[i].value).value.trim());
+            qty -= this.freeOption;
+            orderPrice += (pric*qty);
+            totalOptionPrice += (pric*qty);
+          }
+        }
+
         this.orderPrice = orderPrice.toFixed(2);
         this.totalTopingPrice = totalTopingPrice;
+        this.totalOptionPrice = totalOptionPrice;
       },
       addTocart(){
           var elements = document.getElementsByClassName('sizeRadio');
@@ -463,6 +512,27 @@ export default {
             }
           }
 
+
+          var elements = document.getElementsByClassName('optionsItem');
+          var options = [];
+          var optionQtys = [];
+          var optionPrices = [];
+          for(var i=0; i<elements.length; i++){
+            if(elements[i].checked){
+                var topingId = elements[i].value;
+                var pric = 0;
+                if (this.sizeVsTopings[topingId] && this.sizeVsTopings[topingId][lib_size]) {
+                  pric = this.sizeVsTopings[topingId][lib_size];
+                } else {
+                  pric = this.allTopings[topingId].price;
+                }
+                options[topingId] = this.allTopings[topingId];
+                optionQtys[topingId] = document.getElementById('optionQty'+topingId).value.trim();
+                optionPrices[topingId] = pric;
+            }
+          }
+
+
           var elements = document.getElementsByClassName('protag');
           var removedTags = [];
           for(var i=0; i<elements.length; i++){
@@ -475,16 +545,23 @@ export default {
             this.showToast('Select Any Size',0);return;
           }
 
-          if(selectedSize && this.orderPrice && this.productData && this.quantity && this.totalTopingPrice){
+          if(selectedSize && this.orderPrice && this.productData && this.quantity){
                 var item = {
                     quantity: this.quantity,
                     product: this.productData,
                     size: this.productSizes[selectedSize],
+
                     topings: topings,
                     toppingQtys: toppingQtys,
                     toppingPrices: toppingPrices,
-                    totalPrice: this.orderPrice,
                     totalTopingPrice: this.totalTopingPrice,
+
+                    options: options,
+                    optionQtys: optionQtys,
+                    optionPrices: optionPrices,
+                    totalOptionPrice: this.totalOptionPrice,
+
+                    totalPrice: this.orderPrice,
                     removedTags: removedTags,
                 };
 
@@ -522,7 +599,7 @@ export default {
                               bindPrices[topings[i].id] = toppingPrices[topings[i].id];
                         }else{
                           bindQtys[topings[i].id] = parseFloat(bindQtys[topings[i].id]);
-                          bindQtys[topings[i].id] += parseFloat(item.toppingQtys[topings[i].id]);
+                          bindQtys[topings[i].id] += parseFloat(toppingQtys[topings[i].id]);
                         }
                       }
                     }
@@ -534,6 +611,42 @@ export default {
                         totalTopingPrice += parseFloat(bindPrices[bindTopings[i].id]) * parseInt(bindQtys[bindTopings[i].id]);
                     }
 
+
+                    var bindOptions = [];
+                    var bindOptionQtys = [];
+                    var bindOptionPrices = [];
+                    var exOptions =  existingItem.options;
+                    var exOptionQtys =  existingItem.optionQtys;
+                    var exOptionPrices =  existingItem.optionPrices;
+                    for (const i in exOptions) {
+                        if(exOptions[i]){
+                            bindOptions[exOptions[i].id] = exOptions[i];
+                            bindOptionQtys[exOptions[i].id] = exOptionQtys[exOptions[i].id];
+                            bindOptionPrices[exOptions[i].id] = exOptionPrices[exOptions[i].id];
+                        }
+                    }
+
+                    for (const i in options){
+                      if(options[i]){
+                        options[i].id = parseInt(options[i].id);
+                        if ( typeof bindOptions[options[i].id] === 'undefined'){
+                              bindOptions[options[i].id] = options[i];
+                              bindOptionQtys[options[i].id] = optionQtys[options[i].id];
+                              bindOptionPrices[options[i].id] = optiongPrices[options[i].id];
+                        }else{
+                          bindOptionQtys[options[i].id] = parseFloat(bindOptionQtys[options[i].id]);
+                          bindOptionQtys[options[i].id] += parseFloat(optionQtys[options[i].id]);
+                        }
+                      }
+                    }
+
+                    var totalOptionPrice = 0;
+                    //existingItem.totalPrice = parseFloat(existingItem.quantity) * parseFloat(item.size.price);
+                     for (const i in bindOptions) {
+                        existingItem.totalPrice += parseFloat(bindOptionPrices[bindOptions[i].id]) * parseInt(bindOptionQtys[bindOptions[i].id])-this.freeOption;
+                        totalOptionPrice += parseFloat(bindOptionPrices[bindOptions[i].id]) * parseInt(bindOptionQtys[bindOptions[i].id])-this.freeOption;
+                    }
+
                     var merged = [...new Set([...existingItem.removedTags, ...item.removedTags])];
 
                     existingItem.removedTags = merged;
@@ -541,6 +654,11 @@ export default {
                     existingItem.toppingQtys = bindQtys;
                     existingItem.toppingPrices = bindPrices;
                     existingItem.totalTopingPrice = totalTopingPrice;
+
+                    existingItem.options = bindOptions;
+                    existingItem.optionQtys = bindOptionQtys;
+                    existingItem.optionPrices = bindOptionPrices;
+                    existingItem.totalOptionPrice = totalOptionPrice;
 
                     this.cart[this.productData.id][this.productSizes[selectedSize].id] = existingItem;
               }
@@ -664,38 +782,52 @@ export default {
 
           document.getElementById('selectdeExtraTopping').insertAdjacentHTML('beforeend', html);
           document.getElementById("topingDiv"+topping.id).addEventListener('click', () => this.clickOnTopings(topping.id));
-          document.getElementById("toppingQtyMuns"+topping.id).addEventListener('click', () => this.qtyMinus(topping.id));
-          document.getElementById("toppingQty"+topping.id).addEventListener('change', () => this.updateToppingQty(topping.id));
-          document.getElementById("toppingQtyPls"+topping.id).addEventListener('click', () => this.qtyPlus(topping.id));
+          document.getElementById("toppingQtyMuns"+topping.id).addEventListener('click', () => this.qtyMinus(topping.id,'toppingQty'));
+          document.getElementById("toppingQty"+topping.id).addEventListener('change', () => this.updateQty(topping.id,'toppingQty'));
+          document.getElementById("toppingQtyPls"+topping.id).addEventListener('click', () => this.qtyPlus(topping.id,'toppingQty'));
           this.clickOnTopings(topping.id);
         }
         this.generatePrice();
       },
-      qtyPlus(toppingId){
-          var currentQty = document.getElementById('toppingQty'+toppingId).value.trim();
+      qtyPlus(toppingId, prifix){
+          var currentQty = document.getElementById(prifix+toppingId).value.trim();
           if(currentQty=="") currentQty = 1;
           currentQty = parseInt(currentQty);
           currentQty++;
-          document.getElementById('toppingQty'+toppingId).value = currentQty;
-          this.generatePrice();
-          this.clickOnTopings(toppingId,true);
+          document.getElementById(prifix+toppingId).value = currentQty;
+          //this.generatePrice();
+
+          if(prifix=="toppingQty")
+            this.clickOnTopings(toppingId,true);
+          if(prifix=="optionQty")
+            this.clickOnOptions(toppingId,true);
+
       },
-      qtyMinus(toppingId){
-          var currentQty = document.getElementById('toppingQty'+toppingId).value.trim();
+      qtyMinus(toppingId, prifix){
+          var currentQty = document.getElementById(prifix+toppingId).value.trim();
           if(currentQty=="") currentQty = 1;
           currentQty = parseInt(currentQty);
           currentQty--;
           if(currentQty<1) currentQty = 1;
-          document.getElementById('toppingQty'+toppingId).value = currentQty;
-          this.generatePrice();
-          this.clickOnTopings(toppingId,true);
+          document.getElementById(prifix+toppingId).value = currentQty;
+          //this.generatePrice();
+          
+           if(prifix=="toppingQty")
+            this.clickOnTopings(toppingId,true);
+          if(prifix=="optionQty")
+            this.clickOnOptions(toppingId,true);
+
       },
-      updateToppingQty(toppingId){
-        var currentQty = document.getElementById('toppingQty'+toppingId).value.trim();
+      updateQty(toppingId, prifix){
+        var currentQty = document.getElementById(prifix+toppingId).value.trim();
         if(currentQty=="") currentQty = 1;
         currentQty = parseInt(currentQty);
-        document.getElementById('toppingQty'+toppingId).value = currentQty;
-        this.generatePrice();
+        document.getElementById(prifix+toppingId).value = currentQty;
+        //this.generatePrice();
+        if(prifix=="toppingQty")
+          this.clickOnTopings(toppingId,true);
+        if(prifix=="optionQty")
+          this.clickOnOptions(toppingId,true);
       },
       clickOnTag(id){     
           var tag = document.getElementById('protag'+id);
