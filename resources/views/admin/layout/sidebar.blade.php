@@ -57,38 +57,8 @@
             <div id="two-column-menu">
             </div>
             <ul class="navbar-nav" id="navbar-nav">
-                <li class="menu-title"><span data-key="t-menu">Menu</span></li>
-                {{-- <li class="nav-item">
-                    <a class="nav-link menu-link" href="#sidebarDashboards" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarDashboards">
-                        <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboard</span>
-                    </a>
-                    <div class="collapse menu-dropdown" id="sidebarDashboards">
-                        <ul class="nav nav-sm flex-column">
-                            <li class="nav-item">
-                                <a href="dashboard-analytics.html" class="nav-link" data-key="t-analytics"> Analytics </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="dashboard-crm.html" class="nav-link" data-key="t-crm"> CRM </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="index.html" class="nav-link" data-key="t-ecommerce"> Ecommerce </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="dashboard-crypto.html" class="nav-link" data-key="t-crypto"> Crypto </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="dashboard-projects.html" class="nav-link" data-key="t-projects"> Projects </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="dashboard-nft.html" class="nav-link" data-key="t-nft"> NFT</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="dashboard-job.html" class="nav-link" data-key="t-job">Job</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li> <!-- end Dashboard Menu --> --}}
-                @can('administration')
+                <li class="menu-title"><span data-key="t-menu">Menu</span></li>            
+                @can('product-management')
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#sidebarAdvanceUI" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
                             <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Product Management</span>
@@ -117,7 +87,7 @@
                         </div>
                     </li>
                 @endcan
-                @can('Customer Orders')
+                @can('order-management')
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#orderManagement" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
                             <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Order Management</span>
@@ -131,7 +101,7 @@
                         </div>
                     </li>
                 @endcan
-                @can('administration')
+                @can('settings')
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#sidebarCouponUI" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
                             <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Settings</span>
@@ -157,7 +127,7 @@
                         </div>
                     </li>
                 @endcan
-                @can('administration')
+                @can('user-management')
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#sidebarAuthorizition" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAuthorizition">
                             <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Authorizition</span>
@@ -165,13 +135,13 @@
                         <div class="collapse menu-dropdown" id="sidebarAuthorizition">
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
-                                    <a href="{{ route('permission.index') }}" class="nav-link" data-key="t-nestable-list">Permission</a>
+                                    <a href="{{ route('permission.index') }}" class="nav-link" data-key="t-nestable-list">Permissions</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{ route('role.index') }}" class="nav-link" data-key="t-nestable-list">Role</a>
+                                    <a href="{{ route('role.index') }}" class="nav-link" data-key="t-nestable-list">Roles</a>
                                 </li>                           
                                 <li class="nav-item">
-                                    <a href="{{ route('users.index') }}" class="nav-link">User</a>
+                                    <a href="{{ route('users.index') }}" class="nav-link">Users</a>
                                 </li>                          
                             </ul>
                         </div>

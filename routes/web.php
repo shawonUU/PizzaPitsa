@@ -44,41 +44,48 @@ Route::get('/', function () {
 
 Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
-    Route::resource('categories', CategoryController::class);
-    Route::resource('products', ProductContoller::class);
-    Route::resource('sizes', SizeController::class);
-    Route::resource('nutritions', NutritionController::class);
-    Route::resource('coupons', CouponController::class);
-    Route::resource('optiontitles', OptionTitleController::class);
-    Route::get('product-sizes/{id}', [ProductContoller::class, 'size'])->name('product_size');
-    Route::delete('delete-product-sizes/{id}', [ProductContoller::class, 'deleteProductSize'])->name('productSize.destroy');
-
-    Route::post('store-product-sizes', [ProductContoller::class, 'storeSize'])->name('product_size.store');
-    Route::get('create-product-sizes/{id}', [ProductContoller::class, 'createProductSize'])->name('product_size.create');
-    Route::get('edit-product-sizes/{id}', [ProductContoller::class, 'editProductSize'])->name('product_size.edit');
-    //topings assign
-    Route::get('store-product-topings/{id}', [ProductContoller::class, 'topings'])->name('product_topting');
-    Route::post('store-product-topings', [ProductContoller::class, 'storeToping'])->name('product_toping.store');
-    Route::patch('updatel-product-sizes/{id}', [ProductContoller::class, 'updateSize'])->name('product_size.update');
-    Route::resource('topings', TopingsController::class);
-    Route::resource('delivery_charges', DelivaryChargeController::class);
-    Route::resource('currency', CurrencyController::class);
-    Route::resource('schedule', TimeScheduleController::class);
-    Route::resource('location', Location::class);
+    Route::group(['middleware' => ['permission:product-management']], function () { 
+        Route::resource('categories', CategoryController::class);
+        Route::resource('products', ProductContoller::class);
+        Route::resource('sizes', SizeController::class);
+        Route::resource('nutritions', NutritionController::class);        
+        Route::resource('optiontitles', OptionTitleController::class);
+        Route::get('product-sizes/{id}', [ProductContoller::class, 'size'])->name('product_size');
+        Route::delete('delete-product-sizes/{id}', [ProductContoller::class, 'deleteProductSize'])->name('productSize.destroy');
+        Route::post('store-product-sizes', [ProductContoller::class, 'storeSize'])->name('product_size.store');
+        Route::get('create-product-sizes/{id}', [ProductContoller::class, 'createProductSize'])->name('product_size.create');
+        Route::get('edit-product-sizes/{id}', [ProductContoller::class, 'editProductSize'])->name('product_size.edit');
+        //topings assign
+        Route::get('store-product-topings/{id}', [ProductContoller::class, 'topings'])->name('product_topting');
+        Route::post('store-product-topings', [ProductContoller::class, 'storeToping'])->name('product_toping.store');
+        Route::patch('updatel-product-sizes/{id}', [ProductContoller::class, 'updateSize'])->name('product_size.update');
+        Route::resource('topings', TopingsController::class);
+    });
+    Route::group(['middleware' => ['permission:settings']], function () { 
+        Route::resource('delivery_charges', DelivaryChargeController::class);
+        Route::resource('currency', CurrencyController::class);
+        Route::resource('schedule', TimeScheduleController::class);
+        Route::resource('location', Location::class);
+        Route::resource('coupons', CouponController::class);
+    });
 
     //Order Management
-    Route::get('orders', [OrderController::class, 'getOrders'])->name('orders.index');
-    Route::post('order-update', [OrderController::class, 'updateQty'])->name('orders.update');
-    Route::get('order-details/{id}', [OrderController::class, 'getOrderDetails'])->name('order.details');
-    Route::post('update-status',[OrderController::class, 'updateStatus'])->name('update.status');
-    Route::post('assign-delivery-boy',[OrderController::class, 'assignDeliveryBoy'])->name('assign.deliveryboy');
-    Route::post('update-address',[OrderController::class, 'updateAddress'])->name('address.update');
-    Route::resource('users', UserController::class);
-    Route::resource('role', RoleController::class);
-    Route::resource('permission', PermissionController::class);
-    
-});
+    Route::group(['middleware' => ['permission:order-management']], function () { 
+        Route::get('orders', [OrderController::class, 'getOrders'])->name('orders.index');
+        Route::post('order-update', [OrderController::class, 'updateQty'])->name('orders.update');
+        Route::get('order-details/{id}', [OrderController::class, 'getOrderDetails'])->name('order.details');
+        Route::post('update-status',[OrderController::class, 'updateStatus'])->name('update.status');
+        Route::post('assign-delivery-boy',[OrderController::class, 'assignDeliveryBoy'])->name('assign.deliveryboy');
+        Route::post('update-address',[OrderController::class, 'updateAddress'])->name('address.update');
+        });               
+        
+    });
 
+    Route::group(['middleware' => ['permission:user-management']], function () {  
+        Route::resource('users', UserController::class);
+        Route::resource('role', RoleController::class);
+        Route::resource('permission', PermissionController::class);
+    }); 
 Route::get('/success', [PaytrailController::class,'success']);
 Route::get('/cancel', [PaytrailController::class,'cancel']);
 Route::get('/pending', [PaytrailController::class,'pending']);
