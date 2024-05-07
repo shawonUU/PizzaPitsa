@@ -632,7 +632,7 @@ export default {
                         if ( typeof bindOptions[options[i].id] === 'undefined'){
                               bindOptions[options[i].id] = options[i];
                               bindOptionQtys[options[i].id] = optionQtys[options[i].id];
-                              bindOptionPrices[options[i].id] = optiongPrices[options[i].id];
+                              bindOptionPrices[options[i].id] = optionPrices[options[i].id];
                         }else{
                           bindOptionQtys[options[i].id] = parseFloat(bindOptionQtys[options[i].id]);
                           bindOptionQtys[options[i].id] += parseFloat(optionQtys[options[i].id]);

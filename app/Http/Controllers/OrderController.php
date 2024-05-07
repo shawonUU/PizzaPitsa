@@ -11,6 +11,7 @@ use App\Models\Admin\Toping;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\PaytrailController;
 
 class OrderController extends Controller
 {
@@ -20,6 +21,7 @@ class OrderController extends Controller
 
         $cart = json_decode($request->cart, true);
         $FREE_OPTION = 1;
+        $paymentType = $request->paymentType;
 
         $address_id = null;
         if($request->type == 1){
@@ -143,28 +145,38 @@ class OrderController extends Controller
             }
         }
 
-        $notification = new Notification;
-        $notification->message = "New Order Placed";
-        $notification->url = route('orders.index');
-        $notification->save();
+        $url = null;
 
-        $pusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
-            'cluster' => env('PUSHER_APP_CLUSTER'),
-            'encrypted' => true
-        ]);
-        $item = $order;
-        $data['order'] = (string) view('admin.pages.order.singleOrder', compact('item'));
-        $pusher->trigger('order', 'place-order', $data);
-        $data = [
-            'notification' => $notification,
-            'notification_time' => displayNotificationTime($notification->created_at),
-            'unSeenNotifications' => unSeenNotifications(),
-        ];
-        $pusher->trigger('order', 'place-order-notification', $data);
+        if($paymentType == 1){
+            $notification = new Notification;
+            $notification->message = "New Order Placed";
+            $notification->url = route('orders.index');
+            $notification->save();
+
+            $pusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
+                'cluster' => env('PUSHER_APP_CLUSTER'),
+                'encrypted' => true
+            ]);
+            $item = $order;
+            $data['order'] = (string) view('admin.pages.order.singleOrder', compact('item'));
+            $pusher->trigger('order', 'place-order', $data);
+            $data = [
+                'notification' => $notification,
+                'notification_time' => displayNotificationTime($notification->created_at),
+                'unSeenNotifications' => unSeenNotifications(),
+            ];
+            $pusher->trigger('order', 'place-order-notification', $data);
+        }
+
+        else if($paymentType == 2){
+                $payment = new PaytrailController;
+                $url = $payment->createPayment($request,$newOrderNumber);
+        }
 
         $response = [
             'success' => true,
             'message' => 'Order Placed Done',
+            'url' => $url,
         ];
         return response()->json($response);
     }
