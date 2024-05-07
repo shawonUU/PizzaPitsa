@@ -32,15 +32,15 @@ class PaytrailController extends Controller
 
         
         $platformName = 'Pizza-Pitsa';
-        $amount = $request->grandTotal; // Amount is in cents, 15.00 €
+        $amount = $request->grandTotal*100; // Amount is in cents, 15.00 €
         $stamp = microtime(); // Use any unique value
         $reference = $auth->name.'('.$auth->id.'), Order Id: '.$newOrderNumber;
         $currency = 'EUR';
         $language = 'FI';
         $email = $auth->email;
         //$groups = ['creditcard'];
-        $successUrl = $result.'/success';
-        $cancelledUrl = $result.'/cancel';
+        $successUrl = $result.'/success?order_id='.$newOrderNumber;
+        $cancelledUrl = $result.'/cancel?order_id='.$newOrderNumber;
 
         
         // Create customer with minimum values
@@ -89,7 +89,7 @@ class PaytrailController extends Controller
 
     }
     public function cancel(Request $request){
-
+        dd('jj');
     }
     public function pending(Request $request){
 

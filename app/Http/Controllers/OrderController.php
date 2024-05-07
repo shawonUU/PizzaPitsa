@@ -17,7 +17,10 @@ class OrderController extends Controller
 {
     public function placeOrder(Request $request)
     {
+        // DB::commit();
+        // return;
         // return $request->all();
+        // DB::beginTransaction();
 
         $cart = json_decode($request->cart, true);
         $FREE_OPTION = 1;
@@ -66,6 +69,9 @@ class OrderController extends Controller
         $order->total_amount = $request->subTotal;
         $order->paid_amount = $request->grandTotal;
         $order->delivery_address_id = $address_id;
+        $order->payment_type = $paymentType;
+        if($paymentType==1)
+            $order->is_order_valid = 1;
         $order->save();
 
         // return $cart;
@@ -166,6 +172,8 @@ class OrderController extends Controller
                 'unSeenNotifications' => unSeenNotifications(),
             ];
             $pusher->trigger('order', 'place-order-notification', $data);
+
+            //DB::commit();
         }
 
         else if($paymentType == 2){
