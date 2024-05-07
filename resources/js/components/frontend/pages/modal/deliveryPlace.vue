@@ -261,12 +261,12 @@
                           <div class="row">
                               <div class="col-12 col-md-6 mt-5 mb-3">
                                   <div class="input-group" style="cursor:pointer;">
-                                      <button @click="placeOrder(orderType)" type="button" class="btn" style=" cursor:pointer !important; background: #ee6e2d; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Cash On Delivery</button>
+                                      <button @click="placeOrder(orderType, 1)" type="button" class="btn" style=" cursor:pointer !important; background: #ee6e2d; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Cash On Delivery</button>
                                   </div>
                               </div>
                               <div class="col-12 col-md-6 mt-5 mb-3">
                                   <div class="input-group" style="cursor:pointer;">
-                                      <button   @click="initiatePayment()" type="button" class="btn" style="cursor:pointer !important; background: #f5c6ae; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Pay Online</button>
+                                      <button   @click="placeOrder(orderType, 2)" type="button" class="btn" style="cursor:pointer !important; background: #f5c6ae; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Pay Online</button>
                                   </div>
                               </div>
                           </div>
@@ -386,7 +386,7 @@
                 this.modalWidth = 80;
                 this.initMap();
             },
-            placeOrder(type){
+            placeOrder(type, paymentType){
               if(!confirm('Are want to confirm this order?')){
                 return;
               }
@@ -418,15 +418,23 @@
                   floor:floor,
                   apartment:apartment,
                   comment:comment,
+                  paymentType:paymentType,
                 })
                 .then((res)=>{   
-                  console.log(res.data); return;             
+                  console.log(res.data);             
                   if(res.data.success){
-                    localStorage.setItem('cart', '');
-                    this.handleButtonClick();
-                    this.emitMyEvent();
-                   // this.showToast(res.data.message,1);
-                    this.handleCart();
+                    if(paymentType==1){
+                      localStorage.setItem('cart', '');
+                      this.handleButtonClick();
+                      this.emitMyEvent();
+                    // this.showToast(res.data.message,1);
+                      this.handleCart();
+                    }
+                    else if(paymentType==2){
+                      console.log(res.data.url)
+                      window.location.href = res.data.url;
+                    }
+                    
                   }else{
                       this.checkOutError = true;
                       this.checkOutMessage = res.data.message;
@@ -669,7 +677,7 @@
               axios.post('/paytrail/create-payment')
                 .then(response => {
                   console.log(response.data);
-                  window.location.href = response.data;
+                  // window.location.href = response.data;
                 })
                 .catch(error => {
                   console.error(error);
