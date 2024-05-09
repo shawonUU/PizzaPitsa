@@ -86,40 +86,42 @@ class ProductContoller extends Controller
 
         // Debugging: Check if arrays are not null
         if (!$newTitles || !$newToppings || !$newTypes) {
-            dd("Input arrays are null or empty");
-        }
-
-        $startIndex = 0;
-        foreach ($newTitles as $key => $titleId) {
-            $type = $newTypes[$key] ?? null;
-
-            if ($titleId && $type) {
-                // Create a new ProductOption
-                $productOption = new ProductOption();
-                $productOption->title_id = $titleId;
-                $productOption->product_id = $product->id; // Assuming you have a default product ID or set it dynamically
-                $productOption->type = $type;
-                $productOption->save();
-
-                // Determine the end index for toppings based on the current title
-                $endIndex = $startIndex + count($request->input("newToppings" . ($key + 1)));
-                
-                // Get toppings for the current title
-                $toppingsForCurrentTitle = array_slice($newToppings, $startIndex, $endIndex - $startIndex);
-
-                foreach ($toppingsForCurrentTitle as $toppingId) {
-                    $productOptionTopping = new ProductOptionTopping();
-                    $productOptionTopping->product_option_id = $productOption->id;
-                    $productOptionTopping->topping_id = $toppingId;
-                    $productOptionTopping->created_at = now();
-                    $productOptionTopping->updated_at = now();
-                    $productOptionTopping->save();
+            
+        } else {
+            $startIndex = 0;
+            foreach ($newTitles as $key => $titleId) {
+                $type = $newTypes[$key] ?? null;
+    
+                if ($titleId && $type) {
+                    // Create a new ProductOption
+                    $productOption = new ProductOption();
+                    $productOption->title_id = $titleId;
+                    $productOption->product_id = $product->id; // Assuming you have a default product ID or set it dynamically
+                    $productOption->type = $type;
+                    $productOption->save();
+    
+                    // Determine the end index for toppings based on the current title
+                    $endIndex = $startIndex + count($request->input("newToppings" . ($key + 1)));
+                    
+                    // Get toppings for the current title
+                    $toppingsForCurrentTitle = array_slice($newToppings, $startIndex, $endIndex - $startIndex);
+    
+                    foreach ($toppingsForCurrentTitle as $toppingId) {
+                        $productOptionTopping = new ProductOptionTopping();
+                        $productOptionTopping->product_option_id = $productOption->id;
+                        $productOptionTopping->topping_id = $toppingId;
+                        $productOptionTopping->created_at = now();
+                        $productOptionTopping->updated_at = now();
+                        $productOptionTopping->save();
+                    }
+    
+                    // Update the start index for the next iteration
+                    $startIndex = $endIndex;
                 }
-
-                // Update the start index for the next iteration
-                $startIndex = $endIndex;
             }
         }
+
+       
 
         
         // Save tags and removeables
@@ -130,20 +132,20 @@ class ProductContoller extends Controller
         $limitRemoveables = count($removeables);
 
         $limit = max($limitTags, $limitRemoveables);
-
-        for ($key = 0; $key < $limit; $key++) {
-            $tag = $tags[$key] ?? null;
-            $isRemovable = isset($removeables[$key]) && $removeables[$key] == 'on' ? '1' : '0';
-
-            if ($tag) {                            
-                $row = new ProductTag();
-                $row->pro_id = $product->id;
-                $row->tag_name = $tag;
-                $row->is_removeable = $isRemovable;
-                $row->save();                
+        if ($tags){
+            for ($key = 0; $key < $limit; $key++) {
+                $tag = $tags[$key] ?? null;
+                $isRemovable = isset($removeables[$key]) && $removeables[$key] == 'on' ? '1' : '0';
+    
+                if ($tag) {                            
+                    $row = new ProductTag();
+                    $row->pro_id = $product->id;
+                    $row->tag_name = $tag;
+                    $row->is_removeable = $isRemovable;
+                    $row->save();                
+                }
             }
-        }
-
+        }        
         session()->flash('sweet_alert', [
             'type' => 'success',
             'title' => 'Success!',
@@ -235,9 +237,9 @@ class ProductContoller extends Controller
 
         // Debugging: Check if arrays are not null
         if (!$newTitles || !$newToppings || !$newTypes) {
-            dd("Input arrays are null or empty");
-        }
-
+           
+        } else {
+            
         $startIndex = 0;
         foreach ($newTitles as $key => $titleId) {
             $type = $newTypes[$key] ?? null;
@@ -269,6 +271,8 @@ class ProductContoller extends Controller
                 $startIndex = $endIndex;
             }
         }
+        }
+
 
         
 
@@ -277,39 +281,41 @@ class ProductContoller extends Controller
 
         $tags = $request->tags;
         $removeables = $request->removeable;
-        
-        // Delete existing ProductTag items
-        ProductTag::where('pro_id', $product->id)->delete();
-        
-        // Determine the number of tags and removable checkboxes
-        $numberOfTags = count($tags);
-        $numberOfRemoveables = count($removeables);
-        
-        // Use the larger count to ensure all tags are processed
-        $limit = max($numberOfTags, $numberOfRemoveables);
-        
-        for($key = 0; $key < $limit; $key++) {
-            $tag = $tags[$key] ?? null;
-            $isRemovable = isset($removeables[$key]) && $removeables[$key] == 'on' ? '1' : '0';
-        
-            if($tag) {
-                // Check if the ProductTag already exists, if so, update it; otherwise, create a new one
-                $existingTag = ProductTag::where('pro_id', $product->id)
-                                         ->where('tag_name', $tag)
-                                         ->first();
-        
-                if($existingTag) {
-                    $existingTag->is_removeable = $isRemovable;
-                    $existingTag->save();
-                } else {
-                    $row = new ProductTag();
-                    $row->pro_id = $product->id;
-                    $row->tag_name = $tag;
-                    $row->is_removeable = $isRemovable;
-                    $row->save();
+        if ($tags){ 
+                    // Delete existing ProductTag items
+            ProductTag::where('pro_id', $product->id)->delete();
+            
+            // Determine the number of tags and removable checkboxes
+            $numberOfTags = count($tags);
+            $numberOfRemoveables = count($removeables);
+            
+            // Use the larger count to ensure all tags are processed
+            $limit = max($numberOfTags, $numberOfRemoveables);
+            
+            for($key = 0; $key < $limit; $key++) {
+                $tag = $tags[$key] ?? null;
+                $isRemovable = isset($removeables[$key]) && $removeables[$key] == 'on' ? '1' : '0';
+            
+                if($tag) {
+                    // Check if the ProductTag already exists, if so, update it; otherwise, create a new one
+                    $existingTag = ProductTag::where('pro_id', $product->id)
+                                            ->where('tag_name', $tag)
+                                            ->first();
+            
+                    if($existingTag) {
+                        $existingTag->is_removeable = $isRemovable;
+                        $existingTag->save();
+                    } else {
+                        $row = new ProductTag();
+                        $row->pro_id = $product->id;
+                        $row->tag_name = $tag;
+                        $row->is_removeable = $isRemovable;
+                        $row->save();
+                    }
                 }
             }
         }
+   
         
 
 

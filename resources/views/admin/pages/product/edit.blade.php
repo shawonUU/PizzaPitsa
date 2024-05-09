@@ -186,7 +186,7 @@
                                                                     <div class="col-6">
                                                                         <label for="basiInput" class="form-label">Size Name</label>
                                                                         <select class="form-control" name="size_id" id="size_id">
-                                                                            <option value="">{{ _('--Select Size--') }}</option>
+                                                                            <option value="">{{ '--Select Size--' }}</option>
                                                                             @foreach ($sizes as $size)
                                                                                 <option value="{{ $size->id }}">{{ $size->name }}</option>
                                                                             @endforeach
@@ -344,7 +344,7 @@
                                                                                         <div class="col-6">
                                                                                             <label for="basiInput" class="form-label">Size Name</label>
                                                                                             <select class="form-control" name="size_id" id="size_id">
-                                                                                                <option value="">{{ _('--Select Size--') }}</option>
+                                                                                                <option value="">{{ '--Select Size--' }}</option>
                                                                                                 @foreach ($sizes as $size)
                                                                                                     <option value="{{ $size->id }}" {{ $productSize->size_id == $size->id ? 'selected' : '' }}>{{ $size->name }}</option>
                                                                                                 @endforeach
