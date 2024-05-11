@@ -11,10 +11,10 @@ class DashboardController extends Controller
 {
     public function index(Request $request){
         $user = Auth::user();
-    //    return $assignedRoles = $user->getRoleNames();
+        $assignedRoles = $user->getRoleNames()['0'];
         // // Get the permissions of the user
-        // return $permissions = $user->getAllPermissions(); 
-        if(auth()->user()->role_id == 1 || auth()->user()->role_id == 2){
+        $permissions = $user->getAllPermissions(); 
+        if($assignedRoles != 'Customer'){
             return view('admin/index'); 
         }else{
             Auth::logout();
