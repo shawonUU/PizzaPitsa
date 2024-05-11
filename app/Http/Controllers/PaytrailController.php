@@ -9,21 +9,13 @@ use Illuminate\Http\Request;
 use Paytrail\SDK\Model\Customer;
 use Paytrail\SDK\Model\CallbackUrl;
 use Paytrail\SDK\Request\PaymentRequest;
+use App\Models\Order;
 
 class PaytrailController extends Controller
 {
     public function createPayment(Request $request, $newOrderNumber=null)
     {
-        $currentUrl = $request->url();
-        $parsed_url = parse_url($currentUrl);
-        $host = $parsed_url['host'];
-        $port = $parsed_url['port'];
-
-        $result = $host;
-        if ($port !== null) {
-            $result = $host . ':' . $port;
-        }
-        // return $result;
+        $result = getRootURL();
         $auth = auth()->user();
 
 
@@ -86,10 +78,21 @@ class PaytrailController extends Controller
     }
 
     public function success(Request $request){
+        $order = Order::where('order_number', $request->order_id)->first();
+        $order->is_order_valid = 1;
+        $order->update();
 
+        // $result = getRootURL($request);
+
+        //http://127.0.0.1:8000/success?order_id=000001
+
+        // return redirect('http://127.0.0.1:8000/dashboard');
+
+        return redirect("/dashboard")->with('clear-cart', true);
+        
     }
     public function cancel(Request $request){
-        dd('jj');
+        
     }
     public function pending(Request $request){
 

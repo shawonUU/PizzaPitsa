@@ -61,6 +61,10 @@
            @if(!(auth()->user()))
                 localStorage.setItem('auth', null);
            @endif
+           @if(session('clear-cart'))
+                localStorage.setItem('cart', '');
+                location.reload();
+           @endif
         });
     </script>
     </body>

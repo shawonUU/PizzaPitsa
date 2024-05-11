@@ -7,6 +7,7 @@ use App\Models\Admin\Currency;
 use App\Models\Admin\ProductImage;
 use App\Models\Admin\ProductOptionTopping;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Request;
 
 function getProductImage($id)
 {
@@ -143,5 +144,18 @@ function getHost()
     $host = request()->getHost();
     $host = str_replace('www.', '', $host);
     return $host;
+}
+
+function getRootURL(Request $request){
+  $currentUrl = $request->url();
+  $parsed_url = parse_url($currentUrl);
+  $host = $parsed_url['host'];
+  $port = $parsed_url['port'];
+
+  $result = $host;
+  if ($port !== null) {
+      $result = $host . ':' . $port;
+  }
+  return $result;
 }
 

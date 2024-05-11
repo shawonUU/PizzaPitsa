@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\OptionTitleController;
 use App\Http\Controllers\Admin\TimeScheduleController;
 use App\Http\Controllers\Admin\DelivaryChargeController;
 use App\Http\Controllers\Admin\ProductMnagementController;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,7 +37,20 @@ use App\Http\Controllers\Admin\ProductMnagementController;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function (Request $request) {
+
+    // $currentUrl = $request->url();
+    // $parsed_url = parse_url($currentUrl);
+    // $host = $parsed_url['host'];
+    // $port = $parsed_url['port'];
+
+    // $result = $host;
+    // if ($port !== null) {
+    //     $result = $host . ':' . $port;
+    // }
+
+    // return $result.'/success?order_id='.'122222';
+
     return view('frontend.layouts.app');
 });
 
