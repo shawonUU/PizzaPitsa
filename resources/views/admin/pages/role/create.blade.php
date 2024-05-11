@@ -26,7 +26,7 @@
                       <h4 class="card-title mb-0 flex-grow-1">Create Role</h4>
                       <div class="flex-shrink-0">
                         <div class="form-check form-switch form-switch-right form-switch-md">
-                            <a href="{{ route('users.index') }}" class="btn btn-info">ROle List</a>
+                            <a href="{{ route('role.index') }}" class="btn btn-info">Role List</a>
                         </div>
                       </div>
                     </div>

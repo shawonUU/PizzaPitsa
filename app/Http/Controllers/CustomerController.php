@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Mail\VerificationMail;
 
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -43,6 +44,9 @@ class CustomerController extends Controller
             'verification_code' => rand(100000, 999999),
         ]);
 
+        $role = Role::where('name', 'Customer')->first();
+        $user->assignRole($role);
+        
         Mail::to($user->email)->send(new VerificationMail($user->verification_code));
         
         

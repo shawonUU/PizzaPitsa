@@ -21,7 +21,7 @@
                       <h4 class="card-title mb-0 flex-grow-1">Users</h4>
                       <div class="flex-shrink-0">
                         <div class="form-check form-switch form-switch-right form-switch-md">
-                            <a href="{{ route('role.create') }}" class="btn btn-info">Create Users</a>
+                            <a href="{{ route('role.create') }}" class="btn btn-info">Create Role</a>
                         </div>
                       </div>
                     </div>

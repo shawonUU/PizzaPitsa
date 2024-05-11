@@ -43,10 +43,12 @@ class RoleController extends Controller
         $user = new Role();
         $user->name = $validatedData['name'];
         $user->save();
-        foreach ($request->permissions as $permission) {
-            // return $permission;
-            DB::insert('INSERT INTO role_has_permissions (role_id, permission_id) VALUES (?, ?)', [$user->id, $permission]);
-        }
+        if ($request->permissions) {
+            foreach ($request->permissions as $permission) {
+                // return $permission;
+                DB::insert('INSERT INTO role_has_permissions (role_id, permission_id) VALUES (?, ?)', [$user->id, $permission]);
+            }
+        }    
         session()->flash('sweet_alert', [
             'type' => 'success',
             'title' => 'Success!',
@@ -93,10 +95,10 @@ class RoleController extends Controller
         $role = Role::findOrFail($id); // Assuming $id is the id of the role being updated
         $role->name = $validatedData['name'];
         $role->save();
-        
-        // Sync permissions for the role
-        $role->permissions()->sync($request->permissions);
-        
+        if ($request->permissions) {
+            // Sync permissions for the role
+            $role->permissions()->sync($request->permissions);
+        }        
         session()->flash('sweet_alert', [
             'type' => 'success',
             'title' => 'Success!',
@@ -119,6 +121,6 @@ class RoleController extends Controller
             'title' => 'Success!',
             'text' => 'Role Delete success',
         ]);
-        return redirect()->route('Role.index');
+        return redirect()->route('role.index');
     }
 }
