@@ -266,7 +266,7 @@
                               </div>
                               <div class="col-12 col-md-6 mt-5 mb-3">
                                   <div class="input-group" style="cursor:pointer;">
-                                      <button   @click="placeOrder(orderType, 2)" type="button" class="btn" style="cursor:pointer !important; background: #f5c6ae; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Pay Online</button>
+                                      <button @click="placeOrder(orderType, 2)" type="button" class="btn" style="cursor:pointer !important; background-color: rgb(238, 110, 45); color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Pay Online</button>
                                   </div>
                               </div>
                           </div>
