@@ -31,8 +31,8 @@ class PaytrailController extends Controller
         $language = 'FI';
         $email = $auth->email;
         //$groups = ['creditcard'];
-        $successUrl = $result.'/success?order_id='.$newOrderNumber;
-        $cancelledUrl = $result.'/cancel?order_id='.$newOrderNumber;
+        $successUrl = 'https://pizzapitsa.fi/success?order_id='.$newOrderNumber;
+        $cancelledUrl = 'https://pizzapitsa.fi/success?order_id='.$newOrderNumber;
 
         
         // Create customer with minimum values

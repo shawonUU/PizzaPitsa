@@ -146,11 +146,11 @@ function getHost()
     return $host;
 }
 
-function getRootURL(Request $request){
-  $currentUrl = $request->url();
+function getRootURL(){
+  $currentUrl = request()->url();
   $parsed_url = parse_url($currentUrl);
   $host = $parsed_url['host'];
-  $port = $parsed_url['port'];
+  $port = isset($parsed_url['port'])?$parsed_url['port']:null;
 
   $result = $host;
   if ($port !== null) {
