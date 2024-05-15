@@ -52,7 +52,7 @@
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->email }}</td>
                                     <td>{{ $item->phone }}</td>
-                                    <td>{{ $item->roleName }}</td>
+                                    <td>{{ $item->roleName??'N/A' }}</td>
                                     <td class="{{ $item->status=='1'?'text-danger':'' }}">{{ $item->status=='1'?'Active':'Inactive' }}</td>
                                       <td><button type="button" class="btn btn-sm btn-primary waves-effect waves-light"><a href="{{ route('users.edit',$item->id) }}"><i class="ri-ball-pen-line" style="color: #fff"></i></a></button>| <button type="button" data-bs-toggle="modal" data-bs-target="#myModal{{ $item->id }}" class="btn btn-sm btn-danger waves-effect waves-light"><i class="ri-delete-bin-line"></i></button>
                                       

@@ -15,7 +15,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::join('roles','roles.id','=','users.role_id')->select('users.*','roles.name as roleName')->get();
+        $users = User::leftJoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
+            ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
+            ->select('users.*', 'roles.name as roleName')
+            ->get();
         return view('admin.pages.users.index', compact('users'));
     }
 
