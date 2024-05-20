@@ -45,7 +45,11 @@
                   <td>{{ $item->paid_amount }}</td>
                   <td>{{ $item->delivery_address_id }}</td>
                   <td>
-                    <select class="form-select rounded-pill mb-3" onchange="updateStatus('{{ $item->order_number }}',this.value)"> @foreach (orderStatuses() as $value => $text) <option {{ $value == $item->order_status ? 'selected' : '' }} value="{{ $value }}">{{ $text }}</option> @endforeach </select>
+                    <select class="form-select rounded-pill mb-3" onchange="updateStatus('{{ $item->order_number }}',this.value)"> 
+                    @foreach (orderStatuses() as $value => $text) 
+                      <option {{ $value == $item->order_status ? 'selected' : '' }} value="{{ $value }}">{{ $text }}</option>
+                    @endforeach 
+                    </select>
                   </td>
                   <td>
                     <a class="btn btn-info" href="{{ route('order.details',$item->order_number) }}">Details</a>
@@ -186,11 +190,9 @@
                   </tr>
                   <tr>
                     <td class="text-main text-bold">Order status</td>
-                    @foreach (orderStatuses() as $value => $text)
                     <td class="text-main text-bold">                       
-                      {{ $value == $orderDetails->order_status ? $text : '' }}                                       
+                      {{ orderStatuses()[$orderDetails->order_status] }}                                       
                     </td>
-                    @endforeach 
                   </tr>
                   <tr>
                     <td class="text-main text-bold">Order Type</td>

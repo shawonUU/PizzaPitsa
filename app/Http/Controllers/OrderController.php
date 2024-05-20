@@ -208,21 +208,17 @@ class OrderController extends Controller
             ->select('order_items.*', 'products.name as proName','products.image', 'sizes.name as sizeName')
             ->where('order_items.order_number', $id)
             ->get();
-        $order = Order::find($id);
+        $order = Order::where('order_number',$id)->first();
         
-        // Loop through each product to fetch and bind topping names
         $products->each(function ($product) {
             $topingIds = explode(',', $product->toping_ids);
-        
-            // Fetch topping names based on the toping_ids
             $topingNames = Toping::whereIn('id', $topingIds)->pluck('name')->toArray();
-        
-            // Bind the topingNames to the product
             $product->topingNames = implode(', ', $topingNames);
         });
-        
-
         $deliveryBoys = User::where('role_id', '3')->where('status', '1')->get();
+
+        //return view('layouts.placeOrderMail', compact('products', 'orderDetails', 'deliveryBoys','order'));
+
         return view("admin.pages.order.details", compact('products', 'orderDetails', 'deliveryBoys','order'));
         
     }

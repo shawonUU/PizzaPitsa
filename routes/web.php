@@ -84,7 +84,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     });
 
     //Order Management
-    Route::group(['middleware' => ['permission:order-management']], function () { 
+    // Route::group(['middleware' => ['permission:order-management']], function () { 
         Route::get('orders', [OrderController::class, 'getOrders'])->name('orders.index');
         Route::post('order-update', [OrderController::class, 'updateQty'])->name('orders.update');
         Route::get('order-details/{id}', [OrderController::class, 'getOrderDetails'])->name('order.details');
@@ -93,7 +93,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::post('update-address',[OrderController::class, 'updateAddress'])->name('address.update');
         });               
         
-    });
+    // });
 
     Route::group(['middleware' => ['permission:user-management']], function () {  
         Route::resource('users', UserController::class);
