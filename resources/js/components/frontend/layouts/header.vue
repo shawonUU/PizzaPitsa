@@ -232,8 +232,8 @@ export default {
         this.getCategories();
         this.loadCartFromLocalStorage();
         var auth = localStorage.getItem('auth');
-        this.auth = auth ? JSON.parse(auth) : null;
-        if(auth != "null") {
+        this.auth = auth ? JSON.parse(auth) : 'null';     
+        if (auth && auth !== 'null') {
             this.isAuth = true;
         }
     },
