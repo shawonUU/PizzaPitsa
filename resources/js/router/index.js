@@ -27,12 +27,19 @@ const router = createRouter({
 
 // Navigation guard for checking authentication
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = localStorage.getItem('auth') !== null; // Check if auth data exists in localStorage
+  var auth = localStorage.getItem('auth');
+ 
+  var isAuthenticated = false; // Variable to track authentication status
+
+  if (auth && auth !== 'null') {
+      isAuthenticated = true;
+  }
+  
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
 
   if (requiresAuth && !isAuthenticated) {
     // If the route requires authentication and the user is not authenticated, redirect to the login page or any other route
-    next({ name: 'home' }); // Replace 'login' with your actual login route
+    next({ name: 'home' }); // Replace 'home' with your actual home or login route
   } else {
     // Otherwise, proceed with the navigation
     next();
