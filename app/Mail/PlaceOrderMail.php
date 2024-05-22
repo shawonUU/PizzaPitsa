@@ -20,15 +20,17 @@ class PlaceOrderMail extends Mailable
 {
     use Queueable, SerializesModels;
     public $orderNumber;
+    public $data;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($orderNumber)
+    public function __construct($orderNumber, $data)
     {
         $this->orderNumber = $orderNumber;
+        $this->data = $data;
     }
 
     /**
@@ -39,6 +41,7 @@ class PlaceOrderMail extends Mailable
     public function build()
     {
         $id = $this->orderNumber;
+        $data = $this->data;
 
         $orderDetails = Order::leftJoin('addresses', 'addresses.id', '=', 'orders.delivery_address_id')
         ->leftJoin('users', 'users.id', '=', 'orders.customer_id')
@@ -57,7 +60,7 @@ class PlaceOrderMail extends Mailable
             $product->topingNames = implode(', ', $topingNames);
         });
         $deliveryBoys = User::where('role_id', '3')->where('status', '1')->get();
-        return $this->view('layouts.placeOrderMail', compact('products', 'orderDetails', 'deliveryBoys','order'))
+        return $this->view('layouts.placeOrderMail', compact('products', 'orderDetails', 'deliveryBoys','order','data'))
                     ->subject('Order Placed');
     }
 }

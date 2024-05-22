@@ -86,11 +86,12 @@ class PaytrailController extends Controller
 
         // print_r($request->all());
         // return;
+        $data = $request->all();
 
         $user = auth()->user();
-        Mail::to($user->email)->send(new PlaceOrderMail($request->order_id));
+        Mail::to($user->email)->send(new PlaceOrderMail($request->order_id, $data));
 
-        //return redirect("/dashboard")->with('clear-cart', true);
+        return redirect("/dashboard")->with('clear-cart', true);
         
     }
     public function cancel(Request $request){

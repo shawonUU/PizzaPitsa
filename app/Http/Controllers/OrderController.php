@@ -217,7 +217,7 @@ class OrderController extends Controller
         });
         $deliveryBoys = User::where('role_id', '3')->where('status', '1')->get();
 
-        //return view('layouts.placeOrderMail', compact('products', 'orderDetails', 'deliveryBoys','order'));
+        // return view('layouts.placeOrderMail', compact('products', 'orderDetails', 'deliveryBoys','order'));
 
         return view("admin.pages.order.details", compact('products', 'orderDetails', 'deliveryBoys','order'));
         
