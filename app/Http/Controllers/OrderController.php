@@ -222,6 +222,18 @@ class OrderController extends Controller
 
         $deliveryBoys = User::where('role_id', '3')->where('status', '1')->get();
         return view("admin.pages.order.details", compact('products', 'orderDetails', 'deliveryBoys', 'order'));
+        $order = Order::where('order_number', $id)->first();
+
+        $products->each(function ($product) {
+            $topingIds = explode(',', $product->toping_ids);
+            $topingNames = Toping::whereIn('id', $topingIds)->pluck('name')->toArray();
+            $product->topingNames = implode(', ', $topingNames);
+        });
+        $deliveryBoys = User::where('role_id', '3')->where('status', '1')->get();
+
+        // return view('layouts.placeOrderMail', compact('products', 'orderDetails', 'deliveryBoys','order'));
+
+        return view("admin.pages.order.details", compact('products', 'orderDetails', 'deliveryBoys', 'order'));
     }
     public function updateStatus(Request $request)
     {

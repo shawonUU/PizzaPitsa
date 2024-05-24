@@ -10,6 +10,8 @@ use Paytrail\SDK\Model\Customer;
 use Paytrail\SDK\Model\CallbackUrl;
 use Paytrail\SDK\Request\PaymentRequest;
 use App\Models\Order;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PlaceOrderMail;
 
 class PaytrailController extends Controller
 {
@@ -82,17 +84,18 @@ class PaytrailController extends Controller
         $order->is_order_valid = 1;
         $order->update();
 
-        // $result = getRootURL($request);
+        // print_r($request->all());
+        // return;
+        $data = $request->all();
 
-        //http://127.0.0.1:8000/success?order_id=000001
-
-        // return redirect('http://127.0.0.1:8000/dashboard');
+        $user = auth()->user();
+        Mail::to($user->email)->send(new PlaceOrderMail($request->order_id, $data));
 
         return redirect("/dashboard")->with('clear-cart', true);
         
     }
     public function cancel(Request $request){
-        
+        return redirect("/");
     }
     public function pending(Request $request){
 

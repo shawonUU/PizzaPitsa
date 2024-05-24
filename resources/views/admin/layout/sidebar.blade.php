@@ -87,7 +87,6 @@
                         </div>
                     </li>
                 @endcan
-                @can('order-management')
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#orderManagement" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
                             <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Order Management</span>
@@ -100,7 +99,6 @@
                             </ul>
                         </div>
                     </li>
-                @endcan
                 @can('settings')
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#sidebarCouponUI" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">

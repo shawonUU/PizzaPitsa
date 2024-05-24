@@ -127,11 +127,9 @@
                   </tr>
                   <tr>
                     <td class="text-main text-bold">Order status</td>
-                    @foreach (orderStatuses() as $value => $text)
                     <td class="text-main text-bold">                       
-                      {{ $value == $orderDetails->order_status ? $text : '' }}                                       
+                      {{ orderStatuses()[$orderDetails->order_status] }}                                       
                     </td>
-                    @endforeach 
                   </tr>
                   <tr>
                     <td class="text-main text-bold">Order Type</td>
