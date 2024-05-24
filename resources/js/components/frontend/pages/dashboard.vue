@@ -25,6 +25,7 @@
                                         <!-- <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-downloads" role="tab" aria-selected="false" tabindex="-1"><i class="fas fa-file-download"></i>Downloads</a>
                                         <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-address" role="tab" aria-selected="false" tabindex="-1"><i class="fas fa-home"></i>Addresses</a> -->
                                         <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-account" role="tab" aria-selected="true"><i class="fas fa-user"></i>Account Details</a>
+                                        <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-password" role="tab" aria-selected="true"><i class="fa fa-key"></i>Password</a>
                                         <a class="nav-item nav-link" style="cursor:pointer" @click="logout" aria-selected="false" tabindex="-1" role="tab"><i class="fal fa-sign-out"></i>Logout</a>
                                     </div>
                                 </nav>
@@ -46,6 +47,7 @@
                                                     <tr>                                                  
                                                         <th >Order</th>
                                                         <th >Date</th>
+                                                        <th>Payment Status</th>
                                                         <th style="width:10px" >Status</th>                                                        
                                                         <th >Actions</th>
                                                     </tr>
@@ -53,7 +55,10 @@
                                                 <tbody>
                                                   <tr v-for="(order,index) in orders" :key="index">                                                      
                                                       <th scope="row">#{{order.order_number}}</th>
-                                                      <td>{{ formatCreatedAt(order.created_at) }}</td>                                                       
+                                                      <td>{{ formatCreatedAt(order.created_at) }}</td>     
+                                                      <td>
+                                                        {{ order.is_paid==0?'Unpaid':'Paid' }}
+                                                      </td>                                                   
                                                       <td style="width:10px">                                                                                                              
                                                         {{
                                                           order.order_status === 1 ? 'Pending'
@@ -68,7 +73,7 @@
                                                           : order.order_status === 10 ? 'Returned'
                                                           : 'Unknown'
                                                         }}                                                   
-                                                      </td>                                                    
+                                                      </td>                                                                                                        
                                                       <td style="width:10px"><a href="javascript:void(0)" @click="handleModalOpen(order.order_number)" class="axil-btn view-btn">View</a></td>
                                                   </tr>                                                    
                                                 </tbody>
@@ -77,7 +82,7 @@
                                     </div>
                                 </div>                               
                                
-                                <div class="tab-pane fade active" id="nav-account" role="tabpanel">
+                                <div class="tab-pane fade" id="nav-account" role="tabpanel">
                                     <div class="col-lg-9">
                                     <div class="axil-dashboard-account">
                                         <div v-if="errorMessage" class="alert alert-danger" role="alert">
@@ -87,18 +92,18 @@
                                         <div class="row">
                                             <div class="col-lg-12">
                                             <div class="form-group">
-                                                <label>First Name</label>
-                                                <input type="text" class="form-control" v-model="formData.name">
+                                                <label>Name</label>
+                                                <input type="text" class="form-control" v-model="formData.name" placeholder="Name"> 
                                             </div>
                                             </div>
                                             <div class="col-lg-12">
                                             <div class="form-group">
                                                 <label>Email</label>
-                                                <input type="text" class="form-control" v-model="formData.email">
+                                                <input type="text" class="form-control" v-model="formData.email" placeholder="Email">
                                             </div>
                                             </div>
                                             <div class="col-12">
-                                            <h5 class="title">Password Change</h5>
+                                            <!-- <h5 class="title">Password Change</h5>
                                             <div class="form-group">
                                                 <label>Password</label>
                                                 <input type="password" class="form-control" v-model="password">
@@ -110,6 +115,37 @@
                                             <div class="form-group">
                                                 <label>Confirm New Password</label>
                                                 <input type="password" class="form-control" v-model="confirmNewPassword">
+                                            </div> -->
+                                            <div class="form-group mb--0">
+                                                <input type="submit" class="axil-btn" value="Save Changes">
+                                            </div>
+                                            </div>
+                                        </div>
+                                        </form>
+                                    </div>
+                                    </div>
+                                </div>
+                                 <div class="tab-pane fade active" id="nav-password" role="tabpanel">
+                                    <div class="col-lg-9">
+                                    <div class="axil-dashboard-password">
+                                        <div v-if="errorMessage" class="alert alert-danger" role="alert">
+                                            {{ errorMessage }}
+                                        </div>
+                                        <form class="password-form" @submit.prevent="submitFormPassword">
+                                        <div class="row">                                            
+                                            <div class="col-12">
+                                            <h5 class="title">Password Change</h5>
+                                            <div class="form-group">
+                                                <label>Password</label>
+                                                <input type="password" class="form-control" v-model="password" placeholder="Old Password">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>New Password</label>
+                                                <input type="password" class="form-control" v-model="newPassword" placeholder="New Password">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Confirm New Password</label>
+                                                <input type="password" class="form-control" v-model="confirmNewPassword" placeholder="Confirm Password">
                                             </div>
                                             <div class="form-group mb--0">
                                                 <input type="submit" class="axil-btn" value="Save Changes">
@@ -174,6 +210,10 @@
                             <tr >
                               <td  class="text-main text-bold"> Total amount </td>
                               <td  class="text-right">{{productDetails.total_amount}}€</td>
+                            </tr>
+                             <tr >
+                              <td  class="text-main text-bold"> Payment Status </td>
+                              <td  class="text-right">{{productDetails.is_paid==0?'Unpaid':'Paid'}}</td>
                             </tr>
                           </tbody>
                         </table>
@@ -262,6 +302,50 @@
         </div>
       </div>
     </div>
+   <div
+      class="modal fade quick-view-product show"
+      id="quick-view-modal"
+      tabindex="-1"
+      aria-modal="true"
+      role="dialog"
+      style="display: block"
+      v-if="showVerificationModal" 
+    >
+
+      <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
+        <div class="modal-content">
+          <div class="modal-body" style="padding-top: 0px; padding-right: 13px;">
+            <div class="d-flex justify-content-end pt-3">
+                <button type="button" class="btn-close" style="height:5px; width:5px; margin-bottom: 15px;" data-bs-dismiss="modal" aria-label="Close" @click="handleButtonClick">
+                </button>
+            </div>         
+              <div>
+                  <h4 class="text-center m-0 p-0">Verification</h4>
+                  <p class="text-center m-0 p-0"> Sent verification code again? <a class="text-center m-0 p-0"  href="javascript:void(0)" @click="sentVerificationMail()"><u>Sent</u></a> </p>
+                  <div class="row">
+                      <div class="col-12">
+                          <p v-if="verificationError!=''" style="text-align:center; color:white; padding:5px; background:red; opacity: 0.5;" v-html="verificationError">
+                          </p>
+                          <p v-if="verificationMessage!=''" style="text-align:center; color:white; padding:5px; background:green; opacity: 0.5;" v-html="verificationMessage">
+                          </p>
+                      </div>
+                      <div class="col-12">
+                          <label for="name" class="form-label">Verification Code</label>
+                          <input type="text" style="height: 40px; padding:5px;border: 1px solid #cfcbcb;" class="form-control" id="verification_code" name="verification_code" placeholder="Code">
+                      </div>
+                      <div class="col-12 mt-3">
+                          <div class="d-flex justify-content-end">
+                              <button @click="verifyAndUpdateMail()" type="button" class="btn btn-primary p-2" style="font-size: 12px; width: 15%;">Verify</button>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+         
+            </div>
+          </div>
+        </div>
+      
+    </div>
 </template>
 <script>
 import axios from 'axios';
@@ -296,7 +380,10 @@ export default {
             productDetails:'',
             user:'',
             loading: true,
-            shippingCostAmount: 0
+            shippingCostAmount: 0,
+            verificationError:'',
+            verificationMessage:'',
+            showVerificationModal:false
         }
     },
     
@@ -318,6 +405,9 @@ export default {
         this.fetchShippingCost();
     },
     methods: {
+        handleButtonClick() {
+            this.showVerificationModal = false;
+        },
         logout() {                    
             localStorage.setItem('auth', null);         
             this.$router.push({ name: 'home' }); 
@@ -327,22 +417,26 @@ export default {
           this.emitter.emit('updateHeaderAfterLogout', {'updateHeaderAfterLogout': '1'})
         },
         submitForm() {
-            axios.post('admin/update-customer-data', {
+            axios.post('frontend/update-customer-data', {
                 name: this.formData.name,
                 email: this.formData.email,
-                password: this.password,
-                newPassword: this.newPassword,
-                confirmNewPassword: this.confirmNewPassword,
+                // password: this.password,
+                // newPassword: this.newPassword,
+                // confirmNewPassword: this.confirmNewPassword,
                 })
                 .then(response => {
-                  console.log(response.data);
-                  localStorage.setItem('auth', JSON.stringify(response.data.user));
-                  toast.success('Update Success', {
-                        timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
-                   });
+                  // console.log(response.data);
+                  if (response.data.updateStatus == 'email') {
+                     this.showVerificationModal = true;
+                  } else {
+                    localStorage.setItem('auth', JSON.stringify(response.data.user));
+                    toast.success('Update Success', {
+                          timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
+                    });
+                  }                 
                 })
                 .catch(error => {
-                    console.log(error.response);
+                    // console.log(error.response);
                 // Handle validation errors
                 if (error.response && error.response.data && error.response.data.errors) {
                     const errors = error.response.data.errors;
@@ -351,6 +445,59 @@ export default {
                     this.errorMessage = 'An error occurred while updating user data.';
                 }
             });
+            },
+            verifyAndUpdateMail(){                      
+              var code = document.getElementById('verification_code').value.trim();
+              this.verificationError = '';
+              if(code=='') {this.verificationError = 'Verification code is required';return;}
+                axios.post('frontend/verify-and-update-mail', {
+                    name: this.formData.name,
+                    email: this.formData.email,                   
+                    code: code,
+                })
+                .then((res)=>{                                  
+                    this.verificationError = '';
+                    this.verificationMessage = '';
+                    if(res.data.success){
+                        // this.verificationMessage =  res.data.message;
+                        localStorage.setItem('auth', JSON.stringify(res.data.user));                        
+                        this.handleButtonClick();                        
+                        //Toaster
+                        toast.success('Update Success', {
+                            timeout: 3000 // Optional: Time in milliseconds before the toast auto-closes
+                        });
+                    }else{
+                        this.verificationError = res.data.message;
+                    }
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+            },
+            submitFormPassword () {
+               axios.post('frontend/update-customer-password', {
+                  password: this.password,
+                  newPassword: this.newPassword,
+                  confirmNewPassword: this.confirmNewPassword,
+                })
+                .then(response => {
+                  console.log(response.data);               
+                    localStorage.setItem('auth', JSON.stringify(response.data.user));
+                    toast.success('Password update success', {
+                          timeout: 3000
+                    });                  
+                  this.password = '';           
+                  this.newPassword = '';           
+                  this.confirmNewPassword = '';           
+                })
+                .catch(error => {                  
+                    if (error.response && error.response.data && error.response.data.errors) {
+                        const errors = error.response.data.errors;
+                        this.errorMessage = Object.values(errors)[0][0]; // Set error message to the first error
+                    } else {
+                        this.errorMessage = 'An error occurred while updating user data.';
+                    }
+                });
             },
              getOrderStatus() {            
                 axios.get('get-order-status')
@@ -365,7 +512,7 @@ export default {
             myOrders() {            
                 axios.get('get-my-orders')
                 .then((res)=>{      
-                  // console.log(res.data)                          
+                  console.log(res.data)                          
                    this.orders = res.data;
                 })
                 .catch((err)=>{

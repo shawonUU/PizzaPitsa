@@ -51,6 +51,7 @@
                                     <th>Order Type</th>                                                                  
                                     <th>Total amount</th>                                                                  
                                     <th>Payable Amount</th>                                                                                                     
+                                    <th>Payment Status</th>                                                                                                     
                                     <th>Adress</th>
                                     <th>Status</th>                                   
                                     <th>Action</th>                                   
@@ -65,6 +66,7 @@
                                     <td>{{ $item->type =='2'?'Pickup/Dine in':'Delivery' }}</td>                                  
                                     <td>{{ $item->total_amount }}</td>                                  
                                     <td>{{ $item->paid_amount }}</td>                                                                
+                                    <td>{{ $item->is_paid == '0'?'Unpaid':'Paid' }}</td>                                                                
                                     <td>{{ $item->delivery_address_id }}</td>                                  
                                     <td>
                                         <select class="form-select rounded-pill mb-3" onchange="updateStatus('{{ $item->order_number }}',this.value)">

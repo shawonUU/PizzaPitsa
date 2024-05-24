@@ -27,7 +27,7 @@ return new class extends Migration
             $table->integer('is_paid')->default(0);
             $table->integer('is_order_valid')->default(0);
             $table->timestamps();
-            $table->comment('order_status: 0-Pending, 1-Processing, 2-Shipped, 3-Out for Delivery, 4-Delivered, 5-Canceled, 7-Refunded, 8-On Hold, 9-Backordered, 10-Returned');
+            $table->comment('order_status: 1-Pending, 2-Processing, 3-Shipped, 4-Out for Delivery, 5-Delivered, 6-Canceled, 7-Refunded, 8-On Hold, 9-Backordered, 10-Returned');
         });
     }
 

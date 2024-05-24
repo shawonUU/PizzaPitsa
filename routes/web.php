@@ -58,11 +58,11 @@ Route::get('/', function (Request $request) {
 
 Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
-    Route::group(['middleware' => ['permission:product-management']], function () { 
+    Route::group(['middleware' => ['permission:product-management']], function () {
         Route::resource('categories', CategoryController::class);
         Route::resource('products', ProductContoller::class);
         Route::resource('sizes', SizeController::class);
-        Route::resource('nutritions', NutritionController::class);        
+        Route::resource('nutritions', NutritionController::class);
         Route::resource('optiontitles', OptionTitleController::class);
         Route::get('product-sizes/{id}', [ProductContoller::class, 'size'])->name('product_size');
         Route::delete('delete-product-sizes/{id}', [ProductContoller::class, 'deleteProductSize'])->name('productSize.destroy');
@@ -75,7 +75,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::patch('updatel-product-sizes/{id}', [ProductContoller::class, 'updateSize'])->name('product_size.update');
         Route::resource('topings', TopingsController::class);
     });
-    Route::group(['middleware' => ['permission:settings']], function () { 
+    Route::group(['middleware' => ['permission:settings']], function () {
         Route::resource('delivery_charges', DelivaryChargeController::class);
         Route::resource('currency', CurrencyController::class);
         Route::resource('schedule', TimeScheduleController::class);
@@ -84,26 +84,25 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     });
 
     //Order Management
-    Route::group(['middleware' => ['permission:order-management']], function () { 
+    Route::group(['middleware' => ['permission:order-management']], function () {
         Route::get('orders', [OrderController::class, 'getOrders'])->name('orders.index');
         Route::post('order-update', [OrderController::class, 'updateQty'])->name('orders.update');
         Route::get('order-details/{id}', [OrderController::class, 'getOrderDetails'])->name('order.details');
-        Route::post('update-status',[OrderController::class, 'updateStatus'])->name('update.status');
-        Route::post('assign-delivery-boy',[OrderController::class, 'assignDeliveryBoy'])->name('assign.deliveryboy');
-        Route::post('update-address',[OrderController::class, 'updateAddress'])->name('address.update');
-        });               
-        
+        Route::post('update-status', [OrderController::class, 'updateStatus'])->name('update.status');
+        Route::post('assign-delivery-boy', [OrderController::class, 'assignDeliveryBoy'])->name('assign.deliveryboy');
+        Route::post('update-address', [OrderController::class, 'updateAddress'])->name('address.update');
     });
+});
 
-    Route::group(['middleware' => ['permission:user-management']], function () {  
-        Route::resource('users', UserController::class);
-        Route::resource('role', RoleController::class);
-        Route::resource('permission', PermissionController::class);
-    }); 
-Route::get('/success', [PaytrailController::class,'success']);
-Route::get('/cancel', [PaytrailController::class,'cancel']);
-Route::get('/pending', [PaytrailController::class,'pending']);
-Route::get('/notification', [PaytrailController::class,'notification']);
+Route::group(['middleware' => ['permission:user-management']], function () {
+    Route::resource('users', UserController::class);
+    Route::resource('role', RoleController::class);
+    Route::resource('permission', PermissionController::class);
+});
+Route::get('/success', [PaytrailController::class, 'success']);
+Route::get('/cancel', [PaytrailController::class, 'cancel']);
+Route::get('/pending', [PaytrailController::class, 'pending']);
+Route::get('/notification', [PaytrailController::class, 'notification']);
 
 
 
@@ -113,6 +112,8 @@ Route::get('get-delivery-charge', [DelivaryChargeController::class, 'getDelivery
 Route::post('palce-order', [OrderController::class, 'placeOrder']);
 Route::prefix('frontend')->middleware(['auth'])->group(function () {
     Route::post('update-customer-data',   [CustomerController::class, 'updateCustomerData']);
+    Route::post('verify-and-update-mail',   [CustomerController::class, 'verifyAndUpdateMail']);
+    Route::post('update-customer-password',   [CustomerController::class, 'updatePassword']);
 });
 
 
@@ -140,7 +141,7 @@ Route::get('get-my-orders', [OrderController::class, 'getCustomerProduct']);
 Route::get('get-order-status', [OrderController::class, 'getOrderStatus']);
 Route::get('order-info', [OrderController::class, 'getCustomerOrderInfo']);
 Route::post('update-notification', [NotificationController::class, 'update'])->name('update-notification');
-Route::post('/paytrail/create-payment', [PaytrailController::class,'createPayment']);
+Route::post('/paytrail/create-payment', [PaytrailController::class, 'createPayment']);
 
 Route::get('/{any}', function () {
     return view('frontend.layouts.app');
