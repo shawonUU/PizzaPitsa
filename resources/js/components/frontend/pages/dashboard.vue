@@ -33,12 +33,14 @@
                         </div>
                         <div class="col-xl-9 col-md-8">
                             <div class="tab-content">
+                              
                                 <div class="tab-pane fade active show" id="nav-dashboard" role="tabpanel">
                                     <div class="axil-dashboard-overview">
                                         <div class="welcome-text">{{ isAuth.name }} (not <span>{{ isAuth.name }}?</span> <a style="cursor:pointer" @click="logout">Log Out</a>)</div>
                                         <p>From your account dashboard you can view your recent orders, manage your shipping and billing addresses, and edit your password and account details.</p>
                                     </div>
                                 </div>
+
                                 <div class="tab-pane fade" id="nav-orders" role="tabpanel">
                                     <div class="axil-dashboard-order">
                                         <div class="table-responsive">
@@ -125,6 +127,7 @@
                                     </div>
                                     </div>
                                 </div>
+
                                  <div class="tab-pane fade active" id="nav-password" role="tabpanel">
                                     <div class="col-lg-9">
                                     <div class="axil-dashboard-password">
@@ -156,6 +159,7 @@
                                     </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>

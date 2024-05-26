@@ -357,6 +357,9 @@
     </style>
 </head>
 <body>
+    @php
+        //dd($orderDetails);
+    @endphp
     <div class="container">
         <div class="header">
             <h1>
@@ -400,13 +403,13 @@
                             </tr>
                             <tr>
                                 <td class="text-main text-bold">Payment Type</td>
-                                <td class="text-right"> {{$orderDetails->payment_type == 1 ? 'Online Pay' : 'Cash On Delivery'}}</td>
+                                <td class="text-right"> {{$orderDetails->payment_type == 2 ? 'Online Pay' : 'Cash On Delivery'}}</td>
                             </tr>
                             <tr>
                                 <td class="text-main text-bold">Payment Status</td>
-                                <td class="text-right"> {{$orderDetails->payment_type == 1 ? 'Paied' : 'Not Paied'}}</td>
+                                <td class="text-right"> {{$orderDetails->payment_type == 2 ? 'Paied' : 'Not Paied'}}</td>
                             </tr>
-                            @if($orderDetails->payment_type == 1 && isset($data['checkout-transaction-id']))
+                            @if($orderDetails->payment_type == 2 && isset($data['checkout-transaction-id']))
                                 <tr>
                                     <td class="text-main text-bold">Transation Id</td>
                                     <td class="text-right"> {{$data['checkout-transaction-id']}}</td>

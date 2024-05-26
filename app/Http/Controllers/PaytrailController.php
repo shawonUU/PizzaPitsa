@@ -10,8 +10,12 @@ use Paytrail\SDK\Model\Customer;
 use Paytrail\SDK\Model\CallbackUrl;
 use Paytrail\SDK\Request\PaymentRequest;
 use App\Models\Order;
+use App\Models\PaymentHistory;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PlaceOrderMail;
+use App\Models\Notification;
+use Pusher\Pusher;
+use Illuminate\Support\Facades\DB;
 
 class PaytrailController extends Controller
 {
@@ -80,18 +84,63 @@ class PaytrailController extends Controller
     }
 
     public function success(Request $request){
-        $order = Order::where('order_number', $request->order_id)->first();
-        $order->is_order_valid = 1;
-        $order->update();
 
-        // print_r($request->all());
-        // return;
-        $data = $request->all();
+        DB::beginTransaction();
+        try{
+            $data = $request->all();
+            $order = Order::where('order_number', $request->order_id)->first();
+            $order->is_order_valid = 1;
+            $order->is_paid = 1;
+            $order->update();
+            
+            $payment = new PaymentHistory;
+            $payment->customer_id = $order->customer_id;
+            $payment->order_id = $order->id;
+            $payment->order_number = $order->order_number;
+            $payment->payment_type = $order->payment_type;
+            $payment->amount = $order->paid_amount;
+            $payment->checkout_account = $data['checkout-account'];
+            $payment->checkout_algorithm = $data['checkout-algorithm'];
+            $payment->checkout_stamp = $data['checkout-stamp'];
+            $payment->checkout_reference = $data['checkout-reference'];
+            $payment->checkout_status = $data['checkout-status'];
+            $payment->checkout_provider = $data['checkout-provider'];
+            $payment->transaction_id = $data['checkout-transaction-id'];
+            $payment->signature = $data['signature'];
+            $payment->save();
 
-        $user = auth()->user();
-        Mail::to($user->email)->send(new PlaceOrderMail($request->order_id, $data));
+            $user = auth()->user();
+            Mail::to($user->email)->send(new PlaceOrderMail($request->order_id, $data));
 
-        return redirect("/dashboard")->with('clear-cart', true);
+            $notification = new Notification;
+            $notification->message = "New Order Placed";
+            $notification->url = route('orders.index');
+            $notification->save();
+
+            $pusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
+                'cluster' => env('PUSHER_APP_CLUSTER'),
+                'encrypted' => true
+            ]);
+            $item = $order;
+            $data = [];
+            $data['order'] = (string) view('admin.pages.order.singleOrder', compact('item'));
+            $pusher->trigger('order', 'place-order', $data);
+            $data = [
+                'notification' => $notification,
+                'notification_time' => displayNotificationTime($notification->created_at),
+                'unSeenNotifications' => unSeenNotifications(),
+            ];
+            $pusher->trigger('order', 'place-order-notification', $data);
+
+            DB::commit();
+            return redirect("/dashboard")->with('clear-cart', true);
+
+
+        }catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+        }
+       
         
     }
     public function cancel(Request $request){
