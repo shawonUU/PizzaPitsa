@@ -12,6 +12,8 @@ use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\PaytrailController;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PlaceOrderMail;
 
 class OrderController extends Controller
 {
@@ -153,6 +155,9 @@ class OrderController extends Controller
         $url = null;
 
         if ($paymentType == 1) {
+            $data = [];
+            Mail::to(auth()->user()->email)->send(new PlaceOrderMail($order->order_number, $data));
+
             $notification = new Notification;
             $notification->message = "New Order Placed";
             $notification->url = route('orders.index');
