@@ -193,7 +193,7 @@ class OrderController extends Controller
 
     public function getOrders()
     {
-        $orders = Order::orderBy('id', 'DESC')->get();
+        $orders = Order::where('is_order_valid',1)->orderBy('id', 'DESC')->get();
         // $orders = Order::leftJoin('products', 'order_items.product_id', '=', 'products.id')
         //     ->select('orders.*')
         //     ->orderBy('orders.id', 'DESC')
@@ -205,13 +205,13 @@ class OrderController extends Controller
         $orderDetails = Order::leftJoin('addresses', 'addresses.id', '=', 'orders.delivery_address_id')
             ->leftJoin('users', 'users.id', '=', 'orders.customer_id')
             ->select('orders.*', 'addresses.selectedAddress', 'addresses.selectedAddress', 'addresses.entrance', 'addresses.door_code', 'addresses.apartment', 'addresses.comment', 'addresses.floor', 'users.name', 'users.email', 'addresses.id as AddId')
-            ->where('orders.order_number', $id)->first();
+            ->where('orders.order_number', $id)->where('orders.is_order_valid',1)->first();
         $products = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
             ->leftJoin('sizes', 'sizes.id', '=', 'order_items.size_id')
             ->select('order_items.*', 'products.name as proName', 'products.image', 'sizes.name as sizeName')
             ->where('order_items.order_number', $id)
             ->get();
-        $order = Order::where('order_number', $id)->first();
+        $order = Order::where('order_number', $id)->where('is_order_valid',1)->first();
 
         // Loop through each product to fetch and bind topping names
         $products->each(function ($product) {
@@ -227,7 +227,7 @@ class OrderController extends Controller
 
         $deliveryBoys = User::where('role_id', '3')->where('status', '1')->get();
         return view("admin.pages.order.details", compact('products', 'orderDetails', 'deliveryBoys', 'order'));
-        $order = Order::where('order_number', $id)->first();
+        $order = Order::where('order_number', $id)->where('is_order_valid',1)->first();
 
         $products->each(function ($product) {
             $topingIds = explode(',', $product->toping_ids);
@@ -244,7 +244,7 @@ class OrderController extends Controller
     {
         $newStatus = $request->newStatus;
         $orderId = $request->orderId;
-        $order = Order::where('order_number', $orderId)->first();
+        $order = Order::where('order_number', $orderId)->where('is_order_valid',1)->first();
         $order->order_status = $newStatus;
         $order->update();
         return response()->json('Success');
@@ -302,7 +302,7 @@ class OrderController extends Controller
         $orderDetails = Order::leftJoin('addresses', 'addresses.id', '=', 'orders.delivery_address_id')
             ->leftJoin('users', 'users.id', '=', 'orders.customer_id')
             ->select('orders.*', 'addresses.selectedAddress', 'addresses.selectedAddress', 'addresses.entrance', 'addresses.door_code', 'addresses.apartment', 'addresses.comment', 'addresses.floor', 'users.name', 'users.email', 'addresses.id as AddId')
-            ->where('orders.order_number', $id)->first();
+            ->where('orders.order_number', $id)->where('orders.is_order_valid',1)->first();
         $products = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
             ->leftJoin('sizes', 'sizes.id', '=', 'order_items.size_id')
             ->select('order_items.*', 'products.name as proName', 'products.image', 'sizes.name as sizeName')
