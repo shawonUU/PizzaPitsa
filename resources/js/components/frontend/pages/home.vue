@@ -80,136 +80,19 @@
                             },
                         }"
                         @swiper="onSwiper" @slideChange="onSlideChange">
-                        <swiper-slide>
+                        <swiper-slide v-for="(item, index) in popularProduct" :key="index">
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <img style="width:70px"
-                                        src="/frontend/product_images/20240322191731_u8B4dGgTFs.jpg"
+                                        :src="item.image ? '/frontend/product_images/' + item.image : '/frontend/product_images/placeholder.jpg'"
                                         alt="...">
                                 </div>
                                 <div class="flex-grow-1 ms-3">
-                                    <span>Margherita</span><br>
-                                    <strong>From11.90€</strong>
+                                    <span>{{ item.name }}</span><br>
+                                    <strong>From{{ item.min_price }}{{baseCurrencySymbol}}</strong>
                                 </div>
                             </div>
-                        </swiper-slide>
-                        <swiper-slide>
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <img style="width:70px"
-                                        src="/frontend/product_images/20240322132414.jpg"
-                                        alt="...">
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <span>Kana pizza</span><br>
-                                    <strong>From11.90€</strong>
-                                </div>
-                            </div>
-                        </swiper-slide>                     
-                        <swiper-slide>
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <img style="width:70px"
-                                        src="/frontend/product_images/20240321161154.jpg"
-                                        alt="...">
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <span>Caesar-salaatti</span><br>
-                                    <strong>From13.90€</strong>
-                                </div>
-                            </div>
-                        </swiper-slide>
-                        <swiper-slide>
-                        <div class="d-flex align-items-center">
-                            <div class="flex-shrink-0">
-                                <img style="width:70px"
-                                    src="/frontend/product_images/20240321203653.jpg"
-                                    alt="...">
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                                <span>Sieni Pizza</span><br>
-                                <strong>From14.90€</strong>
-                            </div>
-                        </div>
-                        </swiper-slide>
-                        <swiper-slide>
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <img style="width:70px"
-                                        src="/frontend/product_images/20240321185936.jpg"
-                                        alt="...">
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <span>Goa Special</span><br>
-                                    <strong>From11.90€</strong>
-                                </div>
-                            </div>
-                        </swiper-slide>
-                        <swiper-slide>
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <img style="width:70px"
-                                        src="/frontend/product_images/20240321203545.jpg"
-                                        alt="...">
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <span>Chilidippi</span><br>
-                                    <strong>From1.20€</strong>
-                                </div>
-                            </div>
-                        </swiper-slide>
-                         <swiper-slide>
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <img style="width:70px"
-                                        src="/frontend/product_images/20240321185936.jpg"
-                                        alt="...">
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <span>JYMY LUOMUJÄÄTELÖ 500ML LIQUORICE</span><br>
-                                    <strong>From8.90€</strong>
-                                </div>
-                            </div>
-                        </swiper-slide>
-                        <swiper-slide>
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <img style="width:70px"
-                                        src="/frontend/product_images/20240321185936.jpg"
-                                        alt="...">
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <span>CocaCola 1.5L</span><br>
-                                    <strong>From5.90€</strong>
-                                </div>
-                            </div>
-                        </swiper-slide>
-                        <swiper-slide>
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <img style="width:70px"
-                                        src="/frontend/product_images/20240322092107.jpg"
-                                        alt="...">
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <span>Taffel sips</span><br>
-                                    <strong>From3.45€</strong>
-                                </div>
-                            </div>
-                        </swiper-slide>
-                        <swiper-slide>
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <img style="width:70px"
-                                        src="/frontend/product_images/20240322091114.jpg"
-                                        alt="...">
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <span>Donitsi</span><br>
-                                    <strong>From4.90€</strong>
-                                </div>
-                            </div>
-                        </swiper-slide>
+                        </swiper-slide>                        
                     </swiper>
                 </div>
             </div>
@@ -318,14 +201,7 @@
                     <div class="cart-body">
 
                         <table class="m-0 p-0">
-                            <tbody>
-                                <!-- <tr>
-                                    <th colspan="2">Item</th>
-                                    <th style="text-align:center;">Qty</th>
-                                    <th style="text-align:left;">Toping</th>
-                                    <th style="text-align:right;">Amount</th>
-                                    <th style="text-align:right;"></th>
-                                </tr> -->
+                            <tbody>                              
                                 <template v-for="(productSizes, productId) in cart" :key="productId">
                                     <template v-if="cart.hasOwnProperty(productId)">
                                         <template v-for="(item, sizeId) in productSizes" :key="sizeId">
@@ -404,7 +280,12 @@
                     </div>
                     <div class="cart-footer">
                         <div>
-                            <div class="input-group">
+                            <div v-if="availableCoupon">
+                                <p>
+                                    Use this coupon code <strong style="color:rgb(238, 110, 45)">'{{availableCoupon.code}}'</strong> to get {{ formatDiscount(availableCoupon.discount) }}{{ availableCoupon.discount_type=='1'?'%':baseCurrencySymbol }} discount
+                                </p>
+                            </div>                           
+                            <div class="input-group">                                
                                 <input id="coupon" type="text" class="form-control" placeholder="Coupon Code" style="text-align:left; font-size: 16px; height: 25px; width:40px; padding: 20px; border:1px solid #bbb2b2;" aria-label="Amount (to the nearest dollar)">
                                 <div @click="applyCoupon()" class="input-group-append " style="cursor:pointer;">
                                     <span class="input-group-text" style="padding:13px; border-radius:0px; line-height:14px">Apply</span>
@@ -510,6 +391,8 @@ export default {
             isVisible:true,
             message:'',
             orderType:null,
+            availableCoupon:null,
+            popularProduct:null,
         }
     },
     created (){
@@ -543,6 +426,8 @@ export default {
         this.loadCartFromLocalStorage();
         this.fetchBaseCurrencySymbol();
         this.emitter.on('scrollToTeamSection', this.handleScrollToTeamSection);
+        this.getCoupon();
+        this.getPopularProduct();
     },
     computed: {
       sortedCategories() {
@@ -573,7 +458,7 @@ export default {
                     }
             }).then((res) => {
                     if (res.data[0]) {
-                        console.log(res.data);
+                        // console.log(res.data);
                         this.showAddToCart = true;
                         this.product = res.data[0];
                         this.productSizes = res.data[1];
@@ -586,6 +471,16 @@ export default {
                         this.productOptions = res.data[8];
                     }
             }).catch((err) => {
+            });
+        },
+        getPopularProduct(){
+             axios.get('get-popular-products')
+            .then((res) => {
+              
+                console.log(res.data);
+                this.popularProduct = res.data;
+            })
+            .catch((err) => {
             });
         },
         handleModalClose() {
@@ -744,6 +639,19 @@ export default {
         emitMyEvent() {
           this.emitter.emit('my-event', {'eventContent': 'form cart'})
         },
+
+        getCoupon () {
+            axios.get('get-coupon', {
+                
+            })
+            .then((res)=>{
+                if (res.data.coupon) {
+                     this.availableCoupon = res.data.coupon;      
+                }                         
+            })
+            .catch((err)=>{
+            })
+        },
         applyCoupon(){
             var coupon = document.getElementById('coupon').value.trim();
             if(coupon != ""){
@@ -824,6 +732,18 @@ export default {
             const teamSection = document.getElementById(targetId);
             if (teamSection) {
                 teamSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        },
+
+        formatDiscount(value) {
+            // Convert value to a number in case it's a string
+            value = Number(value);
+            
+            // Check if the fractional part is 0
+            if (value % 1 === 0) {
+                return value.toFixed(0); // Return without decimal places
+            } else {
+                return value.toFixed(2); // Return with two decimal places
             }
         }
     },

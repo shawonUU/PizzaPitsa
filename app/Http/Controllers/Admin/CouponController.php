@@ -10,7 +10,8 @@ use App\Http\Controllers\Controller;
 class CouponController extends Controller
 {
 
-    public function index(){
+    public function index()
+    {
         $coupons = Coupon::get();
         return view('admin.pages.product.coupon.index', compact('coupons'));
     }
@@ -32,6 +33,7 @@ class CouponController extends Controller
         $coupon->discount_type = $request->input('discount_type');
         $coupon->quantity = $request->input('quantity');
         $coupon->expires_at = $request->input('expires_at');
+        $coupon->status = $request->input('status');
         $coupon->save();
 
         return redirect()->back();
@@ -54,16 +56,25 @@ class CouponController extends Controller
         $coupon->discount_type = $request->input('discount_type');
         $coupon->quantity = $request->input('quantity');
         $coupon->expires_at = $request->input('expires_at');
+        $coupon->status = $request->input('status');
         $coupon->update();
         return redirect()->back();
     }
 
-    public function checkCoupon(Request $request){
+    public function getCoupon()
+    {
+        $coupon = Coupon::where('expires_at', '>', Carbon::now())
+            ->where('status', '1')
+            ->first();
+        return response()->json(['coupon' => $coupon]);
+    }
+    public function checkCoupon(Request $request)
+    {
         $couponCode = $request->coupon;
         $coupon = Coupon::where('code', $couponCode)
-                ->where('expires_at', '>', Carbon::now())
-                ->first();
-        return response()->json( ['coupon'=>$coupon] );
+            ->where('expires_at', '>', Carbon::now())
+            ->where('status', '1')
+            ->first();
+        return response()->json(['coupon' => $coupon]);
     }
-
 }

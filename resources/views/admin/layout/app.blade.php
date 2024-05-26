@@ -1,6 +1,12 @@
 <!doctype html>
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable" data-theme="default" data-theme-colors="default">
 @include('admin.layout.head')
+<style>
+    .select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+        padding-left: 0px!important;
+        padding-right: 0px!imoportant;
+    }
+</style>
 <body>
 
     <!-- Begin page -->

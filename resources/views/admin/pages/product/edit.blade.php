@@ -135,16 +135,18 @@
                                                     <div class="col-2"><h5>Action</h5></div>
                                                 </div>
                                                 <div id="itemContainer">
-                                                    @foreach ($productTags as $productTag)
+                                                    @foreach ($productTags as $index => $productTag)
                                                         <div class="row mt-2" id="item{{ $productTag->id }}" data-item="{{ $productTag->id }}">
+                                                            <input type="hidden" name="tag_ids[]" value="{{ $productTag->id }}">
                                                             <div class="col-6">
                                                                 <input type="text" name="tags[]" id="itemSize{{ $productTag->id }}" value="{{ $productTag->tag_name }}" placeholder="Tag name" class="form-control itemSize">
                                                             </div>
                                                             <div class="col-4">
-                                                                <input type="checkbox" name="removeable[]" id="itemPrice{{ $productTag->id }}"  {{ $productTag->is_removeable=='1'?'checked':''}} class="form-check-input itemPrice">
+                                                                <input type="hidden" name="removeable[{{ $index }}]" value="0">
+                                                                <input type="checkbox" name="removeable[{{ $index }}]" id="itemPrice{{ $productTag->id }}" {{ $productTag->is_removeable == '1' ? 'checked' : '' }} value="1" class="form-check-input itemPrice">
                                                             </div>
                                                             <div class="col-2">
-                                                                <button class="btn btn-danger" onclick="removeItem('item{{ $productTag->id }}')">X</button>
+                                                                <button class="btn btn-danger" type="button" onclick="removeItem('item{{ $productTag->id }}')">X</button>
                                                             </div>
                                                         </div>
                                                     @endforeach
@@ -624,16 +626,16 @@
 <script>
     var G_ITEM_NUMBER = {{ count($productTags) }} + 1;
 
-    function addNewItem(){
-        G_ITEM_NUMBER++;
-        
+    function addNewItem() {
         var html = `
             <div class="row mt-2" id="item${G_ITEM_NUMBER}" data-item="${G_ITEM_NUMBER}">
+                <input type="hidden" name="tag_ids[]" value="">
                 <div class="col-6">
                     <input type="text" name="tags[]" id="itemSize${G_ITEM_NUMBER}" placeholder="Tag name" class="form-control itemSize">
                 </div>
                 <div class="col-4">
-                    <input type="checkbox" name="removeable[]" id="itemPrice${G_ITEM_NUMBER}" class="form-check-input itemPrice">
+                    <input type="hidden" name="removeable[${G_ITEM_NUMBER}]" value="0">
+                    <input type="checkbox" name="removeable[${G_ITEM_NUMBER}]" id="itemPrice${G_ITEM_NUMBER}" value="1" class="form-check-input itemPrice">
                 </div>
                 <div class="col-2">
                     <button type="button" class="btn btn-danger" onclick="removeItem('item${G_ITEM_NUMBER}')">X</button>
@@ -642,28 +644,30 @@
         `;
 
         document.getElementById("itemContainer").insertAdjacentHTML('beforeend', html);
+        G_ITEM_NUMBER++;
+
     }
 
     function removeItem(id){
         var removedElement = document.getElementById(id);
         removedElement.remove();
-        rearrangeSize();
+        // rearrangeSize();
     }
 
-    function rearrangeSize(){
-        var items = document.querySelectorAll('.itemSize');
+    // function rearrangeSize(){
+    //     var items = document.querySelectorAll('.itemSize');
         
-        items.forEach((item, index) => {
-            var itemId = `itemSize${index + 1}`;
-            var priceId = `itemPrice${index + 1}`;
-            var removeButton = `removeItem('item${index + 1}')`;
+    //     items.forEach((item, index) => {
+    //         var itemId = `itemSize${index + 1}`;
+    //         var priceId = `itemPrice${index + 1}`;
+    //         var removeButton = `removeItem('item${index + 1}')`;
 
-            item.id = itemId;
-            item.parentNode.parentNode.id = `item${index + 1}`;
-            item.parentNode.nextElementSibling.childNodes[1].id = priceId;
-            item.parentNode.parentNode.nextElementSibling.childNodes[1].setAttribute('onclick', removeButton);
-        });
-    }
+    //         item.id = itemId;
+    //         item.parentNode.parentNode.id = `item${index + 1}`;
+    //         item.parentNode.nextElementSibling.childNodes[1].id = priceId;
+    //         item.parentNode.parentNode.nextElementSibling.childNodes[1].setAttribute('onclick', removeButton);
+    //     });
+    // }
 
     var O_ITEM_NUMBER = {{ count($productOptions) }};
 

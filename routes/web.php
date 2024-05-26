@@ -128,7 +128,9 @@ Auth::routes([
 
 Route::get('get-categories', [CategoryController::class, 'getCategories'])->name('get.categories');
 Route::get('get-products', [ProductContoller::class, 'getProducts'])->name('get.products');
+Route::get('get-popular-products', [ProductContoller::class, 'getPopularProducts'])->name('get.popular.products');
 Route::get('get-product-details', [ProductContoller::class, 'getProductDetails']);
+Route::get('get-coupon', [CouponController::class, 'getCoupon']);
 Route::get('check-coupon', [CouponController::class, 'checkCoupon']);
 Route::get('get-currency', [CurrencyController::class, 'getCurrency'])->name('get.currency');
 Route::post('customer-signUp', [CustomerController::class, 'customerSignUp']);

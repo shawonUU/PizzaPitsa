@@ -36,9 +36,9 @@ class ProductContoller extends Controller
     public function create()
     {
         $categories = Category::where('status', '1')->get();
-        $optionTitles = OptionTitle::where('status','1')->get();
-        $toppings = Toping::where('status','1')->get();
-        return view('admin.pages.product.create', compact('categories','optionTitles','toppings'));
+        $optionTitles = OptionTitle::where('status', '1')->get();
+        $toppings = Toping::where('status', '1')->get();
+        return view('admin.pages.product.create', compact('categories', 'optionTitles', 'toppings'));
     }
 
     /**
@@ -86,12 +86,11 @@ class ProductContoller extends Controller
 
         // Debugging: Check if arrays are not null
         if (!$newTitles || !$newToppings || !$newTypes) {
-            
         } else {
             $startIndex = 0;
             foreach ($newTitles as $key => $titleId) {
                 $type = $newTypes[$key] ?? null;
-    
+
                 if ($titleId && $type) {
                     // Create a new ProductOption
                     $productOption = new ProductOption();
@@ -99,13 +98,13 @@ class ProductContoller extends Controller
                     $productOption->product_id = $product->id; // Assuming you have a default product ID or set it dynamically
                     $productOption->type = $type;
                     $productOption->save();
-    
+
                     // Determine the end index for toppings based on the current title
                     $endIndex = $startIndex + count($request->input("newToppings" . ($key + 1)));
-                    
+
                     // Get toppings for the current title
                     $toppingsForCurrentTitle = array_slice($newToppings, $startIndex, $endIndex - $startIndex);
-    
+
                     foreach ($toppingsForCurrentTitle as $toppingId) {
                         $productOptionTopping = new ProductOptionTopping();
                         $productOptionTopping->product_option_id = $productOption->id;
@@ -114,17 +113,16 @@ class ProductContoller extends Controller
                         $productOptionTopping->updated_at = now();
                         $productOptionTopping->save();
                     }
-    
+
                     // Update the start index for the next iteration
                     $startIndex = $endIndex;
                 }
             }
         }
 
-       
 
-        
-        // Save tags and removeables
+
+
         $tags = $request->input('tags', []);
         $removeables = $request->input('removeable', []);
 
@@ -132,20 +130,22 @@ class ProductContoller extends Controller
         $limitRemoveables = count($removeables);
 
         $limit = max($limitTags, $limitRemoveables);
-        if ($tags){
+
+        if ($tags) {
             for ($key = 0; $key < $limit; $key++) {
                 $tag = $tags[$key] ?? null;
-                $isRemovable = isset($removeables[$key]) && $removeables[$key] == 'on' ? '1' : '0';
-    
-                if ($tag) {                            
+                $isRemovable = isset($removeables[$key]) && $removeables[$key] == '1' ? '1' : '0';
+
+                if ($tag) {
                     $row = new ProductTag();
                     $row->pro_id = $product->id;
                     $row->tag_name = $tag;
                     $row->is_removeable = $isRemovable;
-                    $row->save();                
+                    $row->save();
                 }
             }
-        }        
+        }
+
         session()->flash('sweet_alert', [
             'type' => 'success',
             'title' => 'Success!',
@@ -177,10 +177,10 @@ class ProductContoller extends Controller
         $product = Product::where('id', $id)->first();
         $categories = Category::where('status', '1')->get();
         $sizes = Size::where('status', '1')->get();
-        $productTags = ProductTag::where('pro_id',$id)->get();
-        $optionTitles = OptionTitle::where('status','1')->get();       
-        $productOptions = ProductOption::join('option_titles','option_titles.id','=','product_options.title_id')->select('product_options.*','option_titles.name')->where('product_options.product_id',$id)->get();
-        return view('admin.pages.product.edit', compact('categories', 'product','productSizes','productTopings','topings','id','sizes','productTags','productOptions','optionTitles'));
+        $productTags = ProductTag::where('pro_id', $id)->get();
+        $optionTitles = OptionTitle::where('status', '1')->get();
+        $productOptions = ProductOption::join('option_titles', 'option_titles.id', '=', 'product_options.title_id')->select('product_options.*', 'option_titles.name')->where('product_options.product_id', $id)->get();
+        return view('admin.pages.product.edit', compact('categories', 'product', 'productSizes', 'productTopings', 'topings', 'id', 'sizes', 'productTags', 'productOptions', 'optionTitles'));
     }
 
     /**
@@ -220,7 +220,7 @@ class ProductContoller extends Controller
 
         $newTitles = $request->input('newTitles');
         $newTypes = $request->input('newTypes');
-        $options = ProductOption::where('product_id',$id)->get();
+        $options = ProductOption::where('product_id', $id)->get();
         foreach ($options as $option) {
             ProductOptionTopping::where('product_option_id', $option->id)->delete();
             $option->delete();
@@ -237,87 +237,91 @@ class ProductContoller extends Controller
 
         // Debugging: Check if arrays are not null
         if (!$newTitles || !$newToppings || !$newTypes) {
-           
         } else {
-            
-        $startIndex = 0;
-        foreach ($newTitles as $key => $titleId) {
-            $type = $newTypes[$key] ?? null;
 
-            if ($titleId && $type) {
-                // Create a new ProductOption
-                $productOption = new ProductOption();
-                $productOption->title_id = $titleId;
-                $productOption->product_id = $product->id; // Assuming you have a default product ID or set it dynamically
-                $productOption->type = $type;
-                $productOption->save();
+            $startIndex = 0;
+            foreach ($newTitles as $key => $titleId) {
+                $type = $newTypes[$key] ?? null;
 
-                // Determine the end index for toppings based on the current title
-                $endIndex = $startIndex + count($request->input("newToppings" . ($key + 1)));
-                
-                // Get toppings for the current title
-                $toppingsForCurrentTitle = array_slice($newToppings, $startIndex, $endIndex - $startIndex);
+                if ($titleId && $type) {
+                    // Create a new ProductOption
+                    $productOption = new ProductOption();
+                    $productOption->title_id = $titleId;
+                    $productOption->product_id = $product->id; // Assuming you have a default product ID or set it dynamically
+                    $productOption->type = $type;
+                    $productOption->save();
 
-                foreach ($toppingsForCurrentTitle as $toppingId) {
-                    $productOptionTopping = new ProductOptionTopping();
-                    $productOptionTopping->product_option_id = $productOption->id;
-                    $productOptionTopping->topping_id = $toppingId;
-                    $productOptionTopping->created_at = now();
-                    $productOptionTopping->updated_at = now();
-                    $productOptionTopping->save();
+                    // Determine the end index for toppings based on the current title
+                    $endIndex = $startIndex + count($request->input("newToppings" . ($key + 1)));
+
+                    // Get toppings for the current title
+                    $toppingsForCurrentTitle = array_slice($newToppings, $startIndex, $endIndex - $startIndex);
+
+                    foreach ($toppingsForCurrentTitle as $toppingId) {
+                        $productOptionTopping = new ProductOptionTopping();
+                        $productOptionTopping->product_option_id = $productOption->id;
+                        $productOptionTopping->topping_id = $toppingId;
+                        $productOptionTopping->created_at = now();
+                        $productOptionTopping->updated_at = now();
+                        $productOptionTopping->save();
+                    }
+
+                    // Update the start index for the next iteration
+                    $startIndex = $endIndex;
                 }
-
-                // Update the start index for the next iteration
-                $startIndex = $endIndex;
             }
         }
+
+        // Save tags and removeables
+        $tags = $request->input('tags', []);
+        $removeables = $request->input('removeable', []);
+        $tagIds = $request->input('tag_ids', []);
+
+        // Ensure removeables array is the same length as tags
+        $numberOfTags = count($tags);
+        $numberOfRemoveables = count($removeables);
+
+        if ($numberOfRemoveables < $numberOfTags) {
+            // Pad the removeables array with null values to match the length of tags
+            $removeables = array_pad($removeables, $numberOfTags, null);
         }
 
+        // Collect the IDs of existing tags to keep track of which to delete
+        $existingTagIds = ProductTag::where('pro_id', $product->id)->pluck('id')->toArray();
 
-        
+        // Process tags and removeables
+        for ($key = 0; $key < $numberOfTags; $key++) {
+            $tag = $tags[$key] ?? null;
+            $isRemovable = $removeables[$key] ?? '0';
+            $tagId = $tagIds[$key] ?? null;
 
-
-
-
-        $tags = $request->tags;
-        $removeables = $request->removeable;
-        if ($tags){ 
-                    // Delete existing ProductTag items
-            ProductTag::where('pro_id', $product->id)->delete();
-            
-            // Determine the number of tags and removable checkboxes
-            $numberOfTags = count($tags);
-            $numberOfRemoveables = count($removeables);
-            
-            // Use the larger count to ensure all tags are processed
-            $limit = max($numberOfTags, $numberOfRemoveables);
-            
-            for($key = 0; $key < $limit; $key++) {
-                $tag = $tags[$key] ?? null;
-                $isRemovable = isset($removeables[$key]) && $removeables[$key] == 'on' ? '1' : '0';
-            
-                if($tag) {
-                    // Check if the ProductTag already exists, if so, update it; otherwise, create a new one
-                    $existingTag = ProductTag::where('pro_id', $product->id)
-                                            ->where('tag_name', $tag)
-                                            ->first();
-            
-                    if($existingTag) {
+            if ($tag) {
+                if ($tagId) {
+                    // Update the existing tag
+                    $existingTag = ProductTag::find($tagId);
+                    if ($existingTag) {
+                        $existingTag->tag_name = $tag;
                         $existingTag->is_removeable = $isRemovable;
                         $existingTag->save();
-                    } else {
-                        $row = new ProductTag();
-                        $row->pro_id = $product->id;
-                        $row->tag_name = $tag;
-                        $row->is_removeable = $isRemovable;
-                        $row->save();
+
+                        // Remove the ID from the existingTagIds array
+                        if (($index = array_search($tagId, $existingTagIds)) !== false) {
+                            unset($existingTagIds[$index]);
+                        }
                     }
+                } else {
+                    // Create a new tag
+                    $newTag = new ProductTag();
+                    $newTag->pro_id = $product->id;
+                    $newTag->tag_name = $tag;
+                    $newTag->is_removeable = $isRemovable;
+                    $newTag->save();
                 }
             }
         }
-   
-        
 
+        // Delete the tags that were not included in the request
+        ProductTag::destroy($existingTagIds);
 
         session()->flash('sweet_alert', [
             'type' => 'success',
@@ -325,7 +329,7 @@ class ProductContoller extends Controller
             'text' => 'Product update success',
         ]);
         // Redirect or return a response as needed
-        return redirect()->route('products.index')->with('success', 'Product update successfully');
+        return redirect()->back()->with('success', 'Product update successfully');
     }
 
     /**
@@ -337,20 +341,20 @@ class ProductContoller extends Controller
         if ($product->image != NULL) {
             unlink(public_path('frontend/product_images/' . $product->image));
         }
-        $productTags = ProductTag::where('pro_id',$id)->get();
+        $productTags = ProductTag::where('pro_id', $id)->get();
         if ($productTags) {
-            foreach($productTags as $item) {
+            foreach ($productTags as $item) {
                 $item->delete();
             }
         }
-        $options = ProductOption::where('product_id',$id)->get();
+        $options = ProductOption::where('product_id', $id)->get();
         if ($options) {
             foreach ($options as $option) {
                 ProductOptionTopping::where('product_option_id', $option->id)->delete();
                 $option->delete();
             }
         }
-     
+
         $product->delete();
 
         session()->flash('sweet_alert', [
@@ -538,25 +542,25 @@ class ProductContoller extends Controller
     public function getProducts()
     {
         $categories = Category::leftJoin('products', 'categories.id', '=', 'products.category_id')
-        ->leftJoin('product_sizes', function ($join) {
-            $join->on('products.id', '=', 'product_sizes.product_id')
-                ->whereRaw('NOW() BETWEEN product_sizes.offer_from AND product_sizes.offer_to');
-        })
-        ->select(
-            'categories.id as category_id',
-            'categories.order_by as OrderBY',
-            'categories.name as category_name',
-            'products.id as product_id',
-            'products.name as product_name',
-            'products.description as description',
-            'products.image as image',
-            DB::raw('(SELECT MIN(price) FROM product_sizes WHERE product_sizes.product_id = products.id) as min_price'),
-            'product_sizes.offer_price as calculated_offer_price'
-        )
-        ->where('products.status','1')
-        ->orderBy('categories.order_by')
-        ->orderBy('products.id') 
-        ->get();
+            ->leftJoin('product_sizes', function ($join) {
+                $join->on('products.id', '=', 'product_sizes.product_id')
+                    ->whereRaw('NOW() BETWEEN product_sizes.offer_from AND product_sizes.offer_to');
+            })
+            ->select(
+                'categories.id as category_id',
+                'categories.order_by as OrderBY',
+                'categories.name as category_name',
+                'products.id as product_id',
+                'products.name as product_name',
+                'products.description as description',
+                'products.image as image',
+                DB::raw('(SELECT MIN(price) FROM product_sizes WHERE product_sizes.product_id = products.id) as min_price'),
+                'product_sizes.offer_price as calculated_offer_price'
+            )
+            ->where('products.status', '1')
+            ->orderBy('categories.order_by')
+            ->orderBy('products.id')
+            ->get();
         // return $categories;
         // Organize the result into a more usable format
         $groupedCategories = [];
@@ -582,9 +586,8 @@ class ProductContoller extends Controller
                 ];
             }
         }
-        $productAllTages = ProductTag::pluck('tag_name','id');
-        return [$groupedCategories,$productAllTages];
-    
+        $productAllTages = ProductTag::pluck('tag_name', 'id');
+        return [$groupedCategories, $productAllTages];
     }
 
     public function getProductDetails(Request $request)
@@ -599,7 +602,7 @@ class ProductContoller extends Controller
         $maxPrice = $productSizes->max('price');
         $minPrice = $productSizes->min('price');
         $tem = [];
-        foreach($productSizes as $row){
+        foreach ($productSizes as $row) {
             $tem[$row->id] = $row;
         }
         $productSizes = $tem;
@@ -609,13 +612,13 @@ class ProductContoller extends Controller
             ->select('topings.*')
             ->get();
         $favoritToppingsIds = [];
-        foreach($productTopings as $toping){
+        foreach ($productTopings as $toping) {
             $favoritToppingsIds[$toping->id] = $toping->id;
         }
 
 
         $tem = [];
-        foreach($productTopings as $row){
+        foreach ($productTopings as $row) {
             $tem[$row->id] = $row;
         }
         $productTopings = $tem;
@@ -623,44 +626,68 @@ class ProductContoller extends Controller
         $allTopings = Toping::where('status', '1')->get();
 
         $tem = [];
-        foreach($allTopings as $row){
+        foreach ($allTopings as $row) {
             $tem[$row->id] = $row;
         }
         $allTopings = $tem;
 
-        $moreTopings = Toping::whereNotIn('id',$favoritToppingsIds)->where('status', '1')->get();
+        $moreTopings = Toping::whereNotIn('id', $favoritToppingsIds)->where('status', '1')->get();
 
         $tem = [];
-        foreach($moreTopings as $row){
+        foreach ($moreTopings as $row) {
             $tem[$row->id] = $row;
         }
         $moreTopings = $tem;
 
         $sizeVsTopings = SizeVsTopingPrice::get();
         $bindData = [];
-        foreach($sizeVsTopings as $item){
+        foreach ($sizeVsTopings as $item) {
             $bindData[$item->toping_id][$item->size_id] = $item->price;
         }
         $sizeVsTopings = $bindData;
 
-        $maxMin = [$minPrice,$maxPrice];
+        $maxMin = [$minPrice, $maxPrice];
 
-        $productTages = ProductTag::where('pro_id',$productId)->get()->toArray();
+        $productTages = ProductTag::where('pro_id', $productId)->get()->toArray();
 
-        $options = ProductOption::join('product_option_toppings as option_topping', 'option_topping.product_option_id','=','product_options.id')
-        ->join('option_titles', 'option_titles.id', '=', 'product_options.title_id')
-        ->where('product_options.product_id', $productId)
-        ->select('option_topping.*','product_options.title_id','product_options.type','option_titles.name')->get();
+        $options = ProductOption::join('product_option_toppings as option_topping', 'option_topping.product_option_id', '=', 'product_options.id')
+            ->join('option_titles', 'option_titles.id', '=', 'product_options.title_id')
+            ->where('product_options.product_id', $productId)
+            ->select('option_topping.*', 'product_options.title_id', 'product_options.type', 'option_titles.name')->get();
 
         $temp = [];
-        foreach($options as $option){
+        foreach ($options as $option) {
             $option->type = strtolower($option->type);
             $temp[$option->product_option_id]['details']['title'] = $option->name;
             $temp[$option->product_option_id]['options'][] = $option;
         }
         $productOptions = $temp;
 
-        
-        return response()->json([$product, $productSizes,$productTopings,$maxMin,$allTopings,$moreTopings,$sizeVsTopings,$productTages,$productOptions]);
+
+        return response()->json([$product, $productSizes, $productTopings, $maxMin, $allTopings, $moreTopings, $sizeVsTopings, $productTages, $productOptions]);
+    }
+
+
+    public function getPopularProducts()
+    {
+        return $topSellingProducts = \DB::table('products')
+            ->join('order_items', 'products.id', '=', 'order_items.product_id')
+            ->join('orders', 'order_items.order_id', '=', 'orders.id')
+            ->leftJoin('product_sizes', function ($join) {
+                $join->on('products.id', '=', 'product_sizes.product_id')
+                    ->whereRaw('NOW() BETWEEN product_sizes.offer_from AND product_sizes.offer_to');
+            })
+            ->select(
+                'products.id',
+                'products.name',
+                'products.image',
+                \DB::raw('COUNT(orders.id) as total_orders'),
+                \DB::raw('(SELECT MIN(price) FROM product_sizes WHERE product_sizes.product_id = products.id) as min_price'),
+                'product_sizes.offer_price as calculated_offer_price'
+            )
+            ->groupBy('products.id', 'products.name', 'products.image', 'product_sizes.offer_price')
+            ->orderBy('total_orders', 'desc')
+            ->limit(10)
+            ->get();
     }
 }

@@ -43,7 +43,7 @@
                                     </div>                                                                       
                                     <div class="col-xxl-3 col-md-6 mb-3">
                                         <label for="price" class="form-label">Price</label>
-                                        <input type="text" class="form-control" id="price" name="price" placeholder="Enter Toping price" value="{{ $toping->price  }}" required>
+                                        <input type="text" class="form-control" id="price" name="price" placeholder="Enter Toping price"  step="0.00001" value="{{ $toping->price  }}" required>
                                     </div>                                                                      
                                     <div class="col-xxl-3 col-md-6 mb-3">
                                         <label for="status" class="form-label">Status</label>
@@ -67,7 +67,7 @@
                                         </div>
                                         <div id="itemContainer">
                                             @foreach ($sizeVsToppings as $storedSize)
-                                            <div class="row" id="item{{$storedSize['sizeId']}}" data-item="{{$storedSize['sizeId']}}">
+                                            <div class="row mt-2" id="item{{$storedSize['sizeId']}}" data-item="{{$storedSize['sizeId']}}">
                                                 <div class="col-6">
                                                     <select onchange="rearrangeSize()" name="sizeId[]" class="form-select itemSize" id="itemSize{{$storedSize['sizeId']}}">
                                                         <option value="">--Select Size--</option>
@@ -77,7 +77,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-4">
-                                                    <input type="number" name="prices[]" id="itemPrice{{$storedSize['sizeId']}}" class="form-control itemPrice" value="{{ $storedSize['price'] }}">
+                                                    <input type="number" name="prices[]" id="itemPrice{{$storedSize['sizeId']}}" class="form-control itemPrice" placeholder="Price"  step="0.00001" value="{{ $storedSize['price'] }}">
                                                 </div>
                                                 <div class="col-2">
                                                     <button class="btn btn-danger" onclick="removeItem('item{{$storedSize['sizeId']}}')">X</button>
@@ -128,7 +128,7 @@
     var sizeOptions = newSizes.map(size => `<option value="${size.id}">${size.name}</option>`).join('');
 
     var html = `
-        <div class="row" id="item${G_ITEM_NUMBER}" data-item="${G_ITEM_NUMBER}">
+        <div class="row mt-2" id="item${G_ITEM_NUMBER}" data-item="${G_ITEM_NUMBER}">
             <div class="col-6">
                 <select onchange="rearrangeSize()" name="sizeId[]" class="form-select itemSize" id="itemSize${G_ITEM_NUMBER}">
                     <option value="" >--Select Size--</option>
@@ -136,7 +136,7 @@
                 </select>
             </div>
             <div class="col-4">
-                <input type="number" name="prices[]" id="itemPrice${G_ITEM_NUMBER}" class="form-control itemPrice">
+                <input type="number" name="prices[]" id="itemPrice${G_ITEM_NUMBER}"  step="0.00001" placeholder="Price" class="form-control itemPrice">
             </div>
             <div class="col-2">
                 <button type="button" class="btn btn-danger" onclick="removeItem('item${G_ITEM_NUMBER}')">X</button>

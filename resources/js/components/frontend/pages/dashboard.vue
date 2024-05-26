@@ -59,18 +59,18 @@
                                                       <td>
                                                         {{ order.is_paid==0?'Unpaid':'Paid' }}
                                                       </td>                                                   
-                                                      <td style="width:10px">                                                                                                              
+                                                      <td style="width:10px">                                                                                                                                                                    
                                                         {{
-                                                          order.order_status === 1 ? 'Pending'
-                                                          : order.order_status === 2 ? 'Processing'
-                                                          : order.order_status === 3 ? 'Shipped'
-                                                          : order.order_status === 4 ? 'Out for Delivery'
-                                                          : order.order_status === 5 ? 'Delivered'
-                                                          : order.order_status === 6 ? 'Canceled'
-                                                          : order.order_status === 7 ? 'Refunded'
-                                                          : order.order_status === 8 ? 'On Hold'
-                                                          : order.order_status === 9 ? 'Backordered'
-                                                          : order.order_status === 10 ? 'Returned'
+                                                          order.order_status == '1' ? 'Pending'
+                                                          : order.order_status == '2' ? 'Processing'
+                                                          : order.order_status == '3' ? 'Shipped'
+                                                          : order.order_status == '4' ? 'Out for Delivery'
+                                                          : order.order_status == '5' ? 'Delivered'
+                                                          : order.order_status == '6' ? 'Canceled'
+                                                          : order.order_status == '7' ? 'Refunded'
+                                                          : order.order_status == '8' ? 'On Hold'
+                                                          : order.order_status == '9' ? 'Backordered'
+                                                          : order.order_status == '10' ? 'Returned'
                                                           : 'Unknown'
                                                         }}                                                   
                                                       </td>                                                                                                        
