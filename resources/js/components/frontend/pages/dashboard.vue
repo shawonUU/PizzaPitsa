@@ -20,7 +20,7 @@
                             <aside class="axil-dashboard-aside">
                                 <nav class="axil-dashboard-nav">
                                     <div class="nav nav-tabs" role="tablist">
-                                        <a class="nav-item nav-link active" data-bs-toggle="tab" href="#nav-dashboard" role="tab" aria-selected="false" tabindex="-1"><i class="fas fa-th-large"></i>Dashboard</a>
+                                        <a class="nav-item nav-link active" data-bs-toggle="tab" href="#nav-dashboard" role="tab" aria-selected="false" tabindex="-1"><i class="fas fa-th-large"></i>Dashboard{{ message }}</a>
                                         <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-orders" role="tab" aria-selected="false" tabindex="-1"><i class="fas fa-shopping-basket"></i>Orders</a>
                                         <!-- <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-downloads" role="tab" aria-selected="false" tabindex="-1"><i class="fas fa-file-download"></i>Downloads</a>
                                         <a class="nav-item nav-link" data-bs-toggle="tab" href="#nav-address" role="tab" aria-selected="false" tabindex="-1"><i class="fas fa-home"></i>Addresses</a> -->
@@ -33,7 +33,7 @@
                         </div>
                         <div class="col-xl-9 col-md-8">
                             <div class="tab-content">
-                              
+
                                 <div class="tab-pane fade active show" id="nav-dashboard" role="tabpanel">
                                     <div class="axil-dashboard-overview">
                                         <div class="welcome-text">{{ isAuth.name }} (not <span>{{ isAuth.name }}?</span> <a style="cursor:pointer" @click="logout">Log Out</a>)</div>
@@ -387,12 +387,13 @@ export default {
             shippingCostAmount: 0,
             verificationError:'',
             verificationMessage:'',
-            showVerificationModal:false
+            showVerificationModal:false,
+            message: null
         }
     },
     
     created (){
-
+      this.message = this.$route.query.message;
 
     },
     mounted(){
