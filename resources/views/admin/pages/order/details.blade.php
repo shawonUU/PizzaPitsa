@@ -156,50 +156,7 @@
           </div>
           <hr class="new-section-sm bord-no">
           <div class="row">
-           
           </div>
-          {{-- <div class="clearfix float-right">
-            <table class="table">
-              <tbody>
-                <tr>
-                  <td>
-                    <strong class="text-muted">Sub Total :</strong>
-                  </td>
-                  <td> $47.500 </td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong class="text-muted">Tax :</strong>
-                  </td>
-                  <td> $0.950 </td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong class="text-muted">Shipping :</strong>
-                  </td>
-                  <td> $0.000 </td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong class="text-muted">Coupon :</strong>
-                  </td>
-                  <td> $0.000 </td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong class="text-muted">Total :</strong>
-                  </td>
-                  <td class="text-muted h5"> $48.450 </td>
-                </tr>
-              </tbody>
-            </table>
-            <div class="no-print text-right">
-              <a href="https://demo.activeitzone.com/ecommerce/invoice/79" type="button" class="btn btn-icon btn-light">
-                <i class="las la-print"></i>
-              </a>
-            </div>
-          </div> --}}
-
           <div class="row">
             <div class="col-lg-12 table-responsive">
               <table class="table-bordered aiz-table invoice-summary table footable footable-1 breakpoint-xl" style="">
@@ -283,12 +240,6 @@
                   </td>
                   <td> {{ $order->total_amount }}{{ getCurrency() }} </td>
                 </tr>
-                <tr>
-                  <td>
-                    <strong class="text-muted">Tax :</strong>
-                  </td>
-                  <td> 0.950{{ getCurrency() }} </td>
-                </tr>
                 @if($order->delivery_charge)
                 <tr>
                   <td>
@@ -313,7 +264,7 @@
                 </tr>
               </tbody>
             </table>
-            <div class="no-print text-right">
+            <div class="no-print text-right d-none">
               <a href="https://demo.activeitzone.com/ecommerce/invoice/79" type="button" class="btn btn-icon btn-light">
                 <i class="las la-print"></i>
               </a>

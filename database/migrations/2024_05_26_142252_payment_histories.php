@@ -32,6 +32,8 @@ return new class extends Migration
 
     //Array ( [order_id] => 000013 [checkout-account] => 1077442 [checkout-algorithm] => sha256 [checkout-amount] => 50 [checkout-stamp] => 0.51529700 1716222762 [checkout-reference] => Rashedul Haider(6), Order Id: 000013 [checkout-status] => ok [checkout-provider] => nordea [checkout-transaction-id] => 94dd9962-16c6-11ef-9fed-23e23935cd1a [signature] => cc4ecea4f6511ec060c691c960ec29db2b4b4c5f6295dcd2bc778f947a7020fe )
 
+    //127.0.0.1:8000/success?order_id=000001&checkout-account=1077442&checkout-algorithm=sha256&checkout-amount=50&checkout-stamp=0.51529700%201716222762&checkout-reference=Rashedul%20Haider%286%29%2C%20Order%20Id%3A%20000013&checkout-status=ok&checkout-provider=nordea&checkout-transaction-id=94dd9962-16c6-11ef-9fed-23e23935cd1a&signature=cc4ecea4f6511ec060c691c960ec29db2b4b4c5f6295dcd2bc778f947a7020fe
+
     /**
      * Reverse the migrations.
      */

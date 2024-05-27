@@ -94,7 +94,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     });
 });
 
-Route::group(['middleware' => ['permission:user-management']], function () {
+Route::group(['middleware' => ['permission:Administration']], function () {
     Route::resource('users', UserController::class);
     Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);

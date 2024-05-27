@@ -88,10 +88,14 @@ class PaytrailController extends Controller
         DB::beginTransaction();
         try{
             $data = $request->all();
+
             $order = Order::where('order_number', $request->order_id)->first();
-            $order->is_order_valid = 1;
-            $order->is_paid = 1;
-            $order->update();
+            if($data['checkout-status']=='ok'){
+                $order->is_order_valid = 1;
+                $order->is_paid = 1;
+                $order->transaction_id=$data['checkout-transaction-id'];
+                $order->update();
+            }
             
             $payment = new PaymentHistory;
             $payment->customer_id = $order->customer_id;
@@ -109,39 +113,40 @@ class PaytrailController extends Controller
             $payment->signature = $data['signature'];
             $payment->save();
 
-            $user = auth()->user();
-            Mail::to($user->email)->send(new PlaceOrderMail($request->order_id, $data));
 
-            $notification = new Notification;
-            $notification->message = "New Order Placed";
-            $notification->url = route('orders.index');
-            $notification->save();
+            if($data['checkout-status']=='ok'){
+                $user = auth()->user();
+                Mail::to($user->email)->send(new PlaceOrderMail($request->order_id, $data));
+                $notification = new Notification;
+                $notification->message = "New Order Placed";
+                $notification->url = route('orders.index');
+                $notification->save();
 
-            $pusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
-                'cluster' => env('PUSHER_APP_CLUSTER'),
-                'encrypted' => true
-            ]);
-            $item = $order;
-            $data = [];
-            $data['order'] = (string) view('admin.pages.order.singleOrder', compact('item'));
-            $pusher->trigger('order', 'place-order', $data);
-            $data = [
-                'notification' => $notification,
-                'notification_time' => displayNotificationTime($notification->created_at),
-                'unSeenNotifications' => unSeenNotifications(),
-            ];
-            $pusher->trigger('order', 'place-order-notification', $data);
+                $pusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
+                    'cluster' => env('PUSHER_APP_CLUSTER'),
+                    'encrypted' => true
+                ]);
+                $item = $order;
+                $data2 = [];
+                $data3['order'] = (string) view('admin.pages.order.singleOrder', compact('item'));
+                $pusher->trigger('order', 'place-order', $data2);
+                $data2 = [
+                    'notification' => $notification,
+                    'notification_time' => displayNotificationTime($notification->created_at),
+                    'unSeenNotifications' => unSeenNotifications(),
+                ];
+                $pusher->trigger('order', 'place-order-notification', $data2);
+            }
 
             DB::commit();
-            return redirect("/dashboard")->with('clear-cart', true);
+            $clear = $data['checkout-status']=='ok' ? true : false;
+            return redirect("/dashboard")->with('clear-cart', $clear);
 
 
         }catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
-        }
-       
-        
+        }  
     }
     public function cancel(Request $request){
         return redirect("/");
