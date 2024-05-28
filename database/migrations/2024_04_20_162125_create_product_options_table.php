@@ -16,6 +16,7 @@ return new class extends Migration
             $table->bigInteger('title_id');   
             $table->bigInteger('product_id');
             $table->string('type');
+            $table->integer('free_qty');
             $table->timestamps();
         });
     }

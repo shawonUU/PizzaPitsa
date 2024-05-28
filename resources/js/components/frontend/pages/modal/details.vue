@@ -166,6 +166,7 @@
                                         </span>
                                       </div>
                                       <input @change="updateQty(allTopings[productToping.topping_id].id,'optionQty')"  :id="'optionQty'+allTopings[productToping.topping_id].id" min="1" type="text" value="1" class="" style="margin-left: 0px;text-align: center; font-size: 14px; height: 20px; width: 35% !important; padding: 0px; border: solid 1px #000; font-size: 10px;">
+                                      <input style="display: none;" :id="'optionFreeQty'+allTopings[productToping.topping_id].id" type="number" :value="productOption.details.freeQty">
                                       <div  class="input-group-append" style="cursor: pointer;" >
                                         <span :id="'optionQtyPls'+allTopings[productToping.topping_id].id" @click="qtyPlus(allTopings[productToping.topping_id].id,'optionQty')" class="input-group-text" style="padding: 0.20rem .50rem;" >
                                           <b >+</b>
@@ -403,7 +404,6 @@ export default {
         if(document.getElementById('optionsItem'+id).checked && flg==false){
             document.getElementById('optionDiv'+id).style.border="1px solid white";
             document.getElementById('optionsItem'+id).checked = false;
-            // console.log(document.getElementById('topingDiv'+id));
         }else{
             document.getElementById('optionDiv'+id).style.border="1px solid red";
             document.getElementById('optionsItem'+id).checked = true;
@@ -471,7 +471,9 @@ export default {
             }
             pric = parseFloat(pric);
             var qty = parseInt(document.getElementById('optionQty'+elements[i].value).value.trim());
-            qty -= this.freeOption;
+            var freeQty = parseInt(document.getElementById('optionFreeQty'+elements[i].value).value.trim());
+            qty -= freeQty;
+            if(qty<0) qty = 0;
             orderPrice += (pric*qty);
             totalOptionPrice += (pric*qty);
           }
@@ -516,6 +518,7 @@ export default {
           var elements = document.getElementsByClassName('optionsItem');
           var options = [];
           var optionQtys = [];
+          var optionFreeQtys = [];
           var optionPrices = [];
           for(var i=0; i<elements.length; i++){
             if(elements[i].checked){
@@ -528,6 +531,7 @@ export default {
                 }
                 options[topingId] = this.allTopings[topingId];
                 optionQtys[topingId] = document.getElementById('optionQty'+topingId).value.trim();
+                optionFreeQtys[topingId] = document.getElementById('optionFreeQty'+topingId).value.trim();
                 optionPrices[topingId] = pric;
             }
           }
@@ -558,6 +562,7 @@ export default {
 
                     options: options,
                     optionQtys: optionQtys,
+                    optionFreeQtys: optionFreeQtys,
                     optionPrices: optionPrices,
                     totalOptionPrice: this.totalOptionPrice,
 
@@ -614,14 +619,16 @@ export default {
 
                     var bindOptions = [];
                     var bindOptionQtys = [];
+                    var bindOptionFreeQtys = [];
                     var bindOptionPrices = [];
                     var exOptions =  existingItem.options;
-                    var exOptionQtys =  existingItem.optionQtys;
+                    var exOptionFreeQtys =  existingItem.optionQtys;
                     var exOptionPrices =  existingItem.optionPrices;
                     for (const i in exOptions) {
                         if(exOptions[i]){
                             bindOptions[exOptions[i].id] = exOptions[i];
                             bindOptionQtys[exOptions[i].id] = exOptionQtys[exOptions[i].id];
+                            bindOptionFreeQtys[exOptions[i].id] = exOptionFreeQtys[exOptions[i].id];
                             bindOptionPrices[exOptions[i].id] = exOptionPrices[exOptions[i].id];
                         }
                     }
@@ -632,6 +639,7 @@ export default {
                         if ( typeof bindOptions[options[i].id] === 'undefined'){
                               bindOptions[options[i].id] = options[i];
                               bindOptionQtys[options[i].id] = optionQtys[options[i].id];
+                              bindOptionFreeQtys[options[i].id] = optionFreeQtys[options[i].id];
                               bindOptionPrices[options[i].id] = optionPrices[options[i].id];
                         }else{
                           bindOptionQtys[options[i].id] = parseFloat(bindOptionQtys[options[i].id]);
@@ -643,8 +651,10 @@ export default {
                     var totalOptionPrice = 0;
                     //existingItem.totalPrice = parseFloat(existingItem.quantity) * parseFloat(item.size.price);
                      for (const i in bindOptions) {
-                        existingItem.totalPrice += parseFloat(bindOptionPrices[bindOptions[i].id]) * parseInt(bindOptionQtys[bindOptions[i].id])-this.freeOption;
-                        totalOptionPrice += parseFloat(bindOptionPrices[bindOptions[i].id]) * parseInt(bindOptionQtys[bindOptions[i].id])-this.freeOption;
+                        var paidQty = parseInt(bindOptionQtys[bindOptions[i].id])-parseInt(bindOptionFreeQtys[bindOptions[i].id]);
+                        if(paidQty<0)paidQty=0;
+                        existingItem.totalPrice += parseFloat(bindOptionPrices[bindOptions[i].id]) * paidQty;
+                        totalOptionPrice += parseFloat(bindOptionPrices[bindOptions[i].id]) * paidQty;
                     }
 
                     var merged = [...new Set([...existingItem.removedTags, ...item.removedTags])];
@@ -657,6 +667,7 @@ export default {
 
                     existingItem.options = bindOptions;
                     existingItem.optionQtys = bindOptionQtys;
+                    existingItem.optionFreeQtys = bindOptionFreeQtys;
                     existingItem.optionPrices = bindOptionPrices;
                     existingItem.totalOptionPrice = totalOptionPrice;
 
@@ -774,8 +785,6 @@ export default {
                         </div>
                       </div>
                     </div>
-
-
                 </div>
             </div>
           `;

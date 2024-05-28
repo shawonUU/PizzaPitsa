@@ -527,15 +527,20 @@ export default {
 
                             var options = item.options;
                             var optionQtys = item.optionQtys;
+                            var optionFreeQtys = item.optionFreeQtys;
                             var optionPrices = item.optionPrices;
                             var optionsPrice = 0;
                             for (const i in options) {
                                 if(options[i])  {
                                     var price = optionPrices[options[i].id];
                                     var qty = optionQtys[options[i].id];
+                                    var freeQty = optionFreeQtys[options[i].id];
                                     price = parseFloat(price);
                                     qty = parseFloat(qty);
-                                    optionsPrice += parseFloat(price*(qty-this.freeOption));
+                                    freeQty = parseFloat(freeQty);
+                                    var paidQty = qty - freeQty;
+                                    if(paidQty<0) paidQty = 0;
+                                    optionsPrice += parseFloat(price*paidQty);
                                 }
                             }
                             this.subTotal += (item.size.price * item.quantity) + topingsPrice + optionsPrice;
