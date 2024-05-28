@@ -616,13 +616,15 @@ export default {
                         totalTopingPrice += parseFloat(bindPrices[bindTopings[i].id]) * parseInt(bindQtys[bindTopings[i].id]);
                     }
 
+                    
 
                     var bindOptions = [];
                     var bindOptionQtys = [];
                     var bindOptionFreeQtys = [];
                     var bindOptionPrices = [];
                     var exOptions =  existingItem.options;
-                    var exOptionFreeQtys =  existingItem.optionQtys;
+                    var exOptionQtys =  existingItem.optionQtys;
+                    var exOptionFreeQtys =  existingItem.optionFreeQtys;
                     var exOptionPrices =  existingItem.optionPrices;
                     for (const i in exOptions) {
                         if(exOptions[i]){
@@ -632,6 +634,8 @@ export default {
                             bindOptionPrices[exOptions[i].id] = exOptionPrices[exOptions[i].id];
                         }
                     }
+
+                    console.log('okkkk');
 
                     for (const i in options){
                       if(options[i]){
