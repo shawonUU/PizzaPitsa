@@ -157,7 +157,7 @@
                                   <img class="p-2" :src="'/frontend/toping_images/' + allTopings[productToping.topping_id].image" alt="" style="width: 65px; ">
                                   <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">{{allTopings[productToping.topping_id].name}}</p>
                                   <p class="text-center m-0" style="font-size:12px;"><b class="showToppingPrice" :data-toppingId="allTopings[productToping.topping_id].id" :id="'showOptionPrice'+allTopings[productToping.topping_id].id">{{allTopings[productToping.topping_id].price}}</b><b>{{ baseCurrencySymbol }}</b></p>
-                                  <input :name="'productoption'+productToping.product_option_id" :data-toppingid="allTopings[productToping.topping_id].id" :id="'optionsItem'+allTopings[productToping.topping_id].id" :value="allTopings[productToping.topping_id].id" name="optionsItem" class="optionsItem" :type="productToping.type" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
+                                  <input :name="'productoption'+productToping.product_option_id" :data-toppingid="allTopings[productToping.topping_id].id" data-checked="false" :id="'optionsItem'+allTopings[productToping.topping_id].id" :value="allTopings[productToping.topping_id].id" name="optionsItem" class="optionsItem" :type="productToping.type" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
                                   <div style="padding: 0 5px; padding-left: 20%;"  onclick="event.stopPropagation();">
                                     <div  class="input-group" >
                                       <div  class="input-group-prepend" style="cursor: pointer;" >
@@ -416,10 +416,18 @@ export default {
           for(var i=0; i<els.length; i++){
               var tid = els[i].dataset.toppingid;
               if(tid==id){
-                els[i].checked = true;
-                document.getElementById('optionDiv'+tid).style.border = "1px solid red";
+                if(els[i].dataset.checked == "true"){
+                  els[i].checked = false;
+                  els[i].dataset.checked = "false";
+                  document.getElementById('optionDiv'+tid).style.border = "1px solid white";
+                }else{
+                  els[i].checked = true;
+                  els[i].dataset.checked = "true";
+                  document.getElementById('optionDiv'+tid).style.border = "1px solid red";
+                }
               }else{
                 els[i].checked = false;
+                els[i].dataset.checked = "false";
                 document.getElementById('optionDiv'+tid).style.border = "1px solid white";
               }
           }
