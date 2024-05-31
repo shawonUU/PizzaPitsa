@@ -38,11 +38,34 @@
                 </select>                          
             </div>
             <div class="col-md-3">
+              
               <label for="update_delivery_status">Order Status</label>             
                 <select class="form-control" data-minimum-results-for-search="Infinity" onchange="updateStatus('{{ $orderDetails->order_number }}',this.value)" id="update_delivery_status" tabindex="-98">
-                  @foreach (orderStatuses() as $value => $text)
-                      <option {{ $value == $orderDetails->order_status ? 'selected' : '' }} value="{{ $value }}">{{ $text }}</option>                                            
-                  @endforeach    
+                 
+                  @php
+                      // Define the order statuses based on the user's role
+                      $userRole = auth()->check() ? checkRole() : null;
+                  
+                      if ($userRole == 'Salesman') {
+                          $statuses = [
+                              '2' => 'Processing',
+                              '4' => 'Out for Delivery',
+                              '6' => 'Canceled',
+                          ];
+                      } elseif ($userRole == 'Delivery Boy') {
+                          $statuses = [
+                              '4' => 'Out for Delivery',
+                              '5' => 'Delivered',
+                          ];
+                      } else {
+                          $statuses = orderStatuses();
+                      }
+                  @endphp
+
+                  <option value="" selected disabled>--Status--</option>
+                  @foreach ($statuses as $value => $text)                                             
+                      <option {{ $value == $orderDetails->order_status ? 'selected' : '' }} value="{{ $value }}">{{ $text }}</option> 
+                  @endforeach   
                 </select>                         
             </div>          
           </div>          

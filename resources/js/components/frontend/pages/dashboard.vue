@@ -103,6 +103,10 @@
                                                 <label>Email</label>
                                                 <input type="text" class="form-control" v-model="formData.email" placeholder="Email">
                                             </div>
+                                            <div class="form-group">
+                                                <label>Phone</label>
+                                                <input type="text" class="form-control" v-model="formData.phone" placeholder="Phone">
+                                            </div>
                                             </div>
                                             <div class="col-12">
                                             <!-- <h5 class="title">Password Change</h5>
@@ -368,7 +372,8 @@ export default {
             baseCurrencySymbol: '',
             formData: {
                 name: '',
-                email: ''
+                email: '',
+                phone:null
             },
             password: '',
             newPassword: '',
@@ -388,7 +393,7 @@ export default {
             verificationError:'',
             verificationMessage:'',
             showVerificationModal:false,
-            message: null
+            message: null,            
         }
     },
     
@@ -404,6 +409,7 @@ export default {
 
         this.formData.name = this.isAuth.name;
         this.formData.email = this.isAuth.email;
+        this.formData.phone = this.isAuth.phone;
         this.myOrders();
         this.getOrderStatus();
         this.fetchBaseCurrencySymbol();
@@ -425,12 +431,13 @@ export default {
             axios.post('frontend/update-customer-data', {
                 name: this.formData.name,
                 email: this.formData.email,
+                phone: this.formData.phone,
                 // password: this.password,
                 // newPassword: this.newPassword,
                 // confirmNewPassword: this.confirmNewPassword,
                 })
                 .then(response => {
-                  // console.log(response.data);
+                  console.log(response.data);
                   if (response.data.updateStatus == 'email') {
                      this.showVerificationModal = true;
                   } else {
@@ -511,8 +518,7 @@ export default {
                 })
                 .catch((err)=>{
                     console.log(err);
-                })
-                
+                })                
             } ,
             myOrders() {            
                 axios.get('get-my-orders')

@@ -36,35 +36,56 @@
                             <div class="contact-form">
                                 <h3 class="title mb--10">We would love to hear from you.</h3>
                                 <p>If you’ve got great products your making or looking to work with us then drop us a line.</p>
-                                <form id="contact-form" method="POST" action="https://new.axilthemes.com/demo/template/etrade/mail.php" class="axil-contact-form">
+                                   <form @submit.prevent="submitForm" class="axil-contact-form">
                                     <div class="row row--10">
                                         <div class="col-lg-4">
                                             <div class="form-group">
-                                                <label for="contact-name">Name <span>*</span></label>
-                                                <input type="text" name="contact-name" id="contact-name">
+                                            <label for="contact-name">Name <span>*</span></label>
+                                            <input type="text" v-model="formData.name" id="contact-name" required>
+                                            <span class="error" v-if="errors.name"> {{ errors.name }} </span>
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
                                             <div class="form-group">
-                                                <label for="contact-phone">Phone <span>*</span></label>
-                                                <input type="text" name="contact-phone" id="contact-phone">
+                                            <label for="contact-phone">Phone <span>*</span></label>
+                                            <input type="text" v-model="formData.phone" id="contact-phone" required>
+                                            <span class="error" v-if="errors.phone"> {{ errors.phone }} </span>
                                             </div>
                                         </div>
                                         <div class="col-lg-4">
                                             <div class="form-group">
-                                                <label for="contact-email">E-mail <span>*</span></label>
-                                                <input type="email" name="contact-email" id="contact-email">
+                                            <label for="contact-email">E-mail <span>*</span></label>
+                                            <input type="email" v-model="formData.email" id="contact-email" required>
+                                            <span class="error" v-if="errors.email"> {{ errors.email }} </span>
                                             </div>
                                         </div>
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <label for="contact-message">Your Message</label>
-                                                <textarea name="contact-message" id="contact-message" cols="1" rows="2"></textarea>
+                                            <label for="contact-message">Your Message</label>
+                                            <textarea v-model="formData.message" id="contact-message" cols="1" rows="2"></textarea>
                                             </div>
                                         </div>
                                         <div class="col-12">
+                                            <VueClientRecaptcha
+                                                :value="inputValue"
+                                                chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789"
+                                                :hidelines="false"
+                                                custom-text-color="black"
+                                                @getCode="getCaptchaCode"
+                                                @isValid="checkValidCaptcha"
+                                                class="vue-recaptcha"
+                                                >                                                             
+                                            </VueClientRecaptcha>
+                                            <input
+                                                type="text"
+                                                style="height: 40px; padding:5px;border: 1px solid #cfcbcb;" 
+                                                v-model="inputValue"
+                                                placeholder="Captcha"
+                                            />
+                                        </div>
+                                        <div class="col-12 mt-3">
                                             <div class="form-group mb--0">
-                                                <button name="submit" type="submit" id="submit" class="axil-btn btn-bg-primary">Send Message</button>
+                                            <button type="submit" class="axil-btn btn-bg-primary">Send Message</button>
                                             </div>
                                         </div>
                                     </div>
@@ -166,69 +187,71 @@
     import axios from 'axios';
     import { toast } from 'vue3-toastify';
     import 'vue3-toastify/dist/index.css';
+    import VueClientRecaptcha from "vue-client-recaptcha";
     export default {
-        name: 'deliveryPlace',
-        props: {
-          discount: Object,
-          subTotal: Object,
-          grandTotal: Object,
-          orderType:Object,
-        },
+        name: 'contact',
         data() {
             return {
-                lat:0,
-                lng:0,
-                deliveryPlace: true,
-                mapSection: false,
-                scheduleSection:false,
-                modalWidth: 25,
-                message: '',
-                isVisible:false,
-
-                map: null,
-                marker: null,
-                selectedLocation: null,
-                selectedAddress: '',
-                latitude:null,
-                longitude:null,
-                orderDetails:false,
-                auth:true,
-                entrance:'',
-                doorCode:'',
-                floor:'',
-                apartment:'',
-                addressComment:'',
-                cart:[],
-                shopAddress:'',
-                shopLatitude:'',
-                shopLongitude:'',
-                shopSchedule:'',
-                deliveryCharge:0,
-                deliveryAddressError:'',
+               formData: {
+                name: '',
+                phone: '',
+                email: '',
+                message: ''
+                },                
+                errors: {},
+                inputValue: null,
+                isValidCaptcha: false,                
             };
         },
+        components: {
+            VueClientRecaptcha
+        },
         mounted() {
-          axios.get('get-location-schedule')
-          .then((res)=>{                  
-            console.log(res.data);
-            this.shopAddress = res.data.address;
-            this.shopSchedule = res.data.schedule;
-            this.lng = res.data.longitude;
-            this.lat = res.data.latitude;
-            if(this.orderType==1){this.showMap();}
-            if(this.orderType==2){this.showSchedule();}
-          })
-          .catch((err)=>{
-              console.log(err);
-          });
+          
         },
         methods: {
-            
-        },
-    };
+            async submitForm() {
+                
+                if (this.isValidCaptcha) { 
+                    try {
+                        const response = await axios.post('contact-us-submit', this.formData);
+                        toast.success('Form submitted success!', {
+                            timeout: 3000
+                        });  
+                        this.name = '';
+                        this.phone = '';
+                        this.email = '';
+                        this.message = '';
+                    } catch (error) {
+                        if (error.response && error.response.status === 422) {
+                        this.errors = error.response.data.errors;
+                        } else {
+                        console.error('Form submission error:', error);
+                        }
+                    }
+                } else {
+                    alert("Your Form Not Submited! captcha is inValid");
+                }
+                
+            } ,
+            getCaptchaCode(capthaResult) {
+                /* you can access captcha code */
+                // console.log(capthaResult);
+            },
+            checkValidCaptcha(capthaResult) {
+                /* expected return boolean if your value and captcha code are same return True otherwise return False */
+                // console.log("this is captha valid " + capthaResult);
+                this.isValidCaptcha = capthaResult;
+            },
+    }
+};
 </script>
 <style scoped>
  ul li {
     list-style: none;
  }
+
+ .error {
+  color: red;
+}
 </style>

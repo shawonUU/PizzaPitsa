@@ -81,16 +81,19 @@ function userTypes()
   ];
 }
 
-function getNotifications(){
-    $notifications = Notification::where('status','1')->orderBy('created_at','DESC')->get();
-    return $notifications;
+function getNotifications()
+{
+  $notifications = Notification::where('status', '1')->orderBy('created_at', 'DESC')->get();
+  return $notifications;
 }
-function unSeenNotifications(){
-  $notifications = Notification::where('status','1')->where('isSeen','0')->get();
+function unSeenNotifications()
+{
+  $notifications = Notification::where('status', '1')->where('isSeen', '0')->get();
   return count($notifications);
 }
 
-function displayNotificationTime($timestamp) {
+function displayNotificationTime($timestamp)
+{
   $time_ago = strtotime($timestamp);
   $current_time = time();
   $time_difference = $current_time - $time_ago;
@@ -99,23 +102,23 @@ function displayNotificationTime($timestamp) {
   $seconds = round($time_difference);
 
   if ($seconds < 60) {
-      if ($seconds <= 1) {
-          return "1 second ago";
-      } else {
-          return "$seconds seconds ago";
-      }
+    if ($seconds <= 1) {
+      return "1 second ago";
+    } else {
+      return "$seconds seconds ago";
+    }
   } elseif ($minutes < 60) {
-      if ($minutes <= 1) {
-          return "1 minute ago";
-      } else {
-          return "$minutes minutes ago";
-      }
+    if ($minutes <= 1) {
+      return "1 minute ago";
+    } else {
+      return "$minutes minutes ago";
+    }
   } elseif ($hours < 24) {
-      if ($hours <= 1) {
-          return "1 hour ago";
-      } else {
-          return "$hours hours ago";
-      }
+    if ($hours <= 1) {
+      return "1 hour ago";
+    } else {
+      return "$hours hours ago";
+    }
   } else {
     return date("d M \a\\t H:i", $time_ago);
   }
@@ -123,39 +126,46 @@ function displayNotificationTime($timestamp) {
 
 function sendEmployeeCredential($data)
 {
-    $data['email'] = "shawonmahmodul12@gmail.com";
+  $data['email'] = "shawonmahmodul12@gmail.com";
 
-    $companyName = 'Company Name';
-    $companyEmail = 'shawonmahmodul12@gmail.com';
+  $companyName = 'Company Name';
+  $companyEmail = 'shawonmahmodul12@gmail.com';
 
-    Mail::send('emails.employee',  ['data' => $data], function ($m) use ($data, $companyEmail, $companyName) {
-        $m->from($companyEmail, 'Credentials of ' . $companyName);
-        $m->to($data['email'])->subject('HRIS Access Information');
-    });
-   
+  Mail::send('emails.employee',  ['data' => $data], function ($m) use ($data, $companyEmail, $companyName) {
+    $m->from($companyEmail, 'Credentials of ' . $companyName);
+    $m->to($data['email'])->subject('HRIS Access Information');
+  });
 }
 
-function getSelectedTopings($id){
-  return ProductOptionTopping::join('topings','topings.id','=','product_option_toppings.topping_id')->select('topings.*')->where('product_option_toppings.product_option_id',$id)->get();
+function getSelectedTopings($id)
+{
+  return ProductOptionTopping::join('topings', 'topings.id', '=', 'product_option_toppings.topping_id')->select('topings.*')->where('product_option_toppings.product_option_id', $id)->get();
 }
 
 function getHost()
 {
-    $host = request()->getHost();
-    $host = str_replace('www.', '', $host);
-    return $host;
+  $host = request()->getHost();
+  $host = str_replace('www.', '', $host);
+  return $host;
 }
 
-function getRootURL(){
+function getRootURL()
+{
   $currentUrl = request()->url();
   $parsed_url = parse_url($currentUrl);
   $host = $parsed_url['host'];
-  $port = isset($parsed_url['port'])?$parsed_url['port']:null;
+  $port = isset($parsed_url['port']) ? $parsed_url['port'] : null;
 
   $result = $host;
   if ($port !== null) {
-      $result = $host . ':' . $port;
+    $result = $host . ':' . $port;
   }
   return $result;
 }
 
+
+function checkRole()
+{
+  $user = Auth::user();
+  return $user->getRoleNames()['0'];
+}

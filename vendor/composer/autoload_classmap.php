@@ -6,6 +6,9 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Anhskohbo\\NoCaptcha\\Facades\\NoCaptcha' => $vendorDir . '/anhskohbo/no-captcha/src/Facades/NoCaptcha.php',
+    'Anhskohbo\\NoCaptcha\\NoCaptcha' => $vendorDir . '/anhskohbo/no-captcha/src/NoCaptcha.php',
+    'Anhskohbo\\NoCaptcha\\NoCaptchaServiceProvider' => $vendorDir . '/anhskohbo/no-captcha/src/NoCaptchaServiceProvider.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Events\\PlaceOrder' => $baseDir . '/app/Events/PlaceOrder.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
@@ -48,9 +51,12 @@ return array(
     'App\\Http\\Middleware\\TrustProxies' => $baseDir . '/app/Http/Middleware/TrustProxies.php',
     'App\\Http\\Middleware\\ValidateSignature' => $baseDir . '/app/Http/Middleware/ValidateSignature.php',
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
+    'App\\Mail\\ContactFormMail' => $baseDir . '/app/Mail/ContactFormMail.php',
+    'App\\Mail\\PlaceOrderMail' => $baseDir . '/app/Mail/PlaceOrderMail.php',
     'App\\Mail\\VerificationMail' => $baseDir . '/app/Mail/VerificationMail.php',
     'App\\Models\\Address' => $baseDir . '/app/Models/Address.php',
     'App\\Models\\Admin\\Category' => $baseDir . '/app/Models/Admin/Category.php',
+    'App\\Models\\Admin\\ContactForm' => $baseDir . '/app/Models/Admin/ContactForm.php',
     'App\\Models\\Admin\\Coupon' => $baseDir . '/app/Models/Admin/Coupon.php',
     'App\\Models\\Admin\\Currency' => $baseDir . '/app/Models/Admin/Currency.php',
     'App\\Models\\Admin\\DelivaryCharge' => $baseDir . '/app/Models/Admin/DelivaryCharge.php',
@@ -70,6 +76,7 @@ return array(
     'App\\Models\\Notification' => $baseDir . '/app/Models/Notification.php',
     'App\\Models\\Order' => $baseDir . '/app/Models/Order.php',
     'App\\Models\\OrderItem' => $baseDir . '/app/Models/OrderItem.php',
+    'App\\Models\\PaymentHistory' => $baseDir . '/app/Models/PaymentHistory.php',
     'App\\Models\\SizeVsTopingPrice' => $baseDir . '/app/Models/SizeVsTopingPrice.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',

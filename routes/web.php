@@ -24,6 +24,7 @@ use App\Http\Controllers\Admin\OptionTitleController;
 use App\Http\Controllers\Admin\TimeScheduleController;
 use App\Http\Controllers\Admin\DelivaryChargeController;
 use App\Http\Controllers\Admin\ProductMnagementController;
+use App\Http\Controllers\Admin\SliderController;
 use Illuminate\Http\Request;
 
 /*
@@ -92,6 +93,11 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::post('assign-delivery-boy', [OrderController::class, 'assignDeliveryBoy'])->name('assign.deliveryboy');
         Route::post('update-address', [OrderController::class, 'updateAddress'])->name('address.update');
     });
+
+    //Order Management
+    Route::group(['middleware' => ['permission:content-management']], function () {
+        Route::resource('slider', SliderController::class);
+    });
 });
 
 Route::group(['middleware' => ['permission:user-management']], function () {
@@ -144,6 +150,7 @@ Route::get('get-order-status', [OrderController::class, 'getOrderStatus']);
 Route::get('order-info', [OrderController::class, 'getCustomerOrderInfo']);
 Route::post('update-notification', [NotificationController::class, 'update'])->name('update-notification');
 Route::post('/paytrail/create-payment', [PaytrailController::class, 'createPayment']);
+Route::post('/contact-us-submit', [CustomerController::class, 'submitContact']);
 
 Route::get('/{any}', function () {
     return view('frontend.layouts.app');

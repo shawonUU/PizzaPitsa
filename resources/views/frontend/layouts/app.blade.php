@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Pizza Pitsa</title>
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link rel="icon" type="image/x-icon" href="{{ asset('') }}">
+        <link rel="shortcut icon" href="{{asset('frontend')}}/assets/images/logo/logomark.png">
          <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="{{ asset('frontend') }}/assets/css/vendor/bootstrap.min.css">
         <link rel="stylesheet" href="{{ asset('frontend') }}/assets/css/vendor/font-awesome.css">

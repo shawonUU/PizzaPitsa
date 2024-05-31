@@ -57,7 +57,21 @@
             <div id="two-column-menu">
             </div>
             <ul class="navbar-nav" id="navbar-nav">
-                <li class="menu-title"><span data-key="t-menu">Menu</span></li>            
+                <li class="menu-title"><span data-key="t-menu">Menu</span></li>  
+                @can('content-management')
+                    <li class="nav-item">
+                        <a class="nav-link menu-link" href="#contentManagement" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
+                            <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Content Management</span>
+                        </a>
+                        <div class="collapse menu-dropdown" id="contentManagement">
+                            <ul class="nav nav-sm flex-column">
+                                <li class="nav-item">
+                                    <a href="{{ route('slider.index') }}" class="nav-link">Sliders</a>
+                                </li>                                                         
+                            </ul>
+                        </div>
+                    </li>
+                @endcan 
                 @can('product-management')
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#sidebarAdvanceUI" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
@@ -86,7 +100,8 @@
                             </ul>
                         </div>
                     </li>
-                @endcan
+                @endcan                            
+                @can('order-management')
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#orderManagement" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">
                             <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Order Management</span>
@@ -98,7 +113,9 @@
                                 </li>                         
                             </ul>
                         </div>
-                    </li>
+                    </li> 
+                @endcan
+                   
                 @can('settings')
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#sidebarCouponUI" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAdvanceUI">

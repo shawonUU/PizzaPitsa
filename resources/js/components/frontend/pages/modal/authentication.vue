@@ -519,11 +519,9 @@
         },
         getCaptchaCode(capthaResult) {
                 /* you can access captcha code */
-                console.log(capthaResult);
         },
         checkValidCaptcha(capthaResult) {
             /* expected return boolean if your value and captcha code are same return True otherwise return False */
-            console.log("this is captha valid " + capthaResult);
             this.isValidCaptcha = capthaResult;
         },
         save() {

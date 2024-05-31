@@ -36,10 +36,18 @@
                                                         <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon"><i class="ri-eye-fill align-middle"></i></button>
                                                     </div>
                                                 </div>
-                                                <div class="form-check">
+                                                <div class="form-group">
+                                                    {!! NoCaptcha::display() !!}
+                                                    @if ($errors->has('g-recaptcha-response'))
+                                                        <span>
+                                                            <strong style="color: red">{{ $errors->first('g-recaptcha-response') }}</strong>
+                                                        </span>
+                                                    @endif
+                                                </div>
+                                                {{-- <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value="" id="auth-remember-check">
                                                     <label class="form-check-label" for="auth-remember-check">Remember me</label>
-                                                </div>
+                                                </div> --}}
                                                 <div class="mt-4">
                                                     <button class="btn btn-success w-100" type="submit">Sign In</button>
                                                 </div>

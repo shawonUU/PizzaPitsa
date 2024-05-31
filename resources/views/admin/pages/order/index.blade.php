@@ -42,7 +42,7 @@
                     <div class="card-body">
                       <div class="live-preview">
                         <div class="row gy-4">
-                            <table class="table" id="">
+                            <table class="table" id="dataTbl">
                                 <thead>
                                   <tr>
                                     <th>#</th>
@@ -69,11 +69,36 @@
                                     <td>{{ $item->is_paid == '0'?'Unpaid':'Paid' }}</td>                                                                
                                     <td>{{ $item->delivery_address_id }}</td>                                  
                                     <td>
-                                        <select class="form-select rounded-pill mb-3" onchange="updateStatus('{{ $item->order_number }}',this.value)">
+                                      <select class="form-select rounded-pill mb-3" onchange="updateStatus('{{ $item->order_number }}', this.value)">
+                                        @php
+                                            // Define the order statuses based on the user's role
+                                            $userRole = auth()->check() ? checkRole() : null;
+                                        
+                                            if ($userRole == 'Salesman') {
+                                                $statuses = [
+                                                    '2' => 'Processing',
+                                                    '4' => 'Out for Delivery',
+                                                    '6' => 'Canceled',
+                                                ];
+                                            } elseif ($userRole == 'Delivery Boy') {
+                                                $statuses = [
+                                                    '4' => 'Out for Delivery',
+                                                    '5' => 'Delivered',
+                                                ];
+                                            } else {
+                                                $statuses = orderStatuses();
+                                            }
+                                        @endphp
+                                         <option value="" selected disabled>--Status--</option>
+                                          @foreach ($statuses as $value => $text)                                             
+                                              <option {{ $value == $item->order_status ? 'selected' : '' }} value="{{ $value }}">{{ $text }}</option> 
+                                          @endforeach                                                                                 
+                                      </select>
+                                        {{-- <select class="form-select rounded-pill mb-3" onchange="updateStatus('{{ $item->order_number }}',this.value)">
                                             @foreach (orderStatuses() as $value => $text)
                                                 <option {{ $value == $item->order_status ? 'selected' : '' }} value="{{ $value }}">{{ $text }}</option> 
                                             @endforeach                                                                                 
-                                        </select>
+                                        </select> --}}
                                     </td> 
                                     <td>
                                         <a class="btn btn-info" href="{{ route('order.details',$item->order_number) }}">Details</a>    

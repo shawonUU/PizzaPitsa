@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Mail\VerificationMail;
+use App\Mail\ContactFormMail;
 
+use App\Mail\VerificationMail;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -203,6 +204,7 @@ class CustomerController extends Controller
     public function updateCustomerData(Request $request)
     {
         // Get current authenticated user
+        // return $request;
         $user = Auth::user();
 
         $checkEmailChangeStatus = 0;
@@ -217,10 +219,12 @@ class CustomerController extends Controller
             // Validate request data
             $request->validate([
                 'name' => 'required|string',
+                'phone' => 'required|regex:/(01)[0-9]{9}/',
             ]);
 
             // Update user data
             $user->name = $request->name;
+            $user->phone = $request->phone;
             $user->update();
             $updateStatus = 'name';
             $response = [
@@ -229,6 +233,7 @@ class CustomerController extends Controller
         } else {
             $request->validate([
                 'name' => 'required|string',
+                'phone' => 'required|regex:/(01)[0-9]{9}/',
                 'email' => 'required|email|unique:users,email,' . $user->id,
             ]);
             $updateStatus = 'email';
@@ -250,6 +255,7 @@ class CustomerController extends Controller
         if ($user) {
             if ($user->verification_code == $request->code) {
                 $user->name = $request->name;
+                $user->phone = $request->phone;
                 $user->email = $request->email;
                 $user->update();
                 $response = [
@@ -328,5 +334,34 @@ class CustomerController extends Controller
         ];
 
         return response()->json($response);
+    }
+
+
+    public function submitContact(Request $request)
+    {
+        $data = $request->all();
+        $rules = [
+            'name' => 'required|string|max:255',
+            'phone' => 'required|regex:/(01)[0-9]{9}/',
+            'email' => 'required|email|max:255',
+            'message' => 'nullable|string'
+        ];
+
+        // Validate the request data
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        // Handle the form submission logic (e.g., save to database, send email)
+        // For demonstration, we'll just return the validated data
+        Mail::to('mdsajibhassan01993@gmail.com')->send(new ContactFormMail($data));
+        return response()->json([
+            'message' => 'Form submitted successfully!',
+            'data' => $request->all()
+        ], 200);
     }
 }

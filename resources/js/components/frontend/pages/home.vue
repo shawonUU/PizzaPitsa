@@ -81,7 +81,7 @@
                         }"
                         @swiper="onSwiper" @slideChange="onSlideChange">
                         <swiper-slide v-for="(item, index) in popularProduct" :key="index">
-                            <div class="d-flex align-items-center">
+                            <div class="d-flex align-items-center" @click="getProductDetails(item.id)">
                                 <div class="flex-shrink-0">
                                     <img style="width:70px"
                                         :src="item.image ? '/frontend/product_images/' + item.image : '/frontend/product_images/placeholder.jpg'"

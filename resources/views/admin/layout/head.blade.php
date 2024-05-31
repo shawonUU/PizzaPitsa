@@ -6,7 +6,7 @@
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="{{asset('backend')}}/images/favicon.ico">
+    <link rel="shortcut icon" href="{{asset('frontend')}}/assets/images/logo/logomark.png">
 
     <!-- jsvectormap css -->
     <link href="{{asset('backend')}}/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
