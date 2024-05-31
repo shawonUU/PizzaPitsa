@@ -36,5 +36,7 @@
     <link href="{{asset('backend')}}/css/app.min.css" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
     <link href="{{asset('backend')}}/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <!-- capta -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk"crossorigin="anonymous">
 
 </head>

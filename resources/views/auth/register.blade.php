@@ -84,6 +84,8 @@
     </div>
     <!-- end auth-page-wrapper -->
     @include('admin.layout.script')
+
+
 </body>
 
 </html>

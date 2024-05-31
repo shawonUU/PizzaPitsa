@@ -181,7 +181,7 @@
                     </template>
 
 
-                    <h6  style="margin-bottom:5px;">Your Favorit Toppings</h6>
+                    <h6 v-if="productTopings.length > 0"  style="margin-bottom:5px;">Your Favorit Toppings</h6>
                     <div class="row">
                       <div class="col-6 col-md-3 p-2" v-for="(productToping, topingId) in productTopings" :key="topingId">
                           <div :id="'topingDiv'+productToping.id" @click="clickOnTopings(productToping.id)" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border:1px solid white; border-radius: 10%; cursor:pointer;">
@@ -416,7 +416,7 @@ export default {
           for(var i=0; i<els.length; i++){
               var tid = els[i].dataset.toppingid;
               if(tid==id){
-                if(els[i].dataset.checked == "true"){
+                if(els[i].dataset.checked == "true" && flg==false){
                   els[i].checked = false;
                   els[i].dataset.checked = "false";
                   document.getElementById('optionDiv'+tid).style.border = "1px solid white";
@@ -841,7 +841,7 @@ export default {
       },
       updateQty(toppingId, prifix){
         var currentQty = document.getElementById(prifix+toppingId).value.trim();
-        if(currentQty=="") currentQty = 1;
+        if(currentQty=="" || currentQty < 1) currentQty = 1;
         currentQty = parseInt(currentQty);
         document.getElementById(prifix+toppingId).value = currentQty;
         //this.generatePrice();

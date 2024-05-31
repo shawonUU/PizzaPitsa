@@ -18,6 +18,7 @@ use App\Models\Admin\ProductOption;
 use App\Models\Admin\ProductToping;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\ProductOptionTopping;
+use Carbon\Carbon;
 
 class ProductContoller extends Controller
 {
@@ -602,10 +603,17 @@ class ProductContoller extends Controller
             ->where('product_sizes.status', '1')
             ->select('product_sizes.*', 'sizes.name', 'sizes.id as size_id')
             ->get();
+
+
+        $currentDate = Carbon::today();
         $maxPrice = $productSizes->max('price');
         $minPrice = $productSizes->min('price');
         $tem = [];
+        
         foreach ($productSizes as $row) {
+            if ($row->offer_from <= $currentDate && $currentDate <= $row->offer_to) {
+                $row->price = $row->offer_price;
+            }
             $tem[$row->id] = $row;
         }
         $productSizes = $tem;
