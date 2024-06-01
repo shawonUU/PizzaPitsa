@@ -362,10 +362,8 @@
     @endphp
     <div class="container">
         <div class="header">
-            <h1>
-                <img style="width: 100px;" src="http://127.0.0.1:8000/frontend/assets/images/logo/2%20pizza%20logo-02.png" alt="">
-                <span style="width: 100%; text-align: center; margin-left: 120px;">Order Confirmation</span>
-            </h1>
+            <img style="width: 100px;" src="http://127.0.0.1:8000/frontend/assets/images/logo/2%20pizza%20logo-02.png" alt="">
+            <h4 style="margin:0px; text-align: center;">Order Confirmation</h4>
         </div>
         <div class="order-details">
             <h2>Thank you for your order!</h2>
@@ -399,7 +397,7 @@
                             </tr>
                             <tr>
                                 <td class="text-main text-bold"> Total amount </td>
-                                <td class="text-right">48.450{{ getCurrency() }}</td>
+                                <td class="text-right">{{ $orderDetails->paid_amount }} {{ getCurrency() }}</td>
                             </tr>
                             <tr>
                                 <td class="text-main text-bold">Payment Type</td>
@@ -407,7 +405,7 @@
                             </tr>
                             <tr>
                                 <td class="text-main text-bold">Payment Status</td>
-                                <td class="text-right"> {{$orderDetails->payment_type == 2 ? 'Paied' : 'Not Paied'}}</td>
+                                <td class="text-right"> {{$orderDetails->payment_type == 2 ? 'Paid' : 'Not Paid'}}</td>
                             </tr>
                             @if($orderDetails->payment_type == 2 && isset($data['checkout-transaction-id']))
                                 <tr>

@@ -40,7 +40,7 @@ class SliderController extends Controller
                 'image',
                 'mimes:jpg,png,jpeg,gif',
                 'max:2048',
-                'dimensions:min_width=746 ,min_height=374,',
+                'dimensions:width=746 ,height=374,',
             ],
         ];
         $validation = Validator::make($attributes, $rules);
@@ -116,7 +116,7 @@ class SliderController extends Controller
                 'image',
                 'mimes:jpg,png,jpeg,gif',
                 'max:2048',
-                'dimensions:min_width=746 ,min_height=374,',
+                'dimensions:width=746 ,height=374,',
             ],
         ];
         $validation = Validator::make($attributes, $rules);
@@ -171,5 +171,11 @@ class SliderController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+
+    public function getSliders()
+    {
+        return Slider::where('status', '1')->orderBy('sequence', 'asc')->get();
     }
 }

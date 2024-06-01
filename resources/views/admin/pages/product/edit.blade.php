@@ -108,14 +108,18 @@
                                                             @endforeach
                                                         </select>
                                                     </div>
-                                                    <div class="col-xxl-3 col-md-6 mb-3">
+                                                    <div class="col-5 mb-3">
                                                         <label for="name" class="form-label">Type</label>
                                                         <select class="form-select mb-3" name="newTypes[]" id="type{{ $key + 1 }}">
                                                             <option value="checkbox" {{ $option->type == 'checkbox' ? 'selected' : '' }}>Checkbox</option>
                                                             <option value="Radio" {{ $option->type == 'Radio' ? 'selected' : '' }}>Radio</option>
                                                         </select>
                                                     </div>
-                                                    <div class="col-2">
+                                                    <div class="col-5 mb-3">
+                                                        <label for="name" class="form-label">Free Qty</label>
+                                                        <input class="form-control" type="number" name="freeQty[]" id="freeQty{{ $key + 1 }}" value="{{$option->free_qty}}" required>
+                                                    </div>
+                                                    <div class="col-2 mt-4">
                                                         <button type="button" class="btn btn-danger" onclick="removeOptionItem('item{{ $key + 1 }}')">X</button>
                                                     </div>
                                                 </div>

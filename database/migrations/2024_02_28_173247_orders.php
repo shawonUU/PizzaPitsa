@@ -26,6 +26,7 @@ return new class extends Migration
             $table->integer('payment_type');
             $table->integer('is_paid')->default(0);
             $table->integer('is_order_valid')->default(0);
+            $table->string('transaction_id')->nullable();
             $table->timestamps();
             $table->comment('order_status: 1-Pending, 2-Processing, 3-Shipped, 4-Out for Delivery, 5-Delivered, 6-Canceled, 7-Refunded, 8-On Hold, 9-Backordered, 10-Returned');
         });

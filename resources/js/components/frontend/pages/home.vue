@@ -11,11 +11,12 @@
                                     <div class="slider-activation-one axil-slick-dots">
                                         <swiper :slides-per-view="1" :space-between="50" @swiper="onSwiper"
                                             @slideChange="onSlideChange">                                        
-                                            <swiper-slide>
+                                                <swiper-slide v-for="(slider,index) in sliders" :key="index">
                                                     <div class="single-slide slick-slide">
                                                     
                                                         <div class="main-slider-thumb">
-                                                            <img style="border-radius:10px" src="/frontend/assets/images/mega-pizza-slider-1-update.jpg"
+                                                            <img style="border-radius:10px" 
+                                                            :src="slider.image ? '/frontend/assets/images/slider/' + slider.image : '/frontend/product_images/placeholder.jpg'"
                                                                 alt="Product">
                                                         </div>
                                                     </div>
@@ -26,12 +27,15 @@
                                 </div>
                             </div>
                             <div class="col-lg-6">
+                                
                                 <div class="row">
                                     <div class="col-6">
                                          <div class="slider-product-box">
                                             <div class="product-thumb">
                                                 <a href="javacript:void(0)">
-                                                    <img style="border-radius:10px" src="/frontend/assets/images/mega-pizza-add-1.jpg" alt="Product">
+                                                    <img style="border-radius:10px"
+                                                    :src="'/frontend/assets/images/ads/' + firstAd "
+                                                     :alt="firstAd">
                                                 </a>
                                             </div>
                                             
@@ -41,7 +45,9 @@
                                          <div class="slider-product-box">                                              
                                              <div class="product-thumb">
                                                  <a href="javacript:void(0)">
-                                                    <img style="border-radius:10px" src="/frontend/assets/images/mega-pizza-add-2.jpg" alt="Product">
+                                                    <img style="border-radius:10px"
+                                                     :src="'/frontend/assets/images/ads/' + secondAd" 
+                                                     :alt="secondAd">
                                                 </a>                                              
                                             </div>
                                         </div>
@@ -393,6 +399,9 @@ export default {
             orderType:null,
             availableCoupon:null,
             popularProduct:null,
+            sliders:null,
+            firstAd:null,
+            secondAd:null,
         }
     },
     created (){
@@ -422,12 +431,14 @@ export default {
         });
     },
     mounted(){
+        this.getSliders();
+        this.getAds();
         this.getCategoryWiseProduct();
         this.loadCartFromLocalStorage();
         this.fetchBaseCurrencySymbol();
         this.emitter.on('scrollToTeamSection', this.handleScrollToTeamSection);
         this.getCoupon();
-        this.getPopularProduct();
+        this.getPopularProduct();      
     },
     computed: {
       sortedCategories() {
@@ -441,12 +452,29 @@ export default {
         }
     },
     methods: {
+        getSliders () {
+            axios.get('get-sliders')
+            .then((res) => {
+               this.sliders = res.data;                            
+            })
+            .catch((err) => {
+            }); 
+        },
+    
+        getAds () {
+            axios.get('get-ads')
+            .then((res) => {              
+               this.firstAd = res.data.first_ad;             
+               this.secondAd = res.data.second_ad;                             
+            })
+            .catch((err) => {
+            });
+        },
         getCategoryWiseProduct() {
             axios.get('get-products')
             .then((res) => {
                this.products = res.data[0];
-               this.productAllTages = res.data[1];
-                console.log(this.productAllTages);
+               this.productAllTages = res.data[1];               
             })
             .catch((err) => {
             });
@@ -477,7 +505,7 @@ export default {
              axios.get('get-popular-products')
             .then((res) => {
               
-                console.log(res.data);
+                // console.log(res.data);
                 this.popularProduct = res.data;
             })
             .catch((err) => {
@@ -527,15 +555,20 @@ export default {
 
                             var options = item.options;
                             var optionQtys = item.optionQtys;
+                            var optionFreeQtys = item.optionFreeQtys;
                             var optionPrices = item.optionPrices;
                             var optionsPrice = 0;
                             for (const i in options) {
                                 if(options[i])  {
                                     var price = optionPrices[options[i].id];
                                     var qty = optionQtys[options[i].id];
+                                    var freeQty = optionFreeQtys[options[i].id];
                                     price = parseFloat(price);
                                     qty = parseFloat(qty);
-                                    optionsPrice += parseFloat(price*(qty-this.freeOption));
+                                    freeQty = parseFloat(freeQty);
+                                    var paidQty = qty - freeQty;
+                                    if(paidQty<0) paidQty = 0;
+                                    optionsPrice += parseFloat(price*paidQty);
                                 }
                             }
                             this.subTotal += (item.size.price * item.quantity) + topingsPrice + optionsPrice;
@@ -645,8 +678,8 @@ export default {
                 
             })
             .then((res)=>{
-                if (res.data.coupon) {
-                     this.availableCoupon = res.data.coupon;      
+                if (res.coupon) {
+                     this.availableCoupon = res.coupon;      
                 }                         
             })
             .catch((err)=>{

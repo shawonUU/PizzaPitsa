@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdsController;
 use App\Mail\VerificationMail;
 use App\Models\Admin\DelivaryCharge;
 use Illuminate\Support\Facades\Mail;
@@ -97,10 +98,11 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     //Order Management
     Route::group(['middleware' => ['permission:content-management']], function () {
         Route::resource('slider', SliderController::class);
+        Route::resource('home-ad', AdsController::class);
     });
 });
 
-Route::group(['middleware' => ['permission:user-management']], function () {
+Route::group(['middleware' => ['permission:Administration']], function () {
     Route::resource('users', UserController::class);
     Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);
@@ -131,7 +133,8 @@ Auth::routes([
 
 
 //Api for axios
-
+Route::get('get-sliders', [SliderController::class, 'getSliders'])->name('get.sliders');
+Route::get('get-ads', [AdsController::class, 'getAds'])->name('get.ads');
 Route::get('get-categories', [CategoryController::class, 'getCategories'])->name('get.categories');
 Route::get('get-products', [ProductContoller::class, 'getProducts'])->name('get.products');
 Route::get('get-popular-products', [ProductContoller::class, 'getPopularProducts'])->name('get.popular.products');

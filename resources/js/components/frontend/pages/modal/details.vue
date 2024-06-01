@@ -157,7 +157,7 @@
                                   <img class="p-2" :src="'/frontend/toping_images/' + allTopings[productToping.topping_id].image" alt="" style="width: 65px; ">
                                   <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">{{allTopings[productToping.topping_id].name}}</p>
                                   <p class="text-center m-0" style="font-size:12px;"><b class="showToppingPrice" :data-toppingId="allTopings[productToping.topping_id].id" :id="'showOptionPrice'+allTopings[productToping.topping_id].id">{{allTopings[productToping.topping_id].price}}</b><b>{{ baseCurrencySymbol }}</b></p>
-                                  <input :name="'productoption'+productToping.product_option_id" :data-toppingid="allTopings[productToping.topping_id].id" :id="'optionsItem'+allTopings[productToping.topping_id].id" :value="allTopings[productToping.topping_id].id" name="optionsItem" class="optionsItem" :type="productToping.type" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
+                                  <input :name="'productoption'+productToping.product_option_id" :data-toppingid="allTopings[productToping.topping_id].id" data-checked="false" :id="'optionsItem'+allTopings[productToping.topping_id].id" :value="allTopings[productToping.topping_id].id" name="optionsItem" class="optionsItem" :type="productToping.type" style="display:none; width: 20px; height: 20px; border: 2px solid #333; border-radius: 4px; opacity: 7;">
                                   <div style="padding: 0 5px; padding-left: 20%;"  onclick="event.stopPropagation();">
                                     <div  class="input-group" >
                                       <div  class="input-group-prepend" style="cursor: pointer;" >
@@ -166,6 +166,7 @@
                                         </span>
                                       </div>
                                       <input @change="updateQty(allTopings[productToping.topping_id].id,'optionQty')"  :id="'optionQty'+allTopings[productToping.topping_id].id" min="1" type="text" value="1" class="" style="margin-left: 0px;text-align: center; font-size: 14px; height: 20px; width: 35% !important; padding: 0px; border: solid 1px #000; font-size: 10px;">
+                                      <input style="display: none;" :id="'optionFreeQty'+allTopings[productToping.topping_id].id" type="number" :value="productOption.details.freeQty">
                                       <div  class="input-group-append" style="cursor: pointer;" >
                                         <span :id="'optionQtyPls'+allTopings[productToping.topping_id].id" @click="qtyPlus(allTopings[productToping.topping_id].id,'optionQty')" class="input-group-text" style="padding: 0.20rem .50rem;" >
                                           <b >+</b>
@@ -180,7 +181,7 @@
                     </template>
 
 
-                    <h6  style="margin-bottom:5px;">Your Favorit Toppings</h6>
+                    <h6 v-if="productTopings.length > 0"  style="margin-bottom:5px;">Your Favorit Toppings</h6>
                     <div class="row">
                       <div class="col-6 col-md-3 p-2" v-for="(productToping, topingId) in productTopings" :key="topingId">
                           <div :id="'topingDiv'+productToping.id" @click="clickOnTopings(productToping.id)" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border:1px solid white; border-radius: 10%; cursor:pointer;">
@@ -403,7 +404,6 @@ export default {
         if(document.getElementById('optionsItem'+id).checked && flg==false){
             document.getElementById('optionDiv'+id).style.border="1px solid white";
             document.getElementById('optionsItem'+id).checked = false;
-            // console.log(document.getElementById('topingDiv'+id));
         }else{
             document.getElementById('optionDiv'+id).style.border="1px solid red";
             document.getElementById('optionsItem'+id).checked = true;
@@ -416,10 +416,18 @@ export default {
           for(var i=0; i<els.length; i++){
               var tid = els[i].dataset.toppingid;
               if(tid==id){
-                els[i].checked = true;
-                document.getElementById('optionDiv'+tid).style.border = "1px solid red";
+                if(els[i].dataset.checked == "true" && flg==false){
+                  els[i].checked = false;
+                  els[i].dataset.checked = "false";
+                  document.getElementById('optionDiv'+tid).style.border = "1px solid white";
+                }else{
+                  els[i].checked = true;
+                  els[i].dataset.checked = "true";
+                  document.getElementById('optionDiv'+tid).style.border = "1px solid red";
+                }
               }else{
                 els[i].checked = false;
+                els[i].dataset.checked = "false";
                 document.getElementById('optionDiv'+tid).style.border = "1px solid white";
               }
           }
@@ -471,7 +479,9 @@ export default {
             }
             pric = parseFloat(pric);
             var qty = parseInt(document.getElementById('optionQty'+elements[i].value).value.trim());
-            qty -= this.freeOption;
+            var freeQty = parseInt(document.getElementById('optionFreeQty'+elements[i].value).value.trim());
+            qty -= freeQty;
+            if(qty<0) qty = 0;
             orderPrice += (pric*qty);
             totalOptionPrice += (pric*qty);
           }
@@ -516,6 +526,7 @@ export default {
           var elements = document.getElementsByClassName('optionsItem');
           var options = [];
           var optionQtys = [];
+          var optionFreeQtys = [];
           var optionPrices = [];
           for(var i=0; i<elements.length; i++){
             if(elements[i].checked){
@@ -528,6 +539,7 @@ export default {
                 }
                 options[topingId] = this.allTopings[topingId];
                 optionQtys[topingId] = document.getElementById('optionQty'+topingId).value.trim();
+                optionFreeQtys[topingId] = document.getElementById('optionFreeQty'+topingId).value.trim();
                 optionPrices[topingId] = pric;
             }
           }
@@ -558,6 +570,7 @@ export default {
 
                     options: options,
                     optionQtys: optionQtys,
+                    optionFreeQtys: optionFreeQtys,
                     optionPrices: optionPrices,
                     totalOptionPrice: this.totalOptionPrice,
 
@@ -611,20 +624,26 @@ export default {
                         totalTopingPrice += parseFloat(bindPrices[bindTopings[i].id]) * parseInt(bindQtys[bindTopings[i].id]);
                     }
 
+                    
 
                     var bindOptions = [];
                     var bindOptionQtys = [];
+                    var bindOptionFreeQtys = [];
                     var bindOptionPrices = [];
                     var exOptions =  existingItem.options;
                     var exOptionQtys =  existingItem.optionQtys;
+                    var exOptionFreeQtys =  existingItem.optionFreeQtys;
                     var exOptionPrices =  existingItem.optionPrices;
                     for (const i in exOptions) {
                         if(exOptions[i]){
                             bindOptions[exOptions[i].id] = exOptions[i];
                             bindOptionQtys[exOptions[i].id] = exOptionQtys[exOptions[i].id];
+                            bindOptionFreeQtys[exOptions[i].id] = exOptionFreeQtys[exOptions[i].id];
                             bindOptionPrices[exOptions[i].id] = exOptionPrices[exOptions[i].id];
                         }
                     }
+
+                    console.log('okkkk');
 
                     for (const i in options){
                       if(options[i]){
@@ -632,6 +651,7 @@ export default {
                         if ( typeof bindOptions[options[i].id] === 'undefined'){
                               bindOptions[options[i].id] = options[i];
                               bindOptionQtys[options[i].id] = optionQtys[options[i].id];
+                              bindOptionFreeQtys[options[i].id] = optionFreeQtys[options[i].id];
                               bindOptionPrices[options[i].id] = optionPrices[options[i].id];
                         }else{
                           bindOptionQtys[options[i].id] = parseFloat(bindOptionQtys[options[i].id]);
@@ -643,8 +663,10 @@ export default {
                     var totalOptionPrice = 0;
                     //existingItem.totalPrice = parseFloat(existingItem.quantity) * parseFloat(item.size.price);
                      for (const i in bindOptions) {
-                        existingItem.totalPrice += parseFloat(bindOptionPrices[bindOptions[i].id]) * parseInt(bindOptionQtys[bindOptions[i].id])-this.freeOption;
-                        totalOptionPrice += parseFloat(bindOptionPrices[bindOptions[i].id]) * parseInt(bindOptionQtys[bindOptions[i].id])-this.freeOption;
+                        var paidQty = parseInt(bindOptionQtys[bindOptions[i].id])-parseInt(bindOptionFreeQtys[bindOptions[i].id]);
+                        if(paidQty<0)paidQty=0;
+                        existingItem.totalPrice += parseFloat(bindOptionPrices[bindOptions[i].id]) * paidQty;
+                        totalOptionPrice += parseFloat(bindOptionPrices[bindOptions[i].id]) * paidQty;
                     }
 
                     var merged = [...new Set([...existingItem.removedTags, ...item.removedTags])];
@@ -657,6 +679,7 @@ export default {
 
                     existingItem.options = bindOptions;
                     existingItem.optionQtys = bindOptionQtys;
+                    existingItem.optionFreeQtys = bindOptionFreeQtys;
                     existingItem.optionPrices = bindOptionPrices;
                     existingItem.totalOptionPrice = totalOptionPrice;
 
@@ -774,8 +797,6 @@ export default {
                         </div>
                       </div>
                     </div>
-
-
                 </div>
             </div>
           `;
@@ -820,7 +841,7 @@ export default {
       },
       updateQty(toppingId, prifix){
         var currentQty = document.getElementById(prifix+toppingId).value.trim();
-        if(currentQty=="") currentQty = 1;
+        if(currentQty=="" || currentQty < 1) currentQty = 1;
         currentQty = parseInt(currentQty);
         document.getElementById(prifix+toppingId).value = currentQty;
         //this.generatePrice();

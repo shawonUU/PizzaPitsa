@@ -67,6 +67,9 @@
                             <ul class="nav nav-sm flex-column">
                                 <li class="nav-item">
                                     <a href="{{ route('slider.index') }}" class="nav-link">Sliders</a>
+                                </li> 
+                                <li class="nav-item">
+                                    <a href="{{ route('home-ad.index') }}" class="nav-link">Ads</a>
                                 </li>                                                         
                             </ul>
                         </div>
@@ -142,7 +145,7 @@
                         </div>
                     </li>
                 @endcan
-                @can('user-management')
+                @can('Administration')
                     <li class="nav-item">
                         <a class="nav-link menu-link" href="#sidebarAuthorizition" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAuthorizition">
                             <i class="ri-stack-line"></i> <span data-key="t-advance-ui">Authorizition</span>

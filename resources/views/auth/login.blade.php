@@ -1,7 +1,23 @@
 <!doctype html>
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
 @include('admin.layout.head')
-<body>
+
+<style>
+          #captcha{
+    width: 60px;;
+    padding: 20px;
+    font-weight: 400;
+    padding-bottom: 0px;
+    height: 40px;
+    user-select: none;
+    text-decoration:line-through;
+    font-style: italic;
+    font-size: x-large;
+    border: 1px solid #ccc3c3;
+    
+}
+</style>
+<body onload="generate()">
     <!-- auth-page wrapper -->
     <div class="auth-page-wrapper auth-bg-cover py-5 d-flex justify-content-center align-items-center min-vh-100">
         <div class="bg-overlay"></div>
@@ -75,6 +91,47 @@
     <!-- end auth-page-wrapper -->
 
     @include('admin.layout.script')
+
+    <script>
+        let captcha;
+        function generate() {
+
+            // Clear old input
+            document.getElementById("captcha_code").value = "";
+
+            // Access the element to store
+            // the generated captcha
+            captcha = document.getElementById("captcha");
+            let uniquechar = "";
+
+            const randomchar ="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789";
+            for (let i = 1; i < 5; i++) {
+                uniquechar += randomchar.charAt(Math.random() * randomchar.length)
+            }
+
+            // Store generated input
+            captcha.innerHTML = uniquechar;
+        }
+
+        function printmsg() {
+            const usr_input = document
+                .getElementById("submit").value;
+
+            // Check whether the input is equal
+            // to generated captcha or not
+            if (usr_input == captcha.innerHTML) {
+                let s = document.getElementById("key")
+                    .innerHTML = "Matched";
+                generate();
+            }
+            else {
+                let s = document.getElementById("key")
+                    .innerHTML = "not Matched";
+                generate();
+            }
+        }
+
+    </script>
 </body>
 
 </html>

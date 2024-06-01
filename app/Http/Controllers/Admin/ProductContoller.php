@@ -18,6 +18,7 @@ use App\Models\Admin\ProductOption;
 use App\Models\Admin\ProductToping;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\ProductOptionTopping;
+use Carbon\Carbon;
 
 class ProductContoller extends Controller
 {
@@ -220,6 +221,7 @@ class ProductContoller extends Controller
 
         $newTitles = $request->input('newTitles');
         $newTypes = $request->input('newTypes');
+        $freeQtys = $request->input('freeQty');
         $options = ProductOption::where('product_id', $id)->get();
         foreach ($options as $option) {
             ProductOptionTopping::where('product_option_id', $option->id)->delete();
@@ -242,6 +244,7 @@ class ProductContoller extends Controller
             $startIndex = 0;
             foreach ($newTitles as $key => $titleId) {
                 $type = $newTypes[$key] ?? null;
+                $freeQty = $freeQtys[$key] ?? null;
 
                 if ($titleId && $type) {
                     // Create a new ProductOption
@@ -249,6 +252,7 @@ class ProductContoller extends Controller
                     $productOption->title_id = $titleId;
                     $productOption->product_id = $product->id; // Assuming you have a default product ID or set it dynamically
                     $productOption->type = $type;
+                    $productOption->free_qty = $freeQty;
                     $productOption->save();
 
                     // Determine the end index for toppings based on the current title
@@ -599,10 +603,17 @@ class ProductContoller extends Controller
             ->where('product_sizes.status', '1')
             ->select('product_sizes.*', 'sizes.name', 'sizes.id as size_id')
             ->get();
+
+
+        $currentDate = Carbon::today();
         $maxPrice = $productSizes->max('price');
         $minPrice = $productSizes->min('price');
         $tem = [];
+        
         foreach ($productSizes as $row) {
+            if ($row->offer_from <= $currentDate && $currentDate <= $row->offer_to) {
+                $row->price = $row->offer_price;
+            }
             $tem[$row->id] = $row;
         }
         $productSizes = $tem;
@@ -653,12 +664,13 @@ class ProductContoller extends Controller
         $options = ProductOption::join('product_option_toppings as option_topping', 'option_topping.product_option_id', '=', 'product_options.id')
             ->join('option_titles', 'option_titles.id', '=', 'product_options.title_id')
             ->where('product_options.product_id', $productId)
-            ->select('option_topping.*', 'product_options.title_id', 'product_options.type', 'option_titles.name')->get();
+            ->select('option_topping.*', 'product_options.title_id', 'product_options.type','product_options.free_qty', 'option_titles.name')->get();
 
         $temp = [];
         foreach ($options as $option) {
             $option->type = strtolower($option->type);
             $temp[$option->product_option_id]['details']['title'] = $option->name;
+            $temp[$option->product_option_id]['details']['freeQty'] = $option->free_qty;
             $temp[$option->product_option_id]['options'][] = $option;
         }
         $productOptions = $temp;
