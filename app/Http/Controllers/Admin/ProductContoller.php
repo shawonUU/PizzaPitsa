@@ -702,4 +702,22 @@ class ProductContoller extends Controller
             ->limit(10)
             ->get();
     }
+
+    public function getRelatedProduct(Request $request){
+        $product_ids = $request->product_ids;
+        $product_ids = explode(",", $product_ids);
+        $catIds = Product::whereIn("id",$product_ids)->pluck('category_id');
+        $products = Product::whereIn('category_id', $catIds)->where('status','1')->take(10)->get();
+
+        $proData = [];
+        foreach($products as $pro){
+            $proData[] = [
+                'id' => $pro->id,
+                'name' => $pro->name,
+                'image' => asset("frontend/product_images/$pro->image"),
+            ];
+        }
+
+        return $proData; 
+    }
 }
