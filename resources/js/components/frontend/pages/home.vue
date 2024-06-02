@@ -247,7 +247,6 @@
                                                                             <span style="margin:0; padding:0; font-size:12px; padding: 0 2px;" >{{ toping.name }}({{ item.toppingPrices[toping.id]}}{{ baseCurrencySymbol }} x {{item.toppingQtys[toping.id]}})</span>
                                                                             <span v-if="topingId != item.topings.length-1">,</span>
                                                                         </template>
-                                                                        
                                                                     </template>
                                                                 </p>
                                                                 <p v-if="item.removedTags.length>0" style=" width:100% !important; line-height: 0.8;">
