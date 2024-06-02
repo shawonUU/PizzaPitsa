@@ -623,8 +623,7 @@ export default {
                         existingItem.totalPrice += parseFloat(bindPrices[bindTopings[i].id]) * parseInt(bindQtys[bindTopings[i].id]);
                         totalTopingPrice += parseFloat(bindPrices[bindTopings[i].id]) * parseInt(bindQtys[bindTopings[i].id]);
                     }
-
-                    
+                    existingItem.totalPrice =  existingItem.totalPrice.toFixed(2);
 
                     var bindOptions = [];
                     var bindOptionQtys = [];
@@ -668,6 +667,7 @@ export default {
                         existingItem.totalPrice += parseFloat(bindOptionPrices[bindOptions[i].id]) * paidQty;
                         totalOptionPrice += parseFloat(bindOptionPrices[bindOptions[i].id]) * paidQty;
                     }
+                    existingItem.totalPrice = existingItem.totalPrice.toFixed(2);
 
                     var merged = [...new Set([...existingItem.removedTags, ...item.removedTags])];
 
