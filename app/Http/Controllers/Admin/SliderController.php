@@ -170,7 +170,21 @@ class SliderController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $slider = Slider::findOrFail($id);
+        if ($slider->image) {
+            unlink(public_path('frontend/assets/images/slider/' . $slider->image));
+        }
+        $slider->delete();
+
+        // Flash success message
+        session()->flash('sweet_alert', [
+            'type' => 'success',
+            'title' => 'Success!',
+            'text' => 'Slider deleted successfully',
+        ]);
+
+        // Redirect to the slider index page with a success message
+        return redirect()->route('slider.index')->with('success', 'Slider deleted successfully');
     }
 
 

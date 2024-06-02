@@ -82,8 +82,34 @@
                                         <td>
                                             <button class="btn btn-sm btn-primary" title="Edit" data-bs-toggle="modal" data-bs-target="#edit-modal{{$slider->id}}">
                                                 <i class="bx bx-edit"></i>
-                                            </button>
-
+                                            </button>| <button type="button" data-bs-toggle="modal" data-bs-target="#myModal{{ $slider->id }}" class="btn btn-sm btn-danger waves-effect waves-light"><i class="ri-delete-bin-line"></i></button>
+                                            <div id="myModal{{ $slider->id }}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="myModalLabel">Delete</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                          Are you sure you want to delete this Slider:                                                         
+                                                          ?
+                                                        </div>
+                                                        <div class="modal-footer">
+        
+                                                            <form
+                                                                action="{{ route('slider.destroy',$slider->id) }}"
+                                                                method="post">
+                                                                @csrf
+                                                                @method('delete')
+                                                                <button type="submit" class="btn btn-default">Delete</button>
+        
+                                                            </form>
+                                                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                                                        </div>
+        
+                                                    </div><!-- /.modal-content -->
+                                                </div><!-- /.modal-dialog -->
+                                            </div><!-- /.modal -->
                                             <div id="edit-modal{{$slider->id}}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
                                                 <form action="{{ route('slider.update', $slider->id) }}" method="POST" enctype="multipart/form-data">
                                                         @method('PUT')

@@ -107,6 +107,10 @@
                                                 <label>Phone</label>
                                                 <input type="text" class="form-control" v-model="formData.phone" placeholder="Phone">
                                             </div>
+                                            <div class="form-group">
+                                                <label>Address</label>
+                                                <input type="text" class="form-control" v-model="formData.address" placeholder="Address">
+                                            </div>
                                             </div>
                                             <div class="col-12">
                                             <!-- <h5 class="title">Password Change</h5>
@@ -373,7 +377,8 @@ export default {
             formData: {
                 name: '',
                 email: '',
-                phone:null
+                phone:'',
+                address:'',            
             },
             password: '',
             newPassword: '',
@@ -410,6 +415,7 @@ export default {
         this.formData.name = this.isAuth.name;
         this.formData.email = this.isAuth.email;
         this.formData.phone = this.isAuth.phone;
+        this.formData.address = this.isAuth.address;
         this.myOrders();
         this.getOrderStatus();
         this.fetchBaseCurrencySymbol();
@@ -432,6 +438,7 @@ export default {
                 name: this.formData.name,
                 email: this.formData.email,
                 phone: this.formData.phone,
+                address: this.formData.address,
                 // password: this.password,
                 // newPassword: this.newPassword,
                 // confirmNewPassword: this.confirmNewPassword,
