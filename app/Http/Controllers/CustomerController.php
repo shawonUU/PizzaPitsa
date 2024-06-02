@@ -219,12 +219,13 @@ class CustomerController extends Controller
             // Validate request data
             $request->validate([
                 'name' => 'required|string',
-                'phone' => 'required|regex:/(01)[0-9]{9}/',
+                'phone' => 'required',
             ]);
 
             // Update user data
             $user->name = $request->name;
             $user->phone = $request->phone;
+            $user->address = $request->address;
             $user->update();
             $updateStatus = 'name';
             $response = [
@@ -233,7 +234,7 @@ class CustomerController extends Controller
         } else {
             $request->validate([
                 'name' => 'required|string',
-                'phone' => 'required|regex:/(01)[0-9]{9}/',
+                'phone' => 'required',
                 'email' => 'required|email|unique:users,email,' . $user->id,
             ]);
             $updateStatus = 'email';
@@ -256,6 +257,7 @@ class CustomerController extends Controller
             if ($user->verification_code == $request->code) {
                 $user->name = $request->name;
                 $user->phone = $request->phone;
+                $user->address = $request->address;
                 $user->email = $request->email;
                 $user->update();
                 $response = [
