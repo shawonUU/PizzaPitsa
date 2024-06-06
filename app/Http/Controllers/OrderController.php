@@ -157,6 +157,7 @@ class OrderController extends Controller
         if ($paymentType == 1) {
             $data = [];
             Mail::to(auth()->user()->email)->send(new PlaceOrderMail($order->order_number, $data));
+            Mail::to("dev.pizzapitsa@gmail.com")->send(new PlaceOrderMail($order->order_number, $data));
 
             $notification = new Notification;
             $notification->message = "New Order Placed";
@@ -243,7 +244,7 @@ class OrderController extends Controller
             ->select('users.*', 'roles.name as roleName')
             ->orderBy('users.id', 'desc')
             ->get();
-        // return view('layouts.placeOrderMail', compact('products', 'orderDetails', 'deliveryBoys','order'));
+        //return view('layouts.placeOrderMail', compact('products', 'orderDetails', 'deliveryBoys','order'));
 
         return view("admin.pages.order.details", compact('products', 'orderDetails', 'deliveryBoys', 'order'));
     }

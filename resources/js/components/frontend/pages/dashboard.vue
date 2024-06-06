@@ -216,6 +216,12 @@
                                 </td>
                             </tr>
                             <tr >
+                              <td  class="text-main text-bold">Order Status</td>
+                              <td  class="text-main text-bold">
+                                  <span>{{ orderStatuses[productDetails.order_status] }}</span>
+                                </td>
+                            </tr>
+                            <tr >
                               <td  class="text-main text-bold">Order date </td>
                               <td  class="text-right">{{ formatCreatedAt(productDetails.created_at) }}</td>
                             </tr>
@@ -281,13 +287,13 @@
                             </td>
                             <td>{{ subtotal }}{{ baseCurrencySymbol }}</td>
                           </tr>                                                             
-                          <tr>
+                          <tr v-if="shippingCostAmount>0">
                             <td>
                               <strong class="text-muted">Shipping :</strong>
                             </td>
                             <td>{{ shippingCostAmount }}{{ baseCurrencySymbol }}</td>
                           </tr>
-                          <tr>
+                          <tr v-if="productDetails.discount>0">
                             <td>
                               <strong class="text-muted">Discount :</strong>
                             </td>
@@ -297,7 +303,7 @@
                             <td>
                               <strong class="text-muted">Total :</strong>
                             </td>
-                            <td class="text-muted h5">{{ total-productDetails.discount }}{{ baseCurrencySymbol }}</td>
+                            <td class="text-muted h5">{{ subtotal-productDetails.discount }}{{ baseCurrencySymbol }}</td>
                           </tr>
                         </tbody>
                       </table>

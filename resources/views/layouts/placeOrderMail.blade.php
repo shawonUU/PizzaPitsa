@@ -478,8 +478,7 @@
                     <th class="" style="display: table-cell;">Name</th>                  
                     <th data-breakpoints="lg" class="" style="display: table-cell;">Qty</th>
                     <th data-breakpoints="lg" class="" style="display: table-cell;">Price</th>
-                    <th data-breakpoints="lg" class=""
-                      style="display: table-cell;">Total</th>
+                    <th data-breakpoints="lg" class="" style="display: table-cell;">Total</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -500,41 +499,6 @@
                     <td class="" style="display: table-cell;"> {{ $item->quantity }} </td>
                     <td class="" style="display: table-cell;"> {{ $item->price }}{{ getCurrency() }}</td>
                     <td class="" style="display: table-cell;"> {{ $item->total_price }}{{ getCurrency() }} </td>
-                    <td>
-                      <button type="button" data-bs-toggle="modal" data-bs-target="#myModal{{ $item->id }}" class="btn btn-sm btn-info waves-effect waves-light"><i class="ri-ball-pen-line"></i></button>
-                    </td> 
-                       <!-- Default Modals -->
-                       <div id="myModal{{ $item->id }}" class="modal fade" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-                        <div class="">
-                            <div class="">
-                                <div class="">
-                                    <h5 class="" id="myModalLabel">Delete</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"> </button>
-                                </div>
-                                <div class="">
-                                  Update Qty of
-                                  <strong
-                                      style="color: darkorange">{{ $item->proName }}({{ $item->sizeName }})</strong>
-                                  ?
-                                </div>
-                                <div class="">
-
-                                    <form
-                                        action="{{ route('orders.update') }}"
-                                        method="post">
-                                        @csrf                                    
-                                        <input type="hidden" value="{{ $item->order_number }}" name="order_id">                
-                                        <input type="hidden" value="{{ $item->product_id }}" name="product_id">                
-                                        <input type="text" name="qty" class="form-control" value="{{ $item->quantity }}" id="">
-                                        <button type="submit" class="">Update</button>
-
-                                    </form>
-                                    <button type="button" class="" data-bs-dismiss="modal">Close</button>
-                                </div>
-
-                            </div><!-- /.modal-content -->
-                        </div><!-- /.modal-dialog -->
-                    </div><!-- /.modal --> 
                   </tr>
                 @endforeach
                  
@@ -545,18 +509,14 @@
           <div class="" style="width: 300px; float:right">
             <table class="table">
               <tbody>
+                @if($order->delivery_charge || $order->discount)
                 <tr>
                   <td>
                     <strong >Sub Total :</strong>
                   </td>
                   <td> {{ $order->total_amount }}{{ getCurrency() }} </td>
                 </tr>
-                <tr>
-                  <td>
-                    <strong>Tax :</strong>
-                  </td>
-                  <td> 0.950{{ getCurrency() }} </td>
-                </tr>
+                @endif
                 @if($order->delivery_charge)
                 <tr>
                   <td>
