@@ -52,7 +52,7 @@
                                     <th>Total amount</th>                                                                  
                                     <th>Payable Amount</th>                                                                                                     
                                     <th>Payment Status</th>                                                                                                     
-                                    <th>Adress</th>
+                                    {{-- <th>Adress</th> --}}
                                     <th>Status</th>                                   
                                     <th>Action</th>                                   
                                   </tr>
@@ -67,38 +67,13 @@
                                     <td>{{ $item->total_amount }}</td>                                  
                                     <td>{{ $item->paid_amount }}</td>                                                                
                                     <td>{{ $item->is_paid == '0'?'Unpaid':'Paid' }}</td>                                                                
-                                    <td>{{ $item->delivery_address_id }}</td>                                  
+                                    {{-- <td>{{ $item->delivery_address_id }}</td>                                   --}}
                                     <td>
-                                      <select class="form-select rounded-pill mb-3" onchange="updateStatus('{{ $item->order_number }}', this.value)">
-                                        @php
-                                            // Define the order statuses based on the user's role
-                                            $userRole = auth()->check() ? checkRole() : null;
-                                        
-                                            if ($userRole == 'Salesman') {
-                                                $statuses = [
-                                                    '2' => 'Processing',
-                                                    '4' => 'Out for Delivery',
-                                                    '6' => 'Canceled',
-                                                ];
-                                            } elseif ($userRole == 'Delivery Boy') {
-                                                $statuses = [
-                                                    '4' => 'Out for Delivery',
-                                                    '5' => 'Delivered',
-                                                ];
-                                            } else {
-                                                $statuses = orderStatuses();
-                                            }
-                                        @endphp
-                                         <option value="" selected disabled>--Status--</option>
-                                          @foreach ($statuses as $value => $text)                                             
-                                              <option {{ $value == $item->order_status ? 'selected' : '' }} value="{{ $value }}">{{ $text }}</option> 
-                                          @endforeach                                                                                 
-                                      </select>
-                                        {{-- <select class="form-select rounded-pill mb-3" onchange="updateStatus('{{ $item->order_number }}',this.value)">
-                                            @foreach (orderStatuses() as $value => $text)
-                                                <option {{ $value == $item->order_status ? 'selected' : '' }} value="{{ $value }}">{{ $text }}</option> 
-                                            @endforeach                                                                                 
-                                        </select> --}}
+                                      @php                                    
+                                          $orderStatuses = orderStatuses();
+                                          $status = $orderStatuses[$item->order_status] ?? 'Unknown Status';
+                                      @endphp
+                                      {{ $status }}
                                     </td> 
                                     <td>
                                         <a class="btn btn-info" href="{{ route('order.details',$item->order_number) }}">Details</a>    

@@ -48,7 +48,7 @@
                                                 <thead>
                                                     <tr>                                                  
                                                         <th >Order</th>
-                                                        <th >Date</th>
+                                                        <th >Date&Time</th>
                                                         <th>Payment Status</th>
                                                         <th style="width:10px" >Status</th>                                                        
                                                         <th >Actions</th>
@@ -189,10 +189,10 @@
               <!--v-if-->
               <div >
                 <div  class="row">           
-                    <h3 >Order Details</h3>
+                    <h3 >Order Details of # <span style="color:#E76458">{{productDetails.order_number}}</span></h3>
                     <div  class="row">
                       <div  class="col-6 col-sm-6 col-xsm-6">
-                        <strong style="color:#0000">Delivery Address Info</strong>
+                        <strong style="color:#000">Delivery Address Info</strong>
                         <hr>
                         <address >
                           <div  class="d-flex justify-content-between">
@@ -204,7 +204,7 @@
                         </address>
                       </div>
                       <div  class="col-6 col-sm-6 col-xsm-6">
-                        <strong style="color:#0000">Order Info</strong>
+                        <strong style="color:#000">Order Info</strong>
                         <hr >
                         <table >
                           <tbody >
@@ -216,12 +216,22 @@
                                 </td>
                             </tr>
                             <tr >
+                              <td  class="text-main text-bold">Order Status</td>
+                              <td  class="text-main text-bold">
+                                  <span>{{ orderStatuses[productDetails.order_status] }}</span>
+                                </td>
+                            </tr>
+                            <tr >
                               <td  class="text-main text-bold">Order date </td>
                               <td  class="text-right">{{ formatCreatedAt(productDetails.created_at) }}</td>
                             </tr>
                             <tr >
                               <td  class="text-main text-bold"> Total amount </td>
                               <td  class="text-right">{{productDetails.total_amount}}€</td>
+                            </tr>
+                             <tr >
+                              <td  class="text-main text-bold"> Paid Amount </td>
+                              <td  class="text-right">{{productDetails.paid_amount}}€</td>
                             </tr>
                              <tr >
                               <td  class="text-main text-bold"> Payment Status </td>
@@ -255,7 +265,7 @@
                               </td>
                               <td  style="display: table-cell;">
                                 <strong >{{product.proName}}</strong>
-                                <br >
+                                <br >                                                                
                                 <small >Size: {{ product.sizeName }}</small>
                                 <br >
                                 <small >Toppings: {{ product.topingNames }} </small>
@@ -281,13 +291,13 @@
                             </td>
                             <td>{{ subtotal }}{{ baseCurrencySymbol }}</td>
                           </tr>                                                             
-                          <tr>
+                          <tr v-if="productDetails.delivery_charge>0">
                             <td>
                               <strong class="text-muted">Shipping :</strong>
                             </td>
                             <td>{{ shippingCostAmount }}{{ baseCurrencySymbol }}</td>
                           </tr>
-                          <tr>
+                          <tr v-if="productDetails.discount>0">
                             <td>
                               <strong class="text-muted">Discount :</strong>
                             </td>
@@ -295,9 +305,9 @@
                           </tr>
                           <tr>
                             <td>
-                              <strong class="text-muted">Total :</strong>
+                              <strong class="text-muted">Grand Total :</strong>
                             </td>
-                            <td class="text-muted h5">{{ total-productDetails.discount }}{{ baseCurrencySymbol }}</td>
+                            <td class="text-muted h5">{{ subtotal - productDetails.discount + (productDetails.delivery_charge > 0 ? productDetails.delivery_charge : 0) }}{{ baseCurrencySymbol }}</td>
                           </tr>
                         </tbody>
                       </table>
@@ -538,7 +548,7 @@ export default {
                 })
                 
             },
-              formatCreatedAt(dateString) {
+              formatCreatedAt(dateString, timeZone = 'UTC') {
                 const date = new Date(dateString);
                 const options = {
                     year: 'numeric',
@@ -547,10 +557,11 @@ export default {
                     hour: 'numeric',
                     minute: 'numeric',
                     second: 'numeric',
+                    timeZone: timeZone,
                     timeZoneName: 'short',
                 };
 
-                return date.toLocaleDateString('en-US', options);
+                 return date.toLocaleDateString('en-US', options);
             },   
             handleModalOpen(orderNumber) {                
               document.body.classList.add('modal-open'); 
@@ -561,6 +572,7 @@ export default {
                 })
                 .then((res)=>{      
                   if(res.data.message == 'success') {
+                    console.log( res.data)
                     this.isModalOpen = true;
                     this.dynamicDisplay = 'block';
                       this.products = res.data.products;
@@ -603,12 +615,25 @@ export default {
           }     
         },
          computed: {
-         subtotal() {
+       subtotal() {
           if (this.loading) return 0;
-          return this.products.reduce((total, product) => {
+          const subtotal = this.products.reduce((total, product) => {
             return total + (product.price * product.quantity) + (product.toping_price * product.quantity);
           }, 0);
+          
+          // Parse the subtotal as a float
+          const parsedSubtotal = parseFloat(subtotal);
+          
+          // Check if parsedSubtotal is a valid number
+          if (!isNaN(parsedSubtotal) && isFinite(parsedSubtotal)) {
+            // If valid number, return the parsed value
+            return parsedSubtotal;
+          } else {
+            // If not a valid number, return 0 or handle accordingly
+            return 0; // or any other fallback value
+          }
         },
+
         total() {
           return this.subtotal + this.shippingCostAmount;
         }

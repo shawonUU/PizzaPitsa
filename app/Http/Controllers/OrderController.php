@@ -7,13 +7,14 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Address;
 use App\Models\OrderItem;
+use App\Mail\sendStatusChangeMail;
+use App\Mail\PlaceOrderMail;
 use App\Models\Admin\Toping;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\PaytrailController;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\PlaceOrderMail;
+use App\Http\Controllers\PaytrailController;
 
 class OrderController extends Controller
 {
@@ -157,6 +158,7 @@ class OrderController extends Controller
         if ($paymentType == 1) {
             $data = [];
             Mail::to(auth()->user()->email)->send(new PlaceOrderMail($order->order_number, $data));
+            Mail::to("dev.pizzapitsa@gmail.com")->send(new PlaceOrderMail($order->order_number, $data));
 
             $notification = new Notification;
             $notification->message = "New Order Placed";
@@ -243,14 +245,23 @@ class OrderController extends Controller
             ->select('users.*', 'roles.name as roleName')
             ->orderBy('users.id', 'desc')
             ->get();
-        // return view('layouts.placeOrderMail', compact('products', 'orderDetails', 'deliveryBoys','order'));
-
+        //return view('layouts.placeOrderMail', compact('products', 'orderDetails', 'deliveryBoys','order'));
+        // return $products;
         return view("admin.pages.order.details", compact('products', 'orderDetails', 'deliveryBoys', 'order'));
     }
     public function updateStatus(Request $request)
     {
+        $data =  $request;
         $newStatus = $request->newStatus;
         $orderId = $request->orderId;
+        $sendMail = $request->sendMail;
+        $getOrder = Order::where('order_number', $orderId)->first();
+        $getCustomerMail = User::where('id', $getOrder->customer_id)->first();
+
+        if ($sendMail == true) {
+            // return $getCustomerMail->email;
+            Mail::to($getCustomerMail->email)->send(new sendStatusChangeMail($orderId, $data));
+        }
         $order = Order::where('order_number', $orderId)->where('is_order_valid', 1)->first();
         $order->order_status = $newStatus;
         $order->update();
@@ -305,6 +316,7 @@ class OrderController extends Controller
 
     public function getCustomerOrderInfo(Request $request)
     {
+        $request;
         $id =  $request->orderNumber;
         $orderDetails = Order::leftJoin('addresses', 'addresses.id', '=', 'orders.delivery_address_id')
             ->leftJoin('users', 'users.id', '=', 'orders.customer_id')

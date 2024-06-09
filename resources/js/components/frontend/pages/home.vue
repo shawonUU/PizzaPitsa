@@ -282,12 +282,62 @@
                                 </template>
                             </tbody>
                         </table>
+
+
+
+                        <div class="axil-categorie-area bg-color-white">
+                            <div class="container">
+                                <div class="section-title-wrapper">
+                                    <h4 class="title">Related Product</h4>                        
+                                </div>
+
+                                <swiper :space-between="50"
+                                    :breakpoints="{
+                                        '320': {
+                                            slidesPerView: 2,
+                                            spaceBetween: 10,
+                                        },
+                                        '640': {
+                                            slidesPerView: 3,
+                                            spaceBetween: 20,
+                                        },
+                                        '768': {
+                                            slidesPerView: 4,
+                                            spaceBetween: 40,
+                                        },
+                                        '1024': {
+                                            slidesPerView: 5,
+                                            spaceBetween: 50,
+                                        },
+                                    }"
+                                    @swiper="onSwiper" @slideChange="onSlideChange">
+                                    <swiper-slide v-for="(item, index) in relatedProduct" :key="index">
+                                        <div class="d-flex align-items-center" @click="getProductDetails(item.id)">
+                                            <div class="flex-shrink-0" style="width: 200px;">
+                                                <img style="width:70px"
+                                                    :src="item.image ? item.image : '/frontend/product_images/placeholder.jpg'"
+                                                    alt="...">
+                                                    <div class="flex-grow-1 ms-3">
+                                                        <p>
+                                                            <span style="font-size:12px;">{{ item.name }}</span>
+                                                        </p>
+                                                    </div>
+                                            </div>
+                                            
+                                        </div>
+                                    </swiper-slide>                        
+                                </swiper>
+                            </div>
+                        </div>
+
+
+
                     </div>
                     <div class="cart-footer">
                         <div>
                             <div v-if="availableCoupon">
                                 <p>
-                                    Use this coupon code <strong style="color:rgb(238, 110, 45)">'{{availableCoupon.code}}'</strong> to get {{ formatDiscount(availableCoupon.discount) }}{{ availableCoupon.discount_type=='1'?'%':baseCurrencySymbol }} discount
+                                    Use this coupon code <strong style="color:rgb(238, 110, 45)">'{{availableCoupon.coupon.code}}'</strong> to get {{ formatDiscount(availableCoupon.coupon.discount) }}{{ availableCoupon.coupon.discount_type=='1'?'%':baseCurrencySymbol }} discount
                                 </p>
                             </div>                           
                             <div class="input-group">                                
@@ -387,6 +437,7 @@ export default {
             subTotal:0,
             grandTotal:0,
             cart:[],
+            relatedProduct:[],
             coupon:null,
             isCouponNotMatched:false,
             isDiscount:false,
@@ -524,6 +575,9 @@ export default {
             // localStorage.setItem('cart', []);return;
             const savedCart = localStorage.getItem('cart');
             this.cart = savedCart ? JSON.parse(savedCart) : [];
+
+            const relatedProduct = localStorage.getItem('related_product');
+          this.relatedProduct = relatedProduct ? JSON.parse(relatedProduct) : [];
 
             this.subTotal = 0;
             //this.cartItemCount = 0;
@@ -677,8 +731,9 @@ export default {
                 
             })
             .then((res)=>{
-                if (res.coupon) {
-                     this.availableCoupon = res.coupon;      
+                console.log(res.data)
+                if (res.data) {
+                     this.availableCoupon = res.data;      
                 }                         
             })
             .catch((err)=>{

@@ -118,6 +118,7 @@ Route::get('/notification', [PaytrailController::class, 'notification']);
 Route::get('get-location-schedule', [Location::class, 'locationSchedule']);
 Route::get('get-delivery-charge', [DelivaryChargeController::class, 'getDeliveryCharge']);
 Route::post('palce-order', [OrderController::class, 'placeOrder']);
+Route::post('get-related-product', [ProductContoller::class, 'getRelatedProduct']);
 Route::prefix('frontend')->middleware(['auth'])->group(function () {
     Route::post('update-customer-data',   [CustomerController::class, 'updateCustomerData']);
     Route::post('verify-and-update-mail',   [CustomerController::class, 'verifyAndUpdateMail']);

@@ -131,6 +131,12 @@
                                     <li class="sc-xlo7eb-4 bvuzKi" v-for="(category,index) in catgories" :key="index" :value="category.id">
                                         <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" :href="'#' + category.name" @click.prevent="scrollToTeamSection(category.id)">{{ category.name }}</a>
                                     </li>
+                                    <!-- <li class="sc-xlo7eb-4 bvuzKi">
+                                        <a href="javascript:void(0)" class="cart-dropdown-btn">
+                                            <span style="position: absolute;left: 17px;top: -11px;" class="cart-count">{{ cartItemCount }}</span>
+                                            <i class="flaticon-shopping-cart" style="color:#fff"></i>
+                                        </a>                                        
+                                    </li> -->
                                      <hr style="background:#fff">
                                     <!-- <p class="menucategory" style="color:#fff; text-align:center;">Menus</p> -->
                                     <li class="mobileMenu">
@@ -549,5 +555,6 @@ export default {
         margin: 0 7px;
     }
 }
+
 
 </style>

@@ -295,6 +295,7 @@ export default {
             isVisible:false,
             message:'',
             cart: [],
+            relatedProduct:[],
             baseCurrencySymbol:'',
             selectedOptions: [],
             options: [],
@@ -623,7 +624,7 @@ export default {
                         existingItem.totalPrice += parseFloat(bindPrices[bindTopings[i].id]) * parseInt(bindQtys[bindTopings[i].id]);
                         totalTopingPrice += parseFloat(bindPrices[bindTopings[i].id]) * parseInt(bindQtys[bindTopings[i].id]);
                     }
-                    existingItem.totalPrice =  existingItem.totalPrice.toFixed(2);
+                    existingItem.totalPrice =  parseFloat(existingItem.totalPrice).toFixed(2);
 
                     var bindOptions = [];
                     var bindOptionQtys = [];
@@ -643,6 +644,7 @@ export default {
                     }
 
                     console.log('okkkk');
+                    
 
                     for (const i in options){
                       if(options[i]){
@@ -667,7 +669,8 @@ export default {
                         existingItem.totalPrice += parseFloat(bindOptionPrices[bindOptions[i].id]) * paidQty;
                         totalOptionPrice += parseFloat(bindOptionPrices[bindOptions[i].id]) * paidQty;
                     }
-                    existingItem.totalPrice = existingItem.totalPrice.toFixed(2);
+
+                    existingItem.totalPrice = parseFloat(existingItem.totalPrice).toFixed(2);
 
                     var merged = [...new Set([...existingItem.removedTags, ...item.removedTags])];
 
@@ -686,18 +689,46 @@ export default {
                     this.cart[this.productData.id][this.productSizes[selectedSize].id] = existingItem;
               }
 
-              this.updateLocalStorage();
-              this.emitMyEvent(); 
-              this.handleButtonClick();
+
+              var proIds = "";
+
+              for(const proId in this.cart){
+                if(parseInt(proId)>=1 && this.cart[proId]){
+                  if(proIds != "") proIds += ',';
+                  proIds += proId;
+                }
+              }
+
+
+              console.log(proIds);
+
+              axios.post('get-related-product', {
+                  product_ids:proIds,
+                })
+                .then((res)=>{   
+                  console.log(res.data); 
+                  this.relatedProduct = res.data;
+                  this.updateLocalStorage();
+                  this.emitMyEvent(); 
+                  this.handleButtonClick();            
+                  
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
           }
       },
       updateLocalStorage() {
           localStorage.setItem('cart', JSON.stringify(this.cart));
+          localStorage.setItem('related_product', JSON.stringify(this.relatedProduct));
           this.loadCartFromLocalStorage();
       },
       loadCartFromLocalStorage() {
           const savedCart = localStorage.getItem('cart');
           this.cart = savedCart ? JSON.parse(savedCart) : [];
+
+          const relatedProduct = localStorage.getItem('related_product');
+          this.relatedProduct = relatedProduct ? JSON.parse(relatedProduct) : [];
           //console.log(this.cart);
       },
       showToast(message,type) {

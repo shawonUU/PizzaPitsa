@@ -30,43 +30,46 @@
                     @endforeach                                       
                 </select>                     
             </div>
-            <div class="col-md-3">
-              <label for="update_payment_status">Payment Status</label>             
-                <select class="form-control" data-minimum-results-for-search="Infinity" id="update_payment_status" tabindex="-98">
-                  <option {{ $order->is_paid == '0'?'selected':'' }} value="0" selected=""> Unpaid </option>
-                  <option {{ $order->is_paid == '1'?'selected':'' }} value="1"> Paid </option>
-                </select>                          
-            </div>
-            <div class="col-md-3">
-              
+            @if ($order->is_paid == '0')
+              <div class="col-md-3">
+                <label for="update_payment_status">Payment Status</label>             
+                  <select class="form-control" data-minimum-results-for-search="Infinity" id="update_payment_status" tabindex="-98">
+                    <option {{ $order->is_paid == '0'?'selected':'' }} value="0" selected=""> Unpaid </option>
+                    <option {{ $order->is_paid == '1'?'selected':'' }} value="1"> Paid </option>
+                  </select>                          
+              </div>
+            @endif
+            
+            <div class="col-md-6">              
               <label for="update_delivery_status">Order Status</label>             
-                <select class="form-control" data-minimum-results-for-search="Infinity" onchange="updateStatus('{{ $orderDetails->order_number }}',this.value)" id="update_delivery_status" tabindex="-98">
-                 
-                  @php
-                      // Define the order statuses based on the user's role
-                      $userRole = auth()->check() ? checkRole() : null;
-                  
-                      if ($userRole == 'Salesman') {
-                          $statuses = [
-                              '2' => 'Processing',
-                              '4' => 'Out for Delivery',
-                              '6' => 'Canceled',
-                          ];
-                      } elseif ($userRole == 'Delivery Boy') {
-                          $statuses = [
-                              '4' => 'Out for Delivery',
-                              '5' => 'Delivered',
-                          ];
-                      } else {
-                          $statuses = orderStatuses();
-                      }
-                  @endphp
-
-                  <option value="" selected disabled>--Status--</option>
-                  @foreach ($statuses as $value => $text)                                             
-                      <option {{ $value == $orderDetails->order_status ? 'selected' : '' }} value="{{ $value }}">{{ $text }}</option> 
-                  @endforeach   
-                </select>                         
+              <div class="d-flex align-items-center">
+                <select class="form-control w-50" data-minimum-results-for-search="Infinity" id="update_delivery_status" tabindex="-98">                 
+                    @php
+                        // Define the order statuses based on the user's role
+                        $userRole = auth()->check() ? checkRole() : null;                  
+                        if ($userRole == 'Salesman') {
+                            $statuses = [
+                                '2' => 'Processing',
+                                '4' => 'Out for Delivery',
+                                '6' => 'Canceled',
+                            ];
+                        } elseif ($userRole == 'Delivery Boy') {
+                            $statuses = [
+                                '4' => 'Out for Delivery',
+                                '5' => 'Delivered',
+                            ];
+                        } else {
+                            $statuses = orderStatuses();
+                        }
+                    @endphp
+                    <option value="" selected disabled>--Status--</option>
+                    @foreach ($statuses as $value => $text)                                             
+                        <option {{ $value == $orderDetails->order_status ? 'selected' : '' }} value="{{ $value }}">{{ $text }}</option> 
+                    @endforeach   
+                </select>
+                <input style="margin-left: 10px" name="sendMail" id="sendMail" type="checkbox">Send mail?
+                <button style="margin-left: 10px" class="btn btn-primary"  onclick="handleSave('{{ $orderDetails->order_number }}')">Save</button>   
+              </div>                  
             </div>          
           </div>          
           <div class="row gutters-5">
@@ -95,27 +98,27 @@
                                     </div>
                                     <div class="modal-body">
                                         <div>
-                                            <label for="basiInput" class="form-label">Selected Address</label>
+                                            <label for="basiInput" class="form-label">Selected Address:</label>
                                             <input type="text" class="form-control" value="{{ $orderDetails->selectedAddress }}" id="selectedAddress" name="selectedAddress" placeholder="Selected Address" required>
                                         </div>                                        
                                         <div>
-                                          <label for="basiInput" class="form-label">Entrance</label>
+                                          <label for="basiInput" class="form-label">Entrance:</label>
                                           <input type="text" class="form-control" value="{{ $orderDetails->entrance }}" id="entrance" name="entrance" placeholder="Entrance" required>
                                         </div>
                                         <div>
-                                          <label for="basiInput" class="form-label">Door Code</label>
+                                          <label for="basiInput" class="form-label">Door Code:</label>
                                           <input type="text" class="form-control" value="{{ $orderDetails->door_code }}" id="door_code" name="door_code" placeholder="Door Code" required>
                                         </div>
                                         <div>
-                                          <label for="basiInput" class="form-label">Floor</label>
+                                          <label for="basiInput" class="form-label">Floor:</label>
                                           <input type="text" class="form-control" value="{{ $orderDetails->floor }}" id="floor" name="floor" placeholder="Floor" required>
                                         </div>
                                         <div>
-                                          <label for="basiInput" class="form-label">Apartment</label>
+                                          <label for="basiInput" class="form-label">Apartment:</label>
                                           <input type="text" class="form-control" value="{{ $orderDetails->apartment }}" id="apartment" name="apartment" placeholder="Apartment" required>
                                         </div>
                                         <div>
-                                          <label for="basiInput" class="form-label">Comments</label>
+                                          <label for="basiInput" class="form-label">Comments:</label>
                                           <input type="text" class="form-control" value="{{ $orderDetails->comment }}" id="Comment" name="comment" placeholder="Comment" required>
                                         </div>                                     
                                     </div>
@@ -145,34 +148,39 @@
               <table>
                 <tbody>
                   <tr>
-                    <td class="text-main text-bold">Order #</td>
-                    <td class="text-info text-bold text-right">{{ $orderDetails->order_number }}</td>
+                    <td class="text-main text-bold">Order Number:</td>
+                    <td class="text-info text-bold text-right">#{{ $orderDetails->order_number }}</td>
                   </tr>
                   <tr>
-                    <td class="text-main text-bold">Order status</td>
+                    <td class="text-main text-bold">Order status:</td>
                     <td class="text-main text-bold">                       
                       {{ orderStatuses()[$orderDetails->order_status] }}                                       
                     </td>
                   </tr>
                   <tr>
-                    <td class="text-main text-bold">Order Type</td>
+                    <td class="text-main text-bold">Order Type:</td>
                     <td class="text-main text-bold">                       
                       {{ $orderDetails->type == '1' ?'Home Delivery':'Dine in or Pickup' }}                                     
                     </td>                    
                   </tr>
                   
                   <tr>
-                    <td class="text-main text-bold">Order date </td>
+                    <td class="text-main text-bold">Order date:</td>
                     <td class="text-right">{{ \Carbon\Carbon::parse($orderDetails->created_at)->format('F j, Y \a\t g:i A') }}</td>
                   </tr>
                   <tr>
-                    <td class="text-main text-bold"> Total amount </td>
+                    <td class="text-main text-bold"> Total amount:</td>
                     <td class="text-right">{{ $order->total_amount }}{{ getCurrency() }}</td>
                   </tr>
                   <tr>
-                    <td class="text-main text-bold">Payment method</td>
+                    <td class="text-main text-bold">Payment Status:</td>
+                    <td class="text-right">{{ $order->is_paid == '0'?'Unpaid':'Paid' }}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-main text-bold">Payment method:</td>
                     <td class="text-right">{{ $order->payment_type }}</td>
-                  </tr>                 
+                  </tr>  
+                                 
                 </tbody>
               </table>
             </div>
@@ -184,7 +192,7 @@
             <div class="col-lg-12 table-responsive">
               <table class="table-bordered aiz-table invoice-summary table footable footable-1 breakpoint-xl" style="">
                 <thead>
-                  <tr class="bg-trans-dark footable-header">
+                  {{-- <tr class="bg-trans-dark footable-header">
                     <th data-breakpoints="lg" class="min-col footable-first-visible" style="display: table-cell;">#</th>
                     <th width="10%" style="display: table-cell;">Photo</th>
                     <th class="text-uppercase" style="display: table-cell;">Name</th>                  
@@ -192,25 +200,44 @@
                     <th data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Price</th>
                     <th data-breakpoints="lg" class="min-col text-uppercase text-center footable-last-visible"
                       style="display: table-cell;">Total</th>
+                  </tr> --}}
+                  <tr  class="bg-trans-dark footable-header">
+                    <th  data-breakpoints="lg" class="min-col footable-first-visible" style="display: table-cell;">#</th>
+                    <th  width="10%" style="display: table-cell;">Photo</th>
+                    <th  class="text-uppercase" style="display: table-cell;">Name</th>
+                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Qty</th>
+                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">T.Price</th>
+                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">P.Price</th>
+                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">T.T Price</th>
+                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;"> T.P Price</th>
+                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center footable-last-visible" style="display: table-cell;">Total Price</th>
+                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center footable-last-visible" style="display: table-cell;">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                 @foreach ($products as $item)
                 <tr>
-                    <td class="footable-first-visible" style="display: table-cell;">1</td>
+                    <td class="footable-first-visible" style="display: table-cell;">{{ $loop->index+1 }}</td>
                     <td style="display: table-cell;">                     
                         <img height="50" src="{{ asset('frontend/product_images/' . $item->image) }}">                     
                     </td>
                     <td style="display: table-cell;">
                       <strong> {{ $item->proName }}</strong>
                       <br>
-                      <small>Size:  {{ $item->sizeName }} </small>
+                      @if ($item->sizeName)
+                        <small>Size:  {{ $item->sizeName }} </small>
+                      @endif                      
                       <br>
-                      <small>Toppings: {{ $item->topingNames }}</small>
+                      @if ($item->topingNames)                      
+                        <small>Toppings: {{ $item->topingNames }}</small>
+                      @endif
                       <br>                  
                     </td>                   
                     <td class="text-center" style="display: table-cell;"> {{ $item->quantity }} </td>
-                    <td class="text-center" style="display: table-cell;"> {{ $item->price }}{{ getCurrency() }}</td>
+                    <td class="text-center" style="display: table-cell;"> {{ $item->toping_price }}{{ getCurrency() }}</td>
+                    <td class="text-center footable-last-visible" style="display: table-cell;"> {{ $item->price }}{{ getCurrency() }} </td>
+                    <td class="text-center footable-last-visible" style="display: table-cell;"> {{ $item->toping_prices }}{{ getCurrency() }} </td>
+                    <td class="text-center footable-last-visible" style="display: table-cell;"> {{ $item->price*$item->quantity }}{{ getCurrency() }} </td>
                     <td class="text-center footable-last-visible" style="display: table-cell;"> {{ $item->total_price }}{{ getCurrency() }} </td>
                     <td>
                       <button type="button" data-bs-toggle="modal" data-bs-target="#myModal{{ $item->id }}" class="btn btn-sm btn-info waves-effect waves-light"><i class="ri-ball-pen-line"></i></button>
@@ -263,7 +290,7 @@
                   </td>
                   <td> {{ $order->total_amount }}{{ getCurrency() }} </td>
                 </tr>
-                @if($order->delivery_charge)
+                @if($order->delivery_charge>0)
                 <tr>
                   <td>
                     <strong class="text-muted">Shipping :</strong>
@@ -301,9 +328,25 @@
 
 @section('script')
   <script>
-    function updateStatus(orderId, newStatus){
-        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+ function handleSave(orderNumber) {
+        var selectedValue = $('#update_delivery_status').val();
+        var sendMail = $('#sendMail').is(':checked');
         
+
+        // Show confirmation dialog
+        var userConfirmed = confirm("Are you sure you want to update the order status?");
+
+        if (userConfirmed) {
+            updateStatus(orderNumber, selectedValue,sendMail);
+        } else {
+            // Handle case where user does not confirm
+            console.log("User canceled the status update.");
+        }
+    }
+
+    function updateStatus(orderId, selectedValue,sendMail) {
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
         // Set CSRF token in the request headers
         $.ajaxSetup({
             headers: {
@@ -316,15 +359,18 @@
             method: 'POST',
             data: {
                 orderId: orderId,
-                newStatus: newStatus
+                newStatus: selectedValue,
+                sendMail:sendMail
             },
             success: function(response) {
                 // Handle success response
                 console.log(response);
+                alert('Order status updated successfully.');
             },
             error: function(xhr, status, error) {
                 // Handle error
                 console.error('Error updating status:', error);
+                alert('There was an error updating the order status.');
             }
         });     
     }
