@@ -47,11 +47,11 @@
                                             <table class="table">
                                                 <thead>
                                                     <tr>                                                  
-                                                        <th >Order</th>
-                                                        <th >Date&Time</th>
+                                                        <th>Order</th>
+                                                        <th>Date&Time</th>
                                                         <th>Payment Status</th>
                                                         <th style="width:10px" >Status</th>                                                        
-                                                        <th >Actions</th>
+                                                        <th>Actions</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -200,12 +200,12 @@
                               <strong  class="text-main"> Name: {{productDetails.name}}</strong>
                             </div>
                           </div>
-                          <br > Email: {{productDetails.email}} <br > Selected Address: {{productDetails.selectedAddress}}  <br > Entrance:  {{productDetails.entrance}} <br > Door Code:  {{productDetails.door_code}}  <br > Floor: {{productDetails.floor}} <br > Apartment: {{productDetails.apartment}} <br > Comment: {{productDetails.comment}} <br >
+                          <br> Email: {{productDetails.email}} <br > Selected Address: {{productDetails.selectedAddress}}  <br > Entrance:  {{productDetails.entrance}} <br > Door Code:  {{productDetails.door_code}}  <br > Floor: {{productDetails.floor}} <br > Apartment: {{productDetails.apartment}} <br > Comment: {{productDetails.comment}} <br >
                         </address>
                       </div>
                       <div  class="col-6 col-sm-6 col-xsm-6">
                         <strong style="color:#000">Order Info</strong>
-                        <hr >
+                        <hr>
                         <table >
                           <tbody >
                             <tr >
@@ -237,6 +237,10 @@
                               <td  class="text-main text-bold"> Payment Status </td>
                               <td  class="text-right">{{productDetails.is_paid==0?'Unpaid':'Paid'}}</td>
                             </tr>
+                            <tr >
+                              <td  class="text-main text-bold"> Payment Type </td>
+                              <td  class="text-right">{{productDetails.payment_type==1?'Cash on delivery':'Online Payment'}}</td>
+                            </tr>
                           </tbody>
                         </table>
                       </div>
@@ -265,12 +269,12 @@
                               </td>
                               <td  style="display: table-cell;">
                                 <strong >{{product.proName}}</strong>
-                                <br >                                                                
+                                <br>                                                                
                                 <small >Size: {{ product.sizeName }}</small>
                                 <br >
                                 <small >Options: {{ product.optionNames }} </small><br>
                                 <small >Toppings: {{ product.topingNames }} </small><br>
-                                <small >Tags: {{ product.tagNames }} </small>
+                                <small >Remove Tags: (-){{ product.tagNames }} </small>
                                 <br >
                               </td>
                               <td  class="text-center" style="display: table-cell; text-align:right;">{{product.quantity}}</td>
@@ -298,41 +302,6 @@
                             </tr>
                           </tbody>
                         </table>
-                      </div>
-                    </div>
-                    <div >
-                        <table class="table">
-                        <tbody>
-                          <tr>
-                            <td>
-                              <strong class="text-muted">Sub Total :</strong>
-                            </td>
-                            <td>{{ subtotal }}{{ baseCurrencySymbol }}</td>
-                          </tr>                                                             
-                          <tr v-if="productDetails.delivery_charge>0">
-                            <td>
-                              <strong class="text-muted">Shipping :</strong>
-                            </td>
-                            <td>{{ shippingCostAmount }}{{ baseCurrencySymbol }}</td>
-                          </tr>
-                          <tr v-if="productDetails.discount>0">
-                            <td>
-                              <strong class="text-muted">Discount :</strong>
-                            </td>
-                            <td class="text-muted h5">{{ productDetails.discount }}{{ baseCurrencySymbol }}</td>
-                          </tr>
-                          <tr>
-                            <td>
-                              <strong class="text-muted">Grand Total :</strong>
-                            </td>
-                            <td class="text-muted h5">{{ subtotal - productDetails.discount + (productDetails.delivery_charge > 0 ? productDetails.delivery_charge : 0) }}{{ baseCurrencySymbol }}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <div  class="no-print text-right">
-                        <a  href="" type="button" class="btn btn-icon btn-light">
-                          <i  class="las la-print"></i>
-                        </a>
                       </div>
                     </div>
                 </div>

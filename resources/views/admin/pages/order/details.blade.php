@@ -21,7 +21,7 @@
         <div class="card-body">
           <div class="row ">            
             <!--Assign Delivery Boy-->
-            <div class="col-md-3">
+            <div class="col-md-2">
               <label for="assign_deliver_boy">Assign Deliver Boy</label>             
                 <select  onchange="assignDeliverBoy('{{ $orderDetails->order_number }}',this.value)"  class="form-select mb-3" aria-label="Default select example">
                     <option selected>Select your Status </option>
@@ -31,16 +31,20 @@
                 </select>                     
             </div>
             @if ($order->is_paid == '0')
-              <div class="col-md-3">
-                <label for="update_payment_status">Payment Status</label>             
-                  <select class="form-control" data-minimum-results-for-search="Infinity" id="update_payment_status" tabindex="-98">
+              <div class="col-md-5">
+                <label for="update_payment_status">Payment Status</label>      
+                <div class="d-flex align-items-center">       
+                  <select class="form-control w-50" data-minimum-results-for-search="Infinity" id="update_payment_status" tabindex="-98">
                     <option {{ $order->is_paid == '0'?'selected':'' }} value="0" selected=""> Unpaid </option>
                     <option {{ $order->is_paid == '1'?'selected':'' }} value="1"> Paid </option>
-                  </select>                          
+                  </select> 
+                  <input style="margin-left: 10px" name="sendMail" id="sendMail" type="checkbox">Send mail?
+                  <button style="margin-left: 10px" class="btn btn-primary"  onclick="handlePaymentStatusSave('{{ $orderDetails->order_number }}')">Save</button>   
+                </div>                         
               </div>
             @endif
             
-            <div class="col-md-6">              
+            <div class="col-md-5">              
               <label for="update_delivery_status">Order Status</label>             
               <div class="d-flex align-items-center">
                 <select class="form-control w-50" data-minimum-results-for-search="Infinity" id="update_delivery_status" tabindex="-98">                 
@@ -178,7 +182,7 @@
                   </tr>
                   <tr>
                     <td class="text-main text-bold">Payment method:</td>
-                    <td class="text-right">{{ $order->payment_type }}</td>
+                    <td class="text-right">{{ $order->payment_type == '1'?'Cash on delivery':'Online Payment' }}</td>
                   </tr>  
                                  
                 </tbody>
@@ -206,9 +210,9 @@
                     <th  width="10%" style="display: table-cell;">Photo</th>
                     <th  class="text-uppercase" style="display: table-cell;">Name</th>
                     <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Qty</th>
-                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">T.Price</th>
+                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">T.T.Price</th>
+                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">T.O.Price</th>
                     <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">P.Price</th>
-                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">T.T Price</th>
                     <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;"> T.P Price</th>
                     <th  data-breakpoints="lg" class="min-col text-uppercase text-center footable-last-visible" style="display: table-cell;">Total Price</th>
                     <th  data-breakpoints="lg" class="min-col text-uppercase text-center footable-last-visible" style="display: table-cell;">Action</th>
@@ -231,14 +235,21 @@
                       @if ($item->topingNames)                      
                         <small>Toppings: {{ $item->topingNames }}</small>
                       @endif
-                      <br>                  
+                      <br>   
+                      @if ($item->optionNames)                      
+                        <small>Options: {{ $item->optionNames }}</small>
+                      @endif 
+                      <br>   
+                      @if ($item->optionNames)                      
+                        <small>Remove Tag: (-){{ $item->tagNames }}</small>
+                      @endif               
                     </td>                   
                     <td class="text-center" style="display: table-cell;"> {{ $item->quantity }} </td>
                     <td class="text-center" style="display: table-cell;"> {{ $item->toping_price }}{{ getCurrency() }}</td>
+                    <td class="text-center" style="display: table-cell;"> {{ $item->option_price }}{{ getCurrency() }}</td>
                     <td class="text-center footable-last-visible" style="display: table-cell;"> {{ $item->price }}{{ getCurrency() }} </td>
-                    <td class="text-center footable-last-visible" style="display: table-cell;"> {{ $item->toping_prices }}{{ getCurrency() }} </td>
                     <td class="text-center footable-last-visible" style="display: table-cell;"> {{ $item->price*$item->quantity }}{{ getCurrency() }} </td>
-                    <td class="text-center footable-last-visible" style="display: table-cell;"> {{ $item->total_price }}{{ getCurrency() }} </td>
+                    <td class="text-center footable-last-visible" style="display: table-cell;"> {{ $item->total_price+ $item->toping_price+$item->option_price }}{{ getCurrency() }} </td>
                     <td>
                       <button type="button" data-bs-toggle="modal" data-bs-target="#myModal{{ $item->id }}" class="btn btn-sm btn-info waves-effect waves-light"><i class="ri-ball-pen-line"></i></button>
                     </td> 
@@ -364,7 +375,7 @@
             },
             success: function(response) {
                 // Handle success response
-                console.log(response);
+                // console.log(response);
                 alert('Order status updated successfully.');
             },
             error: function(xhr, status, error) {
@@ -374,7 +385,51 @@
             }
         });     
     }
+  function handlePaymentStatusSave(orderNumber) {
+        var selectedValue = $('#update_payment_status').val();
+        var sendMail = $('#sendMail').is(':checked');
+        
 
+        // Show confirmation dialog
+        var userConfirmed = confirm("Are you sure you want to update the payment status?");
+
+        if (userConfirmed) {
+          updatePaymentStatus(orderNumber, selectedValue,sendMail);
+        } else {
+            // Handle case where user does not confirm
+            console.log("User canceled the status update.");
+        }
+  }
+
+  function updatePaymentStatus(orderId, selectedValue,sendMail) {
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        // Set CSRF token in the request headers
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            }
+        });
+        
+        $.ajax({
+            url: '/admin/update-payment-status',
+            method: 'POST',
+            data: {
+                orderId: orderId,
+                newStatus: selectedValue,
+                sendMail:sendMail
+            },
+            success: function(response) {
+                // Handle success response
+                window.location.reload();                
+            },
+            error: function(xhr, status, error) {
+                // Handle error
+                console.error('Error updating status:', error);
+                alert('There was an error updating the order status.');
+            }
+        });     
+    }
   function assignDeliverBoy(orderId, value) {
       var csrfToken = $('meta[name="csrf-token"]').attr('content');
         

@@ -91,6 +91,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::post('order-update', [OrderController::class, 'updateQty'])->name('orders.update');
         Route::get('order-details/{id}', [OrderController::class, 'getOrderDetails'])->name('order.details');
         Route::post('update-status', [OrderController::class, 'updateStatus'])->name('update.status');
+        Route::post('update-payment-status', [OrderController::class, 'updatePaymentStatus'])->name('update.payment.status');
         Route::post('assign-delivery-boy', [OrderController::class, 'assignDeliveryBoy'])->name('assign.deliveryboy');
         Route::post('update-address', [OrderController::class, 'updateAddress'])->name('address.update');
     });

@@ -7,15 +7,15 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Address;
 use App\Models\OrderItem;
-use App\Mail\sendStatusChangeMail;
 use App\Mail\PlaceOrderMail;
 use App\Models\Admin\Toping;
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use App\Models\Admin\ProductTag;
+use App\Mail\sendStatusChangeMail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use App\Http\Controllers\PaytrailController;
-use App\Models\Admin\ProductTag;
+use App\Mail\sendPaymentStatusChangeMail;
 
 class OrderController extends Controller
 {
@@ -242,11 +242,27 @@ class OrderController extends Controller
 
         $order = Order::where('order_number', $id)->where('is_order_valid', 1)->first();
 
+        // $products->each(function ($product) {
+        //     $topingIds = explode(',', $product->toping_ids);
+        //     $topingNames = Toping::whereIn('id', $topingIds)->pluck('name')->toArray();
+        //     $product->topingNames = implode(', ', $topingNames);
+        // });
+
         $products->each(function ($product) {
             $topingIds = explode(',', $product->toping_ids);
             $topingNames = Toping::whereIn('id', $topingIds)->pluck('name')->toArray();
             $product->topingNames = implode(', ', $topingNames);
+
+            $optionIds = explode(',', $product->option_ids);
+            $optionNames = Toping::whereIn('id', $optionIds)->pluck('name')->toArray();
+            $product->optionNames = implode(', ', $optionNames);
+
+            $removedTags = explode(',', $product->removed_tags);
+            $tagNames = ProductTag::whereIn('id', $removedTags)->pluck('tag_name')->toArray();
+            $product->tagNames = implode(', ', $tagNames);
         });
+
+
 
         $deliveryBoys = User::leftJoin('model_has_roles', 'model_has_roles.model_id', '=', 'users.id')
             ->leftJoin('roles', 'model_has_roles.role_id', '=', 'roles.id')
@@ -277,6 +293,25 @@ class OrderController extends Controller
         return response()->json('Success');
     }
 
+    public function updatePaymentStatus(Request $request)
+    {
+        $data =  $request;
+        $newStatus = $request->newStatus;
+        $orderId = $request->orderId;
+        $sendMail = $request->sendMail;
+        $getOrder = Order::where('order_number', $orderId)->first();
+        $getCustomerMail = User::where('id', $getOrder->customer_id)->first();
+
+        if ($sendMail == true) {
+            // return $getCustomerMail->email;
+            Mail::to($getCustomerMail->email)->send(new sendPaymentStatusChangeMail($orderId, $data));
+        }
+        $order = Order::where('order_number', $orderId)->where('is_order_valid', 1)->first();
+        $order->is_paid = $newStatus;
+        $order->update();
+        return response()->json('Success');
+    }
+
     public function updateAddress(Request $request)
     {
         $selectedAddress = $request->selectedAddress;
@@ -298,10 +333,24 @@ class OrderController extends Controller
 
     public function updateQty(Request $request)
     {
-        $order = OrderItem::where('order_number', $request->order_id)->where('product_id', $request->product_id)->first();
-        if ($order) {
-            $order->quantity  = $request->qty;
-            $order->total_price = $order->price * $request->qty;
+        $orderItem = OrderItem::where('order_number', $request->order_id)->where('product_id', $request->product_id)->first();
+        if ($orderItem) {
+
+            $oldTotalProductPrice = $orderItem->total_price;
+            $order = Order::where('order_number', $request->order_id)->first();
+            $order->total_amount -= $oldTotalProductPrice;
+            $order->paid_amount -= $oldTotalProductPrice;
+            $order->update();
+
+            $orderItem->quantity  = $request->qty;
+            $orderItem->total_price = $orderItem->price * $request->qty;
+            $orderItem->update();
+
+            $newTotalProductPrice = $orderItem->total_price;
+            $order->total_amount += $newTotalProductPrice;
+            $order->paid_amount += $newTotalProductPrice;
+            $order->update();
+
             $order->update();
             session()->flash('sweet_alert', [
                 'type' => 'success',
