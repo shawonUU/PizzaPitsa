@@ -250,10 +250,10 @@
                               <th  width="10%" style="display: table-cell;">Photo</th>
                               <th  class="text-uppercase" style="display: table-cell;">Name</th>
                               <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Qty</th>
-                              <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">T.Price</th>
                               <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">P.Price</th>
-                              <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">T.T Price</th>
                               <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;"> T.P Price</th>
+                              <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">T.O Price</th>
+                              <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">T.T Price</th>
                               <th  data-breakpoints="lg" class="min-col text-uppercase text-center footable-last-visible" style="display: table-cell;">Total Price</th>
                             </tr>
                           </thead>
@@ -268,15 +268,33 @@
                                 <br >                                                                
                                 <small >Size: {{ product.sizeName }}</small>
                                 <br >
-                                <small >Toppings: {{ product.topingNames }} </small>
+                                <small >Options: {{ product.optionNames }} </small><br>
+                                <small >Toppings: {{ product.topingNames }} </small><br>
+                                <small >Tags: {{ product.tagNames }} </small>
                                 <br >
                               </td>
-                              <td  class="text-center" style="display: table-cell;">{{product.quantity}}</td>
-                              <td  class="text-center" style="display: table-cell;">{{product.toping_price}}{{baseCurrencySymbol}}</td>
-                              <td  class="text-center" style="display: table-cell;">{{product.price }}{{baseCurrencySymbol}}</td>
-                              <td  class="text-center" style="display: table-cell;">{{product.toping_price * product.quantity}}{{baseCurrencySymbol}}</td>
-                              <td  class="text-center" style="display: table-cell;">{{product.price * product.quantity }}{{baseCurrencySymbol}}</td>
-                              <td  class="text-center footable-last-visible" style="display: table-cell;">{{(product.price * product.quantity) + (product.toping_price * product.quantity)}}{{baseCurrencySymbol}}</td>
+                              <td  class="text-center" style="display: table-cell; text-align:right;">{{product.quantity}}</td>
+                              <td  class="text-center" style="display: table-cell; text-align:right;">{{product.price }}{{baseCurrencySymbol}}</td>
+                              <td  class="text-center" style="display: table-cell; text-align:right;">{{product.price * product.quantity }}{{baseCurrencySymbol}}</td>
+                              <td  class="text-center" style="display: table-cell; text-align:right;">{{(product.option_price*1)}}{{baseCurrencySymbol}}</td>
+                              <td  class="text-center" style="display: table-cell; text-align:right;">{{(product.toping_price*1)}}{{baseCurrencySymbol}}</td>
+                              <td  class="text-center footable-last-visible" style="display: table-cell; text-align:right;">{{(product.price * product.quantity) + (product.toping_price*1) + (product.option_price*1) }}{{baseCurrencySymbol}}</td>
+                            </tr>
+                            <tr v-if="((productDetails.delivery_charge*1)>0 || (productDetails.discount*1)>0)">
+                              <td colspan="8" style="text-align:right;">Sub Total :</td>
+                              <td style="text-align:center;">{{ (productDetails.paid_amount*1)+(productDetails.discount*1)-(productDetails.delivery_charge*1) }}{{ baseCurrencySymbol }}</td>
+                            </tr>
+                            <tr v-if="(productDetails.delivery_charge*1)>0">
+                              <td colspan="8" style="text-align:right;">Shipping :</td>
+                              <td style="text-align:center;">{{ productDetails.delivery_charge }}{{ baseCurrencySymbol }}</td>
+                            </tr>
+                            <tr v-if="(productDetails.discount*1)>0">
+                              <td colspan="8" style="text-align:right;">Discount :</td>
+                              <td style="text-align:center;">{{ productDetails.discount }}{{ baseCurrencySymbol }}</td>
+                            </tr>
+                            <tr v-if="(productDetails.paid_amount*1)>0">
+                              <td colspan="8" style="text-align:right;">Total :</td>
+                              <td style="text-align:center;">{{ productDetails.paid_amount }}{{ baseCurrencySymbol }}</td>
                             </tr>
                           </tbody>
                         </table>

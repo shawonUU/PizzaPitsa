@@ -15,6 +15,7 @@ use App\Models\Admin\Toping;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Admin\ProductTag;
 
 class PlaceOrderMail extends Mailable
 {
@@ -58,6 +59,14 @@ class PlaceOrderMail extends Mailable
             $topingIds = explode(',', $product->toping_ids);
             $topingNames = Toping::whereIn('id', $topingIds)->pluck('name')->toArray();
             $product->topingNames = implode(', ', $topingNames);
+
+            $optionIds = explode(',', $product->option_ids);
+            $optionNames = Toping::whereIn('id', $optionIds)->pluck('name')->toArray();
+            $product->optionNames = implode(', ', $optionNames);
+
+            $removedTags = explode(',', $product->removed_tags);
+            $tagNames = ProductTag::whereIn('id', $removedTags)->pluck('tag_name')->toArray();
+            $product->tagNames = implode(', ', $tagNames);
         });
         $deliveryBoys = User::where('role_id', '3')->where('status', '1')->get();
         return $this->view('layouts.placeOrderMail', compact('products', 'orderDetails', 'deliveryBoys','order','data'))

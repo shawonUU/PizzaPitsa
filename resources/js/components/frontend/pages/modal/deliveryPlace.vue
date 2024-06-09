@@ -168,6 +168,7 @@
                                     <th class="text-uppercase" style="display: table-cell;">Name</th>                  
                                     <th data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Qty</th>
                                     <th data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Price</th>
+                                    <th data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Option Price</th>
                                     <th data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Topping Price</th>
                                     <th data-breakpoints="lg" class="min-col text-uppercase text-center footable-last-visible" style="display: table-cell;">Total</th>
                                   </tr>
@@ -213,6 +214,7 @@
                                             </td>                   
                                             <td class="text-center" style="display: table-cell;"> {{ item.quantity }} </td>
                                             <td class="text-center" style="display: table-cell;"> {{ item.size.price }}{{ baseCurrencySymbol }}</td>
+                                            <td class="text-center footable-last-visible" style="display: table-cell;"> {{ item.totalOptionPrice }}{{ baseCurrencySymbol }} </td>
                                             <td class="text-center footable-last-visible" style="display: table-cell;"> {{ item.totalTopingPrice }}{{ baseCurrencySymbol }} </td>
                                             <td class="text-center footable-last-visible" style="display: table-cell;"> {{ item.totalPrice }}{{ baseCurrencySymbol }} </td>
                                           </tr>    
@@ -397,6 +399,7 @@
               }
 
                 const savedCart = localStorage.getItem('cart');
+                // console.log(savedCart ? JSON.parse(savedCart) : []);return;
                 var entrance = this.entrance;
                 var door_code = this.doorCode;
                 var floor = this.floor;
