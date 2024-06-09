@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\PaytrailController;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\PlaceOrderMail;
+use App\Models\Admin\ProductTag;
 
 class OrderController extends Controller
 {
@@ -110,7 +111,7 @@ class OrderController extends Controller
                         foreach (isset($sizeWiseItem['options']) ? $sizeWiseItem['options'] : [] as $toping) {
                             if ($toping && !isset($option_ids[$toping['id']])) {
                                 $option_ids[$toping['id']] = $toping['id'];
-                                $option_price += ($sizeWiseItem['optionPrices'][$toping['id']] * ($sizeWiseItem['optionQtys'][$toping['id']] - $FREE_OPTION));
+                                $option_price += ($sizeWiseItem['optionPrices'][$toping['id']] * ($sizeWiseItem['optionQtys'][$toping['id']] - $sizeWiseItem['optionFreeQtys'][$toping['id']]));
                             }
                         }
 
@@ -125,6 +126,13 @@ class OrderController extends Controller
                         foreach ($sizeWiseItem['optionQtys'] as $topingid => $qty) {
                             if ($qty) {
                                 $option_qtys[$topingid] = $qty;
+                            }
+                        }
+
+                        $option_free_qtys = [];
+                        foreach ($sizeWiseItem['optionFreeQtys'] as $topingid => $qty) {
+                            if ($qty !="" && $qty != null && ($qty*1)>=0) {
+                                $option_free_qtys[$topingid] = $qty;
                             }
                         }
 
@@ -143,6 +151,7 @@ class OrderController extends Controller
                         $orderItem->toping_price = $toping_price;
                         $orderItem->option_ids = implode(',', $option_ids);
                         $orderItem->option_qtys = implode(',', $option_qtys);
+                        $orderItem->option_free_qtys = implode(',', $option_free_qtys);
                         $orderItem->option_prices = implode(',', $option_prices);
                         $orderItem->option_price = $option_price;
                         $orderItem->removed_tags = implode(',', $sizeWiseItem['removedTags']);
@@ -321,6 +330,14 @@ class OrderController extends Controller
             $topingIds = explode(',', $product->toping_ids);
             $topingNames = Toping::whereIn('id', $topingIds)->pluck('name')->toArray();
             $product->topingNames = implode(', ', $topingNames);
+
+            $optionIds = explode(',', $product->option_ids);
+            $optionNames = Toping::whereIn('id', $optionIds)->pluck('name')->toArray();
+            $product->optionNames = implode(', ', $optionNames);
+
+            $removedTags = explode(',', $product->removed_tags);
+            $tagNames = ProductTag::whereIn('id', $removedTags)->pluck('tag_name')->toArray();
+            $product->tagNames = implode(', ', $tagNames);
         });
 
         $user = User::where('id', auth()->user()->id)->first();

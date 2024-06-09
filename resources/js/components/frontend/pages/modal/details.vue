@@ -149,7 +149,7 @@
                     </div>
 
                     <template v-for="(productOption, optionKey) in productOptions" :key="optionKey">
-                        <h6  style="margin-bottom:5px;">{{productOption.details.title}}</h6>
+                        <h6  style="margin-bottom:5px;">{{productOption.details.title}} <span v-if="productOption.details.freeQty" style="font-size: 12px;">(Free QTY {{ productOption.details.freeQty }})</span> <span style="font-size: 12px;" v-else>(No free QTY)</span></h6>
 
                         <div class="row">
                           <div class="col-6 col-md-3 p-2" v-for="(productToping, topingId) in productOption.options" :key="topingId">
@@ -306,8 +306,8 @@ export default {
       Multiselect
     },
     mounted(){
-        console.log("pppppppppppp");
-        console.log(this.productOptions);
+        // console.log("pppppppppppp");
+        // console.log(this.productOptions);
         this.loadCartFromLocalStorage();
         this.fetchBaseCurrencySymbol();
         this.selectFirstSizeAsDefault();
