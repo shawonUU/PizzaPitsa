@@ -142,7 +142,9 @@ class PaytrailController extends Controller
 
             DB::commit();
             $clear = $data['checkout-status']=='ok' ? true : false;
-            return redirect("/dashboard")->with('clear-cart', $clear);
+            // return redirect("/dashboard")->with('clear-cart', $clear);
+            $message = "orders";
+            return redirect("/dashboard?tab=$message")->with('clear-cart', $clear);
 
 
         }catch (\Exception $e) {
