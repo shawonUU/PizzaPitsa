@@ -33,13 +33,8 @@
                             transform: translate3d(0px, 0px, 0px);
                           "
                         >
-                          <div
-                            class="thumbnail slick-slide slick-current slick-active"
-                            data-slick-index="0"
-                            aria-hidden="false"
-                            tabindex="0"
-                            style="width: 491px"
-                          >
+                          <div class="thumbnail slick-slide slick-current slick-active" data-slick-index="0" aria-hidden="false" tabindex="0" style="width: 491px; display:flex; justify-content:center">
+
                             <img class="sizeImages"  id="" :src="productData.image ? '/frontend/product_images/' +productData.image : '/frontend/product_images/placeholder.jpg'" alt="Product Images" />
                             <img class="sizeImages d-none"  v-for="(productSize, sizeId) in productSizes" :key="sizeId" :id="'sizeImages'+sizeId"
                               :src="productSize.image ? '/frontend/product_images/' +productSize.image : '/frontend/product_images/placeholder.jpg'"  alt="Product Images"
@@ -47,9 +42,9 @@
                             <!-- <div class="label-block label-right">
                               <div class="product-badget">20% OFF</div>
                             </div> -->
-                            <div class="product-quick-view position-view">
+                            <!-- <div class="product-quick-view position-view">
 
-                            </div>
+                            </div> -->
                           </div>
 
                         </div>
@@ -136,9 +131,9 @@
                       <div class="product-variation">
                         <h6 class="title">Size:</h6>
                         <ul class="range-variant">
-                          <li  v-for="(productSize, sizeId) in productSizes" :key="sizeId" @click="clickOnSize(productSize.id, productSize.size_id)" class="sizeRadioBtn" :id="'sizeRadioBtn'+productSize.id" style=" padding: 0px 15px; font-size: 14px; min-height: 30px !important; padding: 0 8px; cursor:pointer; margin:0 2px;">
+                          <li  v-for="(productSize, sizeId) in productSizes" :key="sizeId" @click="clickOnSize(productSize.id, productSize.size_id, productSize.name)" class="sizeRadioBtn" :id="'sizeRadioBtn'+productSize.id" style=" padding: 0px 15px; font-size: 14px; min-height: 30px !important; padding: 0 8px; cursor:pointer; margin:0 2px;">
                               <div class="input-group" style="cursor:pointer;">
-                                  <input style="" class="sizeRadio" type="radio" :id="'sizeRadio'+productSize.id" :data-libsizeid="productSize.size_id"  name="sizeRadio" :value="productSize.id">
+                                  <input style="" class="sizeRadio" :data-sizename="productSize.name" type="radio" :id="'sizeRadio'+productSize.id" :data-libsizeid="productSize.size_id"  name="sizeRadio" :value="productSize.id">
                                   <label class="sizeRadioLbl" style="display:none !important; cursor:pointer;" :for="'sizeRadio'+productSize.id"></label>
                                   <span style="cursor:pointer;">{{productSize.name}}</span>
                               </div>
@@ -325,7 +320,7 @@ export default {
       handleButtonClick() {
         this.$emit('closeModal');
       },
-      clickOnSize(sizeid, lib_size){
+      clickOnSize(sizeid, lib_size, size_name){
           var elements = document.getElementsByClassName('sizeImages');
           for(var i=0; i<elements.length; i++){
             elements[i].classList.add('d-none');
@@ -344,8 +339,15 @@ export default {
             elements[i].style.border = '2px solid #f6f7fb';
           }
 
+          size_name = size_name.trim().toLowerCase();
+          var imagesize = "100%";
+          if(size_name == "small") imagesize = "80%";
+          if(size_name == "medium") imagesize = "90%";
+          if(size_name == "large") imagesize = "100%";
+
           document.getElementById('tooltipItem'+sizeid).classList.remove('d-none');
           document.getElementById('sizeImages'+sizeid).classList.remove('d-none');
+          document.getElementById('sizeImages'+sizeid).style.width = imagesize;
           document.getElementById('sizeWisePrice'+sizeid).classList.remove('d-none');
           document.getElementById('sizeRadioBtn'+sizeid).style.border = '1px solid red';
        
@@ -759,9 +761,20 @@ export default {
       selectFirstSizeAsDefault(){
         const clickEvent = new Event('click', { bubbles: true });
         var eles = document.getElementsByClassName("sizeRadio");
-        if(eles[0] != undefined)eles[0].checked = true;
+
+        var index = 0;
+
+        for(var i=0; i<eles.length; i++){
+          var sizeName = eles[i].dataset.sizename;
+          sizeName = sizeName.trim().toLowerCase();
+          if(sizeName == 'medium'){
+            index = i;
+          }
+        }
+        
+        if(eles[index] != undefined)eles[0].checked = true;
         var eles = document.getElementsByClassName("sizeRadioBtn");
-        if(eles[0] != undefined)eles[0].dispatchEvent(clickEvent);
+        if(eles[index] != undefined)eles[0].dispatchEvent(clickEvent);
       },
       selectExtraTopping(){
         var selectedOptionids = [];

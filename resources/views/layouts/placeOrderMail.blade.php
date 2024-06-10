@@ -355,7 +355,10 @@
             padding: 20px;
             margin: 5px 0;
             text-align: center;
-        }        
+        }
+        .table-responsive{display:block;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+        .table-responsive>.table-bordered{border:0}
+        
     </style>
 </head>
 <body>
@@ -364,17 +367,17 @@
     @endphp
     <div class="container">
         <div class="header">
-            <img style="width: 100px;" src="https://pizzapitsa.fi/frontend/assets/images/logo/2%20pizza%20logo-02.png" alt="">
+            <img style="width: 100px;" src="http://127.0.0.1:8000/frontend/assets/images/logo/2%20pizza%20logo-02.png" alt="">
             <h4 style="margin:0px; text-align: center;">Order Confirmation</h4>
         </div>
         <div class="order-details">
             <h2>Thank you for your order!</h2>
 
             <div class="row">
-                    <div class="col-6">
+                    <div class="col-6 table-responsive">
                         <strong>Order Info</strong>
                         <hr>
-                        <table>
+                        <table class="class">
                             <tbody>
                             <tr>
                                 <td class="text-main text-bold">Order </td>
@@ -418,7 +421,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-6">
+                    <div class="col-6 table-responsive">
                         @if( $orderDetails->type==1)
                         <strong>Delivery Info</strong>
                         @endif
@@ -427,7 +430,7 @@
                         @endif
                         <hr>
 
-                        <table>
+                        <table class="class">
                             <tr>
                                 <td>Name:</td>
                                 <td>{{ $orderDetails->name }}</td>
@@ -471,8 +474,8 @@
         <div class="order-summary">
             <h2>Order Summary</h2>
             <div class="">
-            <div class="">
-              <table class="" style="">
+            <div class="table-responsive">
+              <table class="table" style="">
                 <thead>
                   <tr class="">
                     <th data-breakpoints="lg" class="" style="display: table-cell;">#</th>
