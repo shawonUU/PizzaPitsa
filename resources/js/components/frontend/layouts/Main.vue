@@ -1,6 +1,7 @@
 <template>
     <div>
         <AppHeader  @openCartModal="handleCartModal"></AppHeader>
+         <Cart></Cart>
         <main class="main-wrapper">
               <router-view></router-view>
         </main>
@@ -11,11 +12,13 @@
 
 import AppHeader from '../../../components/frontend/layouts/header.vue';
 import AppFooter from '../../../components/frontend/layouts/footers.vue'; // Changed Footer to AppFooter
+import Cart from '../pages/modal/cart.vue';
 export default {
   name: 'Main',
   components: {
     AppHeader,
-    AppFooter // Changed Footer to AppFooter
+    AppFooter,
+    Cart
   },
   mounted(){
 

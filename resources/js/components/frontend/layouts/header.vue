@@ -126,19 +126,11 @@
                                     </li>
                                     <li><a href="contact.html">Contact</a></li>
                                 </ul> -->
-                                <ul class="mainmenu">
-                                        <!-- <p class="menucategory" style="color:#fff; text-align:center;">Categories</p> -->
+                                <ul v-if="currentPage !=='dashboard'" class="mainmenu">                                    
                                     <li class="sc-xlo7eb-4 bvuzKi" v-for="(category,index) in catgories" :key="index" :value="category.id">
                                         <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" :href="'#' + category.name" @click.prevent="scrollToTeamSection(category.id)">{{ category.name }}</a>
                                     </li>
-                                    <!-- <li class="sc-xlo7eb-4 bvuzKi">
-                                        <a href="javascript:void(0)" class="cart-dropdown-btn">
-                                            <span style="position: absolute;left: 17px;top: -11px;" class="cart-count">{{ cartItemCount }}</span>
-                                            <i class="flaticon-shopping-cart" style="color:#fff"></i>
-                                        </a>                                        
-                                    </li> -->
-                                     <hr style="background:#fff">
-                                    <!-- <p class="menucategory" style="color:#fff; text-align:center;">Menus</p> -->
+                                     <hr style="background:#fff">                                   
                                     <li class="mobileMenu">
                                         <router-link to="/about" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" @click="closeNav()"  data-size="normal">About</router-link>
                                     </li>
@@ -147,9 +139,7 @@
                                     </li>
                                     <li class="mobileMenu">
                                         <router-link to="/contact" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" @click="closeNav()" data-size="normal">Contact</router-link>
-                                    </li>
-                               
-                                  
+                                    </li>                                                                 
                                 </ul>                              
                             </nav>
                             <!-- End Mainmanu Nav -->
@@ -194,12 +184,20 @@
             </div>
             <!-- End Mainmenu Area -->
         </header>
-    </div>
+    </div>   
 </template>
 <script>
 import axios from 'axios';
+import Cart from '../pages/modal/cart.vue';
 export default {
     name: 'AppHeader',
+    components: {
+        // Swiper,
+        // SwiperSlide,
+        Cart,
+        // Authentication,
+        // DeliveryPlace,
+    },
     data(){
         return{
             catgories:{},
@@ -209,6 +207,7 @@ export default {
             cartItemCount:0,
             testEvent: 'String to change',
             isAuth:false,
+            currentPage:''
         }
     },
     created (){
@@ -230,6 +229,7 @@ export default {
                 this.isAuth = false;
             }
         });
+         this.updateCurrentPage();
     },
     components: {
 
@@ -241,9 +241,13 @@ export default {
         this.auth = auth ? JSON.parse(auth) : 'null';     
         if (auth && auth !== 'null') {
             this.isAuth = true;
-        }
+        }        
     },
     methods: {
+        updateCurrentPage() {
+            const pathArray = this.$route.path.split('/');
+            this.currentPage = pathArray[pathArray.length - 1];
+        },
         loadCartFromLocalStorage() {
             // localStorage.setItem('cart', []);return;
             const savedCart = localStorage.getItem('cart');
@@ -296,6 +300,11 @@ export default {
         }
 
 
+    },
+     watch: {
+    '$route'() {
+        this.updateCurrentPage();
+        }
     }
 }
 </script>

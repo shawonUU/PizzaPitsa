@@ -365,7 +365,6 @@ import 'vue3-toastify/dist/index.css';
 export default {
     name: 'home',
     components: {
-
     },
      data(){
         return{
@@ -397,18 +396,15 @@ export default {
             showVerificationModal:false,
             message: null,            
         }
-    },
-    
+    },    
     created (){
       this.message = this.$route.query.message;
-
     },
     mounted(){
         var auth = localStorage.getItem('auth');
         if(auth != null) {
             this.isAuth = JSON.parse(auth);
         }
-
         this.formData.name = this.isAuth.name;
         this.formData.email = this.isAuth.email;
         this.formData.phone = this.isAuth.phone;
@@ -532,8 +528,7 @@ export default {
                 })
                 .catch((err)=>{
                     console.log(err);
-                })
-                
+                })                
             },
               formatCreatedAt(dateString, timeZone = 'UTC') {
                 const date = new Date(dateString);
@@ -625,14 +620,12 @@ export default {
           return this.subtotal + this.shippingCostAmount;
         }
     }
-
 };
 </script>
 <style scoped>
   @media only screen and (max-width: 768px) { 
           .modal-dialog {
-            max-width: 100%!important;
-          
+            max-width: 100%!important;          
           }
   }
   .axil-dashboard-order .table thead th {
