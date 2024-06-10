@@ -201,8 +201,8 @@
           
 
             <Details :productData="product" :productSizes="productSizes" :productTopings="productTopings" :allTopings="allTopings" :moreTopings="moreTopings" :sizeVsTopings="sizeVsTopings" :maxMin="maxMin" :productTages="productTages" :productOptions="productOptions" v-if="showAddToCart" @closeModal="handleModalClose"></Details>
-            <Authentication  v-if="showAuthentication" @closeModal="handleAuthenticationModalClose"></Authentication>
-            <DeliveryPlace :discount="discount" :subTotal="subTotal" :grandTotal="grandTotal" :orderType="orderType" :productAllTages="productAllTages"  v-if="showDeliveryPlace" @closeModal="handleDeliveryPlaceModalClose"></DeliveryPlace>
+            <!-- <Authentication  v-if="showAuthentication" @closeModal="handleAuthenticationModalClose"></Authentication> -->
+            <!-- <DeliveryPlace :discount="discount" :subTotal="subTotal" :grandTotal="grandTotal" :orderType="orderType" :productAllTages="productAllTages"  v-if="showDeliveryPlace" @closeModal="handleDeliveryPlaceModalClose"></DeliveryPlace> -->
         </main>
     </div>
      <!-- <div class="input-group">
