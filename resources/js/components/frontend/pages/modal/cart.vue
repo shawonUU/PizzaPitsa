@@ -403,6 +403,7 @@
     <DeliveryPlace :discount="discount" :subTotal="subTotal" :grandTotal="grandTotal" :orderType="orderType" :productAllTages="productAllTages"  v-if="showDeliveryPlace" @closeModal="handleDeliveryPlaceModalClose"></DeliveryPlace>
 </template>
 
+
 <script>
 import axios from 'axios';
 import {Swiper,SwiperSlide} from 'swiper/vue';
