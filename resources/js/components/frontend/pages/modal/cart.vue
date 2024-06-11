@@ -647,11 +647,11 @@ export default {
                 var coupon = this.coupon;
                 if(coupon.discount_type){
                     this.showDiscount = coupon.discount + '%';
-                    this.discount = this.grandTotal*(coupon.discount/100);
+                    this.discount = (this.grandTotal*(coupon.discount/100)).toFixed(2);
                     this.grandTotal -= this.grandTotal*(coupon.discount/100);
                 }else{
                     this.showDiscount = coupon.discount+this.baseCurrencySymbol;
-                    this.discount = coupon.discount;
+                    this.discount = (coupon.discount).toFixed(2);
                     this.grandTotal -= coupon.discount;
                 }
 

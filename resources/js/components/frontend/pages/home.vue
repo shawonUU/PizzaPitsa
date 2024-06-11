@@ -138,11 +138,11 @@
                                         <div class="product-price-variant">
                                             <!-- Show min_price in old-price div -->
                                             <span  class="price current-price">From</span>
-                                            <span v-if="product.calculated_offer_price" class="price old-price">{{ product.calculated_offer_price }}{{ baseCurrencySymbol }}</span>
+                                            <span v-if="product.calculated_offer_price" class="price old-price">{{ product.min_price }}{{ baseCurrencySymbol }}</span>
                                             <!-- Display calculated_offer_price in current-price div -->
                                             <span v-else class="price current-price">{{ product.min_price }}{{ baseCurrencySymbol }}</span>
                                             <!-- Display calculated_offer_price in current-price div if both exist -->
-                                            <span v-if="product.calculated_offer_price" class="price current-price">{{ product.min_price }}{{ baseCurrencySymbol }}</span>
+                                            <span v-if="product.calculated_offer_price" class="price current-price">{{ product.calculated_offer_price }}{{ baseCurrencySymbol }}</span>
                                         </div>
                                             <a class="btn selectBtn" @click="getProductDetails(product.id)">Select</a>
                                         </div>
