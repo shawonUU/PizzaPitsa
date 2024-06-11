@@ -609,7 +609,7 @@ class ProductContoller extends Controller
         $maxPrice = $productSizes->max('price');
         $minPrice = $productSizes->min('price');
         $tem = [];
-        
+
         foreach ($productSizes as $row) {
             if ($row->offer_from <= $currentDate && $currentDate <= $row->offer_to) {
                 $row->price = $row->offer_price;
@@ -664,7 +664,7 @@ class ProductContoller extends Controller
         $options = ProductOption::join('product_option_toppings as option_topping', 'option_topping.product_option_id', '=', 'product_options.id')
             ->join('option_titles', 'option_titles.id', '=', 'product_options.title_id')
             ->where('product_options.product_id', $productId)
-            ->select('option_topping.*', 'product_options.title_id', 'product_options.type','product_options.free_qty', 'option_titles.name')->get();
+            ->select('option_topping.*', 'product_options.title_id', 'product_options.type', 'product_options.free_qty', 'option_titles.name')->get();
 
         $temp = [];
         foreach ($options as $option) {
@@ -703,14 +703,15 @@ class ProductContoller extends Controller
             ->get();
     }
 
-    public function getRelatedProduct(Request $request){
+    public function getRelatedProduct(Request $request)
+    {
         $product_ids = $request->product_ids;
         $product_ids = explode(",", $product_ids);
-        $catIds = Product::whereIn("id",$product_ids)->pluck('category_id');
-        $products = Product::whereIn('category_id', $catIds)->where('status','1')->take(10)->get();
+        $catIds = Product::whereIn("id", $product_ids)->pluck('category_id');
+        $products = Product::whereIn('category_id', $catIds)->where('status', '1')->take(10)->get();
 
         $proData = [];
-        foreach($products as $pro){
+        foreach ($products as $pro) {
             $proData[] = [
                 'id' => $pro->id,
                 'name' => $pro->name,
@@ -718,6 +719,6 @@ class ProductContoller extends Controller
             ];
         }
 
-        return $proData; 
+        return $proData;
     }
 }
