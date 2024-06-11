@@ -547,8 +547,8 @@ class ProductContoller extends Controller
     {
         $categories = Category::leftJoin('products', 'categories.id', '=', 'products.category_id')
             ->leftJoin('product_sizes', function ($join) {
-                $join->on('products.id', '=', 'product_sizes.product_id')
-                    ->whereRaw('NOW() BETWEEN product_sizes.offer_from AND product_sizes.offer_to');
+                $join->on('products.id', '=', 'product_sizes.product_id');
+                    //->whereRaw('NOW() BETWEEN product_sizes.offer_from AND product_sizes.offer_to');
             })
             ->select(
                 'categories.id as category_id',
@@ -565,6 +565,8 @@ class ProductContoller extends Controller
             ->orderBy('categories.order_by')
             ->orderBy('products.id')
             ->get();
+
+
         // return $categories;
         // Organize the result into a more usable format
         $groupedCategories = [];

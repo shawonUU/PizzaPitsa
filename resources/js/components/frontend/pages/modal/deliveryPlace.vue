@@ -263,12 +263,12 @@
                           <div class="row">
                               <div class="col-12 col-md-6 mt-5 mb-3">
                                   <div class="input-group" style="cursor:pointer;">
-                                      <button @click="placeOrder(orderType, 1)" type="button" class="btn" style=" cursor:pointer !important; background: #ee6e2d; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Cash On Delivery</button>
+                                      <button id="deliveryOnCash" @click="placeOrder(orderType, 1)" type="button" class="btn" style=" cursor:pointer !important; background: #ee6e2d; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Cash On Delivery</button>
                                   </div>
                               </div>
                               <div class="col-12 col-md-6 mt-5 mb-3">
                                   <div class="input-group" style="cursor:pointer;">
-                                      <button @click="placeOrder(orderType, 2)" type="button" class="btn" style="cursor:pointer !important; background-color: rgb(238, 110, 45); color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Pay Online</button>
+                                      <button id="payOnline" @click="placeOrder(orderType, 2)" type="button" class="btn" style="cursor:pointer !important; background-color: rgb(238, 110, 45); color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Pay Online</button>
                                   </div>
                               </div>
                           </div>
@@ -349,6 +349,29 @@
           });
         },
         methods: {
+          startProcessing(id,noOf){
+                if(noOf){
+                  var addToListBtn = document.getElementById(id);
+                  if(!addToListBtn){return;}
+                  addToListBtn.dataset.html = addToListBtn.innerHTML;
+                  addToListBtn.dataset.bgColor = addToListBtn.style.backgroundColor;
+                  addToListBtn.innerHTML = "Processing..";
+                  addToListBtn.style.backgroundColor = "#ee6e2d";
+                  addToListBtn.disabled = true;
+                }else{
+                  var addToListBtn = document.getElementById(id);
+                  if(!addToListBtn){return;}
+                  var text = addToListBtn.dataset.html;
+                  var color = addToListBtn.dataset.bgColor;
+                  if(!text || text == "") return;
+
+                  addToListBtn.innerHTML = text;
+                  addToListBtn.style.backgroundColor = color;
+                  addToListBtn.disabled = false;
+                  delete addToListBtn.dataset.html;
+                  delete addToListBtn.dataset.bgColor;
+                }
+            },
             handleButtonClick() {
                 this.$emit('closeModal');
             },
@@ -405,7 +428,10 @@
                 var floor = this.floor;
                 var apartment = this.apartment;
                 var comment = this.addressComment;
-                
+
+
+                var id = paymentType == 1? "deliveryOnCash" : "payOnline";
+                this.startProcessing(id,true);
                 axios.post('palce-order', {
                   type: type,
                   cart: savedCart,
@@ -423,7 +449,8 @@
                   comment:comment,
                   paymentType:paymentType,
                 })
-                .then((res)=>{   
+                .then((res)=>{ 
+                  this.startProcessing(id,false);  
                   console.log(res.data);             
                   if(res.data.success){
                     if(paymentType==1){
@@ -432,9 +459,10 @@
                       this.emitMyEvent();
                     // this.showToast(res.data.message,1);
                       this.handleCart();
+                      this.$router.push({ name: 'dashboard', query: { tab: 'orders' } });
                     }
                     else if(paymentType==2){
-                      console.log(res.data.url)
+                      // console.log(res.data.url)
                       window.location.href = res.data.url;
                     }
                     
