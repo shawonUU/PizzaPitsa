@@ -364,7 +364,7 @@ class OrderController extends Controller
     public function getCustomerProduct()
     {
         $userId = auth()->user()->id;
-        return $orders = Order::where('customer_id', $userId)->orderBy('id', 'DESC')->get();
+        return $orders = Order::where('customer_id', $userId)->where('is_order_valid',1)->orderBy('id', 'DESC')->get();
     }
 
     public function getOrderStatus()

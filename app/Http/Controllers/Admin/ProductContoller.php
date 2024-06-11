@@ -546,10 +546,6 @@ class ProductContoller extends Controller
     public function getProducts()
     {
         $categories = Category::leftJoin('products', 'categories.id', '=', 'products.category_id')
-            ->leftJoin('product_sizes', function ($join) {
-                $join->on('products.id', '=', 'product_sizes.product_id')
-                    ->whereRaw('NOW() BETWEEN product_sizes.offer_from AND product_sizes.offer_to');
-            })
             ->select(
                 'categories.id as category_id',
                 'categories.order_by as OrderBY',
@@ -558,18 +554,39 @@ class ProductContoller extends Controller
                 'products.name as product_name',
                 'products.description as description',
                 'products.image as image',
-                DB::raw('(SELECT MIN(price) FROM product_sizes WHERE product_sizes.product_id = products.id) as min_price'),
-                'product_sizes.offer_price as calculated_offer_price'
             )
             ->where('products.status', '1')
             ->orderBy('categories.order_by')
             ->orderBy('products.id')
             ->get();
+
+            $currentDate = Carbon::today();
+            foreach($categories as $key => $category){
+                $productSizes = ProductSize::where('product_id',$category->product_id)->get();
+                $offerMin = null;
+                $regularMin = null;
+                foreach($productSizes as $size){
+                    if ($size->offer_from <= $currentDate && $currentDate <= $size->offer_to) {
+                        $offerPrice = $size->offer_price;
+                        if($offerMin==null)$offerMin = $offerPrice;
+                        $$offerMin =  min($offerMin,$offerPrice);
+                    }
+                    $price = $size->price;
+                    if($regularMin==null) $regularMin = $price;
+                    $regularMin = min($regularMin, $price);
+                }
+                $categories[$key]->calculated_offer_price = ($offerMin<$regularMin ? $offerMin : null);
+                $categories[$key]->min_price = $regularMin;
+            }
+
+
         // return $categories;
         // Organize the result into a more usable format
         $groupedCategories = [];
         $categories = $categories->sortBy('order_by');
         foreach ($categories as $category) {
+            // $category->min_price = null;
+            // $category->calculated_offer_price = null;
             $categoryId = $category->category_id;
             if (!isset($groupedCategories[$categoryId])) {
                 $groupedCategories[$categoryId] = [

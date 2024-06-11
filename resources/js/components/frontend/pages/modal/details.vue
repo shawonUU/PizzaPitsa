@@ -772,9 +772,9 @@ export default {
           }
         }
         
-        if(eles[index] != undefined)eles[0].checked = true;
+        if(eles[index] != undefined)eles[index].checked = true;
         var eles = document.getElementsByClassName("sizeRadioBtn");
-        if(eles[index] != undefined)eles[0].dispatchEvent(clickEvent);
+        if(eles[index] != undefined)eles[index].dispatchEvent(clickEvent);
       },
       selectExtraTopping(){
         var selectedOptionids = [];
