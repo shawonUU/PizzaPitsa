@@ -646,13 +646,13 @@ export default {
                 this.isDiscount = true;
                 var coupon = this.coupon;
                 if(coupon.discount_type){
-                    this.showDiscount = coupon.discount + '%';
+                    this.showDiscount = (((coupon.discount*1)/100)*(this.subTotal*1)).toFixed(2);
                     this.discount = (this.grandTotal*(coupon.discount/100)).toFixed(2);
                     this.grandTotal -= this.grandTotal*(coupon.discount/100);
                 }else{
                     this.showDiscount = coupon.discount+this.baseCurrencySymbol;
                     this.discount = (coupon.discount).toFixed(2);
-                    this.grandTotal -= coupon.discount;
+                    this.grandTotal -= (coupon.discount*1);
                 }
 
             }
