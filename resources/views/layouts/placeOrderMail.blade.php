@@ -356,8 +356,8 @@
             margin: 5px 0;
             text-align: center;
         }
-        .table-responsive{display:block;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
-        .table-responsive>.table-bordered{border:0}
+        /* .table-responsive{display:block;width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+        .table-responsive>.table-bordered{border:0} */
         
     </style>
 </head>
