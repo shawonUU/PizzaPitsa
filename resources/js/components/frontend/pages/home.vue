@@ -38,7 +38,6 @@
                                                      :alt="firstAd">
                                                 </a>
                                             </div>
-                                            
                                         </div>
                                     </div>
                                     <div class="col-6">

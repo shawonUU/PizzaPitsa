@@ -84,7 +84,7 @@
                         </span>
                         <div class="header-action">
                             <ul class="action-list">
-                                <li class="shopping-cart" @click="handleCartClick">
+                                <li class="shopping-cart">
                                     <a href="javascript:void(0)" class="cart-dropdown-btn">
                                         <span class="cart-count">{{ cartItemCount }}</span>
                                         <i class="flaticon-shopping-cart" style="color:#fff"></i>
@@ -162,7 +162,7 @@
                                 <!-- <li>
                                     <button data-testid="header_login" type="button" data-type="tertiary" data-size="small" class="sc-1rmt3mq-0 dOEDNV">My Orders</button>
                                 </li> -->
-                                <li class="shopping-cart" @click="handleCartClick">
+                                <li class="shopping-cart">
                                     <a href="javascript:void(0)" style="font-size: 28px;margin-top: 8px;" class="cart-dropdown-btn mobileCart">
                                         <span class="cart-count">{{ cartItemCount }}</span>
                                         <i class="flaticon-shopping-cart" style="color:#fff"></i>

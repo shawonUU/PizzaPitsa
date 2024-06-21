@@ -1,6 +1,6 @@
 <template>
     <div>
-        <AppHeader  @openCartModal="handleCartModal"></AppHeader>
+        <AppHeader @openCartModal="handleCartModal"></AppHeader>
          <Cart></Cart>
         <main class="main-wrapper">
               <router-view></router-view>
@@ -24,10 +24,10 @@ export default {
 
     },
   methods: {
-    handleCartModal() {
-      // Add your logic here to affect home.vue or perform any necessary action
-      console.log('Cart modal opened from header.vue');
-    }
+    // handleCartModal() {
+    //   // Add your logic here to affect home.vue or perform any necessary action
+    //   console.log('Cart modal');
+    // }
   }
 }
 </script>
