@@ -530,21 +530,20 @@ export default {
                     console.log(err);
                 })                
             },
-              formatCreatedAt(dateString, timeZone = 'UTC') {
-                const date = new Date(dateString);
-                const options = {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    second: 'numeric',
-                    timeZone: timeZone,
-                    timeZoneName: 'short',
-                };
+         formatCreatedAt(dateString) {
+            const date = new Date(dateString);
+            const options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                timeZoneName: 'short',
+            };
 
-                 return date.toLocaleDateString('en-US', options);
-            },   
+            return date.toLocaleDateString('en-US', options);
+        },  
             handleModalOpen(orderNumber) {                
               document.body.classList.add('modal-open'); 
                axios.get('order-info', {
