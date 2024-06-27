@@ -96,7 +96,7 @@
                     </div>
                     <!-- <span class="price-amount d-none ">$155.00 - $255.00</span> -->
                     <span class="sizeWisePrice price-amount">{{ maxMin[0] }}{{ baseCurrencySymbol }} - {{maxMin[1]}}{{baseCurrencySymbol}}</span>
-                    <span v-for="(productSize, sizeId) in productSizes" :key="sizeId" :id="'sizeWisePrice'+sizeId" class="sizeWisePrice d-none price-amount">{{productSize.price}}{{ baseCurrencySymbol }}</span>
+                    <span v-for="(productSize, sizeId) in productSizes" :key="sizeId" :id="'sizeWisePrice'+sizeId" class="sizeWisePrice d-none price-amount"><del style="font-size: 16px;" v-if="productSize.main_price">{{ productSize.main_price }}{{ baseCurrencySymbol }}</del>  {{productSize.price}}{{ baseCurrencySymbol }}</span>
 
                     <p v-html="productData.description" class="description m-0 p-0"></p>
 
@@ -301,7 +301,35 @@ export default {
       Multiselect
     },
     mounted(){
-        // console.log("pppppppppppp");
+        console.log("KKKKKKKKKKKKKKKKKKKKKKK");
+        // console.log(this.productSizes);
+
+
+        // for (const key in this.productSizes) {
+        //   if (this.productSizes.hasOwnProperty(key)) {
+        //     var sizeName = this.productSizes[key].name.trim().toLowerCase();
+        //     var dx = key;
+        //     if(sizeName=="small") dx = 1;
+        //     if(sizeName=="medium") dx = 2;
+        //     if(sizeName=="large") dx = 3;
+        //     // console.log(dx);
+        //     // console.log(sizeName);
+
+        //     var temp = this.productSizes[key];
+        //     this.productSizes[key] = this.productSizes[dx];
+        //     this.productSizes[dx] = temp;
+        //     // console.log("UPDATE");
+        //     // console.log(this.productSizes);
+        //     // break;
+            
+        //   }
+        // }
+
+        // console.log(this.productSizes[1].name);
+        // console.log(this.productSizes[2].name);
+        // console.log(this.productSizes[3].name);
+
+        // console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEE");
         // console.log(this.productOptions);
         this.loadCartFromLocalStorage();
         this.fetchBaseCurrencySymbol();

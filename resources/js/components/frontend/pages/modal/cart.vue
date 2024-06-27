@@ -254,7 +254,7 @@
                   class="d-flex align-items-center"
                   @click="getProductDetails(item.id)"
                 >
-                  <div class="flex-shrink-0" style="width: 200px">
+                  <div class="flex-shrink-0" style="width: 200px; cursor: pointer;">
                     <img
                       style="width: 70px"
                       :src="item.image ? item.image : '/frontend/product_images/placeholder.jpg'"
@@ -325,8 +325,8 @@
           >
         </p>
         <p class="cart-subtotal m-0" v-if="isDiscount">
-          <span class="subtotal-title">Discount:</span>
-          <span class="subtotal-amount">{{ showDiscount }}</span>
+          <span class="subtotal-title">Discount <span style="font-size:12px;" v-if="coupon.discount_type==1">({{ coupon.discount }}%)</span>:</span>
+          <span class="subtotal-amount">{{ showDiscount }}{{ baseCurrencySymbol }}</span>
         </p>
         <p class="cart-subtotal m-0">
           <span class="subtotal-title">Grand Total:</span>
@@ -645,7 +645,7 @@ export default {
             if(this.coupon){
                 this.isDiscount = true;
                 var coupon = this.coupon;
-                if(coupon.discount_type){
+                if(coupon.discount_type==1){
                     this.showDiscount = (((coupon.discount*1)/100)*(this.subTotal*1)).toFixed(2);
                     this.discount = (this.grandTotal*(coupon.discount/100)).toFixed(2);
                     this.grandTotal -= this.grandTotal*(coupon.discount/100);
