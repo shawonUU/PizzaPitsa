@@ -93,7 +93,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::post('update-status', [OrderController::class, 'updateStatus'])->name('update.status');
         Route::post('update-payment-status', [OrderController::class, 'updatePaymentStatus'])->name('update.payment.status');
         Route::post('assign-delivery-boy', [OrderController::class, 'assignDeliveryBoy'])->name('assign.deliveryboy');
-        Route::post('update-address', [OrderController::class, 'updateAddress'])->name('address.update');
+        Route::post('update-address', [OrderController::class, 'updateAddress'])->name('address.update');        
     });
 
     //Order Management

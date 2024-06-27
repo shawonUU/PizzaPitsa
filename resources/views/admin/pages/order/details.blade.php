@@ -170,7 +170,20 @@
                   
                   <tr>
                     <td class="text-main text-bold">Order date:</td>
-                    <td class="text-right">{{ \Carbon\Carbon::parse($orderDetails->created_at)->format('F j, Y \a\t g:i A') }}</td>
+                    @php
+                        // Set the desired timezone (replace 'Asia/Dhaka' with your timezone)
+                        $timezone = 'Asia/Dhaka'; // Replace with your desired timezone
+                        
+                        // Create a DateTime object from the created_at field
+                        $date = new DateTime($orderDetails->created_at);
+                        
+                        // Set the timezone
+                        $date->setTimezone(new DateTimeZone($timezone));
+                        
+                        // Format the date
+                        $formattedDate = $date->format('F j, Y \a\t g:i A');
+                    @endphp
+                    <td class="text-right">{{ $formattedDate  }}</td>
                   </tr>
                   <tr>
                     <td class="text-main text-bold"> Total amount:</td>

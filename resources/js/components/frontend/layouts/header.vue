@@ -100,7 +100,7 @@
             </div>
             <!-- Start Mainmenu Area  -->
             <div id="axil-sticky-placeholder" style="height: 0px;"></div>
-            <div class="axil-mainmenu">
+            <div :class="mainMenuClass" ref="mainMenu">
                 <div class="container">
                     <div class="header-navbar">
                         <div class="header-brand">
@@ -130,6 +130,29 @@
                                     <li class="sc-xlo7eb-4 bvuzKi" v-for="(category,index) in catgories" :key="index" :value="category.id">
                                         <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" :href="'#' + category.name" @click.prevent="scrollToTeamSection(category.id)">{{ category.name }}</a>
                                     </li>
+                                    <li id="hide-on-small">
+                                        <a href="#" :class="cartClass" style="margin-top:10px">
+                                            <span class="cart-count stickCartCount" 
+                                            style="text-align: center;
+                                                background-color: #fff;
+                                                border: 2px solid var(--color-white);
+                                                font-size: 12px;
+                                                font-weight: 500;
+                                                color: #ff7900;
+                                                border-radius: 50%;
+                                                height: 20px;
+                                                width: 20px;
+                                                line-height: 19px;
+                                                position: absolute;
+                                                top: 9px;
+                                                right: -12px;">{{ cartItemCount }}</span>
+                                            <i class="flaticon-shopping-cart" style="color:#fff;font-size: 24px;font-weight: 500;margin-top:10px"></i>
+                                        </a>
+                                    </li>  
+                                    <li :class="cartClass" id="hide-on-small">
+                                       <router-link v-if="isAuth" to="/dashboard" data-type="tertiary" data-size="small" class=""><img style="width:25px" src="frontend/assets/images/user.png" alt=""></router-link>
+                                       <button data-testid="header_login" v-else @click="loginModalEvent"  type="button" data-type="tertiary" data-size="small" class="sc-1rmt3mq-0 dOEDNV">Log in</button>     
+                                    </li>                                  
                                      <hr style="background:#fff">                                   
                                     <li class="mobileMenu">
                                         <router-link to="/about" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" @click="closeNav()"  data-size="normal">About</router-link>
@@ -207,7 +230,8 @@ export default {
             cartItemCount:0,
             testEvent: 'String to change',
             isAuth:false,
-            currentPage:''
+            currentPage:'',
+            isSticky: false,
         }
     },
     created (){
@@ -234,6 +258,20 @@ export default {
     components: {
 
     },
+    computed: {
+        mainMenuClass() {
+        return {
+            'axil-mainmenu': true,
+            'axil-sticky': this.isSticky,
+        };
+        },
+        cartClass() {
+        return {
+            'cart-dropdown-btn': true,
+            'd-none': !this.isSticky,
+        };
+        },
+    },
     mounted(){
         this.getCategories();
         this.loadCartFromLocalStorage();
@@ -241,7 +279,12 @@ export default {
         this.auth = auth ? JSON.parse(auth) : 'null';     
         if (auth && auth !== 'null') {
             this.isAuth = true;
-        }        
+        }  
+        window.addEventListener('scroll', this.handleScroll);
+        this.handleScroll();     
+    },
+    beforeDestroy() {
+        window.removeEventListener('scroll', this.handleScroll);
     },
     methods: {
         updateCurrentPage() {
@@ -297,7 +340,13 @@ export default {
         closeNav () {
             document.getElementById('headerMainNav').classList.remove('open');
             document.getElementsByClassName('closeMask')[0].classList.remove('closeMask');
-        }
+        },
+        handleScroll() {
+            const mainMenu = this.$refs.mainMenu;
+            if (mainMenu) {
+                this.isSticky = window.scrollY > mainMenu.offsetTop;
+            }
+        },
     },
      watch: {
     '$route'() {
@@ -562,5 +611,9 @@ export default {
     }
 }
 
-
+@media (max-width: 767px) {
+    #hide-on-small {
+        display: none;
+    }
+}
 </style>

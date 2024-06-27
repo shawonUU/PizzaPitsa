@@ -30,6 +30,53 @@
                             });
                         </script>
                     @endif
+                    <div class="row d-print-none">
+                      <div class="col d-flex justify-content-center">
+                          <form class="d-flex" action="{{ route('orders.index') }}" method="GET">    
+                            <div class="input-group ml-3">
+                              <select class="form-control w-50" name="status" id="update_delivery_status" tabindex="-98">                 
+                                @php
+                                    // Define the order statuses based on the user's role
+                                    $userRole = auth()->check() ? checkRole() : null;                  
+                                    if ($userRole == 'Salesman') {
+                                        $statuses = [
+                                            '2' => 'Processing',
+                                            '4' => 'Out for Delivery',
+                                            '6' => 'Canceled',
+                                        ];
+                                    } elseif ($userRole == 'Delivery Boy') {
+                                        $statuses = [
+                                            '4' => 'Out for Delivery',
+                                            '5' => 'Delivered',
+                                        ];
+                                    } else {
+                                        $statuses = orderStatuses();
+                                    }
+                                @endphp
+                                <option value="" selected disabled>--Status--</option>
+                                @foreach ($statuses as $value => $text)                                             
+                                    <option {{ $value == $status?'selected':'' }}  value="{{ $value }}">{{ $text }}</option> 
+                                @endforeach   
+                            </select>
+                          </div>          
+                            @php
+                                $today = date('Y-m-d');
+                                $startDate = isset($request->start_date) ? $request->start_date : $today;
+                                $endDate = isset($request->end_date) ? $request->end_date : $today;
+                            @endphp                
+                            <div class="input-group ml-3">
+                              <input type="date" class="form-control" id="start_date" name="start_date" value="{{ $startDate }}">
+                            </div>
+                            <div class="input-group ml-3">
+                                <input type="date" class="form-control" id="end_date" name="end_date" value="{{ $endDate }}">
+                            </div>
+                              
+                              <div class="ml-3">
+                                  <button type="submit" class="btn  btn-primary">Filter</button>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
                     <div class="card-header align-items-center d-flex">
                       <h4 class="card-title mb-0 flex-grow-1">All Orders</h4>
                       <div class="flex-shrink-0">
@@ -52,7 +99,7 @@
                                     <th>Total amount</th>                                                                  
                                     <th>Payable Amount</th>                                                                                                     
                                     <th>Payment Status</th>                                                                                                     
-                                    {{-- <th>Adress</th> --}}
+                                    <th>Date&Time</th>
                                     <th>Status</th>                                   
                                     <th>Action</th>                                   
                                   </tr>
@@ -66,8 +113,24 @@
                                     <td>{{ $item->type =='2'?'Pickup/Dine in':'Delivery' }}</td>                                  
                                     <td>{{ $item->total_amount }}</td>                                  
                                     <td>{{ $item->paid_amount }}</td>                                                                
-                                    <td>{{ $item->is_paid == '0'?'Unpaid':'Paid' }}</td>                                                                
-                                    {{-- <td>{{ $item->delivery_address_id }}</td>                                   --}}
+                                    <td>{{ $item->is_paid == '0'?'Unpaid':'Paid' }}</td> 
+                                    @php
+                                        // Set the desired timezone (replace 'Asia/Dhaka' with your timezone)
+                                        $timezone = 'Asia/Dhaka'; // Replace with your desired timezone
+                                        
+                                        // Create a DateTime object from the created_at field
+                                        $date = new DateTime($item->created_at);
+                                        
+                                        // Set the timezone
+                                        $date->setTimezone(new DateTimeZone($timezone));
+                                        
+                                        // Format the date
+                                        $formattedDate = $date->format('F j, Y \a\t g:i A');
+                                    @endphp
+
+                                    <td>{{ $formattedDate }}</td>                                                              
+                                                               
+                                    {{-- <td>{{ \Carbon\Carbon::parse($item->created_at)->setTimezone('Your/Timezone')->format('F j, Y \a\t g:i A') }}</td> --}}
                                     <td>
                                       @php                                    
                                           $orderStatuses = orderStatuses();

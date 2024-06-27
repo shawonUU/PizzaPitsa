@@ -202,19 +202,49 @@ class OrderController extends Controller
         return response()->json($response);
     }
 
-    public function getOrders()
+    public function getOrders(Request $request)
     {
-        if (checkRole() == 'Delivery Boy') {
-            $orders = Order::where('is_order_valid', 1)->where('delivery_boy', auth()->user()->id)->orderBy('id', 'DESC')->get();
-        } else {
-            $orders = Order::where('is_order_valid', 1)->orderBy('id', 'DESC')->get();
+        $status = 1;
+        if ($request->status) {
+            $status = $request->status;
         }
+        if ($request->status or $request->start_date or $request->end_date) {  
+            $query = Order::where('is_order_valid', 1);
+        
+            if ($request->has('status')) {
+                $query->where('order_status', $request->status);
+            }
+        
+            if ($request->has('start_date')) {
+                $query->whereDate('created_at', '>=', $request->start_date);
+            }
+        
+            if ($request->has('end_date')) {
+                $query->whereDate('created_at', '<=', $request->end_date);
+            }
+        
+            $orders = $query->orderBy('id', 'DESC')->get();           
+        } else {            
+            if (checkRole() == 'Delivery Boy') {
+                $orders = Order::where('is_order_valid', 1)
+                    ->where('delivery_boy', auth()->user()->id)
+                    ->orderBy('id', 'DESC')
+                    ->get();
+            } else {
+                $orders = Order::where('is_order_valid', 1)
+                    ->where('order_status', '1')
+                    ->orderBy('id', 'DESC')
+                    ->get();
+            }
+        }
+        
 
         // $orders = Order::leftJoin('products', 'order_items.product_id', '=', 'products.id')
         //     ->select('orders.*')
         //     ->orderBy('orders.id', 'DESC')
         //     ->get();
-        return view("admin.pages.order.index", compact('orders'));
+        // return $orders;
+        return view("admin.pages.order.index", compact('orders','status','request'));
     }
     public function getOrderDetails($id)
     {
