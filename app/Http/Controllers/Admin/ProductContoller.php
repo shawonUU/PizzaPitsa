@@ -620,7 +620,7 @@ class ProductContoller extends Controller
             ->where('product_sizes.status', '1')
             ->select('product_sizes.*', 'sizes.name', 'sizes.id as size_id')
             ->get();
-
+        
 
         $currentDate = Carbon::today();
         $maxPrice = $productSizes->max('price');
@@ -628,12 +628,27 @@ class ProductContoller extends Controller
         $tem = [];
 
         foreach ($productSizes as $row) {
+            $row->main_price = null;
             if ($row->offer_from <= $currentDate && $currentDate <= $row->offer_to) {
+                $row->main_price = $row->price;
                 $row->price = $row->offer_price;
             }
             $tem[$row->id] = $row;
         }
         $productSizes = $tem;
+
+        // foreach($productSizes as $key => $siz){
+        //     $sizeName = strtolower(trim($siz->name));
+        //     $dx = $key;
+        //     if($sizeName=="small") $dx = 1;
+        //     if($sizeName=="medium") $dx = 2;
+        //     if($sizeName=="large") $dx = 3;
+
+        //     $temp = $productSizes[$key];
+        //     $productSizes[$key] = $productSizes[$dx];
+        //     $productSizes[$dx] = $temp;
+        // }
+
         $productTopings = ProductToping::join('topings', 'topings.id', '=', 'product_topings.toping_id')
             ->where('product_topings.product_id', $productId)
             ->where('product_topings.status', '1')

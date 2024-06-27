@@ -21,15 +21,10 @@
                     v-for="(item, sizeId) in productSizes"
                     :key="sizeId"
                   >
-                    <tr
-                      style="
-                        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-                        margin-top: 20;
-                      "
-                    >
-                      <td>
-                        <div>
-                          <div class="d-flex flex-row bd-highlight mb-3">
+                    <tr >
+                      <td >
+                        <div style=" box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; margin-top: 20; padding: 1rem 2rem; background: #7b7b7b0a;" >
+                          <div class="d-flex flex-row bd-highlight mb-3" >
                             <div class="p-2 bd-highlight">
                               <img
                                 style="width: 100px"
@@ -262,11 +257,7 @@
                     @click="getProductDetails(item.id)"
                   >
                     <div class="flex-shrink-0" style="width: 200px">
-                      <img
-                        style="width: 70px"
-                        :src="item.image ? item.image : '/frontend/product_images/placeholder.jpg'"
-                        alt="..."
-                      />
+                      <img style="width: 70px; cursor: pointer;" :src="item.image ? item.image : '/frontend/product_images/placeholder.jpg'" alt="..."/>
                       <div class="flex-grow-1 ms-3">
                         <p>
                           <span style="font-size: 12px">{{ item.name }}</span>
@@ -332,8 +323,8 @@
             >
           </p>
           <p class="cart-subtotal m-0" v-if="isDiscount">
-            <span class="subtotal-title">Discount:</span>
-            <span class="subtotal-amount">{{ showDiscount }}</span>
+            <span class="subtotal-title">Discount <span style="font-size:12px;" v-if="coupon.discount_type==1">({{ coupon.discount }}%)</span>:</span>
+            <span class="subtotal-amount">{{ showDiscount }}{{ baseCurrencySymbol }}</span>
           </p>
           <p class="cart-subtotal m-0">
             <span class="subtotal-title">Grand Total:</span>
@@ -406,19 +397,11 @@
         </div>
       </div>
     </div>
-    <details
-      :productData="product"
-      :productSizes="productSizes"
-      :productTopings="productTopings"
-      :allTopings="allTopings"
-      :moreTopings="moreTopings"
-      :sizeVsTopings="sizeVsTopings"
-      :maxMin="maxMin"
-      :productTages="productTages"
-      :productOptions="productOptions"
-      v-if="showAddToCart"
-      @closeModal="handleModalClose"
-    ></details>
+
+
+
+    <Details :productData="product" :productSizes="productSizes" :productTopings="productTopings" :allTopings="allTopings" :moreTopings="moreTopings" :sizeVsTopings="sizeVsTopings" :maxMin="maxMin" :productTages="productTages" :productOptions="productOptions" v-if="showAddToCart" @closeModal="handleModalClose"></Details>
+
     <Authentication
       v-if="showAuthentication"
       @closeModal="handleAuthenticationModalClose"
@@ -687,16 +670,18 @@
               this.grandTotal =  this.subTotal;
 
               this.isDiscount = false;
+              
               if(this.coupon){
+                
                   this.isDiscount = true;
                   var coupon = this.coupon;
-                  if(coupon.discount_type){
+                  if(coupon.discount_type==1){
                       this.showDiscount = (((coupon.discount*1)/100)*(this.subTotal*1)).toFixed(2);
                       this.discount = (this.grandTotal*(coupon.discount/100)).toFixed(2);
                       this.grandTotal -= this.grandTotal*(coupon.discount/100);
                   }else{
-                      this.showDiscount = coupon.discount+this.baseCurrencySymbol;
-                      this.discount = (coupon.discount).toFixed(2);
+                      this.showDiscount = coupon.discount;
+                      this.discount = Number(coupon.discount).toFixed(2);
                       this.grandTotal -= (coupon.discount*1);
                   }
 
@@ -842,7 +827,7 @@
                   else this.showAuthentication = true;
               }else{
                   this.isVisible = true;
-                  this.message = 'Minium Order Amount is 12';
+                  this.message = 'Minium order amount is 12 for delivery.';
                   this.showToast(this.message,0);
               }
           },
@@ -857,7 +842,7 @@
               if(type){
                   // toast.success(message, {timeout: 2000});
               }else{
-                  // toast.warning(message, {timeout: 2000});
+                  toast.error(message, {timeout: 2000});
               }
 
                   this.message = message;

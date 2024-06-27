@@ -279,14 +279,14 @@
                               </td>
                               <td  class="text-center" style="display: table-cell; text-align:right;">{{product.quantity}}</td>
                               <td  class="text-center" style="display: table-cell; text-align:right;">{{product.price }}{{baseCurrencySymbol}}</td>
-                              <td  class="text-center" style="display: table-cell; text-align:right;">{{product.price * product.quantity }}{{baseCurrencySymbol}}</td>
+                              <td  class="text-center" style="display: table-cell; text-align:right;">{{(product.price * product.quantity )}}{{baseCurrencySymbol}}</td>
                               <td  class="text-center" style="display: table-cell; text-align:right;">{{(product.option_price*1)}}{{baseCurrencySymbol}}</td>
                               <td  class="text-center" style="display: table-cell; text-align:right;">{{(product.toping_price*1)}}{{baseCurrencySymbol}}</td>
-                              <td  class="text-center footable-last-visible" style="display: table-cell; text-align:right;">{{(product.price * product.quantity) + (product.toping_price*1) + (product.option_price*1) }}{{baseCurrencySymbol}}</td>
+                              <td  class="text-center footable-last-visible" style="display: table-cell; text-align:right;">{{((product.price * product.quantity) + (product.toping_price*1) + (product.option_price*1)) }}{{baseCurrencySymbol}}</td>
                             </tr>
                             <tr v-if="((productDetails.delivery_charge*1)>0 || (productDetails.discount*1)>0)">
                               <td colspan="8" style="text-align:right;">Sub Total :</td>
-                              <td style="text-align:center;">{{ (productDetails.paid_amount*1)+(productDetails.discount*1)-(productDetails.delivery_charge*1) }}{{ baseCurrencySymbol }}</td>
+                              <td style="text-align:center;">{{ ((productDetails.paid_amount*1)+(productDetails.discount*1)-(productDetails.delivery_charge*1)) }}{{ baseCurrencySymbol }}</td>
                             </tr>
                             <tr v-if="(productDetails.delivery_charge*1)>0">
                               <td colspan="8" style="text-align:right;">Shipping :</td>
@@ -560,8 +560,12 @@ export default {
                       this.productDetails = res.data.orderDetails;
                       this.user = res.data.user;
                       this.loading = false;
+
+                      this.productDetails.paid_amount = this.productDetails.paid_amount.toFixed(2);
+                      this.productDetails.delivery_charge = this.productDetails.delivery_charge.toFixed(2);
+                      this.productDetails.discount = this.productDetails.discount.toFixed(2);
                   }
-                  console.log(res.data)                                           
+                  // console.log(res.data)                                           
                 })
                 .catch((err)=>{
                     console.log(err);
