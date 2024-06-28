@@ -130,8 +130,8 @@
 
                       <div class="product-variation">
                         <h6 class="title">Size:</h6>
-                        <ul class="range-variant">
-                          <li  v-for="(productSize, sizeId) in productSizes" :key="sizeId" @click="clickOnSize(productSize.id, productSize.size_id, productSize.name)" class="sizeRadioBtn" :id="'sizeRadioBtn'+productSize.id" style=" padding: 0px 15px; font-size: 14px; min-height: 30px !important; padding: 0 8px; cursor:pointer; margin:0 2px;">
+                        <ul class="range-variant" id="size_list">
+                          <li  v-for="(productSize, sizeId) in productSizes" :key="sizeId" @click="clickOnSize(productSize.id, productSize.size_id, productSize.name)" :data-sizename="productSize.name" class="sizeRadioBtn" :id="'sizeRadioBtn'+productSize.id" style=" padding: 0px 15px; font-size: 14px; min-height: 30px !important; padding: 0 8px; cursor:pointer; margin:0 2px;">
                               <div class="input-group" style="cursor:pointer;">
                                   <input style="" class="sizeRadio" :data-sizename="productSize.name" type="radio" :id="'sizeRadio'+productSize.id" :data-libsizeid="productSize.size_id"  name="sizeRadio" :value="productSize.id">
                                   <label class="sizeRadioLbl" style="display:none !important; cursor:pointer;" :for="'sizeRadio'+productSize.id"></label>
@@ -144,7 +144,7 @@
                     </div>
 
                     <template v-for="(productOption, optionKey) in productOptions" :key="optionKey">
-                        <h6  style="margin-bottom:5px;">{{productOption.details.title}} <span v-if="productOption.details.freeQty" style="font-size: 12px;">(Free QTY {{ productOption.details.freeQty }})</span> <span style="font-size: 12px;" v-else>(No free QTY)</span></h6>
+                        <h6  style="margin-bottom:5px;">{{productOption.details.title}} <span v-if="(productOption.details.freeQty*1)>0" style="font-size: 12px;">(Free QTY {{ productOption.details.freeQty }})</span> <span style="font-size: 12px;" v-else>(No free QTY)</span></h6>
 
                         <div class="row">
                           <div class="col-6 col-md-3 p-2" v-for="(productToping, topingId) in productOption.options" :key="topingId">
@@ -301,36 +301,24 @@ export default {
       Multiselect
     },
     mounted(){
-        console.log("KKKKKKKKKKKKKKKKKKKKKKK");
-        // console.log(this.productSizes);
+        var sizes =  Array.from(document.getElementById("size_list").children);
+        for(var i=0; i<sizes.length; i++){
+          var sizeName = sizes[i].dataset.sizename.trim().toLowerCase();
+          var dx = i;
+          if(sizeName=="small") dx = 0;
+          if(sizeName=="medium") dx = 1;
+          if(sizeName=="large") dx = 2;
+          var temp = sizes[i];
+          sizes[i] = sizes[dx];
+          sizes[dx] = temp;
+        }
+        const fragment = document.createDocumentFragment();
+        sizes.forEach(item => {
+          fragment.appendChild(item);
+        });
+        document.getElementById("size_list").innerHTML = '';
+        document.getElementById("size_list").appendChild(fragment);
 
-
-        // for (const key in this.productSizes) {
-        //   if (this.productSizes.hasOwnProperty(key)) {
-        //     var sizeName = this.productSizes[key].name.trim().toLowerCase();
-        //     var dx = key;
-        //     if(sizeName=="small") dx = 1;
-        //     if(sizeName=="medium") dx = 2;
-        //     if(sizeName=="large") dx = 3;
-        //     // console.log(dx);
-        //     // console.log(sizeName);
-
-        //     var temp = this.productSizes[key];
-        //     this.productSizes[key] = this.productSizes[dx];
-        //     this.productSizes[dx] = temp;
-        //     // console.log("UPDATE");
-        //     // console.log(this.productSizes);
-        //     // break;
-            
-        //   }
-        // }
-
-        // console.log(this.productSizes[1].name);
-        // console.log(this.productSizes[2].name);
-        // console.log(this.productSizes[3].name);
-
-        // console.log("EEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-        // console.log(this.productOptions);
         this.loadCartFromLocalStorage();
         this.fetchBaseCurrencySymbol();
         this.selectFirstSizeAsDefault();
