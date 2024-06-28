@@ -933,6 +933,10 @@ export default {
             this.productDetails = res.data.orderDetails;
             this.user = res.data.user;
             this.loading = false;
+
+            this.productDetails.paid_amount = this.productDetails.paid_amount.toFixed(2);
+            this.productDetails.delivery_charge = this.productDetails.delivery_charge.toFixed(2);
+            this.productDetails.discount = this.productDetails.discount.toFixed(2);
           }
           console.log(res.data);
         })
