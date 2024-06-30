@@ -301,17 +301,42 @@ export default {
       Multiselect
     },
     mounted(){
+        var small = null;
+        var medium = null;
+        var large = null;
         var sizes =  Array.from(document.getElementById("size_list").children);
         for(var i=0; i<sizes.length; i++){
           var sizeName = sizes[i].dataset.sizename.trim().toLowerCase();
-          var dx = i;
-          if(sizeName=="small") dx = 0;
-          if(sizeName=="medium") dx = 1;
-          if(sizeName=="large") dx = 2;
-          var temp = sizes[i];
-          sizes[i] = sizes[dx];
-          sizes[dx] = temp;
+          if(sizeName=="small") small = i;
+          if(sizeName=="medium") medium = i;
+          if(sizeName=="large") large = i;
         }
+        var smallDx = 0;
+        var mediumDx = 1;
+        var largeDx = 2;
+        if(small==null){mediumDx--;largeDx--;}
+        if(medium==null){largeDx--;}
+
+        for(var i=0; i<sizes.length; i++){
+          var sizeName = sizes[i].dataset.sizename.trim().toLowerCase();
+          if(sizeName=="small"){
+            var tem = sizes[i];
+            sizes[i] = sizes[smallDx];
+            sizes[smallDx] = tem;
+          }
+          if(sizeName=="medium"){
+            var tem = sizes[i];
+            sizes[i] = sizes[mediumDx];
+            sizes[mediumDx] = tem;
+          }
+          if(sizeName=="large"){
+            var tem = sizes[i];
+            console.log(tem);
+            sizes[i] = sizes[largeDx];
+            sizes[largeDx] = tem;
+          }
+        }
+
         const fragment = document.createDocumentFragment();
         sizes.forEach(item => {
           fragment.appendChild(item);
