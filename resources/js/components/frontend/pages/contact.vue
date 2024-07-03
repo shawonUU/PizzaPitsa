@@ -17,7 +17,7 @@
                     </div>
                     <div class="col-lg-6 col-md-4">
                         <div class="inner">
-                            <div class="bradcrumb-thumb">
+                            <div class="bradcrumb-thumb d-none">
                                 <img src="https://new.axilthemes.com/demo/template/etrade-rtl/assets/images/product/product-45.png" alt="Image">
                             </div>
                         </div>
@@ -98,19 +98,21 @@
                                 <p>Työnjohtajankatu 5, 00880 Helsinki
                                     </p>                                
                                     <ul class="support-list-item">
-                                         <li><a  href="tel:+35826220208"><i class="fal fa-phone-alt"></i>+35826220208</a></li>
-                                        <li><a  href="mailto:info@pizzapitsa.fi"><i class="fal fa-envelope-open"></i>info@pizzapitsa.fi</a></li>
-                                        <li><a  href="mailto:maria@pizzapitsa.fi"><i class="fal fa-envelope-open"></i>maria@pizzapitsa.fi</a></li>
-                                        <li><a  href="mailto:feedback@pizzapitsa.fi"><i class="fal fa-envelope-open"></i>feedback@pizzapitsa.fi</a></li>
-                                        <li><a  href="mailto:franchise@pizzapitsa.fi"><i class="fal fa-envelope-open"></i>franchise@pizzapitsa.fi</a></li>
-                                        <li><a  href="mailto:order@pizzapitsa.fi"><i class="fal fa-envelope-open"></i>order@pizzapitsa.fi</a></li>                                       
+                                         <li><a  href="tel:+35826220208"><i class="fal fa-phone-alt"></i> +35826220208</a></li>
+                                        <li><a  href="mailto:info@pizzapitsa.fi"><i class="fal fa-envelope-open"></i> info@pizzapitsa.fi</a></li>
+                                        <li><a  href="mailto:maria@pizzapitsa.fi"><i class="fal fa-envelope-open"></i> maria@pizzapitsa.fi</a></li>
+                                        <li><a  href="mailto:feedback@pizzapitsa.fi"><i class="fal fa-envelope-open"></i> feedback@pizzapitsa.fi</a></li>
+                                        <li><a  href="mailto:franchise@pizzapitsa.fi"><i class="fal fa-envelope-open"></i> franchise@pizzapitsa.fi</a></li>
+                                        <li><a  href="mailto:order@pizzapitsa.fi"><i class="fal fa-envelope-open"></i> order@pizzapitsa.fi</a></li>                                       
                                         <!-- <li><i class="fal fa-map-marker-alt"></i> 685 Market Street,  <br> Las Vegas, LA 95820, <br> United States.</li> -->
                                     </ul>
                             </div>                         
                             <div class="opening-hour">
                                 <h4 class="title mb--20">Opening Hours:</h4>
                                 
-                                <p v-html="shopAddress+shopSchedule">
+                                <p>
+                                    {{ shopAddress }}
+                                    {{ shopSchedule }}
                                 </p>
                             </div>
                         </div>

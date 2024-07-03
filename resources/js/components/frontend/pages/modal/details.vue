@@ -18,44 +18,11 @@
           </div>
           <div class="single-product-thumb">
             <div class="row">
-              <div class="col-lg-7">
-                <div class="row">
-                  <div class="col-lg-10 order-lg-2">
-                    <div
-                      class="single-product-thumbnail product-large-thumbnail axil-product thumbnail-badge zoom-gallery slick-initialized slick-slider"
-                    >
-                      <div class="slick-list">
-                        <div
-                          class="slick-track"
-                          style="
-                            opacity: 1;
-                            width: 1473px;
-                            transform: translate3d(0px, 0px, 0px);
-                          "
-                        >
-                          <div class="thumbnail slick-slide slick-current slick-active" data-slick-index="0" aria-hidden="false" tabindex="0" style="width: 491px; display:flex; justify-content:center">
-
-                            <img class="sizeImages"  id="" :src="productData.image ? '/frontend/product_images/' +productData.image : '/frontend/product_images/placeholder.jpg'" alt="Product Images" />
-                            <img class="sizeImages d-none"  v-for="(productSize, sizeId) in productSizes" :key="sizeId" :id="'sizeImages'+sizeId"
-                              :src="productSize.image ? '/frontend/product_images/' +productSize.image : '/frontend/product_images/placeholder.jpg'"  alt="Product Images"
-                            />
-                            <!-- <div class="label-block label-right">
-                              <div class="product-badget">20% OFF</div>
-                            </div> -->
-                            <!-- <div class="product-quick-view position-view">
-
-                            </div> -->
-                          </div>
-
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-lg-2 order-lg-1">
-                  </div>
-                </div>
+              <div class="col-12 col-sm-6">
+                  <img class="sizeImages"  id="" :src="productData.image ? '/frontend/product_images/' +productData.image : '/frontend/product_images/placeholder.jpg'" alt="Product Images" />
+                  <img class="sizeImages d-none"  v-for="(productSize, sizeId) in productSizes" :key="sizeId" :id="'sizeImages'+sizeId" :src="productSize.image ? '/frontend/product_images/' +productSize.image : '/frontend/product_images/placeholder.jpg'"  alt="Product Images" />
               </div>
-              <div class="col-lg-5 mb--40">
+              <div class="col-12 col-sm-6 mb--40">
                 <div class="single-product-content">
                   <div class="inner">
                     <!-- <div class="product-rating">
@@ -144,10 +111,12 @@
                     </div>
 
                     <template v-for="(productOption, optionKey) in productOptions" :key="optionKey">
-                        <h6  style="margin-bottom:5px;">{{productOption.details.title}} <span v-if="(productOption.details.freeQty*1)>0" style="font-size: 12px;">(Free QTY {{ productOption.details.freeQty }})</span> <span style="font-size: 12px;" v-else>(No free QTY)</span></h6>
-
-                        <div class="row">
-                          <div class="col-6 col-md-3 p-2" v-for="(productToping, topingId) in productOption.options" :key="topingId">
+                        <h6  style="margin-bottom:5px; text-align: center;">{{productOption.details.title}} 
+                          <span v-if="(productOption.details.freeQty*1)>0" style="font-size: 12px;">(Free QTY {{ productOption.details.freeQty }})</span>
+                           <span style="font-size: 12px;" v-else>(No free QTY)</span>
+                        </h6>
+                        <div class="row justify-content-center">
+                          <div class="col p-2" v-for="(productToping, topingId) in productOption.options" :key="topingId" style="min-width: 115px !important; max-width:115px !important;">
                               <div :id="'optionDiv'+allTopings[productToping.topping_id].id" @click="clickOnOptions(allTopings[productToping.topping_id].id)" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border:1px solid white; border-radius: 10%; cursor:pointer;">
                                   <img class="p-2" :src="'/frontend/toping_images/' + allTopings[productToping.topping_id].image" alt="" style="width: 65px; ">
                                   <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">{{allTopings[productToping.topping_id].name}}</p>
@@ -176,9 +145,9 @@
                     </template>
 
 
-                    <h6 v-if="productTopings.length > 0"  style="margin-bottom:5px;">Your Favorit Toppings</h6>
-                    <div class="row">
-                      <div class="col-6 col-md-3 p-2" v-for="(productToping, topingId) in productTopings" :key="topingId">
+                    <h6   style="margin-bottom:5px; text-align: center;">Your Favorit Toppings</h6>
+                    <div class="row justify-content-center">
+                      <div class="col p-2 " v-for="(productToping, topingId) in productTopings" :key="topingId" style="min-width: 115px !important; max-width: 115px !important;">
                           <div :id="'topingDiv'+productToping.id" @click="clickOnTopings(productToping.id)" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border:1px solid white; border-radius: 10%; cursor:pointer;">
                               <img class="p-2" :src="'/frontend/toping_images/' + productToping.image" alt="" style="width: 65px; ">
                               <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">{{productToping.name}}</p>
@@ -220,7 +189,7 @@
                         </div>
                     </templat>
                          
-                    <div class="row mb-5" id="selectdeExtraTopping">
+                    <div class="row mb-5 justify-content-center" id="selectdeExtraTopping">
 
                     </div>
 
@@ -280,6 +249,7 @@ export default {
       },
     data(){
         return{
+            productTopingLength: 0,
             freeOption:1,
             catgories:{},
             tooltipVisible: false,
@@ -348,6 +318,8 @@ export default {
         this.fetchBaseCurrencySymbol();
         this.selectFirstSizeAsDefault();
         this.setOptionToMultiSelect();
+        var keys = Object.keys(this.productTopings);
+        this.productTopingLength = keys.length;
     },
     methods: {
       setOptionToMultiSelect(){
@@ -860,7 +832,7 @@ export default {
           }
 
           var html = `
-            <div id="topingContainer${topping.id}" class="col-3 p-2 more-toppings" data-toppingid="${topping.id}" >
+            <div id="topingContainer${topping.id}" class="col p-2 more-toppings" data-toppingid="${topping.id}" style="min-width: 115px !important; max-width: 115px !important;">
                 <div id="topingDiv${topping.id}" class="topings text-center shadow-lg  mb-2 bg-white py-3" style="width: 100%; border-radius: 10%; cursor:pointer;">
                     <img class="p-2" src="/frontend/toping_images/${topping.image}" alt="" style="width: 65px; ">
                     <p class="text-center m-0" style="font-size:12px; margin-bottom: 10px !important;">${topping.name}</p>

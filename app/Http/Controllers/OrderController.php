@@ -332,13 +332,14 @@ class OrderController extends Controller
         $getOrder = Order::where('order_number', $orderId)->first();
         $getCustomerMail = User::where('id', $getOrder->customer_id)->first();
 
-        if ($sendMail == true) {
-            // return $getCustomerMail->email;
-            Mail::to($getCustomerMail->email)->send(new sendPaymentStatusChangeMail($orderId, $data));
-        }
+        
         $order = Order::where('order_number', $orderId)->where('is_order_valid', 1)->first();
         $order->is_paid = $newStatus;
         $order->update();
+        if ($sendMail == true) {
+            // return $getCustomerMail,->email;
+            Mail::to($getCustomerMail->email)->send(new sendPaymentStatusChangeMail($orderId, $data));
+        }
         return response()->json('Success');
     }
 

@@ -17,7 +17,7 @@
                     </div>
                     <div class="col-lg-6 col-md-4">
                         <div class="inner">
-                            <div class="bradcrumb-thumb">
+                            <div class="bradcrumb-thumb d-none">
                                 <img src="https://new.axilthemes.com/demo/template/etrade-rtl/assets/images/product/product-45.png" alt="Image">
                             </div>
                         </div>
