@@ -30,8 +30,7 @@
                                     <a  href="mailto:info@pizzapitsa.fi" style="color:#fff">Email: info@pizzapitsa.fi</a>
                                 </li>
                             </ul>
-                            </div>
-                             
+                            </div>                             
                         </div>
                         <div class="col-lg-6 col-sm-6 col-md-4 col-12">
                             <div class="header-top-link">
@@ -55,14 +54,7 @@
                             <span class="header__about-slogan-text" style="color:#fff">Pizza delivery </span>
                             <a data-testid="header__about-slogan-text_link" class="header__about-slogan-text header__about-slogan-text_locality header__about-slogan-text_link" href="#" style="color:#fff">Finland</a>
                         </span>
-
                         </div>
-                        <!-- <div class="sc-52lbjw-0 fpBABM contacts-phone">
-                        <div class="contacts-phone__number">
-                            <a class="contacts-phone__number-link" href="tel:+35826220208" style="color:#fff">+35826220208</a>
-                            <div class="contacts-phone__description"><span class="contacts-phone__description-text" style="color:#fff">Call</span></div>
-                        </div>
-                        </div> -->
                         <ul class="mainmenu">
                             <li class="sc-xlo7eb-4 bvuzKi">
                                 <router-link to="/about" class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" style="color:#fff" data-active="false" data-type="primary" data-size="normal">About</router-link>
@@ -94,7 +86,7 @@
                         </div>
                         </a>
                         <router-link v-if="isAuth" to="/dashboard" data-type="tertiary" data-size="small" class="sc-1rmt3mq-0 dOEDNV">Dashboard</router-link>
-                        <button data-testid="header_login" v-else @click="loginModalEvent"  type="button" data-type="tertiary" data-size="small" class="sc-1rmt3mq-0 dOEDNV">Log in</button>
+                        <button data-testid="header_login" v-else @click="loginModalEvent"  type="button" data-type="tertiary" data-size="small" class="sc-1rmt3mq-0 dOEDNV">Login</button>
                     </div>
                 </div>
             </div>
@@ -120,12 +112,6 @@
                                         <img :src="'/frontend/assets/images/logo/2 pizza logo-02.png'" alt="Site Logo">
                                     </router-link>
                                 </div>
-                                <!-- <ul class="mainmenu">
-                                    <li>
-                                        <a href="#">Home</a>
-                                    </li>
-                                    <li><a href="contact.html">Contact</a></li>
-                                </ul> -->
                                 <ul v-if="currentPage !=='dashboard'" class="mainmenu">                                    
                                     <li class="sc-xlo7eb-4 bvuzKi" v-for="(category,index) in catgories" :key="index" :value="category.id">
                                         <a class="sc-2c0aw7-0 wwSTC sc-xlo7eb-7 kkaUZR" :href="'#' + category.name" @click.prevent="scrollToTeamSection(category.id)">{{ category.name }}</a>
@@ -151,7 +137,7 @@
                                     </li>  
                                     <li :class="cartClass" id="hide-on-small">
                                        <router-link v-if="isAuth" to="/dashboard" data-type="tertiary" data-size="small" class=""><img style="width:25px" src="frontend/assets/images/user.png" alt=""></router-link>
-                                       <button data-testid="header_login" v-else @click="loginModalEvent"  type="button" data-type="tertiary" data-size="small" class="sc-1rmt3mq-0 dOEDNV">Log in</button>     
+                                       <button data-testid="header_login" v-else @click="loginModalEvent"  type="button" data-type="tertiary" data-size="small" class="sc-1rmt3mq-0 dOEDNV">Login</button>     
                                     </li>                                  
                                      <hr style="background:#fff">                                   
                                     <li class="mobileMenu">
@@ -169,22 +155,6 @@
                         </div>
                         <div class="header-action">
                             <ul class="action-list">
-
-                                <!-- <li class="axil-search d-xl-none d-block">
-                                    <a href="javascript:void(0)" class="header-search-icon" title="Search">
-                                        <i class="flaticon-magnifying-glass"></i>
-                                    </a>
-                                </li>
-
-                                <li class="shopping-cart">
-                                    <a href="#" class="cart-dropdown-btn">
-                                        <span class="cart-count">3</span>
-                                        <i class="flaticon-shopping-cart"></i>
-                                    </a>
-                                </li> -->
-                                <!-- <li>
-                                    <button data-testid="header_login" type="button" data-type="tertiary" data-size="small" class="sc-1rmt3mq-0 dOEDNV">My Orders</button>
-                                </li> -->
                                 <li class="shopping-cart">
                                     <a href="javascript:void(0)" style="font-size: 28px;margin-top: 8px;" class="cart-dropdown-btn mobileCart">
                                         <span class="cart-count">{{ cartItemCount }}</span>
@@ -193,7 +163,7 @@
                                 </li>
                                 <li class="d-lg-none">
                                     <router-link v-if="isAuth" to="/dashboard" data-type="tertiary" data-size="small" class=""><img style="width:25px" src="frontend/assets/images/user.png" alt=""></router-link>
-                                    <button data-testid="header_login" v-else @click="loginModalEvent"  type="button" data-type="tertiary" data-size="small" class="sc-1rmt3mq-0 dOEDNV">Log in</button>
+                                    <button data-testid="header_login" v-else @click="loginModalEvent"  type="button" data-type="tertiary" data-size="small" class="sc-1rmt3mq-0 dOEDNV">Login</button>
                                 </li>
                                 <li class="axil-mobile-toggle">
                                     <button class="menu-btn mobile-nav-toggler">

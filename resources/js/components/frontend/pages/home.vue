@@ -26,8 +26,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-lg-6">
-                                
+                            <div class="col-lg-6">                                
                                 <div class="row">
                                     <div class="col-6">
                                          <div class="slider-product-box">
@@ -86,7 +85,7 @@
                         }"
                         @swiper="onSwiper" @slideChange="onSlideChange">
                         <swiper-slide v-for="(item, index) in popularProduct" :key="index">
-                            <div class="d-flex align-items-center" @click="getProductDetails(item.id)">
+                            <div class="d-flex align-items-center" style="cursor:pointer" @click="getProductDetails(item.id)">
                                 <div class="flex-shrink-0">
                                     <img style="width:70px"
                                         :src="item.image ? '/frontend/product_images/' + item.image : '/frontend/product_images/placeholder.jpg'"
