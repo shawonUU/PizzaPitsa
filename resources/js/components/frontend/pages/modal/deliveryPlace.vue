@@ -120,8 +120,7 @@
                                     <div>
                                       <strong class="text-main"> Name: {{auth.name}}</strong>
                                     </div>
-                                  </div>                
-                                <br> Email: {{auth.email}}<br> 
+                                  </div> Email: {{auth.email}}<br> 
                                 <template  v-if="orderType==1">
                                   Selected Address: {{selectedAddress}}<br> 
                                   Entrance: {{entrance}}<br> 
@@ -140,19 +139,19 @@
                               <table>
                                 <tbody>
                                   <tr class="infoTd">
-                                    <td class="text-main text-bold">Order Type</td>
-                                    <td class="text-main text-bold">
+                                    <td class="text-main text-bold p-0">Order Type</td>
+                                    <td class="text-main text-bold p-0">
                                       {{ orderType==1 ? 'Delivery' : 'Dine in or Pickup' }}                          
                                     </td>                    
                                   </tr>
                                   
                                   <tr class="infoTd">
-                                    <td class="text-main text-bold">Order date </td>
-                                    <td class="text-right">March 3, 2024 at 5:32 PM</td>
+                                    <td class="text-main text-bold p-0">Order date </td>
+                                    <td class="text-right p-0">March 3, 2024 at 5:32 PM</td>
                                   </tr>
                                   <tr class="infoTd">
-                                    <td class="text-main text-bold"> Total amount </td>
-                                    <td class="text-right">{{ grandTotal }}{{ baseCurrencySymbol }}</td>
+                                    <td class="text-main text-bold p-0"> Total amount </td>
+                                    <td class="text-right p-0">{{ grandTotal }}{{ baseCurrencySymbol }}</td>
                                   </tr>          
                                 </tbody>
                               </table>
@@ -242,7 +241,7 @@
                                 </tr>
                                 <tr v-if="discount">
                                   <td>
-                                    <strong class="text-muted">Coupon :</strong>
+                                    <strong class="text-muted">Discount :</strong>
                                   </td>
                                   <td>{{discount}} {{baseCurrencySymbol}}</td>
                                 </tr>

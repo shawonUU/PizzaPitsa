@@ -580,11 +580,7 @@
                             Sub Total :
                           </td>
                           <td style="text-align: center">
-                            {{
-                              productDetails.paid_amount * 1 +
-                              productDetails.discount * 1 -
-                              productDetails.delivery_charge * 1
-                            }}{{ baseCurrencySymbol }}
+                            {{ productDetails.sub_total }}{{ baseCurrencySymbol }}
                           </td>
                         </tr>
                         <tr v-if="productDetails.delivery_charge * 1 > 0">
@@ -605,7 +601,7 @@
                             }}{{ baseCurrencySymbol }}
                           </td>
                         </tr>
-                        <tr v-if="productDetails.paid_amount * 1 > 0">
+                        <tr v-if="productDetails.paid_amount * 1 ">
                           <td colspan="8" style="text-align: right">Total :</td>
                           <td style="text-align: center">
                             {{ productDetails.paid_amount
@@ -937,6 +933,7 @@ export default {
             this.productDetails.paid_amount = this.productDetails.paid_amount.toFixed(2);
             this.productDetails.delivery_charge = this.productDetails.delivery_charge.toFixed(2);
             this.productDetails.discount = this.productDetails.discount.toFixed(2);
+            this.productDetails.sub_total = ((this.productDetails.paid_amount * 1) + (this.productDetails.discount * 1) - (this.productDetails.delivery_charge * 1)).toFixed(2);
           }
           console.log(res.data);
         })
