@@ -225,7 +225,7 @@
                     <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Qty</th>                    
                     <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">P.Price</th>                    
                     <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;"> T.P Price</th>                    
-                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">T.O.Price</th>
+                    <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: none;">T.O.Price</th>
                     <th  data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">T.T.Price</th>
                     <th  data-breakpoints="lg" class="min-col text-uppercase text-center footable-last-visible" style="display: table-cell;">Total Price</th>
                     <th  data-breakpoints="lg" class="min-col text-uppercase text-center footable-last-visible" style="display: table-cell;">Action</th>
@@ -260,8 +260,8 @@
                     <td class="text-center" style="display: table-cell;"> {{ $item->quantity }} </td>                    
                     <td class="text-center footable-last-visible" style="display: table-cell;"> {{ $item->price }}{{ getCurrency() }} </td>                  
                     <td class="text-center footable-last-visible" style="display: table-cell;"> {{ $item->price*$item->quantity }}{{ getCurrency() }} </td>                    
-                    <td class="text-center" style="display: table-cell;"> {{ $item->option_price }}{{ getCurrency() }}</td>
-                    <td class="text-center" style="display: table-cell;"> {{ $item->toping_price }}{{ getCurrency() }}</td>
+                    <td class="text-center" style="display: none;"> {{ $item->option_price }}{{ getCurrency() }}</td>
+                    <td class="text-center" style="display: table-cell;"> {{ ($item->toping_price*1) + ($item->option_price*1)}}{{ getCurrency() }}</td>
                     <td class="text-center footable-last-visible" style="display: table-cell;"> {{ $item->total_price+ $item->toping_price+$item->option_price }}{{ getCurrency() }} </td>
                     <td>
                       <button type="button" data-bs-toggle="modal" data-bs-target="#myModal{{ $item->id }}" class="btn btn-sm btn-info waves-effect waves-light"><i class="ri-ball-pen-line"></i></button>
