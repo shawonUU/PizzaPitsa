@@ -379,7 +379,8 @@ class OrderController extends Controller
 
             $newTotalProductPrice = $orderItem->total_price;
             $order->total_amount += $newTotalProductPrice;
-            $order->paid_amount += $newTotalProductPrice;
+            // $order->paid_amount += $newTotalProductPrice;
+            $order->paid_amount = ($order->total_amount*1) - ($order->discount*1) + ($order->delivery_charge*1);
             $order->update();
 
             $order->update();
