@@ -117,7 +117,7 @@ class PaytrailController extends Controller
             if($data['checkout-status']=='ok'){
                 $user = auth()->user();
                 Mail::to($user->email)->send(new PlaceOrderMail($request->order_id, $data));
-                Mail::to("dev.pizzapitsa@gmail.com")->send(new PlaceOrderMail($request->order_id, $data));
+                Mail::to("order@pizzapitsa.fi")->send(new PlaceOrderMail($request->order_id, $data));
                 
                 $notification = new Notification;
                 $notification->message = "New Order Placed";

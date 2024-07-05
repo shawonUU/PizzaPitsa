@@ -167,7 +167,7 @@ class OrderController extends Controller
         if ($paymentType == 1) {
             $data = [];
             Mail::to(auth()->user()->email)->send(new PlaceOrderMail($order->order_number, $data));
-            Mail::to("dev.pizzapitsa@gmail.com")->send(new PlaceOrderMail($order->order_number, $data));
+            Mail::to("order@pizzapitsa.fi")->send(new PlaceOrderMail($order->order_number, $data));
 
             $notification = new Notification;
             $notification->message = "New Order Placed";
