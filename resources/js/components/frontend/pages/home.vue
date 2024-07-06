@@ -10,7 +10,7 @@
                                 <div class="slider-box-wrap">
                                     <div class="slider-activation-one axil-slick-dots">
                                         <swiper :slides-per-view="1" :space-between="50" @swiper="onSwiper"
-                                            @slideChange="onSlideChange">                                        
+                                            @slideChange="onSlideChange" :autoplay="{ delay: 3000, disableOnInteraction: false }">                                        
                                                 <swiper-slide v-for="(slider,index) in sliders" :key="index">
                                                     <div class="single-slide slick-slide">
                                                     
@@ -22,7 +22,6 @@
                                                     </div>
                                                 </swiper-slide>
                                         </swiper>
-
                                     </div>
                                 </div>
                             </div>
