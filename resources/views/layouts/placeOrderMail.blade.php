@@ -510,9 +510,9 @@
                     </td>                   
                     <td class="" style="display: table-cell;"> {{ $item->quantity }} </td>
                     <td class="" style="display: table-cell;"> {{ $item->price }}{{ getCurrency() }}</td>
-                    <td class="" style="display: table-cell;"> {{ $item->price  * $item->quantity }}{{ getCurrency() }} </td>
+                    <td class="" style="display: table-cell;"> {{ $item->price  * $item->quantity }}{{ getCurrency() }} </td>`
                     <td class="" style="display: none;"> {{ $item->option_price }}{{ getCurrency() }} </td>
-                    <td class="" style="display: table-cell;"> {{ ($item->toping_price * 1) + ($item->option_price # 1) }}{{ getCurrency() }} </td>
+                    <td class="" style="display: table-cell;"> {{ ($item->toping_price * 1) + ($item->option_price * 1) }}{{ getCurrency() }} </td>
                     <td class="" style="display: table-cell;"> {{ ($item->price  * $item->quantity) + $item->option_price + $item->toping_price }}{{ getCurrency() }} </td>
                   </tr>
                 @endforeach
