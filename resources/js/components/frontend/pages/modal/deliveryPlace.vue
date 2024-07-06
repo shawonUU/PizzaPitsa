@@ -111,7 +111,7 @@
                     <div class="col-12">
                         <h3>Order Details</h3>                          
                           <div class="row">
-                            <div class="col-6 col-sm-6 col-xsm-6">
+                            <div class="col-12 col-sm-6 col-xsm-6">
                               <strong v-if="orderType==1">Delivery Address Info</strong>
                               <strong v-if="orderType==2">Customer Info</strong>
                               <hr>
@@ -133,24 +133,24 @@
 
                               </address>
                             </div>
-                            <div class="col-6 col-sm-6 col-xsm-6">
+                            <div class="col-12 col-sm-6 col-xsm-6">
                               <strong>Order Info</strong>
                               <hr>
                               <table>
                                 <tbody>
                                   <tr class="infoTd">
-                                    <td class="text-main text-bold p-0">Order Type</td>
+                                    <td class="text-main text-bold p-0">Type</td>
                                     <td class="text-main text-bold p-0">
                                       {{ orderType==1 ? 'Delivery' : 'Dine in or Pickup' }}                          
                                     </td>                    
                                   </tr>
                                   
                                   <tr class="infoTd">
-                                    <td class="text-main text-bold p-0">Order date </td>
+                                    <td class="text-main text-bold p-0">Date </td>
                                     <td class="text-right p-0">March 3, 2024 at 5:32 PM</td>
                                   </tr>
                                   <tr class="infoTd">
-                                    <td class="text-main text-bold p-0"> Total amount </td>
+                                    <td class="text-main text-bold p-0"> Amount </td>
                                     <td class="text-right p-0">{{ grandTotal }}{{ baseCurrencySymbol }}</td>
                                   </tr>          
                                 </tbody>
