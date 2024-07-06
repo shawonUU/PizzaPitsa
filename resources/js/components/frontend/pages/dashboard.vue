@@ -478,7 +478,7 @@
                           <th
                             data-breakpoints="lg"
                             class="min-col text-uppercase text-center"
-                            style="display: table-cell"
+                            style="display: none;"
                           >
                             T.O Price
                           </th>
@@ -547,7 +547,7 @@
                           </td>
                           <td
                             class="text-center"
-                            style="display: table-cell; text-align: right"
+                            style="display: none; text-align: right"
                           >
                             {{ product.option_price * 1
                             }}{{ baseCurrencySymbol }}
@@ -556,7 +556,7 @@
                             class="text-center"
                             style="display: table-cell; text-align: right"
                           >
-                            {{ product.toping_price * 1
+                            {{ (product.toping_price * 1) + (product.option_price * 1)
                             }}{{ baseCurrencySymbol }}
                           </td>
                           <td

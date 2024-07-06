@@ -302,7 +302,7 @@
                     <th data-breakpoints="lg" class="" style="display: table-cell;">Qty</th>
                     <th data-breakpoints="lg" class="" style="display: table-cell;">Price</th>
                     <th data-breakpoints="lg" class="" style="display: table-cell;">T.P Price</th>
-                    <th data-breakpoints="lg" class="" style="display: table-cell;">O. Price</th>
+                    <th data-breakpoints="lg" class="" style="display: none;">O. Price</th>
                     <th data-breakpoints="lg" class="" style="display: table-cell;">T. Price</th>
                     <th data-breakpoints="lg" class="" style="display: table-cell;">Price</th>
                   </tr>
@@ -329,8 +329,8 @@
                     <td class="" style="display: table-cell;"> {{ $item->quantity }} </td>
                     <td class="" style="display: table-cell;"> {{ $item->price }}{{ getCurrency() }}</td>
                     <td class="" style="display: table-cell;"> {{ $item->price  * $item->quantity }}{{ getCurrency() }} </td>
-                    <td class="" style="display: table-cell;"> {{ $item->option_price }}{{ getCurrency() }} </td>
-                    <td class="" style="display: table-cell;"> {{ $item->toping_price }}{{ getCurrency() }} </td>
+                    <td class="" style="display: none;"> {{ $item->option_price }}{{ getCurrency() }} </td>
+                    <td class="" style="display: table-cell;"> {{ ($item->toping_price *) + ($item->option_price * 1) }}{{ getCurrency() }} </td>
                     <td class="" style="display: table-cell;"> {{ ($item->price  * $item->quantity) + $item->option_price + $item->toping_price }}{{ getCurrency() }} </td>
                   </tr>
                 @endforeach
