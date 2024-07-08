@@ -53,12 +53,29 @@
                                         $statuses = orderStatuses();
                                     }
                                 @endphp
-                                <option value="" selected disabled>--Status--</option>
+                                <option value="" selected disabled>--OrderStatus--</option>
+                                <option {{ $request->status == 'All'?'selected':'' }} value="All">All</option>
                                 @foreach ($statuses as $value => $text)                                             
                                     <option {{ $value == $status?'selected':'' }}  value="{{ $value }}">{{ $text }}</option> 
                                 @endforeach   
                             </select>
-                          </div>          
+                            </div>   
+                            <div class="input-group ml-3">
+                              <select class="form-control w-50" name="order_type">                                                 
+                                  <option value="" selected disabled>--Order Type--</option>                                                     
+                                  <option {{ $request->order_type == 'All'?'selected':'' }} value="All">All</option>                                                     
+                                  <option {{ $request->order_type == '1'?'selected':'' }} value="1">Pickup/Dine in</option>                                                     
+                                  <option {{ $request->order_type == '2'?'selected':'' }} value="2">Delivery</option>                                                     
+                              </select>
+                            </div>  
+                            <div class="input-group ml-3">
+                              <select class="form-control w-50" name="payment_type"> 
+                                  <option value="" selected disabled>--Payment Type--</option>                                                
+                                  <option {{ $request->payment_type == 'All'?'selected':'' }} value="All">All</option>                                                     
+                                  <option {{ $request->payment_type == '1'?'selected':'' }}  value="1">Paid</option>                                                     
+                                  <option {{ $request->payment_type == '0'?'selected':'' }} value="0">Unpaid</option>                                                     
+                              </select>
+                            </div>               
                             @php
                                 $today = date('Y-m-d');
                                 $startDate = isset($request->start_date) ? $request->start_date : $today;
@@ -69,11 +86,15 @@
                             </div>
                             <div class="input-group ml-3">
                                 <input type="date" class="form-control" id="end_date" name="end_date" value="{{ $endDate }}">
+                            </div>                              
+                            <div class="ml-3">
+                                <button type="submit" class="btn  btn-primary">Filter</button>
+                                
                             </div>
-                              
-                              <div class="ml-3">
-                                  <button type="submit" class="btn  btn-primary">Filter</button>
-                              </div>
+                            <div class="ml-3">
+                              <a href="{{ route('orders.index') }}" class="btn btn-warning ml-2">Clear</a>                              
+                            </div>
+                            
                           </form>
                       </div>
                   </div>
