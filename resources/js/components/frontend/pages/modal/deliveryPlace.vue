@@ -87,7 +87,10 @@
                         <form action="javascript:void(0)">
                             <div class="row">
                                 <div class="col-12">
-                                  <div class="schedule-div p-3 " v-html="shopAddress+shopSchedule" style="border-radius: 15px; border: solid 1px #ffc3c3;  margin-bottom: 10px;text-align:left; line-height:1; padding:3px;">
+                                  <div class="schedule-div p-3 " v-html="shopAddress" style="border-radius: 15px; border: solid 1px #ffc3c3;  margin-bottom: 10px;text-align:left; line-height:1; padding:3px;">
+                                     
+                                    </div>
+                                  <div class="schedule-div p-3 " v-html="shopSchedule" style="border-radius: 15px; border: solid 1px #ffc3c3;  margin-bottom: 10px;text-align:left; line-height:1; padding:3px;">
                                      
                                   </div>
                                 </div>

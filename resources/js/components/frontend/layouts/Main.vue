@@ -222,7 +222,7 @@
           </table>
           <div class="axil-categorie-area bg-color-white">
             <div class="container">
-              <div class="section-title-wrapper">
+              <div class="section-title-wrapper" style="padding:0px;">
                 <h4 class="title">Related Product</h4>
               </div>
               <swiper
@@ -237,11 +237,11 @@
                                             spaceBetween: 20,
                                         },
                                         '768': {
-                                            slidesPerView: 4,
+                                            slidesPerView: 5,
                                             spaceBetween: 40,
                                         },
                                         '1024': {
-                                            slidesPerView: 5,
+                                            slidesPerView: 6,
                                             spaceBetween: 50,
                                         },
                                     }"
@@ -260,7 +260,7 @@
                       <img style="width: 70px; cursor: pointer;" :src="item.image ? item.image : '/frontend/product_images/placeholder.jpg'" alt="..."/>
                       <div class="flex-grow-1 ms-3">
                         <p>
-                          <span style="font-size: 12px">{{ item.name }}</span>
+                          <span style="font-size: 12px; overflow-wrap: break-word; word-wrap: break-word;">{{ item.name }}</span>
                         </p>
                       </div>
                     </div>

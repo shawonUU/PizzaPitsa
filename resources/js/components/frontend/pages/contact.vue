@@ -131,7 +131,7 @@
         </div>
         <!-- End Contact Area  -->
     </main>
-    <div class="service-area">
+    <div class="service-area d-none">
         <div class="container">
             <div class="row row-cols-xl-4 row-cols-sm-2 row-cols-1 row--20">
                 <div class="col">
