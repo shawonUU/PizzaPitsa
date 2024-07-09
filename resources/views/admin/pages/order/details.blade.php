@@ -83,7 +83,7 @@
               <address>                                 
                   <div class="d-flex justify-content-between">
                     <div>
-                      <strong class="text-main"> Name: {{ $orderDetails->name }}</strong>
+                      <strong class="text-main"> Name:</strong> {{ $orderDetails->name }}
                     </div>
                     <div>
                       
@@ -137,13 +137,13 @@
                     </div>
                     </div>
                   </div>                
-                <br> Email: {{ $orderDetails->email }}<br> 
-                Selected Address: {{ $orderDetails->selectedAddress }}<br> 
-                Entrance: {{ $orderDetails->entrance }}<br> 
-                Door Code: {{ $orderDetails->door_code }}<br> 
-                Floor: {{ $orderDetails->floor }}<br> 
-                Apartment: {{ $orderDetails->apartment }}<br> 
-                Comment: {{ $orderDetails->comment }}<br> 
+                <br> <strong>Email:</strong> {{ $orderDetails->email }}<br> 
+                <strong>Address:</strong> {{ $orderDetails->selectedAddress }}<br> 
+                <strong>Entrance:</strong> {{ $orderDetails->entrance }}<br> 
+                <strong>Door Code:</strong> {{ $orderDetails->door_code }}<br> 
+                <strong>Floor:</strong> {{ $orderDetails->floor }}<br> 
+               <strong> Apartment:</strong> {{ $orderDetails->apartment }}<br> 
+                <strong>Comment:</strong> {{ $orderDetails->comment }}<br> 
               </address>
             </div>
             <div class="col-md-4">
@@ -152,24 +152,24 @@
               <table>
                 <tbody>
                   <tr>
-                    <td class="text-main text-bold">Order Number:</td>
+                    <td class="text-main text-bold"><strong>Order Number:</strong></td>
                     <td class="text-info text-bold text-right">#{{ $orderDetails->order_number }}</td>
                   </tr>
                   <tr>
-                    <td class="text-main text-bold">Order status:</td>
+                    <td class="text-main text-bold"><strong>Order status:</strong></td>
                     <td class="text-main text-bold">                       
                       {{ orderStatuses()[$orderDetails->order_status] }}                                       
                     </td>
                   </tr>
                   <tr>
-                    <td class="text-main text-bold">Order Type:</td>
+                    <td class="text-main text-bold"><strong>Order Type:</strong></td>
                     <td class="text-main text-bold">                       
                       {{ $orderDetails->type == '1' ?'Home Delivery':'Dine in or Pickup' }}                                     
                     </td>                    
                   </tr>
                   
                   <tr>
-                    <td class="text-main text-bold">Order date:</td>
+                    <td class="text-main text-bold"><strong>Order date:</strong></td>
                     @php
                         // Set the desired timezone (replace 'Asia/Dhaka' with your timezone)
                         $timezone = 'Asia/Dhaka'; // Replace with your desired timezone
@@ -186,15 +186,15 @@
                     <td class="text-right">{{ $formattedDate  }}</td>
                   </tr>
                   <tr>
-                    <td class="text-main text-bold"> Total amount:</td>
+                    <td class="text-main text-bold"> <strong>Total amount:</strong></td>
                     <td class="text-right">{{ $order->paid_amount }}{{ getCurrency() }}</td>
                   </tr>
                   <tr>
-                    <td class="text-main text-bold">Payment Status:</td>
+                    <td class="text-main text-bold"><strong>Payment Status:</strong></td>
                     <td class="text-right">{{ $order->is_paid == '0'?'Unpaid':'Paid' }}</td>
                   </tr>
                   <tr>
-                    <td class="text-main text-bold">Payment method:</td>
+                    <td class="text-main text-bold"><strong>Payment method:</strong></td>
                     <td class="text-right">{{ $order->payment_type == '1'?'Cash on delivery':'Online Payment' }}</td>
                   </tr>  
                                  
@@ -300,6 +300,37 @@
                     </div><!-- /.modal --> 
                   </tr>
                 @endforeach
+
+                <tr>
+                  <td colspan="7" style="text-align: right;">
+                    <strong class="text-muted " >Sub Total :</strong>
+                  </td>
+                  <td style="text-align: center;"> {{ $order->total_amount }}{{ getCurrency() }} </td>
+                </tr>
+                @if($order->delivery_charge>0)
+                <tr>
+                  <td colspan="7" style="text-align: right;">
+                    <strong class="text-muted">Shipping :</strong>
+                  </td>
+                  <td style="text-align: center;"> {{ $order->delivery_charge }}{{ getCurrency() }} </td>
+                </tr>
+                @endif
+
+                @if($order->discount)
+                <tr>
+                  <td colspan="7" style="text-align: right;">
+                    <strong class="text-muted">Coupon :</strong>
+                  </td>
+                  <td style="text-align: center;"> {{ $order->discount }}{{ getCurrency() }} </td>
+                </tr>
+                @endif
+
+                <tr>
+                  <td colspan="7" style="text-align: right;">
+                    <strong class="text-muted">Total :</strong>
+                  </td>
+                  <td style="text-align: center;" > {{ $order->paid_amount }}{{ getCurrency() }} </td>
+                </tr>
                  
                 </tbody>
               </table>
@@ -308,34 +339,10 @@
           <div class="clearfix float-right" style="width: 300px; float:right">
             <table class="table">
               <tbody>
-                <tr>
-                  <td>
-                    <strong class="text-muted">Sub Total :</strong>
-                  </td>
-                  <td> {{ $order->total_amount }}{{ getCurrency() }} </td>
-                </tr>
-                @if($order->delivery_charge>0)
-                <tr>
-                  <td>
-                    <strong class="text-muted">Shipping :</strong>
-                  </td>
-                  <td> {{ $order->delivery_charge }}{{ getCurrency() }} </td>
-                </tr>
-                @endif
-                @if($order->discount)
-                <tr>
-                  <td>
-                    <strong class="text-muted">Coupon :</strong>
-                  </td>
-                  <td> {{ $order->discount }}{{ getCurrency() }} </td>
-                </tr>
-                @endif
-                <tr>
-                  <td>
-                    <strong class="text-muted">Total :</strong>
-                  </td>
-                  <td class="text-muted h5"> {{ $order->paid_amount }}{{ getCurrency() }} </td>
-                </tr>
+                
+               
+                
+               
               </tbody>
             </table>
             <div class="no-print text-right d-none">

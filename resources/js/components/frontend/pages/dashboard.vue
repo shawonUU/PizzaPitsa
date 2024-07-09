@@ -356,19 +356,19 @@
                       <div class="d-flex justify-content-between">
                         <div>
                           <strong class="text-main">
-                            Name: {{ productDetails.name }}</strong
+                            Name:</strong {{ productDetails.name }}
                           >
                         </div>
                       </div>
                       <br />
-                      Email: {{ productDetails.email }} <br />
-                      Selected Address: {{ productDetails.selectedAddress }}
+                     <strong> Email:</strong> {{ productDetails.email }} <br />
+                      <strong>Address:</strong> {{ productDetails.selectedAddress }}
                       <br />
-                      Entrance: {{ productDetails.entrance }} <br />
-                      Door Code: {{ productDetails.door_code }} <br />
-                      Floor: {{ productDetails.floor }} <br />
-                      Apartment: {{ productDetails.apartment }} <br />
-                      Comment: {{ productDetails.comment }} <br />
+                      <strong>Entrance:</strong> {{ productDetails.entrance }} <br />
+                      <strong>Door Code:</strong> {{ productDetails.door_code }} <br />
+                      <strong>Floor:</strong> {{ productDetails.floor }} <br />
+                      <strong>Apartment:</strong> {{ productDetails.apartment }} <br />
+                      <strong>Comment:</strong> {{ productDetails.comment }} <br />
                     </address>
                   </div>
                   <div class="col-lg-6 col-sm-12 col-xsm-12">
@@ -377,7 +377,7 @@
                     <table>
                       <tbody>
                         <tr>
-                          <td class="text-main text-bold">Order Type</td>
+                          <td class="text-main text-bold"><strong>Order type:</strong></td>
                           <td class="text-main text-bold">
                             <span v-if="productDetails.type === '1'"
                               >Home Delivery</span
@@ -386,7 +386,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td class="text-main text-bold">Order Status</td>
+                          <td class="text-main text-bold"><strong>Order status:</strong></td>
                           <td class="text-main text-bold">
                             <span>{{
                               orderStatuses[productDetails.order_status]
@@ -394,25 +394,25 @@
                           </td>
                         </tr>
                         <tr>
-                          <td class="text-main text-bold">Order date</td>
+                          <td class="text-main text-bold"><strong>Order date:</strong></td>
                           <td class="text-right">
                             {{ formatCreatedAt(productDetails.created_at) }}
                           </td>
                         </tr>
                         <tr>
-                          <td class="text-main text-bold">Total amount</td>
+                          <td class="text-main text-bold"><strong>Total amount:</strong></td>
                           <td class="text-right">
                             {{ productDetails.total_amount }}€
                           </td>
                         </tr>
                         <tr>
-                          <td class="text-main text-bold">Paid Amount</td>
+                          <td class="text-main text-bold"><strong>Paid Amount:</strong></td>
                           <td class="text-right">
                             {{ productDetails.paid_amount }}€
                           </td>
                         </tr>
                         <tr>
-                          <td class="text-main text-bold">Payment Status</td>
+                          <td class="text-main text-bold"><strong>Payment Status:</strong></td>
                           <td class="text-right">
                             {{
                               productDetails.is_paid == 0 ? "Unpaid" : "Paid"
@@ -420,7 +420,7 @@
                           </td>
                         </tr>
                         <tr>
-                          <td class="text-main text-bold">Payment Type</td>
+                          <td class="text-main text-bold"><strong>Payment Type:</strong></td>
                           <td class="text-right">
                             {{
                               productDetails.payment_type == 1
@@ -576,7 +576,7 @@
                             productDetails.discount * 1 > 0
                           "
                         >
-                          <td colspan="8" style="text-align: right">
+                          <td colspan="7" style="text-align: right">
                             Sub Total :
                           </td>
                           <td style="text-align: center">
@@ -584,7 +584,7 @@
                           </td>
                         </tr>
                         <tr v-if="productDetails.delivery_charge * 1 > 0">
-                          <td colspan="8" style="text-align: right">
+                          <td colspan="7" style="text-align: right">
                             Shipping :
                           </td>
                           <td style="text-align: center">
@@ -593,7 +593,7 @@
                           </td>
                         </tr>
                         <tr v-if="productDetails.discount * 1 > 0">
-                          <td colspan="8" style="text-align: right">
+                          <td colspan="7" style="text-align: right">
                             Discount :
                           </td>
                           <td style="text-align: center">
@@ -602,7 +602,7 @@
                           </td>
                         </tr>
                         <tr v-if="productDetails.paid_amount * 1 ">
-                          <td colspan="8" style="text-align: right">Total :</td>
+                          <td colspan="7" style="text-align: right">Total :</td>
                           <td style="text-align: center">
                             {{ productDetails.paid_amount
                             }}{{ baseCurrencySymbol }}
