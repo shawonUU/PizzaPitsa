@@ -123,14 +123,14 @@
                                     <div>
                                       <strong class="text-main"> Name: {{auth.name}}</strong>
                                     </div>
-                                  </div> Email: {{auth.email}}<br> 
+                                  </div> <strong>Email:</strong> {{auth.email}}<br> 
                                 <template  v-if="orderType==1">
-                                  Selected Address: {{selectedAddress}}<br> 
-                                  Entrance: {{entrance}}<br> 
-                                  Door Code: {{doorCode}}<br> 
-                                  Floor: {{floor}}<br> 
-                                  Apartment: {{apartment}}<br> 
-                                  Comment: {{addressComment}}<br> 
+                                  <strong>Selected Address:</strong> {{selectedAddress}}<br> 
+                                  <strong>Entrance:</strong> {{entrance}}<br> 
+                                  <strong>Door Code:</strong> {{doorCode}}<br> 
+                                  <strong>Floor:</strong> {{floor}}<br> 
+                                  <strong>Apartment:</strong> {{apartment}}<br> 
+                                  <strong>Comment:</strong> {{addressComment}}<br> 
                                 </template>
                                 
 
@@ -142,18 +142,18 @@
                               <table>
                                 <tbody>
                                   <tr class="infoTd">
-                                    <td class="text-main text-bold p-0">Type</td>
+                                    <td class="text-main text-bold p-0"><strong>Order Type:</strong></td>
                                     <td class="text-main text-bold p-0">
                                       {{ orderType==1 ? 'Delivery' : 'Dine in or Pickup' }}                          
                                     </td>                    
                                   </tr>
                                   
-                                  <tr class="infoTd">
-                                    <td class="text-main text-bold p-0">Date </td>
+                                  <tr class="infoTd d-none">
+                                    <td class="text-main text-bold p-0"><strong>Date:</strong> </td>
                                     <td class="text-right p-0">March 3, 2024 at 5:32 PM</td>
                                   </tr>
                                   <tr class="infoTd">
-                                    <td class="text-main text-bold p-0"> Amount </td>
+                                    <td class="text-main text-bold p-0"> <strong>Amount:</strong> </td>
                                     <td class="text-right p-0">{{ grandTotal }}{{ baseCurrencySymbol }}</td>
                                   </tr>          
                                 </tbody>
@@ -165,7 +165,6 @@
                               <table  class="table-bordered aiz-table invoice-summary table footable footable-1 breakpoint-xl" style="font-size: 13px !important;">
                                 <thead>
                                   <tr class="bg-trans-dark footable-header">
-                                    <th data-breakpoints="lg" class="min-col footable-first-visible" style="display: table-cell;">#</th>
                                     <th width="10%" style="display: table-cell;">Photo</th>
                                     <th class="text-uppercase" style="display: table-cell;">Name</th>                  
                                     <th data-breakpoints="lg" class="min-col text-uppercase text-center" style="display: table-cell;">Qty</th>
@@ -180,7 +179,6 @@
                                     <template v-if="cart.hasOwnProperty(productId)">
                                         <template v-for="(item, sizeId) in productSizes" :key="sizeId">
                                           <tr>
-                                            <td class="footable-first-visible" style="display: table-cell;">1</td>
                                             <td style="display: table-cell;">                     
                                                 <img height="50" :src="item.product.image ? '/frontend/product_images/' +item.product.image : '/frontend/product_images/placeholder.jpg'">                     
                                             </td>
@@ -222,46 +220,37 @@
                                           </tr>    
                                         </template>
                                       </template>
-                                  </template>       
+                                  </template>   
+
+                                  <tr>
+                                  <td colspan="5" style="text-align: right;">
+                                    <strong class="text-muted">Sub Total :</strong>
+                                  </td>
+                                  <td style="text-align: center;">{{ subTotal }} {{ baseCurrencySymbol }} </td>
+                                </tr>
+                                <tr v-if="orderType==1">
+                                  <td colspan="5" style="text-align: right;">
+                                    <strong class="text-muted">Shipping Charge:</strong>
+                                  </td>
+                                  <td style="text-align: center;"> {{deliveryCharge}}€ </td>
+                                </tr>
+                                <tr v-if="discount">
+                                  <td colspan="5" style="text-align: right;">
+                                    <strong class="text-muted">Discount :</strong>
+                                  </td>
+                                  <td style="text-align: center;">{{discount}} {{baseCurrencySymbol}}</td>
+                                </tr>
+                                <tr>
+                                  <td colspan="5" style="text-align: right;">
+                                    <strong class="text-muted">Total :</strong>
+                                  </td>
+                                  <td style="text-align: center;">{{ parseFloat(grandTotal)+parseFloat(deliveryCharge) }} {{baseCurrencySymbol}} </td>
+                                </tr>
+                                  
                                 </tbody>
                               </table>
                             </div>
-                          </div>
-                          <div class="clearfix float-right" style="width: 300px; float:right">
-                            <table class="table">
-                              <tbody>
-                                <tr>
-                                  <td>
-                                    <strong class="text-muted">Sub Total :</strong>
-                                  </td>
-                                  <td>{{ subTotal }} {{ baseCurrencySymbol }} </td>
-                                </tr>
-                                <tr v-if="orderType==1">
-                                  <td>
-                                    <strong class="text-muted">Shipping Charge:</strong>
-                                  </td>
-                                  <td> {{deliveryCharge}}€ </td>
-                                </tr>
-                                <tr v-if="discount">
-                                  <td>
-                                    <strong class="text-muted">Discount :</strong>
-                                  </td>
-                                  <td>{{discount}} {{baseCurrencySymbol}}</td>
-                                </tr>
-                                <tr>
-                                  <td>
-                                    <strong class="text-muted">Total :</strong>
-                                  </td>
-                                  <td class="text-muted h5">{{ parseFloat(grandTotal)+parseFloat(deliveryCharge) }} {{baseCurrencySymbol}} </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                            <div class="no-print text-right">
-                              <a href="https://demo.activeitzone.com/ecommerce/invoice/79" type="button" class="btn btn-icon btn-light">
-                                <i class="las la-print"></i>
-                              </a>
-                            </div>
-                          </div>                        
+                          </div>                       
                           <div class="row">
                               <div class="col-12 col-md-6 mt-5 mb-3">
                                   <div class="input-group" style="cursor:pointer;">
