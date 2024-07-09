@@ -91,10 +91,11 @@
                                 <button type="submit" class="btn  btn-primary">Filter</button>
                                 
                             </div>
-                            <div class="ml-3">
-                              <a href="{{ route('orders.index') }}" class="btn btn-warning ml-2">Clear</a>                              
-                            </div>
-                            
+                            @if ($request->status || $request->order_type || $request->payment_type || $request->start_date || $request->end_date)
+                              <div class="ml-3">
+                                <a href="{{ route('orders.index') }}" class="btn btn-warning ml-2">Clear</a>                              
+                              </div>
+                            @endif                                                        
                           </form>
                       </div>
                   </div>

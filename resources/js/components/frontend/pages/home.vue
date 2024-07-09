@@ -567,7 +567,6 @@ export default {
                 
             })
             .then((res)=>{
-                console.log(res.data)
                 if (res.data) {
                      this.availableCoupon = res.data;      
                 }                         
