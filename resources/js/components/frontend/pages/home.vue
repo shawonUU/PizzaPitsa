@@ -9,18 +9,31 @@
                             <div class="col-lg-6">
                                 <div class="slider-box-wrap">
                                     <div class="slider-activation-one axil-slick-dots">
-                                        <swiper :slides-per-view="1" :space-between="50" @swiper="onSwiper"
-                                            @slideChange="onSlideChange" :autoplay="{ delay: 3000, disableOnInteraction: false }">                                        
-                                                <swiper-slide v-for="(slider,index) in sliders" :key="index">
-                                                    <div class="single-slide slick-slide">
-                                                    
-                                                        <div class="main-slider-thumb">
-                                                            <img style="border-radius:10px" 
-                                                            :src="slider.image ? '/frontend/assets/images/slider/' + slider.image : '/frontend/product_images/placeholder.jpg'"
-                                                                alt="Product">
-                                                        </div>
-                                                    </div>
-                                                </swiper-slide>
+                                       <swiper
+                                            :spaceBetween="30"
+                                            :centeredSlides="true"
+                                            :autoplay="{
+                                            delay: 3000,
+                                            disableOnInteraction: false,
+                                            }"
+                                            :pagination="{
+                                            clickable: true,
+                                            }"
+                                            :navigation="false"
+                                            :modules="modules"
+                                            class="mySwiper"
+                                        >
+                                            <swiper-slide v-for="(slider, index) in sliders" :key="index">
+                                            <div class="single-slide slick-slide">
+                                                <div class="main-slider-thumb">
+                                                <img 
+                                                    :style="{ borderRadius: '10px' }" 
+                                                    :src="slider.image ? `/frontend/assets/images/slider/${slider.image}` : '/frontend/product_images/placeholder.jpg'"
+                                                    alt="Product"
+                                                >
+                                                </div>
+                                            </div>
+                                            </swiper-slide>
                                         </swiper>
                                     </div>
                                 </div>
@@ -214,14 +227,21 @@
 </template>
 <script>
 import axios from 'axios';
-import {Swiper,SwiperSlide} from 'swiper/vue';
+  import { Swiper, SwiperSlide } from 'swiper/vue';
+
+  // Import Swiper styles
+  import 'swiper/css';
+
+  import 'swiper/css/pagination';
+  import 'swiper/css/navigation';
+
 import Details from '../../../components/frontend/pages/modal/details.vue';
 import DeliveryPlace from '../../../components/frontend/pages/modal/deliveryPlace.vue';
 import Authentication from './modal/authentication.vue';
-import 'swiper/css';
 import { getBaseCurrencySymbol, HelperFunctions } from '../helpers.js';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
+  import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 export default {
     name: 'home',
     mixins: [HelperFunctions],
@@ -267,6 +287,7 @@ export default {
             sliders:null,
             firstAd:null,
             secondAd:null,
+            modules: [Autoplay, Pagination, Navigation],
         }
     },
     created (){

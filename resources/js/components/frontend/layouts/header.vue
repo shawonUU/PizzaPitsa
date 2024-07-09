@@ -34,10 +34,10 @@
                         </div>
                         <div class="col-lg-6 col-sm-6 col-md-4 col-12">
                             <div class="header-top-link">
-                                <ul class="quick-link">
+                                <!-- <ul class="quick-link">
                                     <li><a href="#">Tracking</a></li>
                                     <li><a href="sign-up.html">Store Info</a></li>
-                                </ul>
+                                </ul> -->
                             </div>
                         </div>
                     </div>
