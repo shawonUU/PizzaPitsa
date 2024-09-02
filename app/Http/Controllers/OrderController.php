@@ -204,42 +204,43 @@ class OrderController extends Controller
 
     public function getOrders(Request $request)
     {
+        // return $request;
         $status = 1;
         if ($request->status) {
             $status = $request->status;
         }
         $query = Order::where('is_order_valid', 1);
-
+        
         // Filter by status
         if ($request->has('status') && $request->status !== 'All') {
             $query->where('order_status', $request->status);
         }
-    
+        
         // Filter by order type
         if ($request->has('order_type') && $request->order_type !== 'All') {
             $query->where('type', $request->order_type);
         }
-    
+        
         // Filter by payment type
-        if ($request->has('payment_type') && $request->payment_type !== 'All') {                        
+        if ($request->has('payment_type') && $request->payment_type !== 'All') {
             $query->where('is_paid', $request->payment_type);
         }
-    
-        // Filter by start date
+        
+        // // Filter by start date
         if ($request->has('start_date')) {
             $query->whereDate('created_at', '>=', $request->start_date);
         }
-    
-        // Filter by end date
+        
+        // // Filter by end date
         if ($request->has('end_date')) {
             $query->whereDate('created_at', '<=', $request->end_date);
         }
-    
+        
         // Execute the query
         $orders = $query->orderBy('id', 'DESC')->get();
-    
+        
         // If no filters are applied, default behavior based on user role
-        // if ($query->isEmpty()) {
+        if ($orders->isEmpty()) {
             if (checkRole() == 'Delivery Boy') {
                 $orders = Order::where('is_order_valid', 1)
                     ->where('delivery_boy', auth()->user()->id)
@@ -251,6 +252,7 @@ class OrderController extends Controller
                     ->orderBy('id', 'DESC')
                     ->get();
             }
+        }
         // }
         
 
