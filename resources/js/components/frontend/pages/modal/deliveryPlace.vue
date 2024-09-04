@@ -37,7 +37,23 @@
                 </div>               
                 <div class="row">
                     <div class="col-12 col-md-4">
-                        <h3>New Address</h3>
+                      <div v-if="!auth" class="">
+                        <h4>Order as a Guest <span style="font-size:12px; margin-left: 5px;"> Or <a style="margin-left: 5px; color:#ee6e2d;" href="javascript:void(0)">Sing In</a></span></h4>
+                        <h6 class="m-0 mb-2">Basic Info</h6>
+                        <div class="row">
+                          <div class="col-12 mb-5">
+                            <input id="temp_name" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Name">
+                          </div>
+                          <div class="col-12 mb-5">
+                            <input id="temp_email" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Email">
+                            <span style="font-size:12px; color:red;" v-if="!is_guest_email">The email is already exsist. Please Sign In</span>
+                          </div>
+                          <div class="col-12 mb-5">
+                            <input id="temp_phone" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Phone">
+                          </div>
+                        </div>
+                      </div>
+                        <h6 class="m-0 mb-2">Delivery Address</h6>
                           <div v-if="isVisible" class="toast-container">
                             <div class="toast">{{ message }}</div>
                           </div>
@@ -67,7 +83,7 @@
                                 </div>
                             </div>
                             <div class="mt-auto">
-                              <button id="cashOnDeliveryBtn" type="button" @click="checkout()" class="btn" style="background:#cecac8; cursor: not-allowed; color: #fff; border-radius: 9999px; padding: 5px; font-size: 16px;" >Checkout</button>
+                              <button id="cashOnDeliveryBtn" type="button" @click="checkout('cashOnDeliveryBtn')" class="btn" style="background:#cecac8; cursor: not-allowed; color: #fff; border-radius: 9999px; padding: 5px; font-size: 16px;" >Checkout</button>
                             </div>
                         </form>
                     </div>
@@ -80,10 +96,26 @@
             <div v-if="scheduleSection">                
                 <div class="row">
                     <div class="col-12 col-md-4">
-                        <h3>Pick Up/ Dine In</h3>
-                          <div v-if="isVisible" class="toast-container">
-                            <div class="toast">{{ message }}</div>
+                        <h3 class="d-none">Pick Up/ Dine In</h3>
+                        <div v-if="isVisible" class="toast-container">
+                          <div class="toast">{{ message }}</div>
+                        </div>
+                        <div v-if="!auth" class="">
+                          <h4>Order as a Guest <span style="font-size:12px; margin-left: 5px;"> Or <a style="margin-left: 5px; color:#ee6e2d;" href="javascript:void(0)">Sing In</a></span></h4>
+                          <h6 class="m-0 mb-2">Basic Info</h6>
+                          <div class="row">
+                            <div class="col-12 mb-5">
+                              <input id="temp_name" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Name">
+                            </div>
+                            <div class="col-12 mb-5">
+                              <input id="temp_email" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Email">
+                              <span style="font-size:12px; color:red;" v-if="!is_guest_email">The email is already exsist. Please Sign In</span>
+                            </div>
+                            <div class="col-12 mb-5">
+                              <input id="temp_phone" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Phone">
+                            </div>
                           </div>
+                        </div>
                         <form action="javascript:void(0)">
                             <div class="row">
                                 <div class="col-12">
@@ -96,13 +128,13 @@
                                 </div>
                             </div>
                             <div class="mt-auto">
-                              <button type="button" @click="checkout()" class="btn" style="margin-top: 10px;background:#ee6e2d; cursor: pointer; color: #fff; border-radius: 9999px; padding: 5px; font-size: 16px;" >Checkout</button>
+                              <button id="checkoutBtn" type="button" @click="checkout('checkoutBtn')" class="btn" style="margin-top: 10px;background:#ee6e2d; cursor: pointer; color: #fff; border-radius: 9999px; padding: 5px; font-size: 16px;" >Checkout</button>
                             </div>
                         </form>
                     </div>
                     <div class="col-12 col-md-8">
                         <div id="map-container">
-                             <div id="map" style="height: 400px;"></div>
+                             <div id="map" style="height: 500px;"></div>
                         </div>
                         <div v-if="orderType==1" id="overlay"></div>
                     </div>
@@ -121,9 +153,9 @@
                               <address>                                 
                                   <div class="d-flex justify-content-between">
                                     <div>
-                                      <strong class="text-main"> Name: {{auth.name}}</strong>
+                                      <strong class="text-main"> Name: {{auth ? auth.name : tempName}}</strong>
                                     </div>
-                                  </div> <strong>Email:</strong> {{auth.email}}<br> 
+                                  </div> <strong>Email:</strong> {{auth ? auth.email : tempEmail}}<br> 
                                 <template  v-if="orderType==1">
                                   <strong>Selected Address:</strong> {{selectedAddress}}<br> 
                                   <strong>Entrance:</strong> {{entrance}}<br> 
@@ -252,6 +284,10 @@
                             </div>
                           </div>                       
                           <div class="row">
+                            <div v-if="!auth" class="col-12">
+                              <input id="verification_code" class="form-controll" style="height: 50px; border:1px solid #000;" :placeholder="'Enter email verification code.'" type="text">
+                              <span v-if="is_mail_verifide==false" style="color:red; font-size:12px;">Verification code not metched.</span>
+                            </div>
                               <div class="col-12 col-md-6 mt-5 mb-3">
                                   <div class="input-group" style="cursor:pointer;">
                                       <button id="deliveryOnCash" @click="placeOrder(orderType, 1)" type="button" class="btn" style=" cursor:pointer !important; background: #ee6e2d; color: white; width: 100%; border-radius: 9999px; padding: 5px; font-size: 16px;">Cash On Delivery</button>
@@ -321,12 +357,21 @@
                 deliveryAddressError:'',
                 suggestions:[],
                 baseCurrencySymbol:'',
+                tempName:'',
+                tempEmail:'',
+                tempPhpne:'',
+                is_guest_email:true,
+                verification_code: null,
+                is_mail_verifide:null,
             };
         },
         mounted() {
+          var auth = localStorage.getItem('auth');
+          this.auth = auth ? JSON.parse(auth) : null;
+
           axios.get('get-location-schedule')
           .then((res)=>{                  
-            console.log(this.orderType);
+            //console.log(this.orderType);
             this.shopAddress = res.data.address;
             this.shopSchedule = res.data.schedule;
             this.lng = parseFloat(res.data.longitude);
@@ -403,6 +448,17 @@
                 this.initMap();
             },
             placeOrder(type, paymentType){
+
+              if(!this.auth){
+                var verification_code = document.getElementById('verification_code').value.trim()
+                if(verification_code == this.verification_code){
+                  this.is_mail_verifide = true;
+                }else{
+                  this.is_mail_verifide = false;
+                  return;
+                }
+              }
+
               if(!confirm('Are want to confirm this order?')){
                 return;
               }
@@ -439,6 +495,7 @@
                   apartment:apartment,
                   comment:comment,
                   paymentType:paymentType,
+                  tempEmail:this.tempEmail,
                 })
                 .then((res)=>{ 
                   this.startProcessing(id,false);  
@@ -670,7 +727,39 @@
                 document.getElementById("cashOnDeliveryBtn").style.cursor = 'not-allowed';
               }
             },
-            checkout(){
+            async checkout(id){
+
+              if(!this.auth){
+                console.log('sdfsddf');
+                this.tempName = document.getElementById('temp_name').value.trim();
+                this.tempEmail = document.getElementById('temp_email').value.trim();
+                this.tempPhone = document.getElementById('temp_phone').value.trim();
+                if(this.tempName=="" || this.tempEmail=="" || this.tempPhone==""){
+                  return;
+                }
+                this.startProcessing(id,true);
+                await axios.post('/add-guest-info', {
+                  name:this.tempName,
+                  email:this.tempEmail,
+                  phone:this.tempPhone,
+
+                }).then(response => {
+                  // this.is_guest_email = response.data;
+                  if(response.data.success == true){
+                    console.log(response.data);
+                    this.verification_code = response.data.message;
+                  }else{
+                    return;
+                  }
+                  this.startProcessing(id,false);
+                  
+                })
+                .catch(error => {
+                  console.error(error);
+                });
+              }//return;
+              console.log("after");
+              
 
               if(this.orderType==1){
                 if(!(this.latitude && this.longitude)){
@@ -705,6 +794,7 @@
                   console.error(error);
                 });
             }
+
         },
     };
 </script>

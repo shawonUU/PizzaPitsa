@@ -823,8 +823,10 @@
                   // this.initMap();
                   var auth = localStorage.getItem('auth');
                   auth = auth ? JSON.parse(auth) : null;
-                  if(auth) this.showDeliveryPlace = true;
-                  else this.showAuthentication = true;
+
+                  this.showDeliveryPlace = true;
+                  //if(auth) this.showDeliveryPlace = true;
+                  //else this.showAuthentication = true;
               }else{
                   this.isVisible = true;
                   this.message = 'Minium order amount is 12 for delivery.';
@@ -835,8 +837,11 @@
               this.orderType = 2;
               var auth = localStorage.getItem('auth');
               auth = auth ? JSON.parse(auth) : null;
-              if(auth) this.showDeliveryPlace = true;
-              else this.showAuthentication = true;
+
+              this.showDeliveryPlace = true;
+
+              // if(auth) this.showDeliveryPlace = true;
+              // else this.showAuthentication = true;
           },
           showToast(message,type) {
               if(type){

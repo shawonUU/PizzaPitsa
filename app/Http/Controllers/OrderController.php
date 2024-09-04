@@ -16,6 +16,7 @@ use App\Mail\sendStatusChangeMail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\sendPaymentStatusChangeMail;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -25,6 +26,22 @@ class OrderController extends Controller
         // return;
         // return $request->all();
         // DB::beginTransaction();
+
+        $authUser = null;
+
+        if (Auth::check()) {
+            $authUser = auth()->user();
+        }else{
+            $authUser = User::where('email',$request->tempEmail)->first();
+        }
+
+        if($authUser == null){
+            $response = [
+                'success' => false,
+                'message' => 'Invalid operation.',
+            ];
+            return response()->json($response);
+        }
 
         $cart = json_decode($request->cart, true);
         $FREE_OPTION = 1;
@@ -43,7 +60,7 @@ class OrderController extends Controller
                 return response()->json($response);
             }
             $address = new Address;
-            $address->customer_id = auth()->user()->id;
+            $address->customer_id = $authUser->id;
             $address->latitude = $latitude;
             $address->longitude = $longitude;
             $address->selectedAddress = $selectedAddress;
@@ -65,7 +82,7 @@ class OrderController extends Controller
 
         $order = new Order;
         $order->order_number = $newOrderNumber;
-        $order->customer_id = auth()->user()->id;
+        $order->customer_id = $authUser->id;
         $order->type = $request->type;
         $order->discount = $request->discount;
         if ($request->deliveryCharge)
@@ -166,7 +183,7 @@ class OrderController extends Controller
 
         if ($paymentType == 1) {
             $data = [];
-            Mail::to(auth()->user()->email)->send(new PlaceOrderMail($order->order_number, $data));
+            Mail::to($authUser->email)->send(new PlaceOrderMail($order->order_number, $data));
             Mail::to("order@pizzapitsa.fi")->send(new PlaceOrderMail($order->order_number, $data));
 
             $notification = new Notification;

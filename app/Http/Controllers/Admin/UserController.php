@@ -7,6 +7,9 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use App\Mail\VerificationMail;
 
 class UserController extends Controller
 {
@@ -154,5 +157,49 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function addGuestInfo(Request $request){
+    
+        $validator = Validator::make($request->all(), [
+            'name' => ['required', 'string', 'regex:/^[a-zA-Z\s]+$/'],
+            'email' => ['required', 'string', 'email', 'max:255'],
+            'phone' => 'required|regex:/^[0-9]+$/',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = implode('<br>', $validator->errors()->all());
+            $response = [
+                'success' => false,
+                'message' => $errors,
+            ];
+            return response()->json($response);
+        }
+
+        $user = User::where('email', $request->email)->first();
+        if(!$user){
+            $user = new User;
+            $user->email = $request->email;
+            $user->name = $request->name;
+            $user->phone = $request->name;
+            $user->is_guest = 1;
+            $user->role_id = 2;
+            $user->is_verified = false;
+            $user->save();
+
+            $role = Role::where('name', 'Customer')->first();
+            $user->assignRole($role);
+        }
+        $user = User::where('email', $request->email)->first();
+        $user->verification_code = rand(100000, 999999);
+        $user->save();
+
+        Mail::to($user->email)->send(new VerificationMail($user->verification_code));
+        $response = [
+            'success' => true,
+            'message' => $user->verification_code,
+        ];
+        return response()->json($response);
+        
     }
 }

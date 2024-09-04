@@ -108,6 +108,8 @@ Route::group(['middleware' => ['permission:user-management']], function () {
     Route::resource('role', RoleController::class);
     Route::resource('permission', PermissionController::class);
 });
+Route::post('/add-guest-info', [UserController::class, 'addGuestInfo']);
+
 Route::get('/success', [PaytrailController::class, 'success']);
 Route::get('/cancel', [PaytrailController::class, 'cancel']);
 Route::get('/pending', [PaytrailController::class, 'pending']);
