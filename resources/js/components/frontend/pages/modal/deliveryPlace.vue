@@ -42,14 +42,14 @@
                         <h6 class="m-0 mb-2">Basic Info</h6>
                         <div class="row">
                           <div class="col-12 mb-5">
-                            <input id="temp_name" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Name">
+                            <input @change="checkinput()" id="temp_name" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Name">
                           </div>
                           <div class="col-12 mb-5">
-                            <input id="temp_email" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Email">
+                            <input @change="checkinput()" id="temp_email" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Email">
                             <span style="font-size:12px; color:red;" v-if="!is_guest_email">The email is already exsist. Please Sign In</span>
                           </div>
                           <div class="col-12 mb-5">
-                            <input id="temp_phone" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Phone">
+                            <input @change="checkinput()" id="temp_phone" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Phone">
                           </div>
                         </div>
                       </div>
@@ -105,14 +105,14 @@
                           <h6 class="m-0 mb-2">Basic Info</h6>
                           <div class="row">
                             <div class="col-12 mb-5">
-                              <input id="temp_name" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Name">
+                              <input @change="checkinput()" id="temp_name" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Name">
                             </div>
                             <div class="col-12 mb-5">
-                              <input id="temp_email" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Email">
+                              <input @change="checkinput()" id="temp_email" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Email">
                               <span style="font-size:12px; color:red;" v-if="!is_guest_email">The email is already exsist. Please Sign In</span>
                             </div>
                             <div class="col-12 mb-5">
-                              <input id="temp_phone" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Phone">
+                              <input @change="checkinput()" id="temp_phone" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Phone">
                             </div>
                           </div>
                         </div>
@@ -128,7 +128,7 @@
                                 </div>
                             </div>
                             <div class="mt-auto">
-                              <button id="checkoutBtn" type="button" @click="checkout('checkoutBtn')" class="btn" style="margin-top: 10px;background:#ee6e2d; cursor: pointer; color: #fff; border-radius: 9999px; padding: 5px; font-size: 16px;" >Checkout</button>
+                              <button id="checkoutBtn" type="button" @click="checkout('checkoutBtn')" :style="{'margin-top': '10px', background: auth ? '#ee6e2d' : '#cecac8', cursor: auth ? 'pointer' : 'not-allowed', color: '#fff', 'border-radius': '9999px', padding: '5px', 'font-size': '16px'}" class="btn">Checkout</button>
                             </div>
                         </form>
                     </div>
@@ -383,6 +383,7 @@
           .catch((err)=>{
               console.log(err);
           });
+
         },
         methods: {
           startProcessing(id,noOf){
@@ -727,6 +728,20 @@
                 document.getElementById("cashOnDeliveryBtn").style.cursor = 'not-allowed';
               }
             },
+            checkinput(){
+                this.tempName = document.getElementById('temp_name').value.trim();
+                this.tempEmail = document.getElementById('temp_email').value.trim();
+                this.tempPhone = document.getElementById('temp_phone').value.trim();
+                var btn = document.getElementById("cashOnDeliveryBtn") ? document.getElementById("cashOnDeliveryBtn") : document.getElementById("checkoutBtn") 
+
+                if(this.tempName=="" || this.tempEmail=="" || this.tempPhone==""){
+                  btn.style.backgroundColor = "#cecac8";
+                  btn.style.cursor = 'not-allowed';
+                }else{
+                  btn.style.backgroundColor = "#ee6e2d";
+                  btn.style.cursor = 'pointer';
+                }
+            },
             async checkout(id){
 
               if(!this.auth){
@@ -800,6 +815,12 @@
 </script>
 
   <style scoped>
+
+  .disabled-button {
+      cursor: not-allowed !important;
+      opacity: 0.6 !important;
+      background-color: "#cecac8" !important;
+    }
 
   #map-container {
       position: relative;
