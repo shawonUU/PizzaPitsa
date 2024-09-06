@@ -285,6 +285,7 @@
                           </div>                       
                           <div class="row">
                             <div v-if="!auth" class="col-12">
+                              <p class="m-0"><span style="font-size:14px;">Verification code.</span> <a href="javascript:void(0)" @click="resendVerificationCode()" style="color:#ee6e2d;" id="resendBtn">Resend?</a></p>
                               <input id="verification_code" class="form-controll" style="height: 50px; border:1px solid #000;" :placeholder="'Enter email verification code.'" type="text">
                               <span v-if="is_mail_verifide==false" style="color:red; font-size:12px;">Verification code not metched.</span>
                             </div>
@@ -745,7 +746,7 @@
             async checkout(id){
 
               if(!this.auth){
-                console.log('sdfsddf');
+                // console.log('sdfsddf');
                 this.tempName = document.getElementById('temp_name').value.trim();
                 this.tempEmail = document.getElementById('temp_email').value.trim();
                 this.tempPhone = document.getElementById('temp_phone').value.trim();
@@ -773,7 +774,7 @@
                   console.error(error);
                 });
               }//return;
-              console.log("after");
+              // console.log("after");
               
 
               if(this.orderType==1){
@@ -804,6 +805,29 @@
                 .then(response => {
                   console.log(response.data);
                   // window.location.href = response.data;
+                })
+                .catch(error => {
+                  console.error(error);
+                });
+            },
+            resendVerificationCode(){
+              var btn = document.getElementById("resendBtn");
+              btn.innerHTML = "Sending..";
+              btn.disabled = true;
+              axios.post('/resend-verifiction-code',{email:this.tempEmail})
+                .then(response => {
+                  console.log(response.data);
+                  if(response.data=='success'){
+                    btn.style.color = "green";
+                    btn.innerHTML = "Sended";
+                    setTimeout(() => {
+                      btn.style.color = "#ee6e2d";
+                      btn.innerHTML = "Resend?";
+                      btn.disabled = false;
+                    }, 2000);
+                  }
+                  // window.location.href = response.data;
+                  
                 })
                 .catch(error => {
                   console.error(error);

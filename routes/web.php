@@ -109,6 +109,7 @@ Route::group(['middleware' => ['permission:user-management']], function () {
     Route::resource('permission', PermissionController::class);
 });
 Route::post('/add-guest-info', [UserController::class, 'addGuestInfo']);
+Route::post('/resend-verifiction-code', [UserController::class, 'sendVerificationCode']);
 
 Route::get('/success', [PaytrailController::class, 'success']);
 Route::get('/cancel', [PaytrailController::class, 'cancel']);

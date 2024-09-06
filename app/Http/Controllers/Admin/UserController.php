@@ -202,4 +202,15 @@ class UserController extends Controller
         return response()->json($response);
         
     }
+
+    public function sendVerificationCode(Request $request){
+        $user = User::where('email', $request->email)->first();
+        if($user){
+            $user->verification_code = rand(100000, 999999);
+            $user->save();
+            Mail::to($user->email)->send(new VerificationMail($user->verification_code));
+            return 'success';
+        }
+        return 'error';
+    }
 }
