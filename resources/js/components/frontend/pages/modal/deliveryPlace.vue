@@ -547,7 +547,8 @@
                 this.emitter.emit('my-event', {'eventContent': 'String changed'});
             },
             initMap() {
-              const apiKey = 'AIzaSyDuJ7HTs7w-V7nTKOQR0-hDylWSyzjI6bw';
+              // const apiKey = 'AIzaSyDuJ7HTs7w-V7nTKOQR0-hDylWSyzjI6bw';
+              const apiKey = 'AIzaSyA2QUlP8l-m6Q2jWRYWtV_LAUxpWaJfyMg';
               const script = document.createElement('script');
               script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
               script.defer = true;

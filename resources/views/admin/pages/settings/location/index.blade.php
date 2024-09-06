@@ -134,7 +134,9 @@
         </div>
     </div>
     @section('script')
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuJ7HTs7w-V7nTKOQR0-hDylWSyzjI6bw&callback=initMap"></script>
+    <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDuJ7HTs7w-V7nTKOQR0-hDylWSyzjI6bw&callback=initMap"></script> -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2QUlP8l-m6Q2jWRYWtV_LAUxpWaJfyMg&callback=initMap"></script>
+    
     
     <script>
         var map;
