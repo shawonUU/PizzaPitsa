@@ -16,13 +16,22 @@ use App\Mail\PlaceOrderMail;
 use App\Models\Notification;
 use Pusher\Pusher;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class PaytrailController extends Controller
 {
     public function createPayment(Request $request, $newOrderNumber=null)
     {
         $result = getRootURL();
-        $auth = auth()->user();
+
+        $auth = null;
+
+        if (Auth::check()) {
+            $auth = auth()->user();
+        }else{
+            $auth = User::where('email',$request->tempEmail)->first();
+        }
 
 
         $merchantId = 1077442;
@@ -115,7 +124,7 @@ class PaytrailController extends Controller
 
 
             if($data['checkout-status']=='ok'){
-                $user = auth()->user();
+                $user = User::where('id',$order->customer_id)->first();
                 Mail::to($user->email)->send(new PlaceOrderMail($request->order_id, $data));
                 Mail::to("order@pizzapitsa.fi")->send(new PlaceOrderMail($request->order_id, $data));
                 

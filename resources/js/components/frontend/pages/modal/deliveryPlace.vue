@@ -38,7 +38,7 @@
                 <div class="row">
                     <div class="col-12 col-md-4">
                       <div v-if="!auth" class="">
-                        <h4>Order as a Guest <span style="font-size:12px; margin-left: 5px;"> Or <a style="margin-left: 5px; color:#ee6e2d;" href="javascript:void(0)">Sing In</a></span></h4>
+                        <h4>Order as a Guest <span style="font-size:12px; margin-left: 5px;"> Or <span style="margin-left: 5px; color:#ee6e2d; cursor: pointer;"  @click="openSignInModal">Sing In</span></span></h4>
                         <h6 class="m-0 mb-2">Basic Info</h6>
                         <div class="row">
                           <div class="col-12 mb-5">
@@ -101,7 +101,7 @@
                           <div class="toast">{{ message }}</div>
                         </div>
                         <div v-if="!auth" class="">
-                          <h4>Order as a Guest <span style="font-size:12px; margin-left: 5px;"> Or <a style="margin-left: 5px; color:#ee6e2d;" href="javascript:void(0)">Sing In</a></span></h4>
+                          <h4>Order as a Guest <span style="font-size:12px; margin-left: 5px;"> Or <span style="margin-left: 5px; color:#ee6e2d; cursor: pointer;"  @click="openSignInModal">Sing In</span></span></h4>
                           <h6 class="m-0 mb-2">Basic Info</h6>
                           <div class="row">
                             <div class="col-12 mb-5">
@@ -134,7 +134,7 @@
                     </div>
                     <div class="col-12 col-md-8">
                         <div id="map-container">
-                             <div id="map" style="height: 500px;"></div>
+                             <div id="map" :style="{ height: auth ? '400px' : '550px' }"></div>
                         </div>
                         <div v-if="orderType==1" id="overlay"></div>
                     </div>
@@ -413,6 +413,11 @@
             handleButtonClick() {
                 this.$emit('closeModal');
             },
+            openSignInModal(){
+              this.handleButtonClick();
+              this.emitter.emit('loginModalEvent', {'loginModalEvent': '1'})
+              
+            },
             async fetchBaseCurrencySymbol() {
               try {
                   this.baseCurrencySymbol = await getBaseCurrencySymbol();
@@ -663,14 +668,30 @@
                     this.latitude = latLng.lat();
                     this.longitude = latLng.lng();
                   }
-                  
-                   if(this.latitude && this.longitude){
+
+                  if(this.auth){
+                    if(this.latitude && this.longitude){
                       document.getElementById("cashOnDeliveryBtn").style.backgroundColor = "#ee6e2d";
                       document.getElementById("cashOnDeliveryBtn").style.cursor = 'pointer';
                     }else{
                       document.getElementById("cashOnDeliveryBtn").style.backgroundColor = "#cecac8";
                       document.getElementById("cashOnDeliveryBtn").style.cursor = 'not-allowed';
                     }
+                  }else{
+                    this.tempName = document.getElementById('temp_name').value.trim();
+                    this.tempEmail = document.getElementById('temp_email').value.trim();
+                    this.tempPhone = document.getElementById('temp_phone').value.trim();
+                    
+                    if(this.tempName=="" || this.tempEmail=="" || this.tempPhone=="" || !this.latitude || !this.longitude){
+                      document.getElementById("cashOnDeliveryBtn").style.backgroundColor = "#cecac8";
+                      document.getElementById("cashOnDeliveryBtn").style.cursor = 'not-allowed';
+                    }else{
+                      document.getElementById("cashOnDeliveryBtn").style.backgroundColor = "#ee6e2d";
+                      document.getElementById("cashOnDeliveryBtn").style.cursor = 'pointer';
+                    }
+                  }
+                  
+                   
                    
                 } else {
                   console.error('Geocoder failed due to:', status);
@@ -736,13 +757,24 @@
                 this.tempPhone = document.getElementById('temp_phone').value.trim();
                 var btn = document.getElementById("cashOnDeliveryBtn") ? document.getElementById("cashOnDeliveryBtn") : document.getElementById("checkoutBtn") 
 
-                if(this.tempName=="" || this.tempEmail=="" || this.tempPhone==""){
-                  btn.style.backgroundColor = "#cecac8";
-                  btn.style.cursor = 'not-allowed';
-                }else{
-                  btn.style.backgroundColor = "#ee6e2d";
-                  btn.style.cursor = 'pointer';
+                if(this.orderType==1){
+                  if(this.tempName=="" || this.tempEmail=="" || this.tempPhone=="" || !this.latitude || !this.longitude){
+                    btn.style.backgroundColor = "#cecac8";
+                    btn.style.cursor = 'not-allowed';
+                  }else{
+                    btn.style.backgroundColor = "#ee6e2d";
+                    btn.style.cursor = 'pointer';
+                  }
+                }else if(this.orderType==2){
+                  if(this.tempName=="" || this.tempEmail=="" || this.tempPhone==""){
+                    btn.style.backgroundColor = "#cecac8";
+                    btn.style.cursor = 'not-allowed';
+                  }else{
+                    btn.style.backgroundColor = "#ee6e2d";
+                    btn.style.cursor = 'pointer';
+                  }
                 }
+                
             },
             async checkout(id){
 

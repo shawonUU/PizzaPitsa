@@ -182,7 +182,7 @@ class UserController extends Controller
             $user->email = $request->email;
             $user->name = $request->name;
             $user->phone = $request->name;
-            $user->is_guest = 1;
+            $user->is_guest = '1';
             $user->role_id = 2;
             $user->is_verified = false;
             $user->save();

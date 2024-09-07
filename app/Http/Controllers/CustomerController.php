@@ -37,18 +37,18 @@ class CustomerController extends Controller
 
         $data = $request->all();
         $user = User::where('email', $data['email'])->first();
-        if($user && $user->is_guest==0){
+        if($user && $user->is_guest=='0'){
             $response = [
                 'success' => false,
                 'message' => 'The email already exist.',
             ];
             return response()->json($response);
         }
-        else if($user && $user->is_guest==1){
+        else if($user && $user->is_guest=='1'){
             $user->password = Hash::make($data['password']);
             $user->verification_code = rand(100000, 999999);
             $user->is_verified = false;
-            $user->is_guest=0;
+            $user->is_guest='0';
             $user->save();
         }else{
             $user = User::create([
@@ -94,7 +94,7 @@ class CustomerController extends Controller
         }
 
         $user = User::where('email', $request->email)->first();
-        if($user && $user->is_guest == 1){
+        if($user && $user->is_guest == '1'){
             $response = [
                 'success' => false,
                 'isVerification' => false,
