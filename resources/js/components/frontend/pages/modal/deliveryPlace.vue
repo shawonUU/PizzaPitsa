@@ -41,14 +41,14 @@
                         <h4>Order as a Guest <span style="font-size:12px; margin-left: 5px;"> Or <span style="margin-left: 5px; color:#ee6e2d; cursor: pointer;"  @click="openSignInModal">Sing In</span></span></h4>
                         <h6 class="m-0 mb-2">Basic Info</h6>
                         <div class="row">
-                          <div class="col-12 mb-5">
+                          <div class="col-12 mb-3">
                             <input @change="checkinput()" id="temp_name" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Name">
                           </div>
-                          <div class="col-12 mb-5">
+                          <div class="col-12 mb-3">
                             <input @change="checkinput()" id="temp_email" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Email">
                             <span style="font-size:12px; color:red;" v-if="!is_guest_email">The email is already exsist. Please Sign In</span>
                           </div>
-                          <div class="col-12 mb-5">
+                          <div class="col-12 mb-3">
                             <input @change="checkinput()" id="temp_phone" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Phone">
                           </div>
                         </div>
@@ -59,7 +59,7 @@
                           </div>
                         <form action="javascript:void(0)">
                             <div class="row">
-                                <div class="col-12 mb-5">
+                                <div class="col-12 mb-3">
                                   <input id="daliveryAddress" @input="searchPlaces()" @change="changeDaliveryAddress" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" :value="selectedAddress" placeholder="Address">
                                   <ul class="list-group shadow-lg" v-if="suggestions.length">
                                     <li class="list-group-item mb-0 suggestion" style="cursor:pointer;" v-for="(suggestion, index) in suggestions" :key="index" @click="selectPlace(suggestion)">{{ suggestion.description }}</li>
@@ -67,19 +67,19 @@
                                   <p v-if="deliveryAddressError" class="m-0 p-0" style="color :red;">{{ deliveryAddressError }}</p>
                                 </div>
                                 <div class="col-6">
-                                    <input id="entrance" type="text" class="form-group mb-5" style="border:1px solid #000; height: 50px;" placeholder="Entrance">
+                                    <input id="entrance" type="text" class="form-group mb-3" style="border:1px solid #000; height: 50px;" placeholder="Entrance">
                                 </div>
                                 <div class="col-6">
-                                    <input id="door_code" type="text" class="form-group mb-5" style="border:1px solid #000; height: 50px;" placeholder="Door Code">
+                                    <input id="door_code" type="text" class="form-group mb-3" style="border:1px solid #000; height: 50px;" placeholder="Door Code">
                                 </div>
                                 <div class="col-6">
-                                    <input id="floor" type="text" class="form-group mb-5" style="border:1px solid #000; height: 50px;" placeholder="Floor">
+                                    <input id="floor" type="text" class="form-group mb-3" style="border:1px solid #000; height: 50px;" placeholder="Floor">
                                 </div>
                                 <div class="col-6">
-                                    <input id="apartment" type="text" class="form-group mb-5" style="border:1px solid #000; height: 50px;" placeholder="Apartment">
+                                    <input id="apartment" type="text" class="form-group mb-3" style="border:1px solid #000; height: 50px;" placeholder="Apartment">
                                 </div>
                                 <div class="col-12">
-                                    <input id="comment" type="text" class="form-group mb-5" style="border:1px solid #000; height: 50px;" placeholder="Apt., Suite, Room and Comments">
+                                    <input id="comment" type="text" class="form-group mb-3" style="border:1px solid #000; height: 50px;" placeholder="Apt., Suite, Room and Comments">
                                 </div>
                             </div>
                             <div class="mt-auto">
@@ -104,14 +104,14 @@
                           <h4>Order as a Guest <span style="font-size:12px; margin-left: 5px;"> Or <span style="margin-left: 5px; color:#ee6e2d; cursor: pointer;"  @click="openSignInModal">Sing In</span></span></h4>
                           <h6 class="m-0 mb-2">Basic Info</h6>
                           <div class="row">
-                            <div class="col-12 mb-5">
+                            <div class="col-12 mb-3">
                               <input @change="checkinput()" id="temp_name" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Name">
                             </div>
-                            <div class="col-12 mb-5">
+                            <div class="col-12 mb-3">
                               <input @change="checkinput()" id="temp_email" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Email">
                               <span style="font-size:12px; color:red;" v-if="!is_guest_email">The email is already exsist. Please Sign In</span>
                             </div>
-                            <div class="col-12 mb-5">
+                            <div class="col-12 mb-3">
                               <input @change="checkinput()" id="temp_phone" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Phone">
                             </div>
                           </div>
@@ -119,9 +119,11 @@
                         <form action="javascript:void(0)">
                             <div class="row">
                                 <div class="col-12">
+                                  <h6 style="margin:0px; margin-bottom: 5px;">Shop Address</h6>
                                   <div class="schedule-div p-3 " v-html="shopAddress" style="border-radius: 15px; border: solid 1px #ffc3c3;  margin-bottom: 10px;text-align:left; line-height:1; padding:3px;">
                                      
                                     </div>
+                                    <h6 style="margin:0px; margin-bottom: 5px;">Shop Schedule</h6>
                                   <div class="schedule-div p-3 " v-html="shopSchedule" style="border-radius: 15px; border: solid 1px #ffc3c3;  margin-bottom: 10px;text-align:left; line-height:1; padding:3px;">
                                      
                                   </div>
@@ -286,8 +288,8 @@
                           <div class="row">
                             <div v-if="!auth" class="col-12">
                               <p class="m-0"><span style="font-size:14px;">Verification code.</span> <a href="javascript:void(0)" @click="resendVerificationCode()" style="color:#ee6e2d;" id="resendBtn">Resend?</a></p>
-                              <input id="verification_code" class="form-controll" style="height: 50px; border:1px solid #000;" :placeholder="'Enter email verification code.'" type="text">
-                              <span v-if="is_mail_verifide==false" style="color:red; font-size:12px;">Verification code not metched.</span>
+                              <input id="verification_code" class="form-controll" style="height: 50px; max-width:300px; border:1px solid #000;" :placeholder="'Enter email verification code.'" type="text">
+                              <br><span v-if="is_mail_verifide==false" style="color:red; font-size:12px;">{{ mail_verifide_error_message }}</span>
                             </div>
                               <div class="col-12 col-md-6 mt-5 mb-3">
                                   <div class="input-group" style="cursor:pointer;">
@@ -364,6 +366,7 @@
                 is_guest_email:true,
                 verification_code: null,
                 is_mail_verifide:null,
+                mail_verifide_error_message:'',
             };
         },
         mounted() {
@@ -457,11 +460,17 @@
             placeOrder(type, paymentType){
 
               if(!this.auth){
-                var verification_code = document.getElementById('verification_code').value.trim()
+                var verification_code = document.getElementById('verification_code').value.trim();
+                if(verification_code==""){
+                  this.is_mail_verifide = false;
+                  this.mail_verifide_error_message = "Enter email verification.";
+                  return;
+                }
                 if(verification_code == this.verification_code){
                   this.is_mail_verifide = true;
                 }else{
                   this.is_mail_verifide = false;
+                  this.mail_verifide_error_message = "Verification code not metched.";
                   return;
                 }
               }
