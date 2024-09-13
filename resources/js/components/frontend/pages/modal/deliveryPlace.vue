@@ -278,7 +278,7 @@
                                   <td colspan="5" style="text-align: right;">
                                     <strong class="text-muted">Total :</strong>
                                   </td>
-                                  <td style="text-align: center;">{{ parseFloat(grandTotal)+parseFloat(deliveryCharge) }} {{baseCurrencySymbol}} </td>
+                                  <td style="text-align: center;">{{ (parseFloat(grandTotal) + parseFloat(deliveryCharge)).toFixed(2) }} {{baseCurrencySymbol}} </td>
                                 </tr>
                                   
                                 </tbody>

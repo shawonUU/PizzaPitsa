@@ -137,7 +137,8 @@
                     </div>
                     </div>
                   </div>                
-                <br> <strong>Email:</strong> {{ $orderDetails->email }}<br> 
+                <strong>Phone:</strong> {{ $orderDetails->phone }}<br> 
+                <strong>Email:</strong> {{ $orderDetails->email }}<br> 
                 <strong>Address:</strong> {{ $orderDetails->selectedAddress }}<br> 
                 <strong>Entrance:</strong> {{ $orderDetails->entrance }}<br> 
                 <strong>Door Code:</strong> {{ $orderDetails->door_code }}<br> 
