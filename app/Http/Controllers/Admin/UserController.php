@@ -181,7 +181,7 @@ class UserController extends Controller
             $user = new User;
             $user->email = $request->email;
             $user->name = $request->name;
-            $user->phone = $request->name;
+            $user->phone = $request->phone;
             $user->is_guest = '1';
             $user->role_id = 2;
             $user->is_verified = false;

@@ -266,6 +266,10 @@ class CustomerController extends Controller
             ]);
             $updateStatus = 'email';
             $user->verification_code = rand(100000, 999999);
+            $user->email = $request->email;
+            $user->name = $request->name;
+            $user->phone = $request->phone;
+            $user->address = $request->address;
             $user->update();
             Mail::to($user->email)->send(new VerificationMail($user->verification_code));
             $response = [
