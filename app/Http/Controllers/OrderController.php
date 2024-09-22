@@ -284,7 +284,7 @@ class OrderController extends Controller
     {
         $orderDetails = Order::leftJoin('addresses', 'addresses.id', '=', 'orders.delivery_address_id')
             ->leftJoin('users', 'users.id', '=', 'orders.customer_id')
-            ->select('orders.*', 'addresses.selectedAddress', 'addresses.selectedAddress', 'addresses.entrance', 'addresses.door_code', 'addresses.apartment', 'addresses.comment', 'addresses.floor', 'users.name', 'users.email', 'users.phone', 'addresses.id as AddId')
+            ->select('orders.*', 'addresses.selectedAddress', 'addresses.selectedAddress', 'addresses.entrance', 'addresses.door_code', 'addresses.apartment', 'addresses.comment', 'addresses.floor', 'users.name', 'users.email','users.phone_code', 'users.phone', 'addresses.id as AddId')
             ->where('orders.order_number', $id)->where('orders.is_order_valid', 1)->first();
         $products = OrderItem::join('products', 'products.id', '=', 'order_items.product_id')
             ->leftJoin('sizes', 'sizes.id', '=', 'order_items.size_id')

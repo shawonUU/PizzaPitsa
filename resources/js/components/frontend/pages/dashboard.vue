@@ -200,12 +200,13 @@
                               </div>
                               <div class="form-group">
                                 <label>Phone</label>
-                                <input
-                                  type="text"
-                                  class="form-control"
-                                  v-model="formData.phone"
-                                  placeholder="Phone"
-                                />
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" style="height: 60px; font-size: 14px;">+358</span>
+                                    </div>
+                                    <input type="text" class="form-control" v-model="formData.phone" placeholder="Phone">
+                                </div>
+                               
                               </div>
                               <div class="form-group">
                                 <label>Address</label>
