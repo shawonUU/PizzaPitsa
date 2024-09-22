@@ -93,7 +93,12 @@
                     </div>
                     <div class="col-12">
                         <label for="phone" class="form-label">Phone</label>
-                        <input type="text" style="height: 40px; padding:5px; border: 1px solid #cfcbcb;" class="form-control"  id="phone" name="phone" placeholder="Phone">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" style="height: 40px; font-size: 14px;">+358</span>
+                            </div>
+                            <input type="text" style="height: 40px; padding:5px; border: 1px solid #cfcbcb;" class="form-control" id="phone" name="phone" placeholder="Phone">
+                        </div>
                     </div>
                     <div class="col-12">
                         <label for="new_password" class="form-label">Password</label>

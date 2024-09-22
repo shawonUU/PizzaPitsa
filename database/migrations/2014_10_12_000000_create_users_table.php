@@ -15,14 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('phone_code')->default('+358');
             $table->string('phone')->unique()->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->integer('role_id')->default(1);
             $table->string('images')->nullable();
             $table->integer('verification_code')->nullable();
             $table->boolean('is_verified')->default(false);
             $table->enum('status', [0, 1])->default(1);
+            $table->enum('is_guest', [0, 1])->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

@@ -45,6 +45,9 @@ class CustomerController extends Controller
             return response()->json($response);
         }
         else if($user && $user->is_guest=='1'){
+            $user->name = $data['name'];
+            $user->email = $data['email'];
+            $user->phone = $data['phone'];
             $user->password = Hash::make($data['password']);
             $user->verification_code = rand(100000, 999999);
             $user->is_verified = false;
