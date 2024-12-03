@@ -164,7 +164,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'regex:/^[a-zA-Z\s]+$/'],
             'email' => ['required', 'string', 'email', 'max:255'],
-            'phone' => 'required|regex:/^[0-9]+$/',
+            'phone' => 'required|numeric',
         ]);
 
         if ($validator->fails()) {

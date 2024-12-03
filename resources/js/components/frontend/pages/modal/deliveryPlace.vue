@@ -49,7 +49,12 @@
                             <span style="font-size:12px; color:red;" v-if="!is_guest_email">The email is already exsist. Please Sign In</span>
                           </div>
                           <div class="col-12 mb-3">
-                            <input @change="checkinput()" id="temp_phone" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Phone">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" style="border-radius: 8px 0px 0px 8px; height: 50px; font-size: 14px; border:1px solid #000; border-right:none;">+358</span>
+                                    </div>
+                                    <input @change="checkinput()" type="text" style="border:1px solid #000; height: 50px;" class="form-control" id="temp_phone" placeholder="Phone">
+                                </div>
                           </div>
                         </div>
                       </div>
@@ -112,7 +117,12 @@
                               <span style="font-size:12px; color:red;" v-if="!is_guest_email">The email is already exsist. Please Sign In</span>
                             </div>
                             <div class="col-12 mb-3">
-                              <input @change="checkinput()" id="temp_phone" type="text" class="form-group m-0" style="border:1px solid #000; height: 50px;" placeholder="Phone">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" style="border-radius: 8px 0px 0px 8px; height: 50px; font-size: 14px; border:1px solid #000; border-right:none;">+358</span>
+                                    </div>
+                                    <input @change="checkinput()" type="text" style="border:1px solid #000; height: 50px;" class="form-control" id="temp_phone" placeholder="Phone">
+                                </div>
                             </div>
                           </div>
                         </div>
@@ -760,12 +770,18 @@
                 document.getElementById("cashOnDeliveryBtn").style.cursor = 'not-allowed';
               }
             },
+            isNumeric(value) {
+                return !isNaN(value) && !isNaN(parseFloat(value));
+            },
             checkinput(){
                 this.tempName = document.getElementById('temp_name').value.trim();
                 this.tempEmail = document.getElementById('temp_email').value.trim();
                 this.tempPhone = document.getElementById('temp_phone').value.trim();
                 var btn = document.getElementById("cashOnDeliveryBtn") ? document.getElementById("cashOnDeliveryBtn") : document.getElementById("checkoutBtn") 
-
+                if(!this.isNumeric(this.tempPhone)){
+                  this.showToast('The phone must be numaric.',0);
+                  return;
+                }
                 if(this.orderType==1){
                   if(this.tempName=="" || this.tempEmail=="" || this.tempPhone=="" || !this.latitude || !this.longitude){
                     btn.style.backgroundColor = "#cecac8";
